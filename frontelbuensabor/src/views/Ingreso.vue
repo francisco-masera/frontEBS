@@ -1,7 +1,7 @@
 <template>
   <div>
       
-   <b-modal ref="miModal" hide-footer hide-header>
+   <b-modal ref="miModal" hide-footer hide-header size="sm" id="modal-center">
    <div>    
    <b-label>Ingresar</b-label>    
    </div>
