@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <div id="nav"><top-nav-bar></top-nav-bar></div>
+    <div id="nav"><menuLateral></menuLateral></div>
     <router-view />
   </div>
 </template>
 
 <script>
-import NavBarTop from "@/components/TopBar.vue";
+import MenuLateral from "@/components/MenuLateral.vue";
 export default {
   components: {
-    "top-nav-bar": NavBarTop
+    "menuLateral": MenuLateral
   }
   
 };
