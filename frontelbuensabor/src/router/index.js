@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Ingreso from '../views/Ingreso.vue'
+import stockInsumos from '../views/stockInsumos.vue'
 
 Vue.use(VueRouter)
 
@@ -15,8 +16,13 @@ Vue.use(VueRouter)
     path:'/ingreso',
     name:'Ingreso',
     component:Ingreso
+  },
+
+ {
+    path:'/stockInsu',
+    name:'stockInsumos',
+    component:stockInsumos
   }
- 
   
 ]
 
