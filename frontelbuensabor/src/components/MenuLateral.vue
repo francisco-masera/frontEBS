@@ -30,7 +30,7 @@ export default {
   data() {
     return {
      botones: [],
-      user:"cliente",
+      user:"cocina",
       nombre:"Pepito Gomez",
     };
   },
