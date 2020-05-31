@@ -1,16 +1,14 @@
 <template>
   <div id="app">
-    <div id="nav"><menuLateral></menuLateral></div>
-    <router-view />
+   
+  <router-view />
   </div>
 </template>
 
 <script>
-import MenuLateral from "@/components/MenuLateral.vue";
+
 export default {
-  components: {
-    "menuLateral": MenuLateral
-  }
+
   
 };
 </script>
