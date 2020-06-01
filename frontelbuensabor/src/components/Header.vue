@@ -1,71 +1,108 @@
 <template>
-  <div class="header">
-    <b-navbar toggleable="md" type="dark">
+  <b-navbar id="header" toggleable="md" type="dark">
+    <b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
+    <b-container
+      class="col-lg-4 col-md-4 col-sm-3 col-xs-1 ml-lg-5"
+      id="logoContainer"
+    >
       <b-img
-        class="col-lg-2 col-md-4 col-sm-2"
+        fluid
         id="brandImg"
+        alt=""
         src="@/assets/images/sistema/logo.png"
       ></b-img>
+    </b-container>
+    <b-container class="col-lg-8 col-md-8 col-sm-9 col-xs-11 mr-5 hamburguer">
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav class="mx-auto items">
-          <b-nav-item>CARTA</b-nav-item>
-          <b-nav-item>NOSOTROS</b-nav-item>
-          <b-nav-item>CONTACTO</b-nav-item>
+        <b-navbar-nav class="items">
+          <b-nav-item class="carta" :to="{ name: 'carta' }">CARTA</b-nav-item>
+          <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
+          <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
           <b-img
             :src="require(`@/assets/images/sistema/userDefaultChico.png`)"
             alt=""
-            id="imagen"
+            id="foto"
+            fluid
           ></b-img>
-          <b-nav-item><label id="usuario"></label></b-nav-item>
-          <b-navbar-nav class="pl-5">
-            <b-img id="carrito" src="@/assets/images/sistema/carrito.png">
-            </b-img>
-          </b-navbar-nav>
+          <b-nav-item :to="{ name: 'perfil' }"
+            ><label id="usuario"></label
+          ></b-nav-item>
+          <b-nav-item :to="{ name: 'carrito' }">
+            <b-img
+              id="carrito"
+              fluid
+              src="@/assets/images/sistema/carrito.png"
+            ></b-img>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
-    </b-navbar>
-  </div>
+    </b-container>
+  </b-navbar>
 </template>
 
 <script>
 export default {
   mounted() {},
-  props: ["imagen", "id", "nombre"],
+  props: ["imagen", "id", "nombre", "screenLength"],
 
   methods: {},
+  data: function() {},
 };
 </script>
+
 <style>
-.header {
+@import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
+#header {
   background-color: #1f91b6 !important;
   min-height: 150px;
   max-height: 200px;
 }
 
-#imagen {
-  margin-top: 45px;
+#foto {
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  margin-right: -28px;
 }
 
-.items > * {
-  margin-top: 40px;
-  margin-left: 25px;
-  font-size: 15px;
-  font-weight: bolder;
-}
-
-#carrito {
-  margin-top: 5px;
-  width: 30px;
-  height: 30px;
+.items {
+  display: flex;
+  align-items: center;
 }
 
 #brandImg {
+  margin-top: -50px;
   width: 150px;
-  margin-top: 20px;
-  margin-left: 80px;
+}
+
+#logoContainer {
+  width: auto;
+  margin-left: 0px;
+  min-height: 100px;
+  float: left;
+}
+
+.hamburguer {
+  background-color: rgb(31, 179, 231, 40%);
+  margin-left: 95px;
+  border-radius: 15px;
+}
+
+.hamburguer > * {
+  font-family: "Baloo Bhaina 2";
+  font-weight: 700;
+  font-size: 13pt;
+}
+
+.hamburguer #carrito #foto {
+  width: 30%;
+  padding-inline: 2px;
+  height: 30px;
+}
+.navbar-dark .navbar-nav .nav-link {
+  color: #151515;
+}
+
+#navToggle {
+  float: right;
+  margin-right: 0px;
+  margin-left: 80%;
 }
 </style>
