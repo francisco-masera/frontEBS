@@ -1,4 +1,5 @@
 <template>
+ <row>
   <div>
     <div class="header"></div>
     <div id="nav"><menuLateral></menuLateral>    
