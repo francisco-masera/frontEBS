@@ -4,6 +4,8 @@ import Home from '../views/Home.vue'
 import Ingreso from '../views/Ingreso.vue'
 import stockInsumos from '../views/stockInsumos.vue'
 import catalogoManu from '../views/catalogoManu.vue'
+import Stock from '../views/stockInsumos.vue'
+
 
 Vue.use(VueRouter)
 
@@ -19,6 +21,7 @@ Vue.use(VueRouter)
     component:Ingreso
   },
 
+
  {
     path:'/stockInsu',
     name:'stockInsumos',
@@ -28,6 +31,12 @@ Vue.use(VueRouter)
     path:'/catalogoManu',
     name:'catalogoManu',
     component:catalogoManu
+  },
+
+  {
+    path:'/stockInsumos',
+    name:'stock',
+    component:Stockdesarrollo
   }
   
 ]

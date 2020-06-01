@@ -6,10 +6,10 @@
           <p id="nombre">{{nombre}}</p>
           
           <b-nav-item class="botonesMenu" v-for="boton in botones"
-          :key="boton" v-bind:href="boton[2]">
+          :key="boton[0]" v-bind:href="boton[3]">
           
-          <b-img v-bind:src="require('@/assets/images/sistema/'+boton[1])" fluid class="iconosMenu"></b-img>
-               {{boton[0]}}
+          <b-img v-bind:src="require('@/assets/images/sistema/'+boton[2])" fluid class="iconosMenu"></b-img>
+               {{boton[1]}}
                
           </b-nav-item>
           
@@ -39,32 +39,32 @@ export default {
         var boton;
 
         if(this.user==="admin"){
-          boton = ["Stock de insumos","stock.png",""];
+          boton = [0,"Stock de insumos","stock.png",""];
           this.botones.push(boton);
-          boton = ["Catálogo","manufacturados.png",""];
+          boton = [1,"Catálogo","manufacturados.png",""];
           this.botones.push(boton);    
-          boton = ["Sugerencias del chef","sugerenciasChef.png",""];
+          boton = [2,"Sugerencias del chef","sugerenciasChef.png",""];
           this.botones.push(boton);  
-          boton = ["Mis datos","misDatos.png",""];
+          boton = [3,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
-          boton = ["Cerrar sesión","cerrarSesion.png",""];
+          boton = [4,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);   
                 
         }else if(this.user==="cocina"){
-          boton = ["Manufacturados","manufacturados.png",""];
+          boton = [0,"Manufacturados","manufacturados.png",""];
           this.botones.push(boton);
-          boton = ["Mis datos","misDatos.png",""];
+          boton = [1,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
-          boton = ["Cerrar sesión","cerrarSesion.png",""];
+          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
         }else if(this.user ==="cliente"){
-          boton = ["Mis direcciones","misDirecciones.png",""];
+          boton = [0,"Mis direcciones","misDirecciones.png",""];
           this.botones.push(boton);
-          boton = ["Mis pedidos","Pedidos.png",""];
+          boton = [1,"Mis pedidos","Pedidos.png",""];
           this.botones.push(boton);  
-          boton = ["Mis datos","misDatos.png",""];
+          boton = [2,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
-          boton = ["Cerrar sesión","cerrarSesion.png",""];
+          boton = [3,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
         }
 
@@ -89,7 +89,7 @@ export default {
   width: 20%;
   height: auto;
   margin-left: 100px;
-  margin-top:150px;
+  margin-top:-50px;
   position: absolute;
   font-family: 'Baloo Bhaina 2';
   font-weight: 700;
@@ -109,12 +109,12 @@ export default {
   font-weight: 400;
   font-size: 12pt; 
   text-align: left;
-  margin-left: 10px;
+  margin-left: 10%;
   margin-top:5px;
 }
 .botonesMenu a:link{
   list-style: none;  
-  
+  color:#151515;
   font-weight: 500;
   font-size: 12pt; 
   text-align: left;
@@ -141,6 +141,26 @@ export default {
   margin-right: 10px;
  }
 
+
+@media screen and (max-width: 1210px){
+    .card-body{
+      padding: 0px;
+    }
+    .botonesMenu{ 
+      font-size: 12pt; 
+      margin-left: 5px; 
+    }
+
+    
+}
+
+@media screen and (max-width: 774px){
+    #MenuLateral{
+        display: none;
+    }
+    
+    
+}
 
 
 
