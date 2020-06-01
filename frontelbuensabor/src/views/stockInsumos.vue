@@ -5,9 +5,23 @@
     </div>
 
     <div class="costado"></div>
-    <section class="informacion">
+    <b-container class="informacion">
       <h1>Stock de insumos</h1>
-    </section>
+      <b-nav-form class="buscador">
+          <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo"></b-form-input>
+          <b-button size="sm" class="botonImagen" type="submit"><img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"/></b-button>
+        </b-nav-form>
+        <b-table hover responsive  :items="insumosData" :fields="tituloTabla"  :outlined=true :per-page="perPage" :current-page="currentPage" :borderless=true id="tablaInsumos" class="tabla">
+            <template v-slot:cell(acción)="row">
+                <b-button size="sm" @click="agregarInsumo(row.item.id)" class="botonImagen">
+                   <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
+                </b-button>
+
+            </template>
+       </b-table>    
+       <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage"  aria-controls="my-tablaInsumos" class="paginador">
+        </b-pagination>
+    </b-container>
     
     <router-view />
   </div>
@@ -16,11 +30,46 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
+   mounted() {
+    this.getInsumos();
+  },
   components: {
     "menuLateral": MenuLateral
-  }
+  },
+  data() {
+      return {
+        perPage: 7,
+         currentPage: 1,        
+        tituloTabla: ['denominación','unidad', 'costo', 'stock', 'categoría','acción'],
+        insumosData:[],
+        insumo:{
+          denominacion:"",
+          unidad:"",
+          costo:0,
+          stock:"",
+          categoría:"",
+        }
+      }
+    },
+    methods: {
+      async getInsumos(){
+         const res = await fetch("/insumos.json");
+        const resJson = await res.json();
+        this.insumosData = resJson.insumos;
+        console.log(this.insumosData);
+      },
+
+      agregarInsumo(){
+
+      }
+    },
+    computed: {
+      rows() {
+        return this.insumosData.length
+      }
+    }
   
-};
+}
 </script>
 <style>
 h1{
@@ -28,6 +77,7 @@ h1{
   font-weight: 600;
   font-size: 18pt; 
   color:#151515;
+  text-align: left;
 }
 
 .costado{
@@ -41,19 +91,70 @@ h1{
 }
 
 .informacion{
-  background-color: red;
+  
   width: 50%;
   min-height: 100px; 
   margin-left: 30%;
   padding: 20px;
   padding-top:50px;
+  font-family: 'Baloo Bhaina 2';
+  color:#151515;
+
 }
 
 .header{
   background-color: blue;
   width: 100%;
   top:0;
-  min-height: 100px;  
+  min-height: 200px;  
+  
+}
+.buscador{
+  float:right;
+  margin-bottom: 25px;
+}
+
+
+.botonImagen{
+  background-color:transparent;
+  border:none;
+  padding: 0px;
+}
+.botonImagen:hover{
+  background-color:transparent;
+  border:none;
+}
+
+.botonImagen:active{
+  background-color:transparent;
+  border:none;
+}
+.botonImagen:visited{
+  background-color:transparent;
+  border:none;
+}
+
+.botonImagen:focus{
+  background-color:transparent;
+  border:none;
+}
+
+#imagenBuscar{
+  width: 25px;
+}
+
+#imagenAgregar{
+  width: 20px;
+  margin:0px;
+}
+
+.tabla{
+  text-align: left;
+}
+
+.page-link{
+   color: #151515;
+  border:none;
   
 }
 
@@ -66,11 +167,30 @@ h1{
     }
 
     .informacion{
-      background-color: red;
-      width: 60%;
+      width: auto;
       min-height: 100px; 
-      margin-left: 20%;
+      margin-left: 60px;
+      
     }
+    .botonImagen{
+      display: inline;
+    }
+}
+
+
+@media screen and (max-width: 604px){
+    .informacion{
+      font-size: 10pt; 
+         
+    }
+    .table td, .table th{
+      padding:0.4rem;
+    }
+    .buscador{
+      float:left;
+     
+    }
+ 
 }
 
 </style>
