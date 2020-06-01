@@ -2,7 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Ingreso from '../views/Ingreso.vue'
-import Stock from '../views/stockInsumos.vue'
+import stockInsumos from '../views/stockInsumos.vue'
+import catalogoManu from '../views/catalogoManu.vue'
+
+
 
 Vue.use(VueRouter)
 
@@ -18,11 +21,18 @@ Vue.use(VueRouter)
     component:Ingreso
   },
 
+
+ {
+    path:'/stockInsu',
+    name:'stockInsumos',
+    component:stockInsumos
+  },
   {
-    path:'/stockInsumos',
-    name:'stock',
-    component:Stock
-  }
+    path:'/catalogoManu',
+    name:'catalogoManu',
+    component:catalogoManu
+  },
+
  
   
 ]

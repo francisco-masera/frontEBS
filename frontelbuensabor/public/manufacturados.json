@@ -1,0 +1,115 @@
+{
+    "manufacturados":[
+      {
+        "denominación": "Hamburguesa con queso",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Hamburguesa doble",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      }
+        ,
+      {
+        "denominación": "Pizza con cebolla",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "150"
+
+      },
+      {
+        "denominación": "Hamburguesa con queso",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Papas con queso cheddar",
+        "categoría": "Papas",
+        "tiempo": "10 min",
+        "stock": "100"
+
+      }
+        ,
+      {
+        "denominación": "Flan con dulce de leche",
+        "categoría": "Postres",
+        "tiempo": "15 min",
+        "stock": "10"
+
+      },
+      {
+        "denominación": "Brownie con helado",
+        "categoría": "Postres",
+        "tiempo": "15 min",
+        "stock": "5"
+
+      },
+      {
+        "denominación": "Hamburguesa con queso",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      }
+        ,
+      {
+        "denominación": "Hamburguesa con bacon",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Hamburguesa super",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Pizza con anchoas",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "200"
+
+      }
+        ,
+      {
+        "denominación": "Pizza napolitana",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "200"
+
+      },
+      {
+        "denominación": "Papas grandes",
+        "categoría": "Papas",
+        "tiempo": "15 min",
+        "stock": "10"
+
+      },
+      {
+        "denominación": "Papas especiales",
+        "categoría": "Papas",
+        "tiempo": "15 min",
+        "stock": "10"
+
+      }
+        ,
+      {
+        "denominación": "Hamburguesa con rockefort",
+        "categoría": "Hamburguesa",
+        "tiempo": "20 min",
+        "stock": "300"
+
+      }
+    ]
+
+}
