@@ -19,6 +19,7 @@
 
             </template>
        </b-table>    
+       <b-button pill class="boton" size="md">Nuevo</b-button>
        <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage"  aria-controls="my-tablaInsumos" class="paginador">
         </b-pagination>
     </b-container>
@@ -79,6 +80,7 @@ h1{
   color:#151515;
   text-align: left;
 }
+
 
 .costado{
     background-image: url("../assets/images/sistema/reticulaVertical.png");
@@ -155,6 +157,13 @@ h1{
 .page-link{
    color: #151515;
   border:none;
+  
+}
+.boton{
+  float:left;
+  background-color: #E7511E;
+  width: 105px;
+  height: 30px;
   
 }
 
