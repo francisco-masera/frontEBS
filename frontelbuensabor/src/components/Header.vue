@@ -15,7 +15,7 @@
     <b-container class="col-lg-8 col-md-8 col-sm-9 col-xs-11 mr-5 hamburguer">
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav class="items">
-          <b-nav-item class="carta" :to="{ name: 'carta' }">CARTA</b-nav-item>
+          <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
           <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
           <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
           <b-img
