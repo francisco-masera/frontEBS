@@ -1,46 +1,40 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import Ingreso from '../views/Ingreso.vue'
-import stockInsumos from '../views/stockInsumos.vue'
-import catalogoManu from '../views/catalogoManu.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import Ingreso from "../views/Ingreso.vue";
+import Stock from "../views/stockInsumos.vue";
 
+Vue.use(VueRouter);
 
-
-Vue.use(VueRouter)
-
-  const routes = [
+const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
- {
-    path:'/ingreso',
-    name:'Ingreso',
-    component:Ingreso
-  },
-
-
- {
-    path:'/stockInsu',
-    name:'stockInsumos',
-    component:stockInsumos
+    path: "/",
+    name: "Home",
+    component: Home,
   },
   {
-    path:'/catalogoManu',
-    name:'catalogoManu',
-    component:catalogoManu
+    path: "/ingreso",
+    name: "Ingreso",
+    component: Ingreso,
   },
 
- 
-  
-]
+  {
+    path: "/detalleInsumo",
+    name: "DetalleInsumo",
+    component: () => import("../views/DetalleInsumo.vue"),
+  },
+
+  {
+    path: "/stockInsumos",
+    name: "stock",
+    component: Stock,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

@@ -1,0 +1,24 @@
+{
+    "insumosVenta": [
+        {
+            "id": 1,
+            "unidadMedida": "L",
+            "cantidad": 1.0,
+            "costo": 0.0,
+            "idRubro": 10,
+            "idOrdenCompra": 1,
+            "idStock": 1,
+            "idArticuloVenta": 4
+        },
+        {
+            "id": 2,
+            "unidadMedida": "L",
+            "cantidad": 1.0,
+            "costo": 0.0,
+            "idRubro": 10,
+            "idOrdenCompra": 1,
+            "idStock": 2,
+            "idArticuloVenta": 5
+        }
+    ]
+}
