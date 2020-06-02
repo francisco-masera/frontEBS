@@ -23,7 +23,7 @@ Vue.use(VueRouter)
 
 
  {
-    path:'/stockInsu',
+    path:'/stockInsumos',
     name:'stockInsumos',
     component:stockInsumos
   },
