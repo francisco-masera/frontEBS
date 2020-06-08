@@ -59,7 +59,7 @@ export default {
   data() {
     return {    
       botones: [],
-      user:"cajero",
+      user:"cliente",
       nombre:"Pepito Gomez",
       esCliente:false,
     };
@@ -119,41 +119,7 @@ export default {
         }
     }
   },
-        cargaBotones(){
-        var boton;
-
-        if(this.user==="admin"){
-          boton = [0,"Stock de insumos","stock.png",""];
-          this.botones.push(boton);
-          boton = [1,"Catálogo","manufacturados.png",""];
-          this.botones.push(boton);    
-          boton = [2,"Sugerencias del chef","sugerenciasChef.png",""];
-          this.botones.push(boton);  
-          boton = [3,"Mis datos","misDatos.png",""];
-          this.botones.push(boton);  
-          boton = [4,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);   
-                
-        }else if(this.user==="cocina"){
-          boton = [0,"Manufacturados","manufacturados.png",""];
-          this.botones.push(boton);
-          boton = [1,"Mis datos","misDatos.png",""];
-          this.botones.push(boton);  
-          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
-        }else if(this.user ==="cliente"){
-          boton = [0,"Mis direcciones","misDirecciones.png",""];
-          this.botones.push(boton);
-          boton = [1,"Mis pedidos","Pedidos.png",""];
-          this.botones.push(boton);  
-          boton = [2,"Mis datos","misDatos.png",""];
-          this.botones.push(boton);  
-          boton = [3,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
-        }
-
-     
-      }
+        
 
   },
   

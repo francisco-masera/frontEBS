@@ -30,7 +30,7 @@ export default {
   data() {
     return {
      botones: [],
-      user:"cocina",
+      user:"cajero",
       nombre:"Pepito Gomez",
     };
   },
@@ -66,6 +66,26 @@ export default {
           this.botones.push(boton);  
           boton = [3,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
+
+        }else if(this.user==="delivery"){
+          boton = [0,"Pedidos","Pedidos.png",""];
+          this.botones.push(boton);
+          boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
+          this.botones.push(boton); 
+           boton = [2,"Mis datos","misDatos.png",""];
+          this.botones.push(boton);   
+          boton = [3,"Cerrar sesión","cerrarSesion.png",""];
+          this.botones.push(boton);  
+
+        }else if(this.user==="cajero"){
+          boton = [0,"Pedidos","Pedidos.png",""];
+          this.botones.push(boton);
+          boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
+          this.botones.push(boton); 
+           boton = [3,"Mis datos","misDatos.png",""];
+          this.botones.push(boton);   
+          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+          this.botones.push(boton);  
         }
 
      
@@ -81,9 +101,13 @@ export default {
 
 
 #MenuLateral{
-
   background-color: #FFFFFF;
   color: #151515;
+  border: none;
+  border-radius: 15px;
+    -webkit-box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.2);
+    -moz-box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.2);
+    box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.2);
   float: left;
   text-align: center;
   width: 20%;
@@ -109,7 +133,7 @@ export default {
   font-weight: 400;
   font-size: 12pt; 
   text-align: left;
-  margin-left: 10%;
+  margin-left: 5%;
   margin-top:5px;
 }
 .botonesMenu a:link{
