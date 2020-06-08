@@ -181,7 +181,7 @@ h1{
       width: auto;
       min-height: 100px; 
       margin-left: 60px;
-      
+      z-index: 0;
     }
     .botonImagen{
       display: inline;
