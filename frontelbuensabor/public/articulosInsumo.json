@@ -1,0 +1,37 @@
+{
+    "insumos": [
+        {
+            "id": 1,
+            "denominacion": "Queso Mantecoso",
+            "esExtra": "0",
+            "unidadMedida": "kg",
+            "idOrden": 2,
+            "idReceta": 1,
+            "idRecetaSugerida": 1,
+            "idRubro": 13,
+            "idStock": 3
+        },
+        {
+            "id": 3,
+            "denominacion": "Tomates Frescos",
+            "esExtra": "1",
+            "unidadMedida": "kg",
+            "idOrden": 2,
+            "idReceta": 2,
+            "idRecetaSugerida": 2,
+            "idRubro": 14,
+            "idStock": 4
+        },
+        {
+            "id": 4,
+            "denominacion": "Harina 0000",
+            "esExtra": "0",
+            "unidadMedida": "kg",
+            "idOrden": 2,
+            "idReceta": 3,
+            "idRecetaSugerida": 3,
+            "idRubro": 15,
+            "idStock": 5
+        }
+    ]
+}

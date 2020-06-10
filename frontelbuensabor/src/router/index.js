@@ -1,17 +1,24 @@
+<<<<<<< HEAD
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+=======
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Home from "../views/Home.vue";
+import Ingreso from "../views/Ingreso.vue";
+import Stock from "../views/stockInsumos.vue";
+>>>>>>> 48a972f6d7145d05a4d98811f7070db725228e77
 
+Vue.use(VueRouter);
 
-
-Vue.use(VueRouter)
-
-  const routes = [
+const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
+<<<<<<< HEAD
  {
     path:'/ingreso',
     name:'Ingreso',
@@ -35,16 +42,31 @@ Vue.use(VueRouter)
     path:'/insumoDetalle/:id',
     name:'insumo',
     component: () => import('../views/insumo.vue')
+=======
+  {
+    path: "/ingreso",
+    name: "Ingreso",
+    component: Ingreso,
   },
 
- 
-  
-]
+  {
+    path: "/detalleInsumo",
+    name: "DetalleInsumo",
+    component: () => import("../views/DetalleInsumo.vue"),
+>>>>>>> 48a972f6d7145d05a4d98811f7070db725228e77
+  },
+
+  {
+    path: "/stockInsumos",
+    name: "stock",
+    component: Stock,
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

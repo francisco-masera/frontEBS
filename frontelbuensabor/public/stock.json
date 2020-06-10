@@ -1,0 +1,34 @@
+{
+    "stock": [
+        {
+            "id": 1,
+            "actual": 3000,
+            "maximo": 5000,
+            "minimo": 250
+        },
+        {
+            "id": 2,
+            "actual": 1500,
+            "maximo": 3000,
+            "minimo": 200
+        },
+        {
+            "id": 3,
+            "actual": 30,
+            "maximo": 50,
+            "minimo": 10
+        },
+        {
+            "id": 4,
+            "actual": 40,
+            "maximo": 60,
+            "minimo": 5
+        },
+        {
+            "id": 5,
+            "actual": 300,
+            "maximo": 400,
+            "minimo": 80
+        }
+    ]
+}
