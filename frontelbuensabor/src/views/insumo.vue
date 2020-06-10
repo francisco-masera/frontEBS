@@ -263,12 +263,6 @@ h3{
 }
 
 
-.buscador{
-  float:right;
-  margin-bottom: 25px;
-}
-
-
 .botonImagen{
     
   background-color:transparent;
@@ -294,9 +288,6 @@ h3{
   border:none;
 }
 
-#imagenBuscar{
-  width: 25px;
-}
 
 #imagenAgregar{    
   width: 20px;

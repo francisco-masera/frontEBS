@@ -4,6 +4,7 @@
         <img src="@/assets/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
         <b-card-text> 
           <p id="nombre">{{nombre}}</p>
+          <p id="rol">{{rol}}</p>
           
           <b-nav-item class="botonesMenu" v-for="boton in botones"
           :key="boton[0]" v-bind:href="boton[3]">
@@ -32,6 +33,7 @@ export default {
      botones: [],
       user:"cajero",
       nombre:"Pepito Gomez",
+      rol:"",
     };
   },
   methods: {
@@ -48,7 +50,8 @@ export default {
           boton = [3,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
           boton = [4,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);   
+          this.botones.push(boton);  
+          this.rol="Administrador";
                 
         }else if(this.user==="cocina"){
           boton = [0,"Manufacturados","manufacturados.png",""];
@@ -57,6 +60,7 @@ export default {
           this.botones.push(boton);  
           boton = [2,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
+          this.rol="Cocinero";
         }else if(this.user ==="cliente"){
           boton = [0,"Mis direcciones","misDirecciones.png",""];
           this.botones.push(boton);
@@ -65,7 +69,8 @@ export default {
           boton = [2,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
           boton = [3,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
+          this.botones.push(boton); 
+
 
         }else if(this.user==="delivery"){
           boton = [0,"Pedidos","Pedidos.png",""];
@@ -75,7 +80,8 @@ export default {
            boton = [2,"Mis datos","misDatos.png",""];
           this.botones.push(boton);   
           boton = [3,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
+          this.botones.push(boton); 
+          this.rol="Delivery"; 
 
         }else if(this.user==="cajero"){
           boton = [0,"Pedidos","Pedidos.png",""];
@@ -86,6 +92,7 @@ export default {
           this.botones.push(boton);   
           boton = [2,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
+          this.rol="Cajero";
         }
 
      
@@ -163,6 +170,13 @@ export default {
   width: 20px;
   float: left;
   margin-right: 10px;
+ }
+ #rol{   
+   font-weight: 400;
+   font-size:12pt;
+ }
+ #nombre{   
+  margin-bottom: 0px;
  }
 
 
