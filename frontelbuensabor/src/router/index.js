@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import AñadirInsumo from '../views/AñadirInsumo.vue'
+import AñadirInsumo3 from '../views/AñadirInsumo3.vue'
 
 Vue.use(VueRouter);
 
@@ -30,9 +30,9 @@ const routes = [
     component: () => import('../views/catalogoManu.vue')
   },
   {
-    path:'/añadirInsumo',
-    name:'AñadirInsumo',
-    component:AñadirInsumo
+    path:'/añadirInsumo3',
+    name:'AñadirInsumo3',
+    component:AñadirInsumo3
   }
  
   
