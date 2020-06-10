@@ -54,6 +54,16 @@ p {
   color: #151515;
 }
 
+.abajo {
+  background-image: url("./assets/images/sistema/reticula.png");
+  background-repeat: repeat-x;
+  width: 100%;
+  background-color: #f2e6d1;
+  min-height: 60px;
+  background-size: contain;
+  bottom: 0;
+  margin-top: 0px;
+}
 .boton {
   float: left;
   background-color: #e7511e;
