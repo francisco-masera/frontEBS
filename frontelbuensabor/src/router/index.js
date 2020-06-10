@@ -6,32 +6,31 @@ import stockInsumos from '../views/stockInsumos.vue'
 import catalogoManu from '../views/catalogoManu.vue'
 import AñadirInsumo from '../views/AñadirInsumo.vue'
 
+Vue.use(VueRouter);
 
-
-Vue.use(VueRouter)
-
-  const routes = [
+const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: "/",
+    name: "Home",
+    component: Home,
   },
  {
     path:'/ingreso',
     name:'Ingreso',
-    component:Ingreso
+    component: () => import('../views/Ingreso.vue')
   },
 
 
  {
     path:'/stockInsumos',
     name:'stockInsumos',
-    component:stockInsumos
+    component: () => import('../views/stockInsumos.vue')
+  
   },
   {
     path:'/catalogoManu',
     name:'catalogoManu',
-    component:catalogoManu
+    component: () => import('../views/catalogoManu.vue')
   },
   {
     path:'/añadirInsumo',
@@ -43,9 +42,9 @@ Vue.use(VueRouter)
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
