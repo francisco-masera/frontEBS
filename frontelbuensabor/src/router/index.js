@@ -35,11 +35,7 @@ const routes = [
     component: () => import('../views/insumo.vue')
   },
 
-  {
-    path: "/stockInsumos",
-    name: "stock",
-    component: Stock,
-  },
+
 ];
 
 const router = new VueRouter({
