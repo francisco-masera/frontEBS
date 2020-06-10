@@ -8,58 +8,28 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Añadir insumo</h1>
-      <h2>Información de venta</h2>
-      <b-form inline class="estiloForm">
-        <table>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">Precio de venta</label>
-            </td>
-            <td>
-              <b-form-input v-model="text"></b-form-input>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">Descripcion</label>
-            </td>
-            <td>
-              <b-form-textarea
-                id="textarea"
-                v-model="text"
-                placeholder="Enter something..."
-                rows="3"
-                max-rows="6"
-              ></b-form-textarea>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">Imagen</label>
-            </td>
-            <td>
-                <b-form-file v-model="file2" class="mt-3" plain></b-form-file>
-                <b-form-input v-model="text" placeholder="URL"></b-form-input>
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-           
-          </tr>
-          <tr>
-             <td></td>
-            <td>
-              <b-button pill class="boton" size="md">Volver</b-button>
-            </td>
-            <td>
-              <b-button pill class="boton" size="md">Siguiente</b-button>
-            </td>
-          </tr>
-         
-        </table>
-      </b-form>
-    </b-container>
+      <h2>Categorías</h2>
+         <div
+          v-for="cate in categorias"
+          :key="cate.id"
+          style="margin-top:15px"
+        >
+         <b-button pill class="boton" size="md">{{cate.nombre}}</b-button>  
+        </div>
 
+        <div class="botonesInsu">
+            <b-button pill class="boton" size="md">Cancelar</b-button> 
+            <b-button pill class="botonDerecha" size="md" @click="modalGuardaInsumo()">Guardar</b-button>
+        </div>
+    </b-container>
+    <div>
+  
+
+  <b-modal ref="modal" hide-footer hide-header centered title>
+    <p class="modalEstilo">Insumo agregado con éxito!</p>
+     <p class="botonModal"><b-button pill size="md" class="boton">Aceptar</b-button></p> 
+  </b-modal>
+</div>
     <router-view />
   </div>
 </template>
@@ -68,40 +38,34 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
   mounted() {
-    this.getInsumos();
+    this.getCategorias();
   },
   components: {
     menuLateral: MenuLateral
   },
   data() {
     return {
-      perPage: 7,
-      currentPage: 1,
-      tituloTabla: ["denominación", "categoría", "stock", "tiempo"],
-      manufacturadosData: [],
-      manufacturados: {
-        denominacion: "",
-        categoria: "",
-        stock: "",
-        tiempo: ""
-      }
+     
+      
+     
+    categorias:[
+        {id:1,nombre:"Bebidas",subcategoria:["Gasificada","Con alcohol","Sin alcohol"]},
+        {id:2,nombre:"Almacen",subcategoria:["Postres","Embutidos"]},
+        {id:3,nombre:"Panificados",subcategoria:["Harinas","Panes"]}
+
+    ]
+       
+      
     };
   },
   methods: {
-    async getInsumos() {
-      const res = await fetch("/manufacturados.json");
-      const resJson = await res.json();
-      this.manufacturadosData = resJson.manufacturados;
-      console.log(this.manufacturadosData);
-    },
-
-    agregarInsumo() {}
+   modalGuardaInsumo() {
+         this.$refs['modal'].show()   
+      },  
+   
   },
-  computed: {
-    rows() {
-      return this.manufacturadosData.length;
-    }
-  }
+  
+  
 };
 </script>
 <style>
@@ -111,9 +75,32 @@ export default {
   top: 0;
   min-height: 200px;
 }
-
-.estiloForm {
-  font-size: 13px;
-  text-align: left;
+.botonesInsu{
+   margin-top: 280px; 
+   margin-left: 450px;
+   display: inline-flex;
+  
 }
+.botonDerecha{
+  
+  background-color: #e7511e;
+  width: 105px;
+  height: 30px;
+    float: right;
+}
+.botonModal{
+ 
+  width: 105px;
+  height: 30px; 
+  text-align: center;
+  margin-left: 180px;
+ 
+ 
+}
+.modalEstilo{
+    font-size: 20px;
+    text-align: center;
+   
+}
+
 </style>

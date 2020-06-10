@@ -38,16 +38,15 @@
               <label class="mr-sm-2" for="inline-form-custom-select-pref">Imagen</label>
             </td>
             <td>
-                <b-form-file v-model="file2" class="mt-3" plain></b-form-file>
-                <b-form-input v-model="text" placeholder="URL"></b-form-input>
+              <b-form-file v-model="file2" class="mt-3" plain></b-form-file>
+              <b-form-input v-model="text" placeholder="URL"></b-form-input>
             </td>
           </tr>
           <tr>
             <td></td>
-           
           </tr>
           <tr>
-             <td></td>
+            <td></td>
             <td>
               <b-button pill class="boton" size="md">Volver</b-button>
             </td>
@@ -55,7 +54,6 @@
               <b-button pill class="boton" size="md">Siguiente</b-button>
             </td>
           </tr>
-         
         </table>
       </b-form>
     </b-container>
@@ -67,41 +65,13 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
-  mounted() {
-    this.getInsumos();
-  },
+  mounted() {},
   components: {
     menuLateral: MenuLateral
   },
-  data() {
-    return {
-      perPage: 7,
-      currentPage: 1,
-      tituloTabla: ["denominación", "categoría", "stock", "tiempo"],
-      manufacturadosData: [],
-      manufacturados: {
-        denominacion: "",
-        categoria: "",
-        stock: "",
-        tiempo: ""
-      }
-    };
-  },
-  methods: {
-    async getInsumos() {
-      const res = await fetch("/manufacturados.json");
-      const resJson = await res.json();
-      this.manufacturadosData = resJson.manufacturados;
-      console.log(this.manufacturadosData);
-    },
 
-    agregarInsumo() {}
-  },
-  computed: {
-    rows() {
-      return this.manufacturadosData.length;
-    }
-  }
+  methods: {},
+  computed: {}
 };
 </script>
 <style>
@@ -110,10 +80,5 @@ export default {
   width: 100%;
   top: 0;
   min-height: 200px;
-}
-
-.estiloForm {
-  font-size: 13px;
-  text-align: left;
 }
 </style>

@@ -82,41 +82,12 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
-  mounted() {
-    this.getInsumos();
-  },
+  mounted() {},
   components: {
     menuLateral: MenuLateral
   },
-  data() {
-    return {
-      perPage: 7,
-      currentPage: 1,
-      tituloTabla: ["denominación", "categoría", "stock", "tiempo"],
-      manufacturadosData: [],
-      manufacturados: {
-        denominacion: "",
-        categoria: "",
-        stock: "",
-        tiempo: ""
-      }
-    };
-  },
-  methods: {
-    async getInsumos() {
-      const res = await fetch("/manufacturados.json");
-      const resJson = await res.json();
-      this.manufacturadosData = resJson.manufacturados;
-      console.log(this.manufacturadosData);
-    },
 
-    agregarInsumo() {}
-  },
-  computed: {
-    rows() {
-      return this.manufacturadosData.length;
-    }
-  }
+  methods: {}
 };
 </script>
 <style>
@@ -127,8 +98,5 @@ export default {
   min-height: 200px;
 }
 
-.estiloForm {
-  font-size: 13px;
-  text-align: left;
-}
+
 </style>
