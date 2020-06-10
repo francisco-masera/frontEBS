@@ -43,13 +43,13 @@ export default {
       return {
         perPage: 7,
          currentPage: 1,        
-        tituloTabla: ['denominación','unidad', 'costo', 'stock', 'categoría','acción'],
+        tituloTabla: ['denominacion','unidad', 'costo', 'stockActual', 'categoria','acción'],
         insumosData:[],
         insumo:{
           denominacion:"",
           unidad:"",
           costo:0,
-          stock:"",
+          stockActual:0,
           categoría:"",
         }
       }

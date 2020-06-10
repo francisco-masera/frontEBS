@@ -1,9 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Ingreso from '../views/Ingreso.vue'
-import stockInsumos from '../views/stockInsumos.vue'
-import catalogoManu from '../views/catalogoManu.vue'
 
 
 
@@ -18,19 +15,26 @@ Vue.use(VueRouter)
  {
     path:'/ingreso',
     name:'Ingreso',
-    component:Ingreso
+    component: () => import('../views/Ingreso.vue')
   },
 
 
  {
     path:'/stockInsumos',
     name:'stockInsumos',
-    component:stockInsumos
+    component: () => import('../views/stockInsumos.vue')
+  
   },
   {
     path:'/catalogoManu',
     name:'catalogoManu',
-    component:catalogoManu
+    component: () => import('../views/catalogoManu.vue')
+  },
+
+  {
+    path:'/insumoDetalle/:id',
+    name:'insumo',
+    component: () => import('../views/insumo.vue')
   },
 
  

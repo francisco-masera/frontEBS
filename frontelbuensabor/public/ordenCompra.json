@@ -1,0 +1,26 @@
+{
+    "ordenCompra":[
+    {
+        "id":1,
+        "fechaDeCompra":"25/05/2019",
+        "precioUnitario":30,
+        "cantidad":5       
+        
+    },
+    {
+        "id":2,
+        "fechaDeCompra":"25/03/2020",
+        "precioUnitario":40,
+        "cantidad":2       
+        
+    },
+    {
+        "id":3,
+        "fechaDeCompra":"2/05/2020",
+        "precioUnitario":60,
+        "cantidad":1     
+        
+    }
+    
+]
+}

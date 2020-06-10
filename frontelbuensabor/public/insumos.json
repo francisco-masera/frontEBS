@@ -1,114 +1,202 @@
 {
     "insumos":[
         {
-            "denominación":"Coca Cola",
+            "id":1,
+            "denominacion":"Coca Cola",
             "unidad":"u",
-            "costo":60,
-            "stock":"300",
-            "categoría":"Bebidas"
+            "costo":60,            
+            "categoria":"Bebidas",
+            "unidadMedida":"u.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "precioVenta":80,
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "imagen":"activo-2.png"
+            
         },
         {
-            "denominación":"Harina",
+            "id":2,
+            "denominacion":"Harina",
             "unidad":"kg",
-            "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "costo":15,            
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         }
         ,
         {
-            "denominación":"jugo",
+            "id":3,
+            "denominacion":"jugo",
             "unidad":"kg",
             "costo":20,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"u.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "precioVenta":80,
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "imagen":"activo-2.png"
         },
         {
-            "denominación":"helado",
+            "id":4,
+            "denominacion":"helado",
             "unidad":"u",
             "costo":70,
-            "stock":"300",
-            "categoría":"Bebidas"
+            "categoria":"Bebidas",
+            "unidadMedida":"u.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "precioVenta":80,
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "imagen":"activo-2.png"
         },
         {
-            "denominación":"fideos",
+            "id":5,
+            "denominacion":"fideos",
             "unidad":"kg",
             "costo":10,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         }
         ,
         {
-            "denominación":"Harina",
+            "id":6,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":565,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         },
         {
-            "denominación":"Coca Cola",
+            "id":7,
+            "denominacion":"Coca Cola",
             "unidad":"u",
             "costo":60,
-            "stock":"300",
-            "categoría":"Bebidas"
+            "categoria":"Bebidas",
+            "unidadMedida":"u.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "precioVenta":80,
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "imagen":"activo-2.png"
         },
         {
-            "denominación":"Harina",
+            "id":8,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         }
         ,
         {
-            "denominación":"Harina",
+            "id":9,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         },
         {
-            "denominación":"Coca Cola",
+            "id":10,
+            "denominacion":"Coca Cola",
             "unidad":"u",
             "costo":60,
-            "stock":"300",
-            "categoría":"Bebidas"
+            "categoria":"Bebidas",
+            "unidadMedida":"u.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "precioVenta":80,
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "imagen":"activo-2.png"
         },
         {
-            "denominación":"Harina",
+            "id":11,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         }
         ,
         {
-            "denominación":"Harina",
+            "id":12,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         },
         {
-            "denominación":"Coca Cola",
+            "id":13,
+            "denominacion":"Coca Cola",
             "unidad":"u",
             "costo":60,
-            "stock":"300",
-            "categoría":"Bebidas"
+            "categoria":"Bebidas",
+            "unidadMedida":"u.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "precioVenta":80,
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            "imagen":"activo-2.png"
         },
         {
-            "denominación":"Harina",
+            "id":14,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         }
         ,
         {
-            "denominación":"Harina",
+            "id":15,
+            "denominacion":"Harina",
             "unidad":"kg",
             "costo":15,
-            "stock":"150",
-            "categoría":"Almacen"
+            "categoria":"Almacen",
+            "unidadMedida":"kg.",
+            "stockActual":18,
+            "stockMin":6,
+            "stockMax":24,
+            "esExtra":false
         }
     ]
 
