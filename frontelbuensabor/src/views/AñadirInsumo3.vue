@@ -26,7 +26,7 @@
   
 
   <b-modal ref="modal" hide-footer hide-header centered title>
-    <p class="modalEstilo">Insumo agregado con éxito!</p>
+    <p class="modalTitulo">Insumo agregado con éxito!</p>
      <p class="botonModal"><b-button pill size="md" class="boton">Aceptar</b-button></p> 
   </b-modal>
 </div>
@@ -97,7 +97,7 @@ export default {
  
  
 }
-.modalEstilo{
+.modalTitulo{
     font-size: 20px;
     text-align: center;
    

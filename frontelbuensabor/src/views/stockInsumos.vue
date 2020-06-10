@@ -32,7 +32,7 @@
         <template v-slot:cell(acción)="row">
           <b-button
             size="sm"
-            @click="agregarInsumo(row.item.id)"
+            @click="agregarInsumoCompra(row.item.id)"
             class="botonImagen"
           >
             <img
@@ -54,7 +54,38 @@
       >
       </b-pagination>
     </b-container>
-
+     <b-modal ref="modal" hide-footer hide-header centered title>
+    <h2>Añadir existencia</h2>
+    <h4>{{insumoEncontrado.denominacion}}</h4>
+    <form class="estiloForm">
+      <table>
+       <tr>
+        <td>
+       <label class="mr-sm-2" for="inline-form-custom-select-pref">Fecha</label>
+       </td>
+      <td>
+       <b-form-datepicker  for="inline-form-custom-select-pref" id="example-datepicker" size="sm"></b-form-datepicker>
+      </td>
+      </tr>
+      <tr>
+        <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Unidad de medida</label></td>
+        <td>{{insumoEncontrado.unidadMedida}}</td>
+      </tr>
+      <tr>
+        <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Cantidad</label></td>
+        <td> <b-form-input v-model="text"></b-form-input></td>
+      </tr>
+      <tr>
+        <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Precio por unidad</label></td>
+        <td> <b-form-input v-model="text"></b-form-input></td>
+      </tr>
+      <tr>
+       <b-button pill class="boton" size="md">Añadir</b-button>
+      </tr>
+      </table>
+    </form>
+    
+  </b-modal>
     <router-view />
   </div>
 </template>
@@ -91,6 +122,20 @@ export default {
         stockActual: 0,
         categoría: "",
       },
+       insumoEncontrado: {
+            id:"",
+            denominacion:"",
+            unidad:"",
+            costo:0,
+            categoria:"",
+            unidadMedida:0,
+            stockActual:0,
+            stockMin:0,
+            stockMax:0,
+            precioVenta:0,
+            descripcion: "",
+            imagen:""
+        }
     };
   },
   methods: {
@@ -108,6 +153,20 @@ export default {
       window.location.href = "/insumoDetalle/" + record.id;
       console.log(record);
     },
+    agregarInsumoCompra(id){   
+     this.$refs['modal'].show()  
+      this.getInsumoXid(id);
+    },
+    async getInsumoXid(id) {
+      
+      const res = await fetch("/insumos.json");
+      const resJson = await res.json();
+      console.log(resJson);
+      this.insumoEncontrado = await resJson.insumos.find(
+        insumo => insumo.id === id
+      );
+      console.log(this.insumoEncontrado);
+    }
   },
   computed: {
     rows() {
@@ -132,4 +191,13 @@ export default {
   width: 20px;
   margin: 0px;
 }
+
+.estiloForm{
+  font-size: 12px;
+  margin-left: 100px;
+  font-family: "Baloo Bhaina 2";
+  text-align: left;
+}
+
+
 </style>
