@@ -11,7 +11,7 @@
           <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo"></b-form-input>
           <b-button size="sm" class="botonImagen" type="submit"><img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"/></b-button>
         </b-nav-form>
-        <b-table hover responsive  :items="insumosData" :fields="tituloTabla"  :outlined=true :per-page="perPage" :current-page="currentPage" :borderless=true id="tablaInsumos" class="tabla">
+        <b-table hover responsive  :items="insumosData" :fields="tituloTabla" @row-dblclicked="verDetalle" :outlined=true :per-page="perPage" :current-page="currentPage" :borderless=true id="tablaInsumos" class="tabla">
             <template v-slot:cell(acción)="row">
                 <b-button size="sm" @click="agregarInsumo(row.item.id)" class="botonImagen">
                    <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
@@ -46,6 +46,7 @@ export default {
         tituloTabla: ['denominacion','unidad', 'costo', 'stockActual', 'categoria','acción'],
         insumosData:[],
         insumo:{
+          id:0,
           denominacion:"",
           unidad:"",
           costo:0,
@@ -64,6 +65,11 @@ export default {
 
       agregarInsumo(){
 
+      },
+      verDetalle(record){
+        window.location.href = "/insumoDetalle/"+record.id;
+        console.log(record);
+        
       }
     },
     computed: {
