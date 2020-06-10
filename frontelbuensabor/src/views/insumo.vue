@@ -15,7 +15,7 @@
                 <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
                    <img src="@/assets/images/sistema/editar.png" id="imagenAgregar"/>
                 </b-button>
-                <b-button size="sm" @click="eliminarInsumo()" class="botonImagen">
+                <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
                    <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
                 </b-button>
             </h3>
@@ -71,7 +71,7 @@
                 <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
                    <img src="@/assets/images/sistema/editar.png" id="imagenAgregar"/>
                 </b-button>
-                <b-button size="sm" @click="eliminarInsumo()" class="botonImagen">
+                <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
                    <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
                 </b-button>
             </h3>
@@ -99,7 +99,7 @@
                 Historial de Compra
                 <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla"  :outlined=true :per-page="perPage" :current-page="currentPage" :borderless=true id="tablaInsumos" class="tabla">
                   <template v-slot:cell(acción)="row">
-                    <b-button size="sm" @click="eliminarInsumo(row.item.id)" class="botonImagen">
+                    <b-button size="sm" @click="eliminarRegistro(row.item.id)" class="botonImagen">
                       <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
                     </b-button>
                   </template>
@@ -117,6 +117,20 @@
     </b-container>
     
     <router-view />
+       <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
+      <form>            
+            <b-form-input             
+                class="contraseñaForm"
+                placeholder="Contraseña"                
+            ></b-form-input>
+            <b-button pill class="boton" size="md">Eliminar </b-button>
+            
+            
+        </form>
+        
+        
+    </b-modal>
+
   </div>
 </template>
 
@@ -181,7 +195,7 @@ export default {
       verificaStock(){
         var clase
         if(parseInt(this.insumoEncontrado.stockActual,10) <= parseInt(this.insumoEncontrado.stockMin,10)){
-          this.stock="isuficiente";
+          this.stock="insuficiente";
           clase = document.getElementById('stockColor');
           console.log(clase);
           clase.style.backgroundColor = "#ED3247";            
@@ -200,7 +214,10 @@ export default {
             clase.style.backgroundColor = "#8BC34A";   
             console.log("suficiente");
         }
-      }
+      },
+      openModalEliminar() {        
+         this.$refs['modal'].show()   
+      },
 
     },
     computed: {
@@ -398,6 +415,33 @@ h3{
 .HistorialCompra table{
 font-size: 10pt;
 }
+.contraseñaForm{
+  border-right:0px;
+  border-left:0px;
+  border-top:0px;
+  border-bottom:1;
+  background-color:transparent;
+  width: 60%;
+  font-size: 11pt;
+  margin-left: 20%;
+}
+
+.modal-dialog{
+  margin-top:200px;
+  text-align: center;
+  font-family: 'Baloo Bhaina 2';
+  font-weight: 400;
+  font-size: 11pt;
+  justify-content: center;
+
+}
+.modal-dialog .boton{
+  margin-top:20px;
+  margin-left: auto;
+  margin-right: 40%;
+  float:right; 
+
+}
 
 
 
@@ -417,6 +461,10 @@ font-size: 10pt;
     .botonImagen{
       display: inline;
     }
+    .contraseñaForm{
+      width: 80%;
+      margin-left: 10%;
+}
 }
 
 
@@ -432,6 +480,7 @@ font-size: 10pt;
       float:left;
      
     }
+    
  
 }
 

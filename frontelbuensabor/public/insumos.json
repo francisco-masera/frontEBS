@@ -22,7 +22,7 @@
             "costo":15,            
             "categoria":"Almacen",
             "unidadMedida":"kg.",
-            "stockActual":18,
+            "stockActual":60,
             "stockMin":6,
             "stockMax":24,
             "esExtra":false

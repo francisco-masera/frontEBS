@@ -25,7 +25,9 @@
     </b-container>
     
     <router-view />
+ 
   </div>
+  
 </template>
 
 <script>
