@@ -38,6 +38,11 @@ const routes = [
     name: "categoriaManufacturados",
     component: () => import("../views/CategoriaManufacturados.vue"),
   },
+  {
+    path: "/añadirInsumo",
+    name: "AñadirInsumo",
+    component: () => import("../views/AñadirInsumo.vue"),
+  }
 ];
 
 const router = new VueRouter({

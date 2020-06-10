@@ -87,7 +87,9 @@ export default {
     menuLateral: MenuLateral
   },
 
-  methods: {}
+  methods: {
+   
+  }
 };
 </script>
 <style>

@@ -42,7 +42,7 @@
           </b-button>
         </template>
       </b-table>
-      <b-button pill class="boton" size="md">Nuevo</b-button>
+      <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
       <b-pagination
         v-model="currentPage"
         size="sm"
@@ -101,7 +101,9 @@ export default {
       console.log(this.insumosData);
     },
 
-    agregarInsumo() {},
+    agregarInsumo() {
+      window.location.href = "/añadirInsumo/"; 
+    },
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.id;
       console.log(record);
