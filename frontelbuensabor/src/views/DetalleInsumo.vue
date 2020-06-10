@@ -72,11 +72,6 @@ export default {
   float: left;
 }
 
-.botonImagen {
-  float: inline-start;
-  padding-left: 10px;
-}
-
 .botonImagen > * {
   width: 20px;
 }
@@ -113,17 +108,5 @@ export default {
   font-weight: 600;
   font-size: 18pt;
   color: #151515;
-}
-
-@media screen and (max-width: 774px) {
-  #contenedorPrincipal {
-    width: auto;
-    min-height: 100px;
-    margin-left: 60px;
-  }
-
-  .botonImagen {
-    display: inline;
-  }
 }
 </style>
