@@ -41,12 +41,12 @@ const routes = [
   {
     path: "/añadirInsumo3",
     name: "AñadirInsumo3",
-    component: () => import("../views/AñadirInsumo.vue"),
+    component: () => import("../views/AñadirInsumo3.vue"),
   },
   {
     path: "/añadirInsumo",
     name: "AñadirInsumo",
-    component: () => import("../views/AñadirInsumo3.vue"),
+    component: () => import("../views/AñadirInsumo.vue"),
   },
   {
     path: "/modificarInsumo/:id",

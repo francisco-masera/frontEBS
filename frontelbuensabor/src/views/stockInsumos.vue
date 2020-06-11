@@ -14,7 +14,7 @@
       </b-nav-form>
       <b-table hover responsive :items="insumosData" :fields="tituloTabla" @row-dblclicked="verDetalle" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
         <template v-slot:cell(acción)="row">
-          <b-button size="sm" @click="agregarInsumo(row.item.id)" class="botonImagen">
+          <b-button size="sm" @click="agregarInsumoCompra(row.item.id)" class="botonImagen">
             <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
           </b-button>
         </template>
