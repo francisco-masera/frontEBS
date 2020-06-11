@@ -9,7 +9,7 @@
       <div v-if="esInsumoVenta" id="venta">
         <img :src="'@/assets/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
         <h3>{{ insumoEncontrado.denominacion }}
-          <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
+          <b-button size="sm" @click="modificarInsumo(insumoEncontrado.id)" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
           <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
@@ -169,6 +169,7 @@ export default {
       );
       this.verificaStock();
       this.verificaInsumo();
+
     },
 
     verificaInsumo() {
@@ -219,6 +220,11 @@ export default {
     openModalEliminar() {
       this.$refs["modal"].show();
     },
+
+    modificarInsumo(id){
+      window.location.href = "/modificarInsumo/" + id; 
+      console.log(id);
+    }
   },
   computed: {
     rows() {
