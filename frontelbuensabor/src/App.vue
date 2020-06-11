@@ -9,13 +9,7 @@ export default {};
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+
 
 h1 {
   font-family: "Baloo Bhaina 2";
@@ -23,12 +17,13 @@ h1 {
   font-size: 18pt;
   color: #151515;
   text-align: left;
+  
 }
 
 h2 {
   font-family: "Baloo Bhaina 2";
-  font-weight: 600;
-  font-size: 13pt;
+  font-weight: 500;
+  font-size: 15pt;
   color: #151515;
   text-align: left;
 }
@@ -54,6 +49,25 @@ p {
   color: #151515;
 }
 
+.labelForm{
+  font-family: "Baloo Bhaina 2";
+  font-weight: 600;
+  font-size: 12pt;
+  color: #151515;
+  float:left;
+}
+
+.campoForm{
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 1;
+  background-color: transparent;
+  font-size: 11pt;
+  margin-left: 10px;
+  float:left;
+}
+
 .abajo {
   background-image: url("./assets/images/sistema/reticula.png");
   background-repeat: repeat-x;
@@ -66,10 +80,82 @@ p {
 }
 .boton {
   float: left;
+  border: none;
   background-color: #e7511e;
+  color:#FFFFFF;
+  font-weight: 600;
   width: 105px;
   height: 30px;
+  margin:5px;
 }
+.boton:hover{
+  border: #e7511e;
+  background-color: #FFFFFF;
+  border-style:solid;
+  border-width: 1px;
+  color:#e7511e;
+}
+
+.boton:active {
+  float: left;
+  border: none;
+  background-color: #e7511e;
+  color:#FFFFFF;
+}
+.boton:visited {
+  float: left;
+  border: none;
+  background-color: #e7511e;
+  color:#FFFFFF;
+}
+
+.boton:focus {
+  border: #e7511e;
+  background-color: #FFFFFF;
+  border-style:solid;
+  border-width: 1px;
+  color:#e7511e;
+}
+
+.boton2 {
+  float: left;
+  border: #e7511e;
+  background-color: #FFFFFF;
+  border-style:solid;
+  border-width: 1px;
+  font-weight: 600;
+  width: 105px;
+  height: 30px;
+  color:#e7511e;
+  margin:5px;
+}
+
+.boton2:hover{
+  border: none;
+  background-color: #e7511e;
+  color:#FFFFFF;
+}
+.boton2:focus{
+  border: none;
+  background-color: #e7511e;
+  color:#FFFFFF;
+}
+
+.boton2:visited{
+  border: #e7511e;
+  background-color: #FFFFFF;
+  border-style:solid;
+  border-width: 1px;
+  color:#e7511e;
+}
+.boton2:active{
+  border: #e7511e;
+  background-color: #FFFFFF;
+  border-style:solid;
+  border-width: 1px;
+  color:#e7511e;
+}
+
 
 .buscador {
   float: right;

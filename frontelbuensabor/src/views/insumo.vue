@@ -7,21 +7,13 @@
     <b-container class="informacion">
       <h1>Detalle de insumo</h1>
       <div v-if="esInsumoVenta" id="venta">
-        <img
-          :src="'@/assets/images/productos/' + insumoEncontrado.imagen"
-          class="imagenProducto"
-        />
-
-        <h3>
-          {{ insumoEncontrado.denominacion }}
+        <img :src="'@/assets/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
+        <h3>{{ insumoEncontrado.denominacion }}
           <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
           <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
-            <img
-              src="@/assets/images/sistema/eliminar.png"
-              id="imagenAgregar"
-            />
+            <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
           </b-button>
         </h3>
         <div class="stock">
@@ -35,22 +27,16 @@
         </div>
         <div id="infoProductoVenta">
           <b-card header="Stock actual" class="tarjetaInfo">
-            <b-card-text
-              >{{ insumoEncontrado.stockActual }}
-              {{ insumoEncontrado.unidadMedida }}</b-card-text
-            >
+            <b-card-text>{{ insumoEncontrado.stockActual }}{{ insumoEncontrado.unidadMedida }}
+            </b-card-text>
           </b-card>
           <b-card header="Stock min" class="tarjetaInfo">
-            <b-card-text
-              >{{ insumoEncontrado.stockMin }}
-              {{ insumoEncontrado.unidadMedida }}</b-card-text
-            >
+            <b-card-text >{{ insumoEncontrado.stockMin }} {{ insumoEncontrado.unidadMedida }}
+            </b-card-text>
           </b-card>
           <b-card header="Stock max" class="tarjetaInfo">
-            <b-card-text
-              >{{ insumoEncontrado.stockMax }}
-              {{ insumoEncontrado.unidadMedida }}</b-card-text
-            >
+            <b-card-text>{{ insumoEncontrado.stockMax }} {{ insumoEncontrado.unidadMedida }}
+            </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
             <b-card-text>{{ insumoEncontrado.costo }}</b-card-text>
@@ -61,29 +47,10 @@
         </div>
         <div class="HistorialCompra">
           Historial de Compra
-          <b-table
-            hover
-            responsive
-            small
-            :items="ordenCompra"
-            :fields="tituloTabla"
-            :outlined="true"
-            :per-page="perPage"
-            :current-page="currentPage"
-            :borderless="true"
-            id="tablaInsumos"
-            class="tabla"
-          >
+          <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
             <template v-slot:cell(acción)="row">
-              <b-button
-                size="sm"
-                @click="eliminarInsumo(row.item.id)"
-                class="botonImagen"
-              >
-                <img
-                  src="@/assets/images/sistema/eliminar.png"
-                  id="imagenAgregar"
-                />
+              <b-button size="sm" @click="eliminarInsumo(row.item.id)" class="botonImagen">
+                <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
               </b-button>
             </template>
             <template v-slot:cell(precioTotal)>
@@ -91,15 +58,7 @@
             </template>
           </b-table>
           <b-button pill class="boton" size="md">Añadir </b-button>
-          <b-pagination
-            v-model="currentPage"
-            size="sm"
-            align="right"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-tablaInsumos"
-            class="paginador"
-          >
+          <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
           </b-pagination>
         </div>
       </div>
@@ -111,10 +70,7 @@
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
           <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
-            <img
-              src="@/assets/images/sistema/eliminar.png"
-              id="imagenAgregar"
-            />
+            <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
           </b-button>
         </h3>
         <div class="stock">
@@ -125,22 +81,16 @@
 
         <div id="infoProductoVenta">
           <b-card header="Stock actual" class="tarjetaInfo">
-            <b-card-text
-              >{{ insumoEncontrado.stockActual }}
-              {{ insumoEncontrado.unidadMedida }}</b-card-text
-            >
+            <b-card-text >{{ insumoEncontrado.stockActual }}{{ insumoEncontrado.unidadMedida }}
+            </b-card-text>
           </b-card>
           <b-card header="Stock min" class="tarjetaInfo">
-            <b-card-text
-              >{{ insumoEncontrado.stockMin }}
-              {{ insumoEncontrado.unidadMedida }}</b-card-text
-            >
+            <b-card-text>{{ insumoEncontrado.stockMin }}{{ insumoEncontrado.unidadMedida }}
+            </b-card-text>
           </b-card>
           <b-card header="Stock max" class="tarjetaInfo">
-            <b-card-text
-              >{{ insumoEncontrado.stockMax }}
-              {{ insumoEncontrado.unidadMedida }}</b-card-text
-            >
+            <b-card-text>{{ insumoEncontrado.stockMax }}{{ insumoEncontrado.unidadMedida }}
+            </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
             <b-card-text>${{ insumoEncontrado.costo }}</b-card-text>
@@ -148,29 +98,10 @@
         </div>
         <div class="HistorialCompra">
           Historial de Compra
-          <b-table
-            hover
-            responsive
-            small
-            :items="ordenCompra"
-            :fields="tituloTabla"
-            :outlined="true"
-            :per-page="perPage"
-            :current-page="currentPage"
-            :borderless="true"
-            id="tablaInsumos"
-            class="tabla"
-          >
+          <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
             <template v-slot:cell(acción)="row">
-              <b-button
-                size="sm"
-                @click="eliminarRegistro(row.item.id)"
-                class="botonImagen"
-              >
-                <img
-                  src="@/assets/images/sistema/eliminar.png"
-                  id="imagenAgregar"
-                />
+              <b-button size="sm" @click="eliminarRegistro(row.item.id)" class="botonImagen">
+                <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar" />
               </b-button>
             </template>
             <template v-slot:cell(precioTotal)>
@@ -178,32 +109,17 @@
             </template>
           </b-table>
           <b-button pill class="boton" size="md">Añadir </b-button>
-          <b-pagination
-            v-model="currentPage"
-            size="sm"
-            align="right"
-            :total-rows="rows"
-            :per-page="perPage"
-            aria-controls="my-tablaInsumos"
-            class="paginador"
-          >
+          <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
           </b-pagination>
         </div>
       </div>
     </b-container>
 
     <router-view />
-    <b-modal
-      ref="modal"
-      hide-footer
-      title="Eliminar insumo"
-      class="modalEliminar"
-    >
+    <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
       <form>
-        <b-form-input
-          class="contraseñaForm"
-          placeholder="Contraseña"
-        ></b-form-input>
+        <b-form-input class="contraseñaForm" placeholder="Contraseña" >          
+        </b-form-input>
         <b-button pill class="boton" size="md">Eliminar </b-button>
       </form>
     </b-modal>

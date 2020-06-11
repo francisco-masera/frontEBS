@@ -122,9 +122,7 @@ export default {
   margin-left: 100px;
   margin-top:-50px;
   position: absolute;
-  font-family: 'Baloo Bhaina 2';
-  font-weight: 700;
-  font-size: 16pt;   
+
   z-index: 1;
 }
 #imagenusuario{
@@ -177,6 +175,10 @@ export default {
  }
  #nombre{   
   margin-bottom: 0px;
+    font-family: 'Baloo Bhaina 2';
+  font-weight: 700;
+  
+  font-size: 16pt;   
  }
 
 

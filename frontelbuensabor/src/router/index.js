@@ -39,9 +39,19 @@ const routes = [
     component: () => import("../views/CategoriaManufacturados.vue"),
   },
   {
+    path: "/añadirInsumo3",
+    name: "AñadirInsumo3",
+    component: () => import("../views/AñadirInsumo.vue"),
+  },
+  {
     path: "/añadirInsumo",
     name: "AñadirInsumo",
-    component: () => import("../views/AñadirInsumo.vue"),
+    component: () => import("../views/AñadirInsumo3.vue"),
+  },
+  {
+    path: "/modificarInsumo/:id",
+    name: "ModificarInsumo",
+    component: () => import("../views/ModificarInsumo.vue"),
   }
 ];
 

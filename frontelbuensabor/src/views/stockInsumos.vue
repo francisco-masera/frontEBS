@@ -7,51 +7,20 @@
     <b-container class="informacion">
       <h1>Stock de insumos</h1>
       <b-nav-form class="buscador">
-        <b-form-input
-          size="sm"
-          class="mr-sm-2"
-          placeholder="Buscar insumo"
-        ></b-form-input>
-        <b-button size="sm" class="botonImagen" type="submit"
-          ><img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"
-        /></b-button>
+        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo"></b-form-input>
+        <b-button size="sm" class="botonImagen" type="submit">
+          <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"/>
+        </b-button>
       </b-nav-form>
-      <b-table
-        hover
-        responsive
-        :items="insumosData"
-        :fields="tituloTabla"
-        @row-dblclicked="verDetalle"
-        :outlined="true"
-        :per-page="perPage"
-        :current-page="currentPage"
-        :borderless="true"
-        id="tablaInsumos"
-        class="tabla"
-      >
+      <b-table hover responsive :items="insumosData" :fields="tituloTabla" @row-dblclicked="verDetalle" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
         <template v-slot:cell(acción)="row">
-          <b-button
-            size="sm"
-            @click="agregarInsumo(row.item.id)"
-            class="botonImagen"
-          >
-            <img
-              src="@/assets/images/sistema/botonAgregar.png"
-              id="imagenAgregar"
-            />
+          <b-button size="sm" @click="agregarInsumo(row.item.id)" class="botonImagen">
+            <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
           </b-button>
         </template>
       </b-table>
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
-      <b-pagination
-        v-model="currentPage"
-        size="sm"
-        align="right"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="my-tablaInsumos"
-        class="paginador"
-      >
+      <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
       </b-pagination>
     </b-container>
 
