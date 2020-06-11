@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header"></div>
+    <cabecera></cabecera>
     <div id="nav">
       <menuLateral></menuLateral>
     </div>
@@ -81,10 +81,12 @@
 
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
+import Header from "@/components/Header.vue";
 export default {
   mounted() {},
   components: {
-    menuLateral: MenuLateral
+    menuLateral: MenuLateral,
+    cabecera: Header,
   },
 
   methods: {
