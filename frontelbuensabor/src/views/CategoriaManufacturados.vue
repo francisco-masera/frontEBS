@@ -42,8 +42,16 @@
           </b-button>
         </template>
       </b-table>
+       <b-button pill class="boton" size="md" @click="agregarCategoria()">¡Agregar!</b-button>
     </b-container>
     <router-view />
+    <b-modal ref="modal" hide-footer title="Agregar categoría" class="modalEliminar">
+      <form>
+        <b-form-input class="contraseñaForm" placeholder="Nombre de categoria" >          
+        </b-form-input>
+        <b-button pill class="boton" size="md">Agregar </b-button>
+      </form>
+    </b-modal>
   </div>
 </template>
 
@@ -73,6 +81,11 @@ export default {
       ],
     };
   },
+  methods:{
+   agregarCategoria(){
+       this.$refs["modal"].show();
+   } 
+  }
 };
 </script>
 
@@ -93,5 +106,41 @@ export default {
 #btnEliminar {
   width: 20px;
   margin: 0px;
+}
+.agregarForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 60%;
+  font-size: 11pt;
+  margin-left: 20%;
+}
+
+.contraseñaForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 60%;
+  font-size: 11pt;
+  margin-left: 20%;
+}
+
+.modal-dialog {
+  margin-top: 200px;
+  text-align: center;
+  font-family: "Baloo Bhaina 2";
+  font-weight: 400;
+  font-size: 11pt;
+  justify-content: center;
+}
+.modal-dialog .boton {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: 40%;
+  float: right;
 }
 </style>
