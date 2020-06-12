@@ -96,6 +96,7 @@ export default {
 
 #seleccion-manufacturado:hover {
   color: #e7541e;
+  border-bottom: solid 1px;
 }
 
 #btnEditar {

@@ -23,8 +23,8 @@ const routes = [
   },
   {
     path: "/catalogoManu",
-    name: "catalogoManu",
-    component: () => import("../views/catalogoManu.vue"),
+    name: "CatalogoManuAdmin",
+    component: () => import("../views/CatalogoManuAdmin.vue"),
   },
 
   {

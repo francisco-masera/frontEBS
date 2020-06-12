@@ -1,0 +1,144 @@
+{
+    "manufacturados":[
+      {
+        "denominación": "Hamburguesa con queso",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Hamburguesa doble",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      }
+        ,
+      {
+        "denominación": "Pizza con cebolla",
+        "costo": "$70,00",
+        "precio": "$130,00",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "150"
+
+      },
+      {
+        "denominación": "Hamburguesa con queso",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Papas con queso cheddar",
+        "costo": "$40,00",
+        "precio": "$80,00",
+        "categoría": "Papas",
+        "tiempo": "10 min",
+        "stock": "100"
+
+      }
+        ,
+      {
+        "denominación": "Flan con dulce de leche",
+        "costo": "$60,00",
+        "precio": "$80,00",
+        "categoría": "Postres",
+        "tiempo": "15 min",
+        "stock": "10"
+
+      },
+      {
+        "denominación": "Brownie con helado",
+        "costo": "$60,00",
+        "precio": "$80,00",
+        "categoría": "Postres",
+        "tiempo": "15 min",
+        "stock": "5"
+
+      },
+      {
+        "denominación": "Hamburguesa con queso",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      }
+        ,
+      {
+        "denominación": "Hamburguesa con bacon",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Hamburguesa super",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300"
+
+      },
+      {
+        "denominación": "Pizza con anchoas",
+        "costo": "$70,00",
+        "precio": "$130,00",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "200"
+
+      }
+        ,
+      {
+        "denominación": "Pizza napolitana",
+        "costo": "$70,00",
+        "precio": "$130,00",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "200"
+
+      },
+      {
+        "denominación": "Papas grandes",
+        "costo": "$40,00",
+        "precio": "$80,00",
+        "categoría": "Papas",
+        "tiempo": "15 min",
+        "stock": "10"
+
+      },
+      {
+        "denominación": "Papas especiales",
+        "costo": "$40,00",
+        "precio": "$80,00",
+        "categoría": "Papas",
+        "tiempo": "15 min",
+        "stock": "10"
+
+      }
+        ,
+      {
+        "denominación": "Hamburguesa con rockefort",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "20 min",
+        "stock": "300"
+
+      }
+    ]
+
+}
