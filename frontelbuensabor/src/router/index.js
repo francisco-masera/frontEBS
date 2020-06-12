@@ -52,7 +52,12 @@ const routes = [
     path: "/modificarInsumo/:id",
     name: "ModificarInsumo",
     component: () => import("../views/ModificarInsumo.vue"),
-  }
+  },
+  {
+    path: "/sugerenciaChef",
+    name: "SugerenciaChef",
+    component: () => import("../views/SugerenciaChef.vue"),
+  },
 ];
 
 const router = new VueRouter({
