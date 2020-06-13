@@ -58,6 +58,11 @@ const routes = [
     name: "SugerenciaChef",
     component: () => import("../views/SugerenciaChef.vue"),
   },
+  {
+    path: "/manufacturadoDetalle/:id",
+    name: "manufacturado",
+    component: () => import("../views/Manufacturado.vue"),
+  }
 ];
 
 const router = new VueRouter({
