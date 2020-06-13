@@ -1,0 +1,94 @@
+{
+    "sugerencias": [
+        {
+            "denominación": "Hamburguesa con queso",
+            "categoria": "Hamburguesa",
+            "costo": 400,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Hamburguesa doble",
+            "categoria": "Hamburguesa",
+            "costo": 450,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Pizza con cebolla",
+            "categoria": "Pizza",
+            "costo": 250,
+            "esNuevo": false
+        },
+        {
+            "denominación": "Hamburguesa con queso",
+            "categoria": "Hamburguesa",
+            "costo": 400,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Papas con queso cheddar",
+            "categoria": "Papas",
+            "costo": 385,
+            "esNuevo": false
+        },
+        {
+            "denominación": "Flan con dulce de leche",
+            "categoria": "Postres",
+            "costo": 140,
+            "esNuevo": false
+        },
+        {
+            "denominación": "Brownie con helado",
+            "categoria": "Postres",
+            "costo": 230,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Hamburguesa con queso",
+            "categoria": "Hamburguesa",
+            "costo": 400,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Hamburguesa con bacon",
+            "categoria": "Hamburguesa",
+            "costo": 500,
+            "esNuevo": false
+        },
+        {
+            "denominación": "Hamburguesa super",
+            "categoria": "Hamburguesa",
+            "costo": 545,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Pizza con anchoas",
+            "categoria": "Pizza",
+            "costo": 530,
+            "esNuevo": false
+        },
+        {
+            "denominación": "Pizza napolitana",
+            "categoria": "Pizza",
+            "costo": 340,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Papas grandes",
+            "categoria": "Papas",
+            "costo": 260,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Papas especiales",
+            "categoria": "Papas",
+            "costo": 280,
+            "esNuevo": true
+        },
+        {
+            "denominación": "Hamburguesa con rockefort",
+            "categoria": "Hamburguesa",
+            "costo": 600,
+            "esNuevo": false
+        }
+    ]
+}
