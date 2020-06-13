@@ -31,7 +31,7 @@ export default {
   data() {
     return {
      botones: [],
-      user:"admin",
+      user:"cocina",
       nombre:"Pepito Gomez",
       rol:"",
     };

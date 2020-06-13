@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="cocina">
     <div class="header"></div>
     <div id="nav"><menuLateral></menuLateral></div>
 
@@ -55,13 +55,75 @@
 
     <router-view />
   </div>
+  <div v-else>
+       <div class="header"></div>
+    <div id="nav"><menuLateral></menuLateral></div>
+
+    <div class="costado"></div>
+    <b-container class="informacion">
+      <h1>Catálogo manufacturados</h1>
+       <a id="seleccion-manufacturado" href="http://localhost:8080/catalogoManu"
+        ><span class="hrefManu">PRODUCTOS</span></a
+      >
+      <a id="seleccion-manufacturado" href=""
+        ><span class="hrefManu" style="margin-left:50px">CATEGORÍAS</span></a
+      >
+      <b-nav-form class="buscador">
+        <b-form-input
+          size="sm"
+          class="mr-sm-2"
+          placeholder="Buscar producto"
+        ></b-form-input>
+        <b-button size="sm" class="botonImagen" type="submit"
+          ><img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"
+        /></b-button>
+      </b-nav-form>
+      <b-dropdown
+        right
+        text="Filtrar por categoría"
+        class="filtroCategoria"
+        variant="white"
+      >
+        <b-dropdown-item>Pizza</b-dropdown-item>
+        <b-dropdown-item>Hamburguesa</b-dropdown-item>
+        <b-dropdown-item>Papas</b-dropdown-item>
+        <b-dropdown-item>Postre</b-dropdown-item>
+      </b-dropdown>
+      <b-table
+        hover
+        responsive
+        :items="manufacturadosData"
+        :fields="tituloTabla"
+        :outlined="true"
+        :per-page="perPage"
+        :current-page="currentPage"
+        :borderless="true"
+        id="tablaManufac"
+        class="tabla"
+      >
+      </b-table>
+    
+      <b-pagination
+        v-model="currentPage"
+        size="sm"
+        align="right"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-tablaInsumos"
+        class="paginador"
+      >
+      </b-pagination>
+    </b-container>
+
+    <router-view />
+  </div>
 </template>
 
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
   mounted() {
-    this.getInsumos();
+    this.getManufacturados();
   },
   components: {
     menuLateral: MenuLateral,
@@ -81,7 +143,7 @@ export default {
     };
   },
   methods: {
-    async getInsumos() {
+    async getManufacturados() {
       const res = await fetch("/manufacturados.json");
       const resJson = await res.json();
       this.manufacturadosData = resJson.manufacturados;
