@@ -1,66 +1,63 @@
 <template>
   <div>
     <cabecera></cabecera>
-    <div id="nav"><menuLateral></menuLateral></div>
+    <div id="nav">
+      <menuLateral></menuLateral>
+    </div>
 
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Sugerencias del chef</h1>
       <h1>Detalle producto</h1>
-     
-    
-        <div>
-            <img :src="'@/assets/images/productos/' + sugerenciaEncontrada.imagen" class="imagenProducto"/>
+
+      <div>
+        <img
+          :src="'@/assets/images/productos/' + sugerenciaEncontrada.imagen"
+          class="imagenProducto"
+        />
         <h3>
           {{sugerenciaEncontrada.denominación}}
-         <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
+          <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
-         </h3>
-         <div class="stock">
+        </h3>
+        <div class="stock">
           <b-badge class="categoria">{{ sugerenciaEncontrada.categoria }}</b-badge>
         </div>
-         <div id="descripcionInsumo">
+        <div id="descripcionInsumo">
           <h2>Descripción</h2>
           <p>{{ sugerenciaEncontrada.descripcion }}</p>
         </div>
-         <div class="infoProductoVenta">
-     
-       <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>{{ sugerenciaEncontrada.costo }} 
-            </b-card-text>
-       </b-card>
-     <b-card header="Tiempo" class="tarjetaInfo">
-            <b-card-text>{{ sugerenciaEncontrada.tiempo }} 
-            </b-card-text>
-            
+        <div class="infoProductoVenta">
+          <b-card header="Costo" class="tarjetaInfo">
+            <b-card-text>{{ sugerenciaEncontrada.costo }}</b-card-text>
           </b-card>
-         </div>
-         <div class="infoIngredientes">
-          <h2>Ingredientes</h2>   
+          <b-card header="Tiempo" class="tarjetaInfo">
+            <b-card-text>{{ sugerenciaEncontrada.tiempo }}</b-card-text>
+          </b-card>
+        </div>
+        <div class="infoIngredientes">
+          <h2>Ingredientes</h2>
           <li
-                v-for="(ingrediente, index) in sugerenciaEncontrada.ingredientes"
-                :key="index"
-              >
-                {{ ingrediente }}
-              </li>
-         </div>
-         <div class="botonesSugerencia">
-               <b-button pill class="boton" size="md">Aprobar </b-button>
-                <b-button pill class="boton" size="md">Denegar </b-button>
-         </div>
-      </div>   
-  
-    
-   
+            v-for="(ingrediente, index) in sugerenciaEncontrada.ingredientes"
+            :key="index"
+          >{{ ingrediente }}</li>
+        </div>
+        <div class="botonesSugerencia">
+          <b-button pill class="boton" size="md" @click="aceptarSugerencia()">Aprobar</b-button>
+          <b-button pill class="boton" size="md">Denegar</b-button>
+        </div>
+      </div>
     </b-container>
 
     <router-view />
-    <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
+    <b-modal ref="modal" hide-footer title="Aprobar producto">
+      <p style="text-align: left; font-weight: 600;" >Precio sugerido: ${{sugerenciaEncontrada.precio}}</p>
       <form>
-        <b-form-input class="contraseñaForm" placeholder="Contraseña" >          
-        </b-form-input>
-        <b-button pill class="boton" size="md">Eliminar </b-button>
+        <div> 
+      <b-form-input class="sugerenciaForm" placeholder="Precio" ></b-form-input>
+        </div> 
+        <b-button pill class="boton" size="md">Agregar</b-button>
       </form>
     </b-modal>
   </div>
@@ -72,41 +69,35 @@ import Header from "@/components/Header.vue";
 export default {
   mounted() {
     this.getSugerenciaXid();
-   
   },
   components: {
     menuLateral: MenuLateral,
-    cabecera: Header,
+    cabecera: Header
   },
   data() {
     return {
-     
-      sugerenciaEncontrada: [],
-     
-     
+      sugerenciaEncontrada: []
     };
   },
 
   methods: {
-    async getSugerenciaXid() {
+
+      async getSugerenciaXid() {
       var parametroId = parseInt(this.$route.params.id, 10);
       const res = await fetch("/sugerenciaChef.json");
       const resJson = await res.json();
 
       this.sugerenciaEncontrada = await resJson.sugerencias.find(
-        (sugerencia) => sugerencia.id === parametroId);
-        console.log(this.sugerenciaEncontrada);
-       
-
+        sugerencia => sugerencia.id === parametroId
+      );
+      console.log(this.sugerenciaEncontrada);
     },
-     
 
-  
-
-},
+    aceptarSugerencia() {
+      this.$refs["modal"].show();
+    }
+  }
 };
-   
-
 </script>
 <style>
 .buscador {
@@ -189,8 +180,7 @@ export default {
   padding-bottom: 10px;
 }
 
-
-.contraseñaForm {
+.sugerenciaForm {
   border-right: 0px;
   border-left: 0px;
   border-top: 0px;
@@ -215,10 +205,11 @@ export default {
   margin-right: 40%;
   float: right;
 }
-.infoProductoVenta{
-    float: right;
+.infoProductoVenta {
+  float: right;
 }
-.botonesSugerencia{
-    float: right;
+.botonesSugerencia {
+  float: right;
 }
+
 </style>

@@ -6,6 +6,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 400,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -17,6 +18,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 450,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -28,6 +30,7 @@
             "categoria": "Pizza",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 250,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": false,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -39,6 +42,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 400,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -50,6 +54,7 @@
             "categoria": "Papas",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 385,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": false,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -61,6 +66,7 @@
             "categoria": "Postres",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 140,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": false,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -72,6 +78,7 @@
             "categoria": "Postres",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 230,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -83,6 +90,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 400,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -94,6 +102,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 500,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": false,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -105,6 +114,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 545,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -116,6 +126,7 @@
             "categoria": "Pizza",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 530,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": false,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -127,6 +138,7 @@
             "categoria": "Pizza",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 340,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -138,6 +150,7 @@
             "categoria": "Papas",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 260,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -149,6 +162,7 @@
             "categoria": "Papas",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 280,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": true,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
@@ -160,6 +174,7 @@
             "categoria": "Hamburguesa",
             "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 600,
+            "precio":150,
             "tiempo": "20 min",
             "esNuevo": false,
             "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
