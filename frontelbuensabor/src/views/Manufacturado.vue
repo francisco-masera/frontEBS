@@ -7,6 +7,42 @@
     <b-container class="informacion">
       <h1>Detalle producto manufacturado</h1>
      
+      <div v-if="userCocina">
+        <div>
+            <img :src="'@/assets/images/productos/' + manufacturadoEncontrado.imagen" class="imagenProducto"/>
+        <h3>
+          {{manufacturadoEncontrado.denominación}}
+         <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
+            <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
+          </b-button>
+         </h3>
+         <div class="stock">
+          <div id="stockColor" style="background-color:#ED3247"></div>
+          Stock {{ stock }}
+          <b-badge class="categoria">{{ manufacturadoEncontrado.categoría }}</b-badge>
+        </div>
+         <div id="descripcionInsumo">
+          <h2>Descripción</h2>
+          <p>{{ manufacturadoEncontrado.descripcion }}</p>
+        </div>
+         <div class="infoProductoVenta">
+     <b-card header="Tiempo" class="tarjetaInfo">
+            <b-card-text>{{ manufacturadoEncontrado.tiempo }} 
+            </b-card-text>
+          </b-card>
+         </div>
+         <div class="infoIngredientes">
+          <h2>Ingredientes</h2>   
+          <li
+                v-for="(ingrediente, index) in manufacturadoEncontrado.ingredientes"
+                :key="index"
+              >
+                {{ ingrediente }}
+              </li>
+         </div>
+      </div>   
+      </div>   
+      <div v-else> 
       <div>
             <img :src="'@/assets/images/productos/' + manufacturadoEncontrado.imagen" class="imagenProducto"/>
         <h3>
@@ -51,6 +87,7 @@
               </li>
          </div>
       </div>
+      </div>
     </b-container>
 
     <router-view />
@@ -80,6 +117,7 @@ export default {
     return {
      
       manufacturadoEncontrado: [],
+      userCocina:false
      
     };
   },
