@@ -1,5 +1,5 @@
 <template>
-  <div v-if="cocina">
+  <div v-if="userCocina">
     <div class="header"></div>
     <div id="nav"><menuLateral></menuLateral></div>
 
@@ -132,22 +132,30 @@ export default {
     return {
       perPage: 7,
       currentPage: 1,
-      tituloTabla: ["denominación", "categoría", "stock", "tiempo"],
+      tituloTabla: [],
       manufacturadosData: [],
-      manufacturados: {
-        denominacion: "",
-        categoria: "",
-        stock: "",
-        tiempo: "",
-      },
+      manufacturados:{},
+      userCocina:true
     };
   },
   methods: {
     async getManufacturados() {
+    
+    
+      if(this.userCocina===true){
+       this.tituloTabla= ["denominación", "categoría", "stock", "tiempo"];
       const res = await fetch("/manufacturados.json");
       const resJson = await res.json();
       this.manufacturadosData = resJson.manufacturados;
+      console.log(this.manufacturadosData);  
+      }else{
+        this.tituloTabla=["denominación", "costo", "precio", "categoría","stock"]
+         const res = await fetch("/manufacturadosAdmin.json");
+      const resJson = await res.json();
+      this.manufacturadosData = resJson.manufacturados;
       console.log(this.manufacturadosData);
+     }
+      
     },
 
     agregarInsumo() {},
@@ -182,4 +190,15 @@ export default {
   border: 1px solid lightgray;
   height: 32px;
 }
+.hrefManu{
+float:left;
+color:black;
+margin-bottom: 15px;
+
+}
+span:hover{
+border-bottom: solid 1px;
+ color: #e7541e;
+}
+
 </style>
