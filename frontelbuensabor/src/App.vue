@@ -88,6 +88,7 @@ p {
   height: 30px;
   margin:5px;
 }
+
 .boton:hover{
   border: #e7511e;
   background-color: #FFFFFF;
@@ -185,6 +186,22 @@ p {
   border: none;
 }
 
+
+.tarjetaInfo {
+  text-align: center;
+  width: 116px;
+  float: left;
+  margin: 5px;
+  border-radius: 15px;
+  font-weight: 400;
+  font-size: 11pt;
+  color: #151515;
+}
+
+.infoProductoVenta{
+    float: right;
+}
+
 .costado {
   background-image: url("./assets/images/sistema/reticulaVertical.png");
   background-repeat: repeat-y;
@@ -193,6 +210,14 @@ p {
   height: 100%;
   min-width: 200px;
   background-size: contain;
+}
+.imagenProducto {
+  width: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 300px;
+  object-fit: cover;
+  margin-bottom: 30px;
 }
 
 .informacion {
@@ -204,7 +229,11 @@ p {
   font-family: "Baloo Bhaina 2";
   color: #151515;
 }
-
+#imagenAgregar {
+  width: 20px;
+  margin: 0px;
+  margin-left: 10px;
+}
 .page-link {
   color: #151515;
   border: none;

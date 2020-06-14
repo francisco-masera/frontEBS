@@ -67,6 +67,11 @@ const routes = [
     name: "SugerenciaChefDetalle",
     component: () => import("../views/SugerenciaChefDetalle.vue"),
   },
+
+  {path: "/añadirManufacturado",
+    name: "AñadirManufacturado",
+    component: () => import("../views/AñadirManufacturado.vue"),
+  },
 ];
 
 const router = new VueRouter({
