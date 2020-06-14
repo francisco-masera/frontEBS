@@ -18,19 +18,19 @@ const routes = [
 
   {
     path: "/stockInsumos",
-    name: "stockInsumos",
-    component: () => import("../views/stockInsumos.vue"),
+    name: "StockInsumos",
+    component: () => import("../views/StockInsumos.vue"),
   },
   {
     path: "/catalogoManu",
     name: "CatalogoManu",
-    component: () => import("../views/catalogoManu.vue"),
+    component: () => import("../views/CatalogoManu.vue"),
   },
 
   {
     path: "/insumoDetalle/:id",
-    name: "insumo",
-    component: () => import("../views/insumo.vue"),
+    name: "Insumo",
+    component: () => import("../views/Insumo.vue"),
   },
 
   {
