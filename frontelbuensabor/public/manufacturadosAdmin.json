@@ -9,8 +9,11 @@
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
         "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
-
+        
       },
       {
         "id":2,
@@ -21,6 +24,9 @@
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
         "stock": "0",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
@@ -34,6 +40,9 @@
         "categoría": "Pizza",
         "tiempo": "20 min",
         "stock": "150",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -46,6 +55,9 @@
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
         "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -58,6 +70,9 @@
         "categoría": "Papas",
         "tiempo": "10 min",
         "stock": "100",
+        "aptoCeliaco":true,
+        "vegano":false,
+        "vegetariano":true,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
@@ -71,6 +86,9 @@
         "categoría": "Postres",
         "tiempo": "15 min",
         "stock": "10",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -83,6 +101,9 @@
         "categoría": "Postres",
         "tiempo": "15 min",
         "stock": "5",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -95,6 +116,9 @@
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
         "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
@@ -108,6 +132,9 @@
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
         "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -120,6 +147,9 @@
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
         "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
       },
       {
@@ -131,6 +161,9 @@
         "categoría": "Pizza",
         "tiempo": "20 min",
         "stock": "200",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
@@ -144,6 +177,9 @@
         "categoría": "Pizza",
         "tiempo": "20 min",
         "stock": "200",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -156,6 +192,9 @@
         "categoría": "Papas",
         "tiempo": "15 min",
         "stock": "10",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
@@ -168,6 +207,9 @@
         "categoría": "Papas",
         "tiempo": "15 min",
         "stock": "10",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
@@ -181,6 +223,9 @@
         "categoría": "Hamburguesa",
         "tiempo": "20 min",
         "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
         "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }

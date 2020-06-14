@@ -1,6 +1,7 @@
 {
     "manufacturados":[
       {
+        "id":1,
         "denominación": "Hamburguesa con queso",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
@@ -8,6 +9,7 @@
 
       },
       {
+        "id":2,
         "denominación": "Hamburguesa doble",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
@@ -16,6 +18,7 @@
       }
         ,
       {
+        "id":3,
         "denominación": "Pizza con cebolla",
         "categoría": "Pizza",
         "tiempo": "20 min",
@@ -23,6 +26,7 @@
 
       },
       {
+        "id":4,
         "denominación": "Hamburguesa con queso",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
@@ -30,6 +34,7 @@
 
       },
       {
+        "id":5,
         "denominación": "Papas con queso cheddar",
         "categoría": "Papas",
         "tiempo": "10 min",
@@ -38,6 +43,7 @@
       }
         ,
       {
+        "id":6,
         "denominación": "Flan con dulce de leche",
         "categoría": "Postres",
         "tiempo": "15 min",
@@ -45,6 +51,7 @@
 
       },
       {
+        "id":7,
         "denominación": "Brownie con helado",
         "categoría": "Postres",
         "tiempo": "15 min",
@@ -52,6 +59,7 @@
 
       },
       {
+        "id":8,
         "denominación": "Hamburguesa con queso",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
@@ -60,6 +68,7 @@
       }
         ,
       {
+        "id":9,
         "denominación": "Hamburguesa con bacon",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
@@ -67,6 +76,7 @@
 
       },
       {
+        "id":10,
         "denominación": "Hamburguesa super",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
@@ -74,6 +84,7 @@
 
       },
       {
+        "id":11,
         "denominación": "Pizza con anchoas",
         "categoría": "Pizza",
         "tiempo": "20 min",
@@ -82,6 +93,7 @@
       }
         ,
       {
+        "id":12,
         "denominación": "Pizza napolitana",
         "categoría": "Pizza",
         "tiempo": "20 min",
@@ -89,6 +101,7 @@
 
       },
       {
+        "id":13,
         "denominación": "Papas grandes",
         "categoría": "Papas",
         "tiempo": "15 min",
@@ -96,6 +109,7 @@
 
       },
       {
+        "id":14,
         "denominación": "Papas especiales",
         "categoría": "Papas",
         "tiempo": "15 min",
@@ -104,6 +118,7 @@
       }
         ,
       {
+        "id":15,
         "denominación": "Hamburguesa con rockefort",
         "categoría": "Hamburguesa",
         "tiempo": "20 min",

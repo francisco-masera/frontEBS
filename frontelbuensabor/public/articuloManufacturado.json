@@ -1,0 +1,91 @@
+{
+    "manufacturados":[
+      {
+        "id":1,
+        "denominación": "Hamburguesa con queso",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":[
+            {"id":1,"denominacion":"Harina","cantidad":300, "unidadMedida":"g"},
+            {"id":2,"denominacion":"Aceite","cantidad":50, "unidadMedida":"ml"},
+            {"id":3,"denominacion":"Sal","cantidad":3, "unidadMedida":"g"},
+            {"id":4,"denominacion":"Queso Muzzarella","cantidad":300, "unidadMedida":"g"},
+            {"id":5,"denominacion":"Salsa de tomate","cantidad":10, "unidadMedida":"ml"},
+            {"id":6,"denominacion":"Aceitunas","cantidad":9, "unidadMedida":"u"}
+        ]
+      },
+      {
+        "id":2,
+        "denominación": "Hamburguesa doble",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "0",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":[
+            {"id":1,"denominacion":"Harina","cantidad":300, "unidadMedida":"g"},
+            {"id":2,"denominacion":"Aceite","cantidad":50, "unidadMedida":"ml"},
+            {"id":3,"denominacion":"Sal","cantidad":3, "unidadMedida":"g"},
+            {"id":4,"denominacion":"Queso Muzzarella","cantidad":300, "unidadMedida":"g"},
+            {"id":5,"denominacion":"Salsa de tomate","cantidad":10, "unidadMedida":"ml"},
+            {"id":6,"denominacion":"Aceitunas","cantidad":9, "unidadMedida":"u"}
+        ]
+      }
+        ,
+      {
+        "id":3,
+        "denominación": "Pizza con cebolla",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        "costo": "$70,00",
+        "precio": "$130,00",
+        "categoría": "Pizza",
+        "tiempo": "20 min",
+        "stock": "150",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":[
+            {"id":1,"denominacion":"Harina","cantidad":300, "unidadMedida":"g"},
+            {"id":2,"denominacion":"Aceite","cantidad":50, "unidadMedida":"ml"},
+            {"id":3,"denominacion":"Sal","cantidad":3, "unidadMedida":"g"},
+            {"id":4,"denominacion":"Queso Muzzarella","cantidad":300, "unidadMedida":"g"},
+            {"id":5,"denominacion":"Salsa de tomate","cantidad":10, "unidadMedida":"ml"},
+            {"id":6,"denominacion":"Aceitunas","cantidad":9, "unidadMedida":"u"}
+        ]
+
+      },
+      {
+        "id":4,
+        "denominación": "Hamburguesa con queso",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":[
+            {"id":1,"denominacion":"Harina","cantidad":300, "unidadMedida":"g"},
+            {"id":2,"denominacion":"Aceite","cantidad":50, "unidadMedida":"ml"},
+            {"id":3,"denominacion":"Sal","cantidad":3, "unidadMedida":"g"},
+            {"id":4,"denominacion":"Queso Muzzarella","cantidad":300, "unidadMedida":"g"},
+            {"id":5,"denominacion":"Salsa de tomate","cantidad":10, "unidadMedida":"ml"},
+            {"id":6,"denominacion":"Aceitunas","cantidad":9, "unidadMedida":"u"}
+        ]
+      }
+    ]
+
+}

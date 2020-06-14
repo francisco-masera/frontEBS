@@ -7,7 +7,8 @@
 
     <div class="costado"></div>
     <b-container class="informacion">
-      <h1 id="titulo">Añadir producto</h1>
+      <h1 id="titulo" v-if="esNuevo">Añadir producto</h1>
+      <h1 id="titulo" v-else>Modificar producto</h1>
       <div  id="paso1">
       <h2>Información básica</h2>
       <b-form>
@@ -15,7 +16,7 @@
                 <label class="labelForm">
                   Nombre
                 </label>
-                <b-form-input class="campoForm" v-model="manufacturado.denominacion" id="nombreInsumo">
+                <b-form-input class="campoForm" v-model="manufacturado.denominación" id="nombreInsumo">
                 </b-form-input>*
             </div>
              <div class="lineaForm" id="lineaDescripcion">
@@ -79,13 +80,13 @@
                  <b-button pill class="botonAñadirInsumo" @click="buscarIngrediente" size="md">Añadir</b-button>  
             </div>
             <div class="lineaForm">
-            <b-table striped hover size="sm" :items="manufacturado.receta"></b-table>
+            <b-table striped hover size="sm" :items="manufacturado.ingredientes"></b-table>
             </div>
              <div class="lineaForm">
                 <label class="labelForm">
                   Tiempo en cocina
                 </label>
-                <b-form-input  class="campoForm" id="tiempoCocina" v-model="manufacturado.tiempoCocina">                    
+                <b-form-input  class="campoForm" id="tiempoCocina" v-model="manufacturado.tiempo">                    
                 </b-form-input>             
             </div>
               <div class="lineaFormDerecha" style="float:right">
@@ -103,14 +104,12 @@
         <div>
             <img :src="'@/assets/images/productos/' + manufacturado.imagen" class="imagenProducto"/>
         <h3>
-          {{manufacturado.denominacion}}
+          {{manufacturado.denominación}}
          <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
          </h3>
-         <div>          
-          <b-badge class="categoria">{{ manufacturado.categoría }}</b-badge>
-        </div>
+        
          <div id="descripcionInsumo">
           <h2>Descripción</h2>
           <p>{{ manufacturado.descripcion }}</p>
@@ -118,14 +117,14 @@
          <div class="infoProductoVenta">
             <b-card header="Tiempo" class="tarjetaInfo">
               <b-card-text>
-                {{ manufacturado.tiempoCocina}} 
+                {{ manufacturado.tiempo}} 
               </b-card-text>
           </b-card>
          </div>
          <div class="infoIngredientes">
           <h2>Ingredientes</h2>   
           <li
-                v-for="(ingrediente, index) in manufacturado.receta"
+                v-for="(ingrediente, index) in manufacturado.ingredientes"
                 :key="index"
               >
                 {{ ingrediente.denominacion }} {{ ingrediente.cantidad }} {{ ingrediente.unidadMedida }}
@@ -152,6 +151,8 @@ import Header from "@/components/Header.vue";
 export default {
   mounted() {
     this.getInsumos();
+    this.modificar();
+
   },
   components: {
     menuLateral: MenuLateral,
@@ -160,17 +161,19 @@ export default {
   data() {
     return {     
     insumosData: [],
-
+    
     manufacturado:{
       aptoCeliaco:false,
-      denominacion:"",
+      denominación:"",
       descripcion:"",
       imagen:"",
-      tiempoCocina:0,
+      tiempo:0,
       vegano:false,
       vegetariano:false,
-      receta:[],
+      ingredientes:[],
     },
+
+    esNuevo:true,
 
     ingrediente:"",
     cantidad:0,
@@ -222,11 +225,11 @@ export default {
         //logica que busca ingrediente en base de datos        
         this.getInsumoXNombre(this.ingrediente);
         
-        this.manufacturado.receta.push({id:this.insumoEncontrado.id, denominacion:this.insumoEncontrado.denominacion,cantidad:this.cantidad,unidadMedida:this.unidadMedida});
+        this.manufacturado.ingredientes.push({id:this.insumoEncontrado.id, denominacion:this.insumoEncontrado.denominacion,cantidad:this.cantidad,unidadMedida:this.unidadMedida});
         this.ingrediente="",
         this.cantidad="",
         this.unidadMedida=null;
-        console.log(this.manufacturado);
+       
         
    },
 
@@ -240,9 +243,25 @@ export default {
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
       this.insumosData = resJson.insumos;
-      console.log(this.insumosData);
+      
         
   },
+
+  async modificar(){
+    if(parseInt(this.$route.params.id, 10)!=undefined){
+      this.esNuevo=false;
+        var parametroId = parseInt(this.$route.params.id, 10);
+        const res = await fetch("/articuloManufacturado.json");
+        const resJson = await res.json();
+        this.manufacturado = await resJson.manufacturados.find(
+        (manu) => manu.id === parametroId
+      );
+      
+        
+      
+    }
+    
+  }
 
     
    
