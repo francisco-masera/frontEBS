@@ -24,7 +24,7 @@ const routes = [
   {
     path: "/catalogoManu",
     name: "CatalogoManu",
-    component: () => import("../views/CatalogoManu.vue"),
+    component: () => import("../views/catalogoManu.vue"),
   },
 
   {

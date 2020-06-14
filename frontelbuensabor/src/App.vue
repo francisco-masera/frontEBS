@@ -232,6 +232,19 @@ p {
   }
 }
 
+.Badgecategoria {
+  border: 1px solid #e7511e;
+  margin-left: 30px;
+  padding: 5px;
+  color: #e7511e;
+  font-weight: 400;
+  font-size: 12pt;
+  background-color: #ffffff;
+  border-radius: 10px;
+  width: 130px;
+}
+
+
 @media screen and (max-width: 604px) {
   .informacion {
     font-size: 10pt;

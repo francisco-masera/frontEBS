@@ -19,7 +19,7 @@
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="categoria">{{ insumoEncontrado.categoria }}</b-badge>
+          <b-badge class="Badgecategoria">{{ insumoEncontrado.categoria }}</b-badge>
         </div>
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
@@ -76,7 +76,7 @@
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="categoria">{{ insumoEncontrado.categoria }}</b-badge>
+          <b-badge class="Badgecategoria">{{ insumoEncontrado.categoria }}</b-badge>
         </div>
 
         <div id="infoProductoVenta">
@@ -266,17 +266,6 @@ export default {
   margin-right: 10px;
 }
 
-.categoria {
-  border: 1px solid #e7511e;
-  margin-left: 30px;
-  padding: 5px;
-  color: #e7511e;
-  font-weight: 400;
-  font-size: 12pt;
-  background-color: #ffffff;
-  border-radius: 10px;
-  width: 130px;
-}
 
 #descripcionInsumo {
   margin-top: 20px;
