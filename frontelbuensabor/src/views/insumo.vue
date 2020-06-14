@@ -6,7 +6,7 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Detalle de insumo</h1>
-      <div v-if="esInsumoVenta" id="venta">
+      <div v-if="esInsumoVenta">
         <img :src="'@/assets/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
         <h3>{{ insumoEncontrado.denominacion }}
           <b-button size="sm" @click="modificarInsumo(insumoEncontrado.id)" class="botonImagen">
@@ -49,7 +49,7 @@
           Historial de Compra
           <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
             <template v-slot:cell(acción)="row">
-              <b-button size="sm" @click="eliminarInsumo(row.item.id)" class="botonImagen">
+              <b-button size="sm" @click="eliminarRegistro(row.item.id)" class="botonImagen">
                 <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
               </b-button>
             </template>
@@ -123,6 +123,14 @@
         <b-button pill class="boton" size="md">Eliminar </b-button>
       </form>
     </b-modal>
+
+    <b-modal ref="modalEliminarRegistro" hide-footer title="Eliminar asiento" class="modalEliminar">
+      <form>
+        ¿Desea anular el asiento de compra?
+        <b-button pill class="boton" size="md">Anular</b-button>
+      </form>
+    </b-modal>
+
   </div>
 </template>
 
@@ -224,6 +232,10 @@ export default {
     modificarInsumo(id){
       window.location.href = "/modificarInsumo/" + id; 
       console.log(id);
+    },
+
+    eliminarRegistro(){
+      this.$refs["modalEliminarRegistro"].show();
     }
   },
   computed: {
