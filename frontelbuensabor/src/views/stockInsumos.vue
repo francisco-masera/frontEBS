@@ -62,9 +62,11 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.getInsumos();
+    this.getInsumoService();
   },
   components: {
     menuLateral: MenuLateral,
@@ -83,6 +85,7 @@ export default {
         "acción",
       ],
       insumosData: [],
+      insumosDataService:[],
       insumo: {
         id: 0,
         denominacion: "",
@@ -104,7 +107,8 @@ export default {
             precioVenta:0,
             descripcion: "",
             imagen:""
-        }
+        },
+        service : new Service()
     };
   },
   methods: {
@@ -112,7 +116,14 @@ export default {
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
       this.insumosData = resJson.insumos;
-      console.log(this.insumosData);
+      console.log(this.insumosData.json());
+    },
+
+    async getInsumoService(){
+      
+      this.insumosDataService = this.service.getAll("insumo"); 
+      console.log("Data: "+this.insumosDataService); 
+      
     },
 
     agregarInsumo() {
