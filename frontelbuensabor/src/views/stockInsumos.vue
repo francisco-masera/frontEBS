@@ -18,6 +18,10 @@
             <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
           </b-button>
         </template>
+        <template v-slot:cell(categoria)="row">
+          <b-badge class="Badgecategoria" >{{row.item.categoria}}</b-badge>
+          
+        </template>
       </b-table>
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
       <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
@@ -177,6 +181,12 @@ export default {
   margin-left: 100px;
   font-family: "Baloo Bhaina 2";
   text-align: left;
+}
+
+.Badgecategoria{
+  width: 90px;
+  margin-left: 0px;
+  font-size: 11pt;
 }
 
 

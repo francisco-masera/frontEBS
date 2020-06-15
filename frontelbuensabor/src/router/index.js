@@ -18,8 +18,8 @@ const routes = [
 
   {
     path: "/stockInsumos",
-    name: "stockInsumos",
-    component: () => import("../views/stockInsumos.vue"),
+    name: "StockInsumos",
+    component: () => import("../views/StockInsumos.vue"),
   },
   {
     path: "/catalogoManu",
@@ -29,8 +29,8 @@ const routes = [
 
   {
     path: "/insumoDetalle/:id",
-    name: "insumo",
-    component: () => import("../views/insumo.vue"),
+    name: "Insumo",
+    component: () => import("../views/Insumo.vue"),
   },
 
   {
@@ -58,6 +58,24 @@ const routes = [
     name: "SugerenciaChef",
     component: () => import("../views/SugerenciaChef.vue"),
   },
+  {
+    path: "/manufacturadoDetalle/:id",
+    name: "manufacturado",
+    component: () => import("../views/Manufacturado.vue"),
+  },
+  {path: "/sugerencia/:id",
+    name: "SugerenciaChefDetalle",
+    component: () => import("../views/SugerenciaChefDetalle.vue"),
+  },
+
+  {path: "/añadirManufacturado",
+    name: "AñadirManufacturado",
+    component: () => import("../views/AñadirManufacturado.vue"),
+  },
+  {path: "/añadirManufacturado/:id",
+  name: "AñadirManufacturado",
+  component: () => import("../views/AñadirManufacturado.vue"),
+},
 ];
 
 const router = new VueRouter({

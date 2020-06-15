@@ -1,142 +1,232 @@
 {
     "manufacturados":[
       {
+        "id":1,
         "denominación": "Hamburguesa con queso",
-        "costo": "$90,00",
-        "precio": "$150,00",
-        "categoría": "Hamburguesa",
-        "stock": "300"
-
-      },
-      {
-        "denominación": "Hamburguesa doble",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$90,00",
         "precio": "$150,00",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
-        "stock": "300"
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+        
+      },
+      {
+        "id":2,
+        "denominación": "Hamburguesa doble",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+        "costo": "$90,00",
+        "precio": "$150,00",
+        "categoría": "Hamburguesa",
+        "tiempo": "30 min",
+        "stock": "0",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
         ,
       {
+        "id":3,
         "denominación": "Pizza con cebolla",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$70,00",
         "precio": "$130,00",
         "categoría": "Pizza",
         "tiempo": "20 min",
-        "stock": "150"
+        "stock": "150",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":3,
         "denominación": "Hamburguesa con queso",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$90,00",
         "precio": "$150,00",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
-        "stock": "300"
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":4,
         "denominación": "Papas con queso cheddar",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$40,00",
         "precio": "$80,00",
         "categoría": "Papas",
         "tiempo": "10 min",
-        "stock": "100"
+        "stock": "100",
+        "aptoCeliaco":true,
+        "vegano":false,
+        "vegetariano":true,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
         ,
       {
+        "id":5,
         "denominación": "Flan con dulce de leche",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$60,00",
         "precio": "$80,00",
         "categoría": "Postres",
         "tiempo": "15 min",
-        "stock": "10"
+        "stock": "10",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":6,
         "denominación": "Brownie con helado",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$60,00",
         "precio": "$80,00",
         "categoría": "Postres",
         "tiempo": "15 min",
-        "stock": "5"
+        "stock": "5",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":7,
         "denominación": "Hamburguesa con queso",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$90,00",
         "precio": "$150,00",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
-        "stock": "300"
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
         ,
       {
+        "id":8,
         "denominación": "Hamburguesa con bacon",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$90,00",
         "precio": "$150,00",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
-        "stock": "300"
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":9,
         "denominación": "Hamburguesa super",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$90,00",
         "precio": "$150,00",
         "categoría": "Hamburguesa",
         "tiempo": "30 min",
-        "stock": "300"
-
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
       },
       {
+        "id":10,
         "denominación": "Pizza con anchoas",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$70,00",
         "precio": "$130,00",
         "categoría": "Pizza",
         "tiempo": "20 min",
-        "stock": "200"
+        "stock": "200",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
         ,
       {
+        "id":11,
         "denominación": "Pizza napolitana",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$70,00",
         "precio": "$130,00",
         "categoría": "Pizza",
         "tiempo": "20 min",
-        "stock": "200"
+        "stock": "200",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":12,
         "denominación": "Papas grandes",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$40,00",
         "precio": "$80,00",
         "categoría": "Papas",
         "tiempo": "15 min",
-        "stock": "10"
+        "stock": "10",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       },
       {
+        "id":13,
         "denominación": "Papas especiales",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$40,00",
         "precio": "$80,00",
         "categoría": "Papas",
         "tiempo": "15 min",
-        "stock": "10"
+        "stock": "10",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
         ,
       {
+        "id":14,
         "denominación": "Hamburguesa con rockefort",
+        "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
         "costo": "$90,00",
         "precio": "$150,00",
         "categoría": "Hamburguesa",
         "tiempo": "20 min",
-        "stock": "300"
+        "stock": "300",
+        "aptoCeliaco":false,
+        "vegano":false,
+        "vegetariano":false,
+        "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
 
       }
     ]

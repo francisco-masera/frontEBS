@@ -19,8 +19,8 @@
         :borderless="true"
         class="tabla"
       >
-        <template v-slot:cell(categoria)>
-          <b-badge class="categoria">{{ sugerenciasData.categoria }}</b-badge>
+        <template v-slot:cell(categoria)="row">
+          <b-badge class="Badgecategoria" >{{row.item.categoria}}</b-badge>          
         </template>
       </b-table>
       <b-pagination
@@ -52,7 +52,7 @@ export default {
     return {
       perPage: 7,
       currentPage: 1,
-      titulosTabla: ["denominación", "costo", "categoría", "estado"],
+      titulosTabla: ["denominación", "costo", "categoria", "estado"],
       sugerenciasData: [],
     };
   },
@@ -78,4 +78,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.Badgecategoria{
+  width: 100px;
+  margin-left: 0px;
+  font-size: 11pt;
+}
+</style>

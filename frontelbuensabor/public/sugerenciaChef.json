@@ -1,94 +1,184 @@
 {
     "sugerencias": [
         {
+            "id":1,
             "denominación": "Hamburguesa con queso",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 400,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":2,
             "denominación": "Hamburguesa doble",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 450,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":3,
             "denominación": "Pizza con cebolla",
             "categoria": "Pizza",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 250,
-            "esNuevo": false
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": false,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":4,
             "denominación": "Hamburguesa con queso",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 400,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":5,
             "denominación": "Papas con queso cheddar",
             "categoria": "Papas",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 385,
-            "esNuevo": false
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": false,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":6,
             "denominación": "Flan con dulce de leche",
             "categoria": "Postres",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 140,
-            "esNuevo": false
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": false,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":7,
             "denominación": "Brownie con helado",
             "categoria": "Postres",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 230,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":8,
             "denominación": "Hamburguesa con queso",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 400,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":9,
             "denominación": "Hamburguesa con bacon",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 500,
-            "esNuevo": false
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": false,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":10,
             "denominación": "Hamburguesa super",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 545,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":11,
             "denominación": "Pizza con anchoas",
             "categoria": "Pizza",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 530,
-            "esNuevo": false
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": false,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":12,
             "denominación": "Pizza napolitana",
             "categoria": "Pizza",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 340,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":13,
             "denominación": "Papas grandes",
             "categoria": "Papas",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 260,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":14,
             "denominación": "Papas especiales",
             "categoria": "Papas",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 280,
-            "esNuevo": true
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": true,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         },
         {
+            "id":15,
             "denominación": "Hamburguesa con rockefort",
             "categoria": "Hamburguesa",
+            "descripcion":"Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             "costo": 600,
-            "esNuevo": false
+            "precio":150,
+            "tiempo": "20 min",
+            "esNuevo": false,
+            "ingredientes":["Harina 300gr","Aceite 50ml","Levadura 10gr","Sal 3gr","Queso muzzarella 300gr","Salsa de tomate 10ml","Aceitunas 9u"]
+
         }
     ]
 }

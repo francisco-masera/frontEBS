@@ -45,7 +45,7 @@
        <b-button pill class="boton" size="md" @click="agregarCategoria()">¡Agregar!</b-button>
     </b-container>
     <router-view />
-    <b-modal ref="modal" hide-footer title="Agregar categoría" class="modalEliminar">
+    <b-modal ref="modal" hide-footer title="Agregar categoría">
       <form>
         <b-form-input class="contraseñaForm" placeholder="Nombre de categoria" >          
         </b-form-input>

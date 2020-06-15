@@ -6,7 +6,7 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Detalle de insumo</h1>
-      <div v-if="esInsumoVenta" id="venta">
+      <div v-if="esInsumoVenta">
         <img :src="'@/assets/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
         <h3>{{ insumoEncontrado.denominacion }}
           <b-button size="sm" @click="modificarInsumo(insumoEncontrado.id)" class="botonImagen">
@@ -19,7 +19,7 @@
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="categoria">{{ insumoEncontrado.categoria }}</b-badge>
+          <b-badge class="Badgecategoria">{{ insumoEncontrado.categoria }}</b-badge>
         </div>
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
@@ -49,7 +49,7 @@
           Historial de Compra
           <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
             <template v-slot:cell(acción)="row">
-              <b-button size="sm" @click="eliminarInsumo(row.item.id)" class="botonImagen">
+              <b-button size="sm" @click="eliminarRegistro(row.item.id)" class="botonImagen">
                 <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
               </b-button>
             </template>
@@ -76,7 +76,7 @@
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="categoria">{{ insumoEncontrado.categoria }}</b-badge>
+          <b-badge class="Badgecategoria">{{ insumoEncontrado.categoria }}</b-badge>
         </div>
 
         <div id="infoProductoVenta">
@@ -123,6 +123,14 @@
         <b-button pill class="boton" size="md">Eliminar </b-button>
       </form>
     </b-modal>
+
+    <b-modal ref="modalEliminarRegistro" hide-footer title="Eliminar asiento" class="modalEliminar">
+      <form>
+        ¿Desea anular el asiento de compra?
+        <b-button pill class="boton" size="md">Anular</b-button>
+      </form>
+    </b-modal>
+
   </div>
 </template>
 
@@ -224,6 +232,10 @@ export default {
     modificarInsumo(id){
       window.location.href = "/modificarInsumo/" + id; 
       console.log(id);
+    },
+
+    eliminarRegistro(){
+      this.$refs["modalEliminarRegistro"].show();
     }
   },
   computed: {
@@ -266,17 +278,6 @@ export default {
   margin-right: 10px;
 }
 
-.categoria {
-  border: 1px solid #e7511e;
-  margin-left: 30px;
-  padding: 5px;
-  color: #e7511e;
-  font-weight: 400;
-  font-size: 12pt;
-  background-color: #ffffff;
-  border-radius: 10px;
-  width: 130px;
-}
 
 #descripcionInsumo {
   margin-top: 20px;
