@@ -20,4 +20,33 @@ export default class Service {
       console.log(error);
     }
   }
+  async getOne(subPath, id) {
+    try {
+      let response = await axios.get(
+        serverUrl + "/" + subPath + "/" + id,
+        config
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async save(subPath, entity, id) {
+    try {
+      await axios.post(serverUrl + "/" + subPath + "/", entity, config);
+      return this.getOne(subPath, id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async update(subPath, entity, id) {
+    try {
+      await axios.put(serverUrl + "/" + subPath + "/" + id, entity, config);
+      return this.getOne(subPath, id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

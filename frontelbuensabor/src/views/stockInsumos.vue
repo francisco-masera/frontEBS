@@ -70,7 +70,7 @@ import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.getInsumos();
-    this.getInsumoService();
+    this.getInsumosService();
   },
   components: {
     menuLateral: MenuLateral,
@@ -123,11 +123,9 @@ export default {
       console.log(this.insumosData.json());
     },
 
-    async getInsumoService(){
-      
+    getInsumosService(){
       this.insumosDataService = this.service.getAll("insumo"); 
-      console.log("Data: "+this.insumosDataService); 
-      
+      console.log("Data: " + this.insumosDataService); 
     },
 
     agregarInsumo() {

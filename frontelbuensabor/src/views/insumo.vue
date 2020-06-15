@@ -137,10 +137,14 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.getInsumosxId();
     this.getOrdenCompra();
+    //this.getInsumoService();
+    //this.saveInsumo();
+    this.updateInsumo();
   },
   components: {
     menuLateral: MenuLateral,
@@ -161,14 +165,16 @@ export default {
       esInsumoVenta: false,
       insumosData: [],
       insumoEncontrado: [],
+      insumoService:[],
       ordenCompra: [],
       stock: "",
+      service : new Service(),
     };
   },
 
   methods: {
     async getInsumosxId() {
-      var parametroId = parseInt(this.$route.params.id, 10);
+      var parametroId = parseInt(this.$route.params.id, 16);
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
 
@@ -178,6 +184,27 @@ export default {
       this.verificaStock();
       this.verificaInsumo();
 
+    },
+    
+
+    getInsumoService(){
+      this.insumoService = this.service.getOne(1, "insumo"); 
+      console.log("Data: " + this.insumoService); 
+    },
+    
+    async saveInsumo(){
+      const res =  await fetch("/saveInsumo.json");
+      const resJson = await res.json();
+      this.insumoService = this.service.save("insumo", resJson.insumos[0], resJson.insumos[0].id);
+      console.log(this.insumoService);
+    },
+
+
+    async updateInsumo(){
+      const res =  await fetch("/saveInsumo.json");
+      const resJson = await res.json();
+      this.insumoService = this.service.update("insumo", resJson.insumos[0], resJson.insumos[0].id);
+      console.log(this.insumoService);
     },
 
     verificaInsumo() {

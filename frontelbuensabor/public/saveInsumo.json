@@ -1,0 +1,21 @@
+{
+    "insumos": [
+        {
+            "id":21,
+            "denominacion": "Harina 00000",
+            "unidadMedida": "kg",
+            "esExtra": false,
+            "esInsumo": false,
+            "rubroInsumo": {
+                "id": 1,
+                "denominacion": "Almacén"
+            },
+            "stock": {
+                "id": 1,
+                "actual": 1000,
+                "maximo": 2000,
+                "minimo": 200
+            }
+        }
+    ]
+}
