@@ -1,7 +1,7 @@
 <template>
   <div>
-    <cabecera></cabecera>
-    <div id="nav"><menuLateral></menuLateral></div>
+     <cabecera :user="user"></cabecera>
+    <div id="nav"><menuLateral :user="user"></menuLateral></div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -146,6 +146,9 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
+   props: {
+        user:{},
+      },
   data() {
     return {
       perPage: 4,
@@ -168,6 +171,7 @@ export default {
 
   methods: {
     async getInsumosxId() {
+      console.log(this.$props.user);
       var parametroId = parseInt(this.$route.params.id, 10);
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
@@ -202,10 +206,9 @@ export default {
       ) {
         this.stock = "insuficiente";
         clase = document.getElementById("stockColor");
-        console.log(clase);
+        
         clase.style.backgroundColor = "#ED3247";
-        console.log(clase);
-        console.log("insuficiente");
+        
       } else if (
         parseInt(this.insumoEncontrado.stockActual, 10) >
           parseInt(this.insumoEncontrado.stockMin, 10) &&
@@ -214,15 +217,15 @@ export default {
       ) {
         this.stock = "moderado";
         clase = document.getElementById("stockColor");
-        console.log(clase);
+        
         clase.style.backgroundColor = "#FFEB3B";
-        console.log(clase);
+       
       } else {
         this.stock = "suficiente";
         clase = document.getElementById("stockColor");
 
         clase.style.backgroundColor = "#8BC34A";
-        console.log("suficiente");
+       
       }
     },
     openModalEliminar() {
@@ -230,8 +233,9 @@ export default {
     },
 
     modificarInsumo(id){
-      window.location.href = "/modificarInsumo/" + id; 
-      console.log(id);
+      
+      this.$router.push({ name: 'ModificarInsumo', params: {user: this.user, id:id }})
+      
     },
 
     eliminarRegistro(){

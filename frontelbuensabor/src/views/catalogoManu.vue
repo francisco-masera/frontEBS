@@ -1,7 +1,9 @@
-<template>
-  <div v-if="userCocina">
-    <div class="header"></div>
-    <div id="nav"><menuLateral></menuLateral></div>
+<template>  
+
+  <div v-if="userCocina">    
+    <cabecera :user="user"></cabecera>
+  <div id="nav"><menuLateral :user="user"></menuLateral>
+  </div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -40,7 +42,7 @@
         class="tabla"
       >
       </b-table>
-      <b-button pill class="boton" size="md">Nuevo</b-button>
+      <b-button pill class="boton" @click="nuevoManufacturado" size="md">Nuevo</b-button>
       <b-pagination
         v-model="currentPage"
         size="sm"
@@ -100,6 +102,7 @@
         :borderless="true"
         id="tablaManufac"
         class="tabla"
+        @row-dblclicked="verDetalle"
       >
       </b-table>
     
@@ -117,17 +120,24 @@
 
     <router-view />
   </div>
+  
 </template>
 
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
+import Header from "@/components/Header.vue";
 export default {
   mounted() {
     this.getManufacturados();
+    this.verificaUsuario();
   },
-  components: {
+   components: {
     menuLateral: MenuLateral,
+    cabecera: Header,
   },
+  props: {
+        user:{},
+      },
   data() {
     return {
       perPage: 7,
@@ -139,9 +149,7 @@ export default {
     };
   },
   methods: {
-    async getManufacturados() {
-    
-    
+    async getManufacturados() {       
       if(this.userCocina===true){
        this.tituloTabla= ["denominación", "categoría", "stock", "tiempo"];
       const res = await fetch("/manufacturados.json");
@@ -157,8 +165,22 @@ export default {
      }
       
     },
+    nuevoManufacturado() {
+      this.$router.push({ name: 'AñadirManufacturado', params: {user: this.user }})
+    },
 
-    agregarInsumo() {},
+    verificaUsuario(){
+      if(this.$props.user.rol=="cocina"){
+        this.userCocina=true;
+      }else{
+        this.userCocina=false;
+      }
+    },
+
+    verDetalle(record){
+      console.log("detalle")
+      this.$router.push({ path: '/manufacturadoDetalle/'+ record.id, params: {user: this.user }})
+    }
   },
   computed: {
     rows() {

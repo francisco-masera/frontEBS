@@ -3,7 +3,7 @@
   <b-card id="MenuLateral" border-variant="dark" >
         <img src="@/assets/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
         <b-card-text> 
-          <p id="nombre">{{nombre}}</p>
+          <p id="nombre">{{this.$props.user.nombre}} {{this.$props.user.apellido}}</p>
           <p id="rol">{{rol}}</p>
           
           <b-nav-item class="botonesMenu" v-for="boton in botones"
@@ -31,16 +31,15 @@ export default {
   data() {
     return {
      botones: [],
-      user:"admin",
-      nombre:"Pepito Gomez",
       rol:"",
     };
   },
+  props: ["user"],
   methods: {
       cargaBotones(){
         var boton;
 
-        if(this.user==="admin"){
+        if(this.$props.user.rol==="admin"){
           boton = [0,"Stock de insumos","stock.png",""];
           this.botones.push(boton);
           boton = [1,"Catálogo","manufacturados.png",""];
@@ -53,7 +52,7 @@ export default {
           this.botones.push(boton);  
           this.rol="Administrador";
                 
-        }else if(this.user==="cocina"){
+        }else if(this.$props.user.rol==="cocina"){
           boton = [0,"Manufacturados","manufacturados.png",""];
           this.botones.push(boton);
           boton = [1,"Mis datos","misDatos.png",""];
@@ -61,7 +60,7 @@ export default {
           boton = [2,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
           this.rol="Cocinero";
-        }else if(this.user ==="cliente"){
+        }else if(this.$props.user.rol ==="cliente"){
           boton = [0,"Mis direcciones","misDirecciones.png",""];
           this.botones.push(boton);
           boton = [1,"Mis pedidos","Pedidos.png",""];
@@ -72,7 +71,7 @@ export default {
           this.botones.push(boton); 
 
 
-        }else if(this.user==="delivery"){
+        }else if(this.$props.user.rol==="delivery"){
           boton = [0,"Pedidos","Pedidos.png",""];
           this.botones.push(boton);
           boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
@@ -83,7 +82,7 @@ export default {
           this.botones.push(boton); 
           this.rol="Delivery"; 
 
-        }else if(this.user==="cajero"){
+        }else if(this.$props.user.rol==="cajero"){
           boton = [0,"Pedidos","Pedidos.png",""];
           this.botones.push(boton);
           boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];

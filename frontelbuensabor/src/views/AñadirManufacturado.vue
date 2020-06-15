@@ -1,9 +1,8 @@
 <template>
   <div>
-    <cabecera></cabecera>
-    <div id="nav">
-      <menuLateral></menuLateral>
-    </div>
+   <cabecera :user="user"></cabecera>
+  <div id="nav"><menuLateral :user="user"></menuLateral>
+  </div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -154,6 +153,9 @@ export default {
     this.modificar();
 
   },
+  props: {
+        user:{},
+      },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,

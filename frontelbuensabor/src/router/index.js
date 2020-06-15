@@ -20,17 +20,20 @@ const routes = [
     path: "/stockInsumos",
     name: "StockInsumos",
     component: () => import("../views/StockInsumos.vue"),
+    props: true
   },
   {
     path: "/catalogoManu",
     name: "CatalogoManu",
     component: () => import("../views/CatalogoManu.vue"),
+    props: true
   },
 
   {
     path: "/insumoDetalle/:id",
     name: "Insumo",
     component: () => import("../views/Insumo.vue"),
+    props: true
   },
 
   {
@@ -71,10 +74,12 @@ const routes = [
   {path: "/añadirManufacturado",
     name: "AñadirManufacturado",
     component: () => import("../views/AñadirManufacturado.vue"),
+    props: true
   },
   {path: "/añadirManufacturado/:id",
-  name: "AñadirManufacturado",
+  name: "ModificarManufacturado",
   component: () => import("../views/AñadirManufacturado.vue"),
+  props: true
 },
 ];
 

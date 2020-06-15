@@ -1,7 +1,7 @@
 <template>
   <div>
-    <cabecera></cabecera>
-    <div id="nav"><menuLateral></menuLateral></div>
+    <cabecera :user="user"></cabecera>
+    <div id="nav"><menuLateral :user="user"></menuLateral></div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -46,11 +46,11 @@
       </tr>
       <tr>
         <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Cantidad</label></td>
-        <td> <b-form-input v-model="text"></b-form-input></td>
+        <td> <b-form-input></b-form-input></td>
       </tr>
       <tr>
         <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Precio por unidad</label></td>
-        <td> <b-form-input v-model="text"></b-form-input></td>
+        <td> <b-form-input></b-form-input></td>
       </tr>
       <tr>
        <b-button pill class="boton" size="md">Añadir</b-button>
@@ -74,6 +74,9 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
+      props: {
+        user:{},
+      },
   data() {
     return {
       perPage: 7,
@@ -113,18 +116,19 @@ export default {
   },
   methods: {
     async getInsumos() {
+      
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
       this.insumosData = resJson.insumos;
-      console.log(this.insumosData);
+     
     },
 
     agregarInsumo() {
       window.location.href = "/añadirInsumo/"; 
     },
     verDetalle(record) {
-      window.location.href = "/insumoDetalle/" + record.id;
-      console.log(record);
+      this.$router.push({ name: 'Insumo', params: {user: this.user, id:record.id }})
+      
     },
     agregarInsumoCompra(id){   
      this.$refs['modal'].show()  
@@ -134,11 +138,11 @@ export default {
       
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
-      console.log(resJson);
+      
       this.insumoEncontrado = await resJson.insumos.find(
         insumo => insumo.id === id
       );
-      console.log(this.insumoEncontrado);
+      
     }
   },
   computed: {
