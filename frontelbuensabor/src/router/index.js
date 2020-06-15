@@ -38,7 +38,7 @@ const routes = [
 
   {
     path: "/categoriaManufacturados",
-    name: "categoriaManufacturados",
+    name: "CategoriaManufacturados",
     component: () => import("../views/CategoriaManufacturados.vue"),
   },
   {
