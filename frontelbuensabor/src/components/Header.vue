@@ -38,7 +38,7 @@
             <b-nav-item :to="{ name: 'perfil' }">
               <b-img :src="require(`@/assets/images/sistema/userDefaultChico.png`)" alt="" id="foto" fluid class="botonImagenHeader">
               </b-img>
-              <label id="usuario">{{this.$props.user.nombre}}
+              <label id="usuario">{{this.user.nombre}}
               </label>
             </b-nav-item>
             <b-nav-item class="menuLateral" v-for="boton in botones" :key="boton[0]" v-bind:href="boton[3]">
@@ -59,7 +59,7 @@ export default {
   data() {
     return {    
       botones: [],
-      
+      user:{},      
       esCliente:false,
     };
   },
@@ -67,10 +67,12 @@ export default {
     this.verificaUsuario();
     
   },
-  props: ["imagen", "id",  "screenLength", "user"],
+  props: ["imagen", "id",  "screenLength",],
 
   methods: {
     verificaUsuario(){
+      this.user=JSON.parse(sessionStorage.getItem('user'));
+      
       var boton;
     
     if(this.user === "cliente"){      
@@ -84,7 +86,7 @@ export default {
     }else{
       
       this.esCliente=false;
-      if(this.$props.user.rol==="admin"){
+      if(this.user.rol==="admin"){
           boton = [0,"Stock de insumos","stock.png",""];
           this.botones.push(boton);
           boton = [1,"Catálogo","manufacturados.png",""];
@@ -94,13 +96,13 @@ export default {
           boton = [3,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);   
                 
-        }else if(this.$props.user.rol==="cocina"){
+        }else if(this.user.rol==="cocina"){
           boton = [0,"Manufacturados","manufacturados.png",""];
           this.botones.push(boton);
           boton = [1,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
 
-        }else if(this.$props.user.rol==="delivery"){
+        }else if(this.user.rol==="delivery"){
           boton = [0,"Pedidos","Pedidos.png",""];
           this.botones.push(boton);
           boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
@@ -108,7 +110,7 @@ export default {
           boton = [2,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
 
-        }else if(this.$props.user.rol==="cajero"){
+        }else if(this.user.rol==="cajero"){
           boton = [0,"Pedidos","Pedidos.png",""];
           this.botones.push(boton);
           boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];

@@ -153,6 +153,10 @@ export default {
       }
     },
 
+    modificarInsumo(){
+      this.$router.push({ path: "/modificarManufacturado/"+this.manufacturadoEncontrado.id})
+    }
+
   
 
 },

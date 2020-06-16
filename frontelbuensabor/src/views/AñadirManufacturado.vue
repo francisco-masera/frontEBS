@@ -1,7 +1,7 @@
 <template>
   <div>
-   <cabecera :user="user"></cabecera>
-  <div id="nav"><menuLateral :user="user"></menuLateral>
+   <cabecera></cabecera>
+  <div id="nav"><menuLateral></menuLateral>
   </div>
 
     <div class="costado"></div>
@@ -250,14 +250,17 @@ export default {
   },
 
   async modificar(){
-    if(parseInt(this.$route.params.id, 10)!=undefined){
-      this.esNuevo=false;
-        var parametroId = parseInt(this.$route.params.id, 10);
+    if(parseInt(this.$route.params.id, 10)!=undefined){      
+       var parametroId = parseInt(this.$route.params.id, 10);
         const res = await fetch("/articuloManufacturado.json");
         const resJson = await res.json();
         this.manufacturado = await resJson.manufacturados.find(
         (manu) => manu.id === parametroId
+        
       );
+      if(this.manufacturado!=undefined){
+          this.esNuevo=false;
+        }
       
         
       

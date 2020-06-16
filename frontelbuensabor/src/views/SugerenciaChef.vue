@@ -18,6 +18,7 @@
         :outlined="true"
         :borderless="true"
         class="tabla"
+        @row-dblclicked="verDetalle"
       >
         <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria" >{{row.item.categoria}}</b-badge>          
@@ -69,6 +70,10 @@ export default {
       });
       console.log(this.sugerenciasData);
     },
+    verDetalle(record){
+      
+      this.$router.push({ path: '/sugerencia/'+ record.id})
+    }
   },
   computed: {
     rows() {

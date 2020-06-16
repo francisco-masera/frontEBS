@@ -1,8 +1,8 @@
 <template>  
 
   <div v-if="userCocina">    
-    <cabecera :user="user"></cabecera>
-  <div id="nav"><menuLateral :user="user"></menuLateral>
+    <cabecera></cabecera>
+  <div id="nav"><menuLateral></menuLateral>
   </div>
 
     <div class="costado"></div>
@@ -40,6 +40,7 @@
         :borderless="true"
         id="tablaManufac"
         class="tabla"
+        @row-dblclicked="verDetalle"
       >
       </b-table>
       <b-button pill class="boton" @click="nuevoManufacturado" size="md">Nuevo</b-button>
@@ -127,25 +128,26 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 export default {
-  mounted() {
+  mounted() {    
     this.getManufacturados();
-    this.verificaUsuario();
+    this.userVerifica();
+    
   },
    components: {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
-  props: {
-        user:{},
-      },
+ 
   data() {
     return {
+      user:{},
       perPage: 7,
       currentPage: 1,
       tituloTabla: [],
       manufacturadosData: [],
       manufacturados:{},
-      userCocina:true
+      userCocina:true,
+      
     };
   },
   methods: {
@@ -155,31 +157,44 @@ export default {
       const res = await fetch("/manufacturados.json");
       const resJson = await res.json();
       this.manufacturadosData = resJson.manufacturados;
-      console.log(this.manufacturadosData);  
+        
       }else{
         this.tituloTabla=["denominación", "costo", "precio", "categoría","stock"]
          const res = await fetch("/manufacturadosAdmin.json");
       const resJson = await res.json();
       this.manufacturadosData = resJson.manufacturados;
-      console.log(this.manufacturadosData);
+      
      }
       
     },
     nuevoManufacturado() {
-      this.$router.push({ name: 'AñadirManufacturado', params: {user: this.user }})
+      this.$router.push({ name: 'AñadirManufacturado'})
     },
 
-    verificaUsuario(){
-      if(this.$props.user.rol=="cocina"){
-        this.userCocina=true;
-      }else{
-        this.userCocina=false;
+  userVerifica(){
+      this.user=JSON.parse(sessionStorage.getItem('user'));
+      if(this.user.rol != "cocina"){
+        if(this.user.rol !="admin"){
+            this.$router.push({ name: 'Home'})
+        }
+        
       }
+    },
+    verificaUsuario(){
+        this.user=JSON.parse(sessionStorage.getItem('user'));
+        
+        if(this.user.rol=="cocina"){
+          this.userCocina=true;
+        }else if(this.user.rol=="admin"){
+          this.userCocina=false;
+        }else{
+          this.$router.push({ name: 'Home'});
+        }
     },
 
     verDetalle(record){
       console.log("detalle")
-      this.$router.push({ path: '/manufacturadoDetalle/'+ record.id, params: {user: this.user }})
+      this.$router.push({ path: '/manufacturadoDetalle/'+ record.id})
     }
   },
   computed: {

@@ -196,6 +196,7 @@ p {
   font-weight: 400;
   font-size: 11pt;
   color: #151515;
+  
 }
 
 .infoProductoVenta{
@@ -228,6 +229,7 @@ p {
   padding-top: 50px;
   font-family: "Baloo Bhaina 2";
   color: #151515;
+  margin-bottom: 100px;
 }
 #imagenAgregar {
   width: 20px;

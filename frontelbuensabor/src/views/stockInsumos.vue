@@ -1,6 +1,6 @@
 <template>
   <div>
-    <cabecera :user="user"></cabecera>
+    <cabecera></cabecera>
     <div id="nav"><menuLateral :user="user"></menuLateral></div>
 
     <div class="costado"></div>
@@ -69,6 +69,7 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 export default {
   mounted() {
+    this.userVerifica();
     this.getInsumos();
     this.getInsumosService();
   },
@@ -76,11 +77,11 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
-      props: {
-        user:{},
-      },
+     
   data() {
     return {
+      user:{},
+
       perPage: 7,
       currentPage: 1,
       tituloTabla: [
@@ -101,6 +102,7 @@ export default {
         stockActual: 0,
         categoría: "",
       },
+      
        insumoEncontrado: {
             id:"",
             denominacion:"",
@@ -123,8 +125,14 @@ export default {
       
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
-      this.insumosData = resJson.insumos;
-      console.log(this.insumosData.json());
+      this.insumosData = resJson.insumos;  
+    },
+
+    userVerifica(){
+      this.user=JSON.parse(sessionStorage.getItem('user'));
+      if(this.user.rol != "admin"){
+        this.$router.push({ name: 'Home'})
+      }
     },
 
     getInsumosService(){

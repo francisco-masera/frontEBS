@@ -1,9 +1,7 @@
 <template>
   <div>
     <cabecera></cabecera>
-    <div id="nav">
-      <menuLateral></menuLateral>
-    </div>
+    <div id="nav"><menuLateral></menuLateral></div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -123,6 +121,7 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
+  
   data() {
     return {  
     rubroInsumos:[
@@ -158,6 +157,8 @@ export default {
     },
 
     async getInsumosxId() {
+      var active=sessionStorage.getItem('active');
+      console.log(active);
       var parametroId = parseInt(this.$route.params.id, 10);
       const res = await fetch("/insumos.json");
       const resJson = await res.json();

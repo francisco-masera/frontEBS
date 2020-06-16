@@ -3,7 +3,7 @@
   <b-card id="MenuLateral" border-variant="dark" >
         <img src="@/assets/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
         <b-card-text> 
-          <p id="nombre">{{this.$props.user.nombre}} {{this.$props.user.apellido}}</p>
+          <p id="nombre">{{this.user.nombre}} {{this.user.apellido}}</p>
           <p id="rol">{{rol}}</p>
           
           <b-nav-item class="botonesMenu" v-for="boton in botones"
@@ -32,64 +32,69 @@ export default {
     return {
      botones: [],
       rol:"",
+      user:{}
     };
   },
-  props: ["user"],
+
   methods: {
       cargaBotones(){
+        this.user=JSON.parse(sessionStorage.getItem('user'));
+        
+
         var boton;
 
-        if(this.$props.user.rol==="admin"){
-          boton = [0,"Stock de insumos","stock.png",""];
+        if(this.user.rol==="admin"){
+          boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
           this.botones.push(boton);
-          boton = [1,"Catálogo","manufacturados.png",""];
+          boton = [1,"Catálogo","manufacturados.png","/catalogoManu"];
           this.botones.push(boton);    
-          boton = [2,"Sugerencias del chef","sugerenciasChef.png",""];
+          boton = [2,"Sugerencias del chef","sugerenciasChef.png","/sugerenciaChef"];
           this.botones.push(boton);  
           boton = [3,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
-          boton = [4,"Cerrar sesión","cerrarSesion.png",""];
+          boton = [4,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  
           this.rol="Administrador";
                 
-        }else if(this.$props.user.rol==="cocina"){
-          boton = [0,"Manufacturados","manufacturados.png",""];
+        }else if(this.user.rol==="cocina"){
+          boton = [0,"Manufacturados","manufacturados.png","/catalogoManu"];
           this.botones.push(boton);
           boton = [1,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
-          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+          boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  
           this.rol="Cocinero";
-        }else if(this.$props.user.rol ==="cliente"){
+
+        }else if(this.user.rol ==="cliente"){
           boton = [0,"Mis direcciones","misDirecciones.png",""];
           this.botones.push(boton);
           boton = [1,"Mis pedidos","Pedidos.png",""];
           this.botones.push(boton);  
           boton = [2,"Mis datos","misDatos.png",""];
           this.botones.push(boton);  
-          boton = [3,"Cerrar sesión","cerrarSesion.png",""];
+          boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton); 
 
 
-        }else if(this.$props.user.rol==="delivery"){
+        }else if(this.user.rol==="delivery"){
           boton = [0,"Pedidos","Pedidos.png",""];
           this.botones.push(boton);
           boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
           this.botones.push(boton); 
            boton = [2,"Mis datos","misDatos.png",""];
           this.botones.push(boton);   
-          boton = [3,"Cerrar sesión","cerrarSesion.png",""];
+          boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton); 
           this.rol="Delivery"; 
 
-        }else if(this.$props.user.rol==="cajero"){
+        }else if(this.user.rol==="cajero"){
           boton = [0,"Pedidos","Pedidos.png",""];
           this.botones.push(boton);
           boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
           this.botones.push(boton); 
            boton = [3,"Mis datos","misDatos.png",""];
           this.botones.push(boton);   
-          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+          boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  
           this.rol="Cajero";
         }

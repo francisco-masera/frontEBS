@@ -20,20 +20,20 @@ const routes = [
     path: "/stockInsumos",
     name: "StockInsumos",
     component: () => import("../views/StockInsumos.vue"),
-    props: true
+    
   },
   {
     path: "/catalogoManu",
     name: "CatalogoManu",
     component: () => import("../views/CatalogoManu.vue"),
-    props: true
+    
   },
 
   {
     path: "/insumoDetalle/:id",
     name: "Insumo",
     component: () => import("../views/Insumo.vue"),
-    props: true
+    
   },
 
   {
@@ -55,6 +55,7 @@ const routes = [
     path: "/modificarInsumo/:id",
     name: "ModificarInsumo",
     component: () => import("../views/ModificarInsumo.vue"),
+    
   },
   {
     path: "/sugerenciaChef",
@@ -74,12 +75,13 @@ const routes = [
   {path: "/añadirManufacturado",
     name: "AñadirManufacturado",
     component: () => import("../views/AñadirManufacturado.vue"),
-    props: true
+    
   },
-  {path: "/añadirManufacturado/:id",
+
+  {path: "/modificarManufacturado/:id",
   name: "ModificarManufacturado",
   component: () => import("../views/AñadirManufacturado.vue"),
-  props: true
+ 
 },
 ];
 

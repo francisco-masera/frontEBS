@@ -58,7 +58,7 @@
 
 export default {
   mounted() {
-    
+    this.limpiaSesion();
   },
  
   data() {
@@ -74,13 +74,23 @@ export default {
   },
 
   methods: {
+   
+   limpiaSesion(){
+      sessionStorage.clear();
+   },
+
    async ingresar(){
       if(this.email!="" && this.contraseña!=""){        
         await this.buscaEmpleados();
         
         if(this.user !=undefined && this.user.contrasenia == this.contraseña){
-          if(this.user.rol =="admin"){
-            this.$router.push({ name: 'StockInsumos', params: {user: this.user }})
+          if(!this.user.baja){
+            sessionStorage.setItem('user',JSON.stringify(this.user));
+            sessionStorage.setItem('active',true)
+              if(this.user.rol =="admin"){            
+            
+             //this.$router.push({ name: 'StockInsumos', params: {user: this.user }})
+            this.$router.push({ name: 'StockInsumos'})
           }else if(this.user.rol =="delivery"){
               window.location="/";
           }else if(this.user.rol =="cocina"){
@@ -91,6 +101,8 @@ export default {
           }else{
             this.esCliente=true;
           }
+          }
+          
           
         }else{
           this.alertDatosErroneos=true;          

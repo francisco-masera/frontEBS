@@ -1,7 +1,7 @@
 <template>
   <div>
-     <cabecera :user="user"></cabecera>
-    <div id="nav"><menuLateral :user="user"></menuLateral></div>
+     <cabecera></cabecera>
+    <div id="nav"><menuLateral></menuLateral></div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -150,9 +150,7 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
-   props: {
-        user:{},
-      },
+
   data() {
     return {
       perPage: 4,
