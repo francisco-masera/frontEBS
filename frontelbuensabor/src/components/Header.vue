@@ -59,7 +59,7 @@ export default {
   data() {
     return {    
       botones: [],
-      user:"cliente",
+      user:"admin",
       nombre:"Pepito Gomez",
       esCliente:false,
     };
