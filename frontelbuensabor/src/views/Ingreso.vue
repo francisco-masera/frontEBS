@@ -55,7 +55,7 @@
 </template>
 
 <script>
-
+import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.limpiaSesion();
@@ -69,7 +69,7 @@ export default {
       alertDatosNull:false,
       alertDatosErroneos:false,
       esCliente:false,
-     
+     service : new Service()
     };
   },
 
@@ -121,7 +121,14 @@ export default {
 
     async buscaEmpleados(){
       
-      await this.axios.get('http://localhost:9001/buensabor/empleado/')
+      await this.service.getAll("empleado").then(data=>{
+        this.user = data.find((empleado) => empleado.usuario === this.email
+            );
+      }); 
+           
+          
+
+      /*await this.axios.get('http://localhost:9001/buensabor/empleado/')
           .then(res =>{
             const resJson = res.data;
             this.user = resJson.find(
@@ -133,7 +140,7 @@ export default {
             this.alertDatosErroneos=true;  
             console.log(e);
            
-          })
+          })*/
       } 
   },
 
