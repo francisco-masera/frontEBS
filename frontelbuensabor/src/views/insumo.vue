@@ -144,7 +144,7 @@ export default {
     this.getOrdenCompra();
     //this.getInsumoService();
     //this.saveInsumo();
-    this.updateInsumo();
+    //this.updateInsumo();
   },
   components: {
     menuLateral: MenuLateral,

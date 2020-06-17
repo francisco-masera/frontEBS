@@ -123,9 +123,12 @@ export default {
       console.log(this.insumosData.json());
     },
 
-    getInsumosService(){
-      this.insumosDataService = this.service.getAll("insumo"); 
-      console.log("Data: " + this.insumosDataService); 
+    async getInsumosService(){
+      let datos = undefined;
+      await this.service.getAll("insumo").then(data=>{
+        datos = data;
+      }); 
+      console.log("Data: " + datos[0].idInsumo); 
     },
 
     agregarInsumo() {
