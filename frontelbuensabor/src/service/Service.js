@@ -13,12 +13,12 @@ const config = {
 
 export default class Service {
   async getAll(subPath) {
-    try {
-      let response = await axios.get(serverUrl + "/" + subPath + "/", config);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
+    let responseEntity = [];
+    await axios
+      .get(serverUrl + "/" + subPath + "/", config)
+      .then((response) => (responseEntity = response.data))
+      .catch((error) => console.log(error));
+    return responseEntity;
   }
   async getOne(subPath, id) {
     try {
