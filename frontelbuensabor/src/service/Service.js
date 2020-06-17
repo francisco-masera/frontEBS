@@ -12,6 +12,7 @@ const config = {
 };
 
 export default class Service {
+
   async getAll(subPath) {
     let responseEntity = [];
     await axios
@@ -20,6 +21,7 @@ export default class Service {
       .catch((error) => console.log(error));
     return responseEntity;
   }
+
   async getOne(subPath, id) {
     try {
       let response = await axios.get(
