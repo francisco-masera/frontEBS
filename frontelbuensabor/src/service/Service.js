@@ -12,14 +12,8 @@ const config = {
 };
 
 export default class Service {
-  async getAll(subPath) {
-    try {
-      let response = await axios.get(serverUrl + "/" + subPath + "/", config);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  
+
   async getOne(subPath, id) {
     try {
       let response = await axios.get(
