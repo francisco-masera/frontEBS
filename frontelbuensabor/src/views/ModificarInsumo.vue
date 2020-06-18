@@ -22,9 +22,11 @@
                 </label>
                 <b-form-input  class="campoForm" id="stockMin" v-model="insumoEncontrado.stockMin">
                 </b-form-input>
+                <br/>
                 <label class="labelForm">
                   Stock máximo
                 </label>
+
                 <b-form-input  class="campoForm" id="stockMax" v-model="insumoEncontrado.stockMax">
                 </b-form-input>*
             </div>
@@ -113,6 +115,7 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.getInsumosxId();
@@ -124,20 +127,11 @@ export default {
   
   data() {
     return {  
-    rubroInsumos:[
-        {id:1, denominacion:"Bebidas"},
-        {id:2, denominacion:"Lacteos"},
-        {id:11, denominacion:"con alcohol"},
-        {id:12, denominacion:"sin alcochol"},
-        {id:21, denominacion:"Leche"},
-        {id:22, denominacion:"Quesos"},
-        {id:111, denominacion:"Vinos"},
-        {id:112, denominacion:"Cerveza"},
-        {id:222, denominacion:"Cremoso"},
-    ],
+    
       
       insumoEncontrado:[],
       esInsumoVenta: false,
+      service: new Service()
     };
     
   },
@@ -157,16 +151,15 @@ export default {
     },
 
     async getInsumosxId() {
-      var active=sessionStorage.getItem('active');
-      console.log(active);
-      var parametroId = parseInt(this.$route.params.id, 10);
-      const res = await fetch("/insumos.json");
-      const resJson = await res.json();
-      this.insumoEncontrado = await resJson.insumos.find(
-        (insumo) => insumo.id === parametroId
-      );
+     
+      var parametroId = parseInt(this.$route.params.id);
+
+      console.log(parametroId);
+      await this.service.getOne("insumo", parametroId).then((data) => {
+      
+      this.insumoEncontrado = data;
       console.log(this.insumoEncontrado);
-      this.verificaInsumo();
+       });
      
     },
     verificaInsumo() {
