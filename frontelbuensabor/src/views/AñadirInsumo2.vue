@@ -86,7 +86,9 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 export default {
-  mounted() {},
+  mounted() {
+ 
+  },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
@@ -102,16 +104,14 @@ export default {
         .value;
       let imagenInsumo = document.getElementById("imagenInsumo").value;
       let urlInsumo = document.getElementById("urlInsumo").value;
-      window.localStorage.setItem("name", precioVentaInsumo);
-      window.localStorage.setItem("name", descripcionInsumo);
-      window.localStorage.setItem("name", imagenInsumo);
-      window.localStorage.setItem("name", urlInsumo);
-
-      console.log(precioVentaInsumo);
-      console.log(descripcionInsumo);
-      console.log(imagenInsumo);
-      console.log(urlInsumo);
+      window.localStorage.setItem("precioVentaInsumo", precioVentaInsumo);
+      window.localStorage.setItem("descripcionInsumo", descripcionInsumo);
+      window.localStorage.setItem("imagenInsumo", imagenInsumo);
+      window.localStorage.setItem("urlInsumo", urlInsumo);
+      window.location.href = "/añadirInsumo3/";
+     
     },
+   
   },
 };
 </script>

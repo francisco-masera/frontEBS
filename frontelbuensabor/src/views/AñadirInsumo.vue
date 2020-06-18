@@ -123,18 +123,18 @@ export default {
       let uMedidaInsumo =
         selectorUnidadMedida.options[selectorUnidadMedida.selectedIndex].text;
       let directoAVentaInsumo = document.getElementById("checkbox-1").checked
-        ? "si"
-        : "no";
+        ? "true"
+        : "false";
       let esExtraInsumo = document.getElementById("checkbox-2").checked
-        ? "si"
-        : "no";
+        ? "true"
+        : "false";
 
       window.localStorage.setItem("nombreInsumo", nombreInsumo);
       window.localStorage.setItem("stockMinimo", stockMinInsumo);
-      window.localStorage.setItem("name", stockMaxInsumo);
-      window.localStorage.setItem("name", uMedidaInsumo);
-      window.localStorage.setItem("name", esExtraInsumo);
-      window.localStorage.setItem("name", directoAVentaInsumo);
+      window.localStorage.setItem("stockMaxInsumo", stockMaxInsumo);
+      window.localStorage.setItem("selectUnidad", uMedidaInsumo);
+      window.localStorage.setItem("checkbox-1", esExtraInsumo);
+      window.localStorage.setItem("checkbox-2", directoAVentaInsumo);
 
       window.location.href = "/añadirInsumo2/";
     },

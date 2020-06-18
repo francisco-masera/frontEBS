@@ -34,10 +34,10 @@ export default class Service {
     }
   }
 
-  async save(subPath, entity, id) {
+  async save(subPath, entity) {
     try {
-      await axios.post(serverUrl + "/" + subPath + "/", entity, config);
-      return this.getOne(subPath, id);
+      let response = await axios.post(serverUrl + "/" + subPath + "/", entity, config);
+      return response.data;
     } catch (error) {
       console.log(error);
     }
