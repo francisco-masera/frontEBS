@@ -9,7 +9,7 @@
       <div v-if="esInsumoVenta">
         <img :src="'http://localhost:9001/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
         <h3>{{ insumoEncontrado.insumo.denominacion }}
-          <b-button size="sm"  @click="modificarInsumo(insumoEncontrado.insumo.id)" class="botonImagen">
+          <b-button size="sm"  @click="modificarInsumo(insumoEncontrado.insumo.idInsumo)" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
           <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
@@ -179,12 +179,13 @@ export default {
        var parametroId = parseInt(this.$route.params.id, 16);
         await this.service.getOne("insumo",parametroId).then(data=>{
         insumo = data;
+        
         if(!insumo.esInsumo){          
           this.getInsumoVentaxId();
           
         }else{
           this.insumoEncontrado=insumo;
-          console.log(this.insumoEncontrado);
+          
           this.getUltimaCompra();
           this.getOrdenCompra();
           this.verificaStockInsumo();
@@ -200,9 +201,9 @@ export default {
       var parametroId = parseInt(this.$route.params.id, 16);
       await this.service.getOne("insumoVenta/insumo",parametroId).then(data=>{
         this.insumoEncontrado = data[0];
-        console.log(this.insumoEncontrado);        
+              
         this.esInsumoVenta=true;
-        console.log(this.esInsumoVenta);
+       
         this.getUltimaCompra();
         this.getOrdenCompra();
         this.verificaStockVenta();
@@ -253,7 +254,7 @@ export default {
           "cantidad":o.cantidad,"precioUnitario":o.precioUnitario,"precioTotal":precioTotal});
         });       
         
-        console.log(this.ordenCompra);
+        
        
       });
     },

@@ -19,13 +19,13 @@ const routes = [
   {
     path: "/stockInsumos",
     name: "StockInsumos",
-    component: () => import("../views/StockInsumos.vue"),
+    component: () => import("../views/stockInsumos.vue"),
     
   },
   {
     path: "/catalogoManu",
     name: "CatalogoManu",
-    component: () => import("../views/CatalogoManu.vue"),
+    component: () => import("../views/catalogoManu.vue"),
     
   },
 

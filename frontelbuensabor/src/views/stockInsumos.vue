@@ -145,8 +145,9 @@ export default {
       agregarInsumo() {
       window.location.href = "/añadirInsumo/"; 
     },
-    verDetalle(record) {
-      this.$router.push({ name: 'Insumo', params: {user: this.user, id:record.id }})
+    
+     verDetalle(record) {
+      window.location.href = "/insumoDetalle/" + record.idInsumo;
       
     },
     agregarInsumoCompra(id){   
