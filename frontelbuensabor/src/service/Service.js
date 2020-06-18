@@ -1,6 +1,7 @@
 import axios from "axios";
 
 var serverUrl = "http://localhost:9001/buensabor";
+var responseEntity = [];
 const config = {
   headers: {
     "Content-type": "application/json; charset=utf-8",
@@ -12,9 +13,7 @@ const config = {
 };
 
 export default class Service {
-
   async getAll(subPath) {
-    let responseEntity = [];
     await axios
       .get(serverUrl + "/" + subPath + "/", config)
       .then((response) => (responseEntity = response.data))
@@ -23,29 +22,19 @@ export default class Service {
   }
 
   async getOne(subPath, id) {
-    let responseEntity = [];
     await axios
-      .get(serverUrl + "/" + subPath + "/"+ id, config)
+      .get(serverUrl + "/" + subPath + "/" + id, config)
       .then((response) => (responseEntity = response.data))
       .catch((error) => console.log(error));
     return responseEntity;
   }
 
- /* async getOne(subPath, id) {
-    try {
-      let response = await axios.get(
-        serverUrl + "/" + subPath + "/" + id,
-        config
-      );
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  }*/
-
   async save(subPath, entity, id) {
     try {
-      await axios.post(serverUrl + "/" + subPath + "/", entity, config);
+      await axios
+        .post(serverUrl + "/" + subPath + "/", entity, config)
+        .then((response) => (responseEntity = response.data))
+        .catch((error) => console.log(error));
       return this.getOne(subPath, id);
     } catch (error) {
       console.log(error);
@@ -54,8 +43,23 @@ export default class Service {
 
   async update(subPath, entity, id) {
     try {
-      await axios.put(serverUrl + "/" + subPath + "/" + id, entity, config);
+      await axios
+        .put(serverUrl + "/" + subPath + "/" + id, entity, config)
+        .then((response) => (responseEntity = response.data))
+        .catch((error) => console.log(error));
       return this.getOne(subPath, id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async delete(subPath, id) {
+    try {
+      await axios
+        .delete(serverUrl + "/" + subPath + "/" + id, config)
+        .then((response) => (this.responseEntity = response.status))
+        .catch((error) => console.log(error));
+      return this.responseEntity;
     } catch (error) {
       console.log(error);
     }

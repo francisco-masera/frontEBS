@@ -170,6 +170,7 @@ export default {
       ordenCompra: [],
       stock: "",
       ultimaCompra:[],
+      estadoEliminado:null,
       service : new Service(),
     };
   },
@@ -191,7 +192,7 @@ export default {
           this.verificaStockInsumo();
           
         }
-      }); 
+      });   
     },
 
    
@@ -229,7 +230,13 @@ export default {
       console.log(this.insumoService);
     },
 
-    
+
+    async eliminarInsumo(){
+      var parametroId = parseInt(this.$route.params.id);
+      await this.service.delete("insumo", parametroId).then((response)=>this.estadoEliminado= response);
+      console.log(this.estadoEliminado);
+      
+    },
 
     async getOrdenCompra() {
        var parametroId = parseInt(this.$route.params.id, 16);
