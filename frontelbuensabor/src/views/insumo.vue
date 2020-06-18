@@ -7,7 +7,7 @@
     <b-container class="informacion">
       <h1>Detalle de insumo</h1>
       <div v-if="esInsumoVenta">
-        <img :src="'@/assets/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
+        <img :src="'http://localhost:9001/images/' + insumoEncontrado.imagen" class="imagenProducto"/>
         <h3>{{ insumoEncontrado.insumo.denominacion }}
           <b-button size="sm"  @click="modificarInsumo(insumoEncontrado.insumo.id)" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
@@ -39,7 +39,7 @@
             </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text> {{ultimaCompra.precioUnitario}}</b-card-text>
+            <b-card-text>${{ultimaCompra.precioUnitario}}</b-card-text>
           </b-card>
           <b-card header="Precio de venta" class="tarjetaInfo">
             <b-card-text>${{ insumoEncontrado.precioVenta }} </b-card-text>
@@ -53,9 +53,7 @@
                 <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
               </b-button>
             </template>
-            <template v-slot:cell(precioTotal)>
-               ordenCompra.precioUnitario 
-            </template>
+            
           </b-table>
           <b-button pill class="boton" size="md">Añadir </b-button>
           <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
@@ -104,9 +102,7 @@
                 <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar" />
               </b-button>
             </template>
-            <template v-slot:cell(precioTotal)>
-              {{ ordenCompra.precioUnitario*ordenCompra.cantidad }}
-            </template>
+           
           </b-table>
           <b-button pill class="boton" size="md">Añadir </b-button>
           <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
@@ -141,10 +137,7 @@ import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.getInsumoxId();
-   // this.getOrdenCompra();
-   
-    //this.saveInsumo();
-    //this.updateInsumo();
+  
   },
   components: {
     menuLateral: MenuLateral,
@@ -162,11 +155,16 @@ export default {
         "precioTotal",
         "acción",
       ],
+      oCompra:{
+        "id":0,
+        "fechaDeCompra":0,
+        "cantidad":0,
+        "precioUnitario":0,
+        "precioTotal":0
+      },
       esInsumoVenta: false,
-      insumosData: [],
       insumoEncontrado: [],
-      insumoVentaEncontrado: [],
-      insumoService:[],
+      insumoVentaEncontrado: [],     
       ordenCompra: [],
       stock: "",
       ultimaCompra:[],
@@ -215,7 +213,7 @@ export default {
     },
 
     
-    async saveInsumo(){
+    /*async saveInsumo(){
       const res =  await fetch("/saveInsumo.json");
       const resJson = await res.json();
       this.insumoService = this.service.save("insumo", resJson.insumos[0], resJson.insumos[0].id);
@@ -228,7 +226,7 @@ export default {
       const resJson = await res.json();
       this.insumoService = this.service.update("insumo", resJson.insumos[0], resJson.insumos[0].id);
       console.log(this.insumoService);
-    },
+    },*/
 
 
     async eliminarInsumo(){
@@ -241,8 +239,21 @@ export default {
     async getOrdenCompra() {
        var parametroId = parseInt(this.$route.params.id, 16);
       await this.service.getOne("compras/historialCompras",parametroId).then(data=>{
-        this.ordenCompra = data;
-        console.log(this.ordenCompra);        
+        data.forEach(o => {
+          
+          var dateStr=o.fechaCompra; //returned from mysql timestamp/datetime field
+          var a=dateStr.slice(2,-15);
+          console.log(dateStr);
+          console.log(a);
+          var m=dateStr.slice(7,-12);
+          var d=dateStr.slice(10,-9);          
+          var formatedDate = d+"/"+m+"/"+a;
+          var precioTotal = o.cantidad*o.precioUnitario;
+         this.ordenCompra.push({"id":o.id,"fechaDeCompra":formatedDate,
+          "cantidad":o.cantidad,"precioUnitario":o.precioUnitario,"precioTotal":precioTotal});
+        });       
+        
+        console.log(this.ordenCompra);
        
       });
     },
