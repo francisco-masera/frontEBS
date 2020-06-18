@@ -83,18 +83,10 @@ const routes = [
     name: "AñadirManufacturado",
     component: () => import("../views/AñadirManufacturado.vue"),
   },
-<<<<<<< HEAD
   {path: "/modificarManufacturado/:id",
   name: "ModificarManufacturado",
   component: () => import("../views/AñadirManufacturado.vue"),
 },
-=======
-  {
-    path: "/añadirManufacturado/:id",
-    name: "AñadirManufacturadoID",
-    component: () => import("../views/AñadirManufacturado.vue"),
-  },
->>>>>>> issue#57
 ];
 
 const router = new VueRouter({
