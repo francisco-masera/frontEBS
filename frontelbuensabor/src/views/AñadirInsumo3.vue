@@ -10,11 +10,11 @@
       <h1>Añadir insumo</h1>
       <h2>Categorías</h2>
          <div
-          v-for="cate in categorias"
+          v-for="cate in categoriasData"
           :key="cate.id"
           style="margin-top:15px"
         >
-         <b-button pill class="boton" size="md">{{cate.nombre}}</b-button>  
+         <b-button pill class="boton" size="md" id="botonCategiria" @click="guardaCategoria()">{{cate.denominacion}}</b-button>  
         </div>
 
         <div class="botonesInsu">
@@ -27,7 +27,7 @@
 
   <b-modal ref="modal" hide-footer hide-header centered title>
     <p class="modalTitulo">Insumo agregado con éxito!</p>
-     <p class="botonModal"><b-button pill size="md" class="boton">Aceptar</b-button></p> 
+     <p class="botonModal"><b-button pill size="md" class="boton" @click="retornaAlStock()">Aceptar</b-button></p> 
   </b-modal>
 </div>
     <router-view />
@@ -36,9 +36,12 @@
 
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
+import Service from "@/service/Service.js";
 export default {
   mounted() {
-    this.getCategorias();
+   
+   this.getCategorias();
+   
   },
   components: {
     menuLateral: MenuLateral
@@ -46,25 +49,93 @@ export default {
   data() {
     return {
      
-      
-     
-    categorias:[
-        {id:1,nombre:"Bebidas",subcategoria:["Gasificada","Con alcohol","Sin alcohol"]},
-        {id:2,nombre:"Almacen",subcategoria:["Postres","Embutidos"]},
-        {id:3,nombre:"Panificados",subcategoria:["Harinas","Panes"]}
-
-    ]
        
+    categoriasData: [],
+  
+     stock:{
+     "actual":0,
+     "maximo":0,
+     "minimo":0 
+     },
+
+     stockRetornado:{
+     "id":0,
+     "actual":0,
+     "maximo":0,
+     "minimo":0 
+     },
+
+    insumo:{
+      "baja":false,
+      "denominacion":'',
+      "esExtra":false,
+      "esInsumo":false,
+      "unidadMedida":'',
+      "stock": {
+      "id": 0,
+       },
+      "rubroInsumo":{
+        "id":0
+      }
+      }, 
+
+     service: new Service(),  
       
     };
   },
   methods: {
-   modalGuardaInsumo() {
-         this.$refs['modal'].show()   
-      },  
+   async modalGuardaInsumo() {
+     this.stock.actual = 0;
+     this.stock.maximo = localStorage.getItem("stockMaxInsumo");
+     this.stock.minimo = localStorage.getItem("stockMinimo");
+     await this.service.save("stock",this.stock).then(data => {
+     this.stockRetornado = data;
+    
+     
+      });
+     this.insumo.baja = 0;
+     this.insumo.denominacion = localStorage.getItem("nombreInsumo");
+     if(localStorage.getItem("checkbox-2")==='true'){
+       this.insumo.esExtra = true;
+     }else{
+       this.insumo.esExtra = false;
+     }
+     if(localStorage.getItem("checkbox-1")==='true'){
+      this.insumo.esInsumo = false; 
+     }else{
+       this.insumo.esInsumo = true; 
+     }
+     this.insumo.unidadMedida = localStorage.getItem("selectUnidad");
+     this.insumo.stock.id = this.stockRetornado.id;
+     this.insumo.rubroInsumo.id = 2; 
+     await this.service.save("insumo",this.insumo).then(data =>{
+     this.insumo = data;
+     })
+     this.$refs['modal'].show();
+
+   },
+        
+      retornaAlStock(){
+         window.location.href = "/stockInsumos/";
+      },
+      
+     
+
+      guardaDatos(){
+         let botonCategiria = document.getElementById("botonCategoria");
+         window.localStorage.setItem("botonCategoria", botonCategiria);
+         console.log(localStorage.getItem("botonCategoria"));
+      },
+
+     async getCategorias(){
+       await this.service.getAll("rubroInsumo").then(data => {
+       this.categoriasData = data; 
+      
+      });
+       console.log(this.categoriasData);
    
   },
-  
+  }
   
 };
 </script>
