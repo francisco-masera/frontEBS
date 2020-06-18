@@ -19,7 +19,11 @@
           </b-button>
         </template>
         <template v-slot:cell(categoria)="row">
-          <b-badge class="Badgecategoria" >{{row.item.categoria}}</b-badge>
+          <b-badge class="Badgecategoria" >{{row.item.rubroInsumo.denominacion}}</b-badge>
+          
+        </template>
+        <template v-slot:cell(stockActual)="row">
+         {{row.item.stock.actual}}
           
         </template>
       </b-table>
@@ -71,7 +75,7 @@ export default {
   mounted() {
     this.userVerifica();
     this.getInsumos();
-    this.getInsumosService();
+
   },
   components: {
     menuLateral: MenuLateral,
@@ -86,14 +90,14 @@ export default {
       currentPage: 1,
       tituloTabla: [
         "denominacion",
-        "unidad",
-        "costo",
-        "stockActual",
+        "unidadMedida",
         "categoria",
+        "stockActual",
+       "costo",
         "acción",
       ],
       insumosData: [],
-      insumosDataService:[],
+    
       insumo: {
         id: 0,
         denominacion: "",
@@ -121,13 +125,6 @@ export default {
     };
   },
   methods: {
-    async getInsumos() {
-      
-      const res = await fetch("/insumos.json");
-      const resJson = await res.json();
-      this.insumosData = resJson.insumos;  
-    },
-
     userVerifica(){
       this.user=JSON.parse(sessionStorage.getItem('user'));
       if(this.user.rol != "admin"){
@@ -135,12 +132,17 @@ export default {
       }
     },
 
-    getInsumosService(){
-      this.insumosDataService = this.service.getAll("insumo"); 
-      console.log("Data: " + this.insumosDataService); 
+     async getInsumos() {
+   
+      await this.service.getAll("insumo").then(data=>{
+        this.insumosData = data;
+        console.log(this.insumosData);
+      }); 
+     
+
     },
 
-    agregarInsumo() {
+      agregarInsumo() {
       window.location.href = "/añadirInsumo/"; 
     },
     verDetalle(record) {

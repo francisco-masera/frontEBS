@@ -32,7 +32,7 @@ const routes = [
   {
     path: "/insumoDetalle/:id",
     name: "Insumo",
-    component: () => import("../views/Insumo.vue"),
+    component: () => import("../views/insumo.vue"),
     
   },
 
@@ -77,7 +77,6 @@ const routes = [
     component: () => import("../views/AñadirManufacturado.vue"),
     
   },
-
   {path: "/modificarManufacturado/:id",
   name: "ModificarManufacturado",
   component: () => import("../views/AñadirManufacturado.vue"),

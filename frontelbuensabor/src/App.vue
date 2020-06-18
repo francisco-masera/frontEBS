@@ -87,6 +87,7 @@ p {
   width: 105px;
   height: 30px;
   margin:5px;
+  margin-bottom: 90px;
 }
 
 .boton:hover{
