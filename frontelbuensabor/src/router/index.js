@@ -38,16 +38,20 @@ const routes = [
     name: "CategoriaManufacturados",
     component: () => import("../views/CategoriaManufacturados.vue"),
   },
-  {
-    path: "/añadirInsumo2",
-    name: "AñadirInsumo2",
-    component: () => import("../views/AñadirInsumo2.vue"),
-  },
+
   {
     path: "/añadirInsumo",
     name: "AñadirInsumo",
     component: () => import("../views/AñadirInsumo.vue"),
   },
+
+  {
+    path: "/añadirInsumo2",
+    name: "AñadirInsumo2",
+    component: () => import("../views/AñadirInsumo2.vue"),
+  },
+
+  
   {
     path: "/modificarInsumo/:id",
     name: "ModificarInsumo",
@@ -63,19 +67,22 @@ const routes = [
     name: "manufacturado",
     component: () => import("../views/Manufacturado.vue"),
   },
-  {path: "/sugerencia/:id",
+  {
+    path: "/sugerencia/:id",
     name: "SugerenciaChefDetalle",
     component: () => import("../views/SugerenciaChefDetalle.vue"),
   },
 
-  {path: "/añadirManufacturado",
+  {
+    path: "/añadirManufacturado",
     name: "AñadirManufacturado",
     component: () => import("../views/AñadirManufacturado.vue"),
   },
-  {path: "/añadirManufacturado/:id",
-  name: "AñadirManufacturado",
-  component: () => import("../views/AñadirManufacturado.vue"),
-},
+  {
+    path: "/añadirManufacturado/:id",
+    name: "AñadirManufacturadoID",
+    component: () => import("../views/AñadirManufacturado.vue"),
+  },
 ];
 
 const router = new VueRouter({
