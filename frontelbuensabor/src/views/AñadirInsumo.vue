@@ -16,7 +16,7 @@
               <label class="mr-sm-2" for="inline-form-custom-select-pref">Nombre</label>
             </td>
             <td>
-              <b-form-input v-model="text"></b-form-input>
+              <b-form-input v-model="nombre" id="nombre"></b-form-input>
             </td>
           </tr>
           <tr>
@@ -24,13 +24,13 @@
               <label class="mr-sm-2" for="inline-form-custom-input-pref">Stock mínimo</label>
             </td>
             <td>
-              <b-form-input v-model="text"></b-form-input>
+              <b-form-input v-model="minimo" type="number"></b-form-input>
             </td>
             <td>
               <label class="mr-sm-2" for="inline-form-custom-input-pref">Stock máximo</label>
             </td>
             <td>
-              <b-form-input v-model="text"></b-form-input>
+              <b-form-input v-model="maximo" type="number"></b-form-input>
             </td>
           </tr>
           <tr>
@@ -40,22 +40,23 @@
             <td>
               <b-form-select
                 id="inline-form-custom-select-pref"
+                v-model="medida"
                 class="mb-2 mr-sm-2 mb-sm-0"
-                :options="[{ text: 'Seleccione...', value: null }, 'Unidades', 'Kilogramos', 'Mililitros']"
+                :options="[{ text: 'Seleccione...', value: null }, 'u', 'kg', 'lt','gr']"
                 :value="null"
               ></b-form-select>
             </td>
             <td>
               <b-form-checkbox
                 id="checkbox-1"
-                v-model="status"
+                v-model="checkVenta"
                 name="checkbox-1"
                 value="venta"
                 unchecked-value="no_venta"
               >Directo a venta</b-form-checkbox>
               <b-form-checkbox
                 id="checkbox-1"
-                v-model="status"
+                v-model="checkExtra"
                 name="checkbox-1"
                 value="extra"
                 unchecked-value="no_extra"
@@ -68,7 +69,7 @@
               <b-button pill class="boton" size="md">Cancelar</b-button>
             </td>
             <td>
-              <b-button pill class="boton" size="md">Siguiente</b-button>
+              <b-button pill class="boton" size="md" @click="guardaDatos()">Siguiente</b-button>
             </td>
           </tr>
         </table>
@@ -88,9 +89,14 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
-
+ 
   methods: {
-   
+   guardaDatos(){
+    
+     var inputNombre = document.getElementById("nombre");
+     localStorage.setItem("name", inputNombre.value);
+     window.location.href = "/añadirInsumo2/"; 
+   }
   }
 };
 </script>

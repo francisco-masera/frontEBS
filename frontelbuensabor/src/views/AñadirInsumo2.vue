@@ -16,7 +16,7 @@
               <label class="mr-sm-2" for="inline-form-custom-select-pref">Precio de venta</label>
             </td>
             <td>
-              <b-form-input v-model="text"></b-form-input>
+              <b-form-input v-model="text">{{this.nombre}}</b-form-input>
             </td>
           </tr>
           <tr>
@@ -65,13 +65,27 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
-  mounted() {},
+  mounted() {
+     this.getNombre();
+  },
   components: {
     menuLateral: MenuLateral
   },
+   data(){
+     return{
+     
+     }
+     
+   },
+  methods: {
+    getNombre(){
+      var nombreRecup = sessionStorage.getItem("name");
+      console.log(nombreRecup);
+    }
 
-  methods: {},
-  computed: {}
+  },
+ 
+  
 };
 </script>
 <style>
