@@ -29,13 +29,11 @@ export default class Service {
     return responseEntity;
   }
 
-  async save(subPath, entity, id) {
+  async save(subPath, entity) {
     try {
-      await axios
-        .post(serverUrl + "/" + subPath + "/", entity, config)
-        .then((response) => (responseEntity = response.data))
-        .catch((error) => console.log(error));
-      return this.getOne(subPath, id);
+      let response = await axios.post(serverUrl + "/" + subPath + "/", entity, config);
+      return response.data;
+
     } catch (error) {
       console.log(error);
     }
