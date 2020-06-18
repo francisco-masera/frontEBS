@@ -13,13 +13,18 @@
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
           <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
-            <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
+            <img
+              src="@/assets/images/sistema/eliminar.png"
+              id="imagenAgregar"
+            />
           </b-button>
         </h3>
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="Badgecategoria">{{ insumoEncontrado.insumo.rubroInsumo.denominacion }}</b-badge>
+          <b-badge class="Badgecategoria">{{
+            insumoEncontrado.insumo.rubroInsumo.denominacion
+          }}</b-badge>
         </div>
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
@@ -27,15 +32,21 @@
         </div>
         <div id="infoProductoVenta">
           <b-card header="Stock actual" class="tarjetaInfo">
-            <b-card-text>{{ insumoEncontrado.insumo.stock.actual }} {{ insumoEncontrado.insumo.unidadMedida }}
+            <b-card-text
+              >{{ insumoEncontrado.insumo.stock.actual }}
+              {{ insumoEncontrado.insumo.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock min" class="tarjetaInfo">
-            <b-card-text >{{ insumoEncontrado.insumo.stock.minimo }} {{ insumoEncontrado.insumo.unidadMedida }}
+            <b-card-text
+              >{{ insumoEncontrado.insumo.stock.minimo }}
+              {{ insumoEncontrado.insumo.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock max" class="tarjetaInfo">
-            <b-card-text>{{ insumoEncontrado.insumo.stock.maximo }} {{ insumoEncontrado.insumo.unidadMedida }}
+            <b-card-text
+              >{{ insumoEncontrado.insumo.stock.maximo }}
+              {{ insumoEncontrado.insumo.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
@@ -47,16 +58,43 @@
         </div>
         <div class="HistorialCompra">
           Historial de Compra
-          <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
+          <b-table
+            hover
+            responsive
+            small
+            :items="ordenCompra"
+            :fields="tituloTabla"
+            :outlined="true"
+            :per-page="perPage"
+            :current-page="currentPage"
+            :borderless="true"
+            id="tablaInsumos"
+            class="tabla"
+          >
             <template v-slot:cell(acción)="row">
-              <b-button size="sm" @click="eliminarRegistro(row.item.id)" class="botonImagen">
-                <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
+              <b-button
+                size="sm"
+                @click="eliminarRegistro(row.item.id)"
+                class="botonImagen"
+              >
+                <img
+                  src="@/assets/images/sistema/eliminar.png"
+                  id="imagenAgregar"
+                />
               </b-button>
             </template>
             
           </b-table>
           <b-button pill class="boton" size="md">Añadir </b-button>
-          <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
+          <b-pagination
+            v-model="currentPage"
+            size="sm"
+            align="right"
+            :total-rows="rows"
+            :per-page="perPage"
+            aria-controls="my-tablaInsumos"
+            class="paginador"
+          >
           </b-pagination>
         </div>
       </div>
@@ -64,69 +102,121 @@
       <div v-else id="insumo">
         <h3>
           {{ insumoEncontrado.denominacion }}
-          <b-button size="sm" @click="modificarInsumo(insumoEncontrado.id)" class="botonImagen">
+          <b-button
+            size="sm"
+            @click="modificarInsumo(insumoEncontrado.id)"
+            class="botonImagen"
+          >
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
           <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
-            <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar"/>
+            <img
+              src="@/assets/images/sistema/eliminar.png"
+              id="imagenAgregar"
+            />
           </b-button>
         </h3>
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="Badgecategoria">{{ insumoEncontrado.rubroInsumo.denominacion }}</b-badge>
+          <b-badge class="Badgecategoria">{{
+            insumoEncontrado.rubroInsumo.denominacion
+          }}</b-badge>
         </div>
 
         <div id="infoProductoVenta">
           <b-card header="Stock actual" class="tarjetaInfo">
-            <b-card-text >{{ insumoEncontrado.stock.actual }}{{ insumoEncontrado.unidadMedida }}
+            <b-card-text
+              >{{ insumoEncontrado.stock.actual
+              }}{{ insumoEncontrado.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock min" class="tarjetaInfo">
-            <b-card-text>{{ insumoEncontrado.stock.minimo }}{{ insumoEncontrado.unidadMedida }}
+            <b-card-text
+              >{{ insumoEncontrado.stock.minimo
+              }}{{ insumoEncontrado.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock max" class="tarjetaInfo">
-            <b-card-text>{{ insumoEncontrado.stock.maximo }}{{ insumoEncontrado.unidadMedida }}
+            <b-card-text
+              >{{ insumoEncontrado.stock.maximo
+              }}{{ insumoEncontrado.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>${{ultimaCompra.precioUnitario}}</b-card-text>
+            <b-card-text>${{ ultimaCompra.precioUnitario }}</b-card-text>
           </b-card>
         </div>
         <div class="HistorialCompra">
           Historial de Compra
-          <b-table hover responsive small :items="ordenCompra" :fields="tituloTabla" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
+          <b-table
+            hover
+            responsive
+            small
+            :items="ordenCompra"
+            :fields="tituloTabla"
+            :outlined="true"
+            :per-page="perPage"
+            :current-page="currentPage"
+            :borderless="true"
+            id="tablaInsumos"
+            class="tabla"
+          >
             <template v-slot:cell(acción)="row">
-              <b-button size="sm" @click="eliminarRegistro(row.item.id)" class="botonImagen">
-                <img src="@/assets/images/sistema/eliminar.png" id="imagenAgregar" />
+              <b-button
+                size="sm"
+                @click="eliminarRegistro(row.item.id)"
+                class="botonImagen"
+              >
+                <img
+                  src="@/assets/images/sistema/eliminar.png"
+                  id="imagenAgregar"
+                />
               </b-button>
             </template>
            
           </b-table>
           <b-button pill class="boton" size="md">Añadir </b-button>
-          <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
+          <b-pagination
+            v-model="currentPage"
+            size="sm"
+            align="right"
+            :total-rows="rows"
+            :per-page="perPage"
+            aria-controls="my-tablaInsumos"
+            class="paginador"
+          >
           </b-pagination>
         </div>
       </div>
     </b-container>
 
     <router-view />
-    <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
+    <b-modal
+      ref="modal"
+      hide-footer
+      title="Eliminar insumo"
+      class="modalEliminar"
+     
+    >
       <form>
-        <b-form-input class="contraseñaForm" placeholder="Contraseña" >          
+        <b-form-input  v-model="contraseniaEliminar" class="contraseñaForm" placeholder="Contraseña">
         </b-form-input>
-        <b-button pill class="boton" size="md">Eliminar </b-button>
+        <b-button pill class="boton" size="md" @click="eliminarInsumo()">Eliminar </b-button>
       </form>
     </b-modal>
 
-    <b-modal ref="modalEliminarRegistro" hide-footer title="Eliminar asiento" class="modalEliminar">
+    <b-modal
+      ref="modalEliminarRegistro"
+      hide-footer
+      title="Eliminar asiento"
+      class="modalEliminar"
+    >
       <form>
         ¿Desea anular el asiento de compra?
         <b-button pill class="boton" size="md">Anular</b-button>
       </form>
     </b-modal>
-
   </div>
 </template>
 
@@ -134,6 +224,8 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
+import axios from "axios";
+
 export default {
   mounted() {
     this.getInsumoxId();
@@ -167,17 +259,19 @@ export default {
       insumoVentaEncontrado: [],     
       ordenCompra: [],
       stock: "",
-      ultimaCompra:[],
-      estadoEliminado:null,
-      service : new Service(),
+      ultimaCompra: [],
+      estadoEliminado: false,
+      contraseniaEliminar: "",
+      contraseniaVerificada: false,
+      service: new Service(),
     };
   },
 
-  methods: {  
-    async getInsumoxId(){
-      var insumo=[];
-       var parametroId = parseInt(this.$route.params.id, 16);
-        await this.service.getOne("insumo",parametroId).then(data=>{
+  methods: {
+    async getInsumoxId() {
+      var insumo = [];
+      var parametroId = parseInt(this.$route.params.id, 16);
+      await this.service.getOne("insumo", parametroId).then((data) => {
         insumo = data;
         
         if(!insumo.esInsumo){          
@@ -189,15 +283,11 @@ export default {
           this.getUltimaCompra();
           this.getOrdenCompra();
           this.verificaStockInsumo();
-          
         }
-      });   
+      });
     },
 
-   
-
-     async getInsumoVentaxId() {
-       
+    async getInsumoVentaxId() {
       var parametroId = parseInt(this.$route.params.id, 16);
       await this.service.getOne("insumoVenta/insumo",parametroId).then(data=>{
         this.insumoEncontrado = data[0];
@@ -217,24 +307,47 @@ export default {
     /*async saveInsumo(){
       const res =  await fetch("/saveInsumo.json");
       const resJson = await res.json();
-      this.insumoService = this.service.save("insumo", resJson.insumos[0], resJson.insumos[0].id);
+      this.insumoService = this.service.save(
+        "insumo",
+        resJson.insumos[0],
+        resJson.insumos[0].id
+      );
       console.log(this.insumoService);
     },
 
-
-    async updateInsumo(){
-      const res =  await fetch("/saveInsumo.json");
+    async updateInsumo() {
+      const res = await fetch("/saveInsumo.json");
       const resJson = await res.json();
-      this.insumoService = this.service.update("insumo", resJson.insumos[0], resJson.insumos[0].id);
+      this.insumoService = this.service.update(
+        "insumo",
+        resJson.insumos[0],
+        resJson.insumos[0].id
+      );
       console.log(this.insumoService);
     },*/
 
+    async eliminarInsumo() {
+      let id = parseInt(this.$route.params.id); 
+      this.contraseniaVerificada = this.verificarContrasenia();
+      console.log(this.contraseniaVerificada);
+      this.contraseniaVerificada ?
+      await this.service
+        .delete("insumo", id)
+        .then((response) => 
+          this.estadoEliminado = response.data[0]) :
+      console.log("error");
+    },
 
-    async eliminarInsumo(){
-      var parametroId = parseInt(this.$route.params.id);
-      await this.service.delete("insumo", parametroId).then((response)=>this.estadoEliminado= response);
-      console.log(this.estadoEliminado);
-      
+    async verificarContrasenia() {
+      let contraseniaEliminar = this.contraseniaEliminar;
+      console.log(contraseniaEliminar);
+       await axios.get(
+        "http://localhost:9001/buensabor/persona/validarContrasenia/" +
+          1,{ params: {
+            "password" : contraseniaEliminar
+            },
+          }
+      ).then((response)=> this.datos = response.data[0])
     },
 
     async getOrdenCompra() {
@@ -259,13 +372,13 @@ export default {
       });
     },
 
-     async getUltimaCompra() {
-       var parametroId = parseInt(this.$route.params.id, 16);
-      await this.service.getOne("compras/historial",parametroId).then(data=>{
-        this.ultimaCompra = data[0];
-            
-       
-      });
+    async getUltimaCompra() {
+      var parametroId = parseInt(this.$route.params.id, 16);
+      await this.service
+        .getOne("compras/historial", parametroId)
+        .then((data) => {
+          this.ultimaCompra = data[0];
+        });
     },
 
     verificaStockInsumo() {
@@ -332,20 +445,18 @@ export default {
       }
     },
 
-
-
     openModalEliminar() {
       this.$refs["modal"].show();
     },
 
-    modificarInsumo(id){
-      window.location.href = "/modificarInsumo/" + id; 
+    modificarInsumo(id) {
+      window.location.href = "/modificarInsumo/" + id;
       console.log(id);
     },
 
-    eliminarRegistro(){
+    eliminarRegistro() {
       this.$refs["modalEliminarRegistro"].show();
-    }
+    },
   },
   computed: {
     rows() {
@@ -386,7 +497,6 @@ export default {
   float: left;
   margin-right: 10px;
 }
-
 
 #descripcionInsumo {
   margin-top: 20px;
