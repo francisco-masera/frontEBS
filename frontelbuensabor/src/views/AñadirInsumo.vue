@@ -125,14 +125,7 @@ export default {
       let selectorUnidadMedida = document.getElementById("selectUnidad");
       let uMedidaInsumo =
         selectorUnidadMedida.options[selectorUnidadMedida.selectedIndex].text;
-    /*  let directoAVentaInsumo = document.getElementById("checkbox-1").checked
-        ? "true"
-        : "false";*/
-        console.log(this.checkVenta);
-      let esExtraInsumo = document.getElementById("checkbox-2").checked
-        ? "true"
-        : "false";
-
+    
       window.localStorage.setItem("nombreInsumo", nombreInsumo);
       window.localStorage.setItem("stockMinimo", stockMinInsumo);
       window.localStorage.setItem("stockMaxInsumo", stockMaxInsumo);
@@ -141,6 +134,8 @@ export default {
       window.localStorage.setItem("checkbox-2", this.checkExtra);
       if(this.checkVenta){
          window.location.href = "/añadirInsumo2"; 
+      }else{
+         window.location.href = "/añadirInsumo3"; 
       }
       
     },
