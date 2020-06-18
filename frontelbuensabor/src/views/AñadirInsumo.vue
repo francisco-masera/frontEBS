@@ -70,8 +70,7 @@
               <b-form-checkbox
                 id="checkbox-1"
                 name="checkboxGroup1"
-                v-model="checkVenta"
-                value="venta"
+                v-model="checkVenta"                
                 unchecked-value="no_venta"
                 >Directo a venta</b-form-checkbox
               >
@@ -79,7 +78,6 @@
                 id="checkbox-2"
                 v-model="checkExtra"
                 name="checkboxGroup1"
-                value="extra"
                 unchecked-value="no_extra"
                 >Extras</b-form-checkbox
               >
@@ -113,6 +111,11 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
+   data() {
+    return {
+      checkVenta:false,
+      checkExtra:false,
+    }},
 
   methods: {
     guardarDatos() {
@@ -122,21 +125,19 @@ export default {
       let selectorUnidadMedida = document.getElementById("selectUnidad");
       let uMedidaInsumo =
         selectorUnidadMedida.options[selectorUnidadMedida.selectedIndex].text;
-      let directoAVentaInsumo = document.getElementById("checkbox-1").checked
-        ? "true"
-        : "false";
-      let esExtraInsumo = document.getElementById("checkbox-2").checked
-        ? "true"
-        : "false";
-
+    
       window.localStorage.setItem("nombreInsumo", nombreInsumo);
       window.localStorage.setItem("stockMinimo", stockMinInsumo);
       window.localStorage.setItem("stockMaxInsumo", stockMaxInsumo);
       window.localStorage.setItem("selectUnidad", uMedidaInsumo);
-      window.localStorage.setItem("checkbox-1", esExtraInsumo);
-      window.localStorage.setItem("checkbox-2", directoAVentaInsumo);
-
-      window.location.href = "/añadirInsumo2/";
+      window.localStorage.setItem("checkbox-1", this.checkVenta);
+      window.localStorage.setItem("checkbox-2", this.checkExtra);
+      if(this.checkVenta){
+         window.location.href = "/añadirInsumo2"; 
+      }else{
+         window.location.href = "/añadirInsumo3"; 
+      }
+      
     },
   },
 };

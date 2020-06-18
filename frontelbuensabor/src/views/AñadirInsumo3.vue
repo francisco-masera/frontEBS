@@ -14,7 +14,7 @@
           :key="cate.id"
           style="margin-top:15px"
         >
-         <b-button pill class="boton" size="md" id="botonCategiria" @click="guardaCategoria()">{{cate.denominacion}}</b-button>  
+         <b-button pill class="boton" size="md" id="botonCategiria" @click="guardaCategoria(cate.id)">{{cate.denominacion}}</b-button>  
         </div>
 
         <div class="botonesInsu">
@@ -80,7 +80,7 @@ export default {
       }, 
 
      service: new Service(),  
-      
+      rubroId:"",
     };
   },
   methods: {
@@ -107,12 +107,16 @@ export default {
      }
      this.insumo.unidadMedida = localStorage.getItem("selectUnidad");
      this.insumo.stock.id = this.stockRetornado.id;
-     this.insumo.rubroInsumo.id = 2; 
+     this.insumo.rubroInsumo.id = this.rubroId; 
      await this.service.save("insumo",this.insumo).then(data =>{
      this.insumo = data;
      })
      this.$refs['modal'].show();
 
+   },
+
+   guardaCategoria(id){
+      this.rubroId=id;
    },
         
       retornaAlStock(){
