@@ -135,8 +135,8 @@ export default {
       window.location.href = "/añadirInsumo/"; 
     },
     verDetalle(record) {
-      window.location.href = "/insumoDetalle/" + record.id;
-      console.log(record);
+      window.location.href = "/insumoDetalle/" + record.idInsumo;
+      
     },
     agregarInsumoCompra(id){   
      this.$refs['modal'].show()  

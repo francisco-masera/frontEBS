@@ -72,8 +72,8 @@ const routes = [
     name: "AñadirManufacturado",
     component: () => import("../views/AñadirManufacturado.vue"),
   },
-  {path: "/añadirManufacturado/:id",
-  name: "AñadirManufacturado",
+  {path: "/modificarManufacturado/:id",
+  name: "ModificarManufacturado",
   component: () => import("../views/AñadirManufacturado.vue"),
 },
 ];

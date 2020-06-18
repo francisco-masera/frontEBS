@@ -23,6 +23,15 @@ export default class Service {
   }
 
   async getOne(subPath, id) {
+    let responseEntity = [];
+    await axios
+      .get(serverUrl + "/" + subPath + "/"+ id, config)
+      .then((response) => (responseEntity = response.data))
+      .catch((error) => console.log(error));
+    return responseEntity;
+  }
+
+ /* async getOne(subPath, id) {
     try {
       let response = await axios.get(
         serverUrl + "/" + subPath + "/" + id,
@@ -32,7 +41,7 @@ export default class Service {
     } catch (error) {
       console.log(error);
     }
-  }
+  }*/
 
   async save(subPath, entity, id) {
     try {
