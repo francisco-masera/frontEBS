@@ -20,14 +20,14 @@
                 <label class="labelForm">
                   Stock mínimo
                 </label>
-                <b-form-input  class="campoForm" id="stockMin" v-model="insumoEncontrado.stockMin">
-                </b-form-input>
+                <b-form-input  class="campoForm" id="stockMin" v-model="insumoEncontrado.stock.minimo">
+                </b-form-input>*
                 <br/>
                 <label class="labelForm">
                   Stock máximo
                 </label>
 
-                <b-form-input  class="campoForm" id="stockMax" v-model="insumoEncontrado.stockMax">
+                <b-form-input  class="campoForm" id="stockMax" v-model="insumoEncontrado.stock.maximo">
                 </b-form-input>*
             </div>
             <div class="lineaForm">
@@ -94,14 +94,11 @@
       <h2>Categoría</h2>
       <b-form>
           <div class="lineaForm" v-for="rubro in rubroInsumos" :key="rubro.id">
-              
                <b-button pill class="boton2" size="md">{{rubro.denominacion}}</b-button>
-              
           </div>
-            
             <div class="lineaFormDerecha" style="float:right">
                 <b-button pill class="boton2" size="md">Cancelar</b-button>
-                <b-button pill class="boton" size="md">Guardar</b-button>
+                <b-button pill class="boton" size="md" @click="updateInsumo">Guardar</b-button>
             </div>
       </b-form>
       </div>
@@ -119,6 +116,7 @@ import Service from "@/service/Service.js";
 export default {
   mounted() {
     this.getInsumosxId();
+    this.userVerifica();
   },
   components: {
     menuLateral: MenuLateral,
@@ -127,28 +125,38 @@ export default {
   
   data() {
     return {  
-    
-      
       insumoEncontrado:[],
       esInsumoVenta: false,
-      service: new Service()
+      service: new Service(),
+      unidad:""
     };
     
   },
 
   methods: {
     siguiente1(){
-      document.getElementById("paso1").style.display="none";
-      if(this.esInsumoVenta){
-        document.getElementById("paso2").style.display="block";
-      }else{
+    
+        document.getElementById("paso1").style.display="none";
+        if(this.esInsumoVenta){
+          document.getElementById("paso2").style.display="block";
+        }else{
+          document.getElementById("paso3").style.display="block";
+        }
+      },
+      siguiente2(){
+        document.getElementById("paso2").style.display="none";
         document.getElementById("paso3").style.display="block";
-      }
     },
-    siguiente2(){
-      document.getElementById("paso2").style.display="none";
-      document.getElementById("paso3").style.display="block";
-    },
+
+    userVerifica(){
+          this.user=JSON.parse(sessionStorage.getItem('user'));
+          if(this.user==undefined){
+            this.$router.push({ name: 'Home'})
+          }
+          if(this.user.rol != "admin"){
+            this.$router.push({ name: 'Home'})
+          }
+        },
 
     async getInsumosxId() {
      
@@ -162,6 +170,20 @@ export default {
        });
      
     },
+
+    async updateStock(){
+      await this.service.update("stock", this.insumoEncontrado.stock, this.insumoEncontrado.stock.id)
+      .then((response)=>console.log(response))
+      .catch((error)=>console.log(error));
+    },
+
+    async updateInsumo(){
+      await this.updateStock();
+      await this.service.update("insumo", this.insumoEncontrado, this.insumoEncontrado.idInsumo)
+      .then((response)=>console.log(response))
+      .catch((error)=>console.log(error));
+    },
+
     verificaInsumo() {
       if (this.insumoEncontrado.precioVenta != undefined) {
         this.esInsumoVenta = true;
@@ -171,7 +193,6 @@ export default {
         console.log("no venta");
       }
     },
-   
   }
 };
 </script>

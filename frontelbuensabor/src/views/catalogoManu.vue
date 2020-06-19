@@ -150,15 +150,6 @@ export default {
       this.$router.push({ name: 'AñadirManufacturado'})
     },
 
-  userVerifica(){
-      this.user=JSON.parse(sessionStorage.getItem('user'));
-      if(this.user.rol != "cocina"){
-        if(this.user.rol !="admin"){
-            this.$router.push({ name: 'Home'})
-        }
-        
-      }
-    },
     verificaUsuario(){
         this.user=JSON.parse(sessionStorage.getItem('user'));
         
@@ -211,6 +202,7 @@ export default {
     },
     agregarInsumo() {}
   },
+  
   computed: {
     rows() {
       return this.manufacturadosData.length;

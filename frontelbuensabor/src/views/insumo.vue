@@ -298,7 +298,7 @@ export default {
         this.getUltimaCompra();
         this.getOrdenCompra();
         this.verificaStockVenta();
-        
+        this.userVerifica();
       });     
       
 
@@ -350,6 +350,16 @@ export default {
           }
       ).then((response)=> this.datos = response.data[0])
     },
+
+    userVerifica(){
+          this.user=JSON.parse(sessionStorage.getItem('user'));
+          if(this.user==undefined){
+            this.$router.push({ name: 'Home'})
+          }
+          if(this.user.rol != "admin"){
+            this.$router.push({ name: 'Home'})
+          }
+        },
 
     async getOrdenCompra() {
        var parametroId = parseInt(this.$route.params.id, 16);

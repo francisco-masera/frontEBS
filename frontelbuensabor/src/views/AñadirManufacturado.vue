@@ -260,17 +260,18 @@ export default {
       );
       if(this.manufacturado!=undefined){
           this.esNuevo=false;
-        }
-      
-        
-      
+        }      
     }
-    
-  }
-
-    
-   
-   
+  },
+    userVerifica(){
+          this.user=JSON.parse(sessionStorage.getItem('user'));
+          if(this.user==undefined){
+            this.$router.push({ name: 'Home'})
+          }
+          if(this.user.rol != "admin"){
+            this.$router.push({ name: 'Home'})
+          }
+        }, 
   }
 };
 </script>

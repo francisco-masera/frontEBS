@@ -26,6 +26,9 @@
          {{row.item.stock.actual}}
           
         </template>
+           <template v-slot:cell(costo)>
+         {{insumosData.costo}}
+        </template>
       </b-table>
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
       <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
@@ -71,11 +74,12 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
+import axios from "axios";
 export default {
   mounted() {
     this.userVerifica();
     this.getInsumos();
-
+    this.getPreciosUnitariosActuales();
   },
   components: {
     menuLateral: MenuLateral,
@@ -93,7 +97,7 @@ export default {
         "unidadMedida",
         "categoria",
         "stockActual",
-       "costo",
+        "costo",
         "acción",
       ],
       insumosData: [],
@@ -121,39 +125,57 @@ export default {
             descripcion: "",
             imagen:""
         },
-        service : new Service()
-    };
+        service : new Service(),
+        preciosUnitarios: [],
+      };
   },
   methods: {
-    userVerifica(){
+   userVerifica(){
       this.user=JSON.parse(sessionStorage.getItem('user'));
+      if(this.user==undefined){
+        this.$router.push({ name: 'Home'})
+      }
       if(this.user.rol != "admin"){
         this.$router.push({ name: 'Home'})
       }
     },
 
      async getInsumos() {
-   
       await this.service.getAll("insumo").then(data=>{
         this.insumosData = data;
-        console.log(this.insumosData);
+        
       }); 
-     
-
     },
-
-      agregarInsumo() {
+   
+    agregarInsumo() {
       window.location.href = "/añadirInsumo/"; 
     },
     
-     verDetalle(record) {
+    verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
       
     },
+   
+    async getPreciosUnitariosActuales() {
+      await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales")
+      .then((response) => {
+        this.preciosUnitarios = response.data[0];
+      }).then(this.setPreciosUnitariosActuales());
+    },
+
+    setPreciosUnitariosActuales(){
+      for (let index = 0; index < this.preciosUnitarios; index++) {
+        this.insumosData.forEach(insumo => {
+         Object.assign(insumo.costo, this.preciosUnitarios[index]); 
+        });  
+      }
+    },
+
     agregarInsumoCompra(id){   
      this.$refs['modal'].show()  
       this.getInsumoXid(id);
     },
+
     async getInsumoXid(id) {
       
       const res = await fetch("/insumos.json");
@@ -171,6 +193,7 @@ export default {
     },
   },
 };
+
 </script>
 <style>
 .header {
