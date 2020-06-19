@@ -34,8 +34,8 @@
                 <label class="labelForm">
                   Unidad de medida
                 </label>
-                <b-form-select id="unidadMedida" class="campoForm"
-                :options="[{ text: 'Seleccione...', value: null }, 'Unidades', 'Kilogramos', 'Mililitros']"
+                <b-form-select id="unidadMedida" class="campoForm" v-model="insumoEncontrado.unidadMedida"
+                :options="[{ text: 'Seleccione...', value: null }, 'u', 'kg', 'lt', 'gr', ]"
                 :value="null"
               ></b-form-select>*
               <b-form-group id="contenedorCheck">
@@ -93,9 +93,13 @@
      <div  id="paso3">
       <h2>Categoría</h2>
       <b-form>
-          <div class="lineaForm" v-for="rubro in rubroInsumos" :key="rubro.id">
-               <b-button pill class="boton2" size="md">{{rubro.denominacion}}</b-button>
-          </div>
+          <div
+          v-for="cate in categoriasData"
+          :key="cate.id"
+          style="margin-top:15px"
+        >
+         <b-button pill class="boton" size="md" id="botonCategiria" @click="guardaCategoria(cate.id)">{{cate.denominacion}}</b-button>  
+        </div>
             <div class="lineaFormDerecha" style="float:right">
                 <b-button pill class="boton2" size="md">Cancelar</b-button>
                 <b-button pill class="boton" size="md" @click="updateInsumo">Guardar</b-button>
@@ -104,7 +108,10 @@
       </div>
       
     </b-container>
-
+  <b-modal ref="modal" hide-footer hide-header centered title>
+    <p class="modalTitulo">Insumo modificado con éxito!</p>
+     <p class="botonModal"><b-button pill size="md" class="boton" @click="retornaAlStock()">Aceptar</b-button></p> 
+  </b-modal>
     <router-view />
   </div>
 </template>
@@ -117,6 +124,7 @@ export default {
   mounted() {
     this.getInsumosxId();
     this.userVerifica();
+    this.getCategorias();
   },
   components: {
     menuLateral: MenuLateral,
@@ -128,7 +136,8 @@ export default {
       insumoEncontrado:[],
       esInsumoVenta: false,
       service: new Service(),
-      unidad:""
+      unidad:"",
+      categoriasData: [],
     };
     
   },
@@ -178,9 +187,14 @@ export default {
     },
 
     async updateInsumo(){
+      console.log(this.insumoEncontrado.unidadMedida)
       await this.updateStock();
       await this.service.update("insumo", this.insumoEncontrado, this.insumoEncontrado.idInsumo)
-      .then((response)=>console.log(response))
+      .then((response) => {
+           this.$refs['modal'].show();
+           console.log(response)
+        })
+      
       .catch((error)=>console.log(error));
     },
 
@@ -193,6 +207,20 @@ export default {
         console.log("no venta");
       }
     },
+    async getCategorias(){
+       await this.service.getAll("rubroInsumo").then(data => {
+       this.categoriasData = data; 
+      
+      });
+       console.log(this.categoriasData);
+   
+  },
+    guardaCategoria(id){
+      this.insumoEncontrado.rubroInsumo.id=id;
+   },
+    retornaAlStock(){
+         window.location.href = "/stockInsumos/";
+      },
   }
 };
 </script>

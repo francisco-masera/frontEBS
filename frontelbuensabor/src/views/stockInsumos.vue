@@ -26,8 +26,8 @@
          {{row.item.stock.actual}}
           
         </template>
-           <template v-slot:cell(costo)>
-         {{insumosData.costo}}
+           <template v-slot:cell(costo)="row">
+         {{row.item.costo}}
         </template>
       </b-table>
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
@@ -79,7 +79,7 @@ export default {
   mounted() {
     this.userVerifica();
     this.getInsumos();
-    this.getPreciosUnitariosActuales();
+    
   },
   components: {
     menuLateral: MenuLateral,
@@ -145,6 +145,7 @@ export default {
         this.insumosData = data;
         
       }); 
+       await this.getPreciosUnitariosActuales();
     },
    
     agregarInsumo() {
@@ -157,18 +158,29 @@ export default {
     },
    
     async getPreciosUnitariosActuales() {
-      await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales")
+      
+      await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales/")
       .then((response) => {
-        this.preciosUnitarios = response.data[0];
-      }).then(this.setPreciosUnitariosActuales());
+        this.preciosUnitarios = response.data;
+        
+        this.setPreciosUnitariosActuales()
+      })
     },
 
+  
+
     setPreciosUnitariosActuales(){
-      for (let index = 0; index < this.preciosUnitarios; index++) {
-        this.insumosData.forEach(insumo => {
-         Object.assign(insumo.costo, this.preciosUnitarios[index]); 
+        for (let index = 0; index < this.preciosUnitarios.length; index++) {      
+       
+        this.insumosData.map(insumo => {       
+          if(insumo.idInsumo == this.preciosUnitarios[index].insumo.idInsumo) {
+            Object.assign(insumo, {"costo":this.preciosUnitarios[index].precioUnitario}); 
+          }   
+         
+
         });  
       }
+      console.log(this.insumosData)
     },
 
     agregarInsumoCompra(id){   
