@@ -121,6 +121,7 @@ p {
 
 .boton2 {
   float: left;
+  color:#e7511e !important;
   border: #e7511e;
   background-color: #FFFFFF;
   border-style:solid;
@@ -128,19 +129,20 @@ p {
   font-weight: 600;
   width: 105px;
   height: 30px;
-  color:#e7511e;
+  
   margin:5px;
 }
 
 .boton2:hover{
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF;
+  color:#FFFFFF !important;
+  
 }
 .boton2:focus{
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF;
+  color:#FFFFFF !important;
 }
 
 .boton2:visited{

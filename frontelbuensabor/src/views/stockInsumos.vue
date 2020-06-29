@@ -26,9 +26,7 @@
          {{row.item.stock.actual}}
           
         </template>
-           <template v-slot:cell(costo)="row">
-         {{row.item.costo}}
-        </template>
+          
       </b-table>
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
       <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
@@ -144,8 +142,10 @@ export default {
       await this.service.getAll("insumo").then(data=>{
         this.insumosData = data;
         
-      }); 
+      });
+      
        await this.getPreciosUnitariosActuales();
+       
     },
    
     agregarInsumo() {
@@ -158,13 +158,13 @@ export default {
     },
    
     async getPreciosUnitariosActuales() {
-      
+      console.log("segundo");
       await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales/")
       .then((response) => {
-        this.preciosUnitarios = response.data;
+        this.preciosUnitarios = response.data;     
         
-        this.setPreciosUnitariosActuales()
-      })
+      });
+      await this.setPreciosUnitariosActuales();
     },
 
   

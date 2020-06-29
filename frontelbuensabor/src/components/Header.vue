@@ -1,8 +1,25 @@
 <template>
-  <b-navbar id="header" toggleable="md" type="dark">
-    
-    <b-container>
-      
+  <b-navbar id="headerHome" toggleable="md" type="dark" v-if="esHome"> 
+    <b-container> 
+      <div id="logoContainer">
+      <b-img id="brandImg" alt="" src="@/assets/images/sistema/logo.png" ></b-img>
+    </div>
+    <div>
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav class="items">          
+            <b-nav-item :to="{ name: 'carta' }" >CARTA</b-nav-item>
+            <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
+            <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
+            <b-button pill class="boton">Registrarme</b-button>
+            <b-button pill class="boton2" >Ingresar</b-button>
+            
+          </b-navbar-nav>
+        </b-collapse>
+      </div>
+    </b-container>
+  </b-navbar>
+  <b-navbar id="header" toggleable="md" type="dark" v-else>
+    <b-container>      
     <div id="logoContainer">
       <b-img id="brandImg" alt="" src="@/assets/images/sistema/logo.png" ></b-img>
     </div>
@@ -32,6 +49,7 @@
           </b-navbar-nav>
         </b-collapse>
       </div>
+      
       <div v-else>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="itemsEmpleado">
@@ -48,6 +66,7 @@
           </b-navbar-nav>
         </b-collapse>
       </div>
+      
 
     </div>
     </b-container>
@@ -61,21 +80,24 @@ export default {
       botones: [],
       user:{},      
       esCliente:false,
+      esHome:false,
     };
   },
+ 
   mounted() {
     this.verificaUsuario();
     
   },
-  props: ["imagen", "id",  "screenLength",],
+  props: ["imagen", "id",  "screenLength","es-Home"],
 
   methods: {
     verificaUsuario(){
+     this.esHome=this.$props.esHome;
       this.user=JSON.parse(sessionStorage.getItem('user'));
       
       var boton;
-    
-    if(this.user === "cliente"){      
+   if(this.user!=null){
+     if(this.user === "cliente"){      
       this.esCliente=true;
       boton = [0,"Mis direcciones","misDirecciones.png",""];
           this.botones.push(boton);
@@ -119,6 +141,8 @@ export default {
           this.botones.push(boton);  
         }
     }
+   }
+    
   },
         
 
@@ -135,8 +159,14 @@ export default {
 #header {
   background-color: #1f91b6;
   min-height: 200px;
-  max-height: 200px;
- 
+  max-height: 200px; 
+}
+
+#headerHome {
+  background-color:transparent;
+  min-height: 200px;
+  max-height: 200px; 
+  z-index: 2;
 }
 
 #foto {
