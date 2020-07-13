@@ -65,7 +65,7 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Catálogo manufacturados</h1>
-      <a id="seleccion-manufacturado" href="http://localhost:8080/catalogoManu">
+      <a id="seleccion-manufacturado" href>
         <span class="hrefManu">PRODUCTOS</span>
       </a>
       <a id="seleccion-manufacturado" href>
@@ -150,13 +150,15 @@ export default {
       this.$router.push({ name: 'AñadirManufacturado'})
     },
 
-    verificaUsuario(){
+    userVerifica(){
         this.user=JSON.parse(sessionStorage.getItem('user'));
         
         if(this.user.rol=="cocina"){
+          console.log("cocina");
           this.userCocina=true;
         }else if(this.user.rol=="admin"){
           this.userCocina=false;
+          console.log("admin");
         }else{
           this.$router.push({ name: 'Home'});
         }
