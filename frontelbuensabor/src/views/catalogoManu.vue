@@ -77,11 +77,8 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown right text="Filtrar por categoría" class="filtroCategoria" variant="white">
-        <b-dropdown-item>Pizza</b-dropdown-item>
-        <b-dropdown-item>Hamburguesa</b-dropdown-item>
-        <b-dropdown-item>Papas</b-dropdown-item>
-        <b-dropdown-item>Postre</b-dropdown-item>
+      <b-dropdown right text="Filtrar por categoría" class="filtroCategoria" variant="white"> 
+        <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
       </b-dropdown>
       <b-table
         hover
@@ -122,6 +119,7 @@ export default {
   mounted() {    
     this.getManufacturados();
     this.userVerifica();
+    this.getCategorias();
     
   },
    components: {
@@ -136,6 +134,7 @@ export default {
       currentPage: 1,
       tituloTabla: [],
       manufacturadosData: [],
+      categoriasData:{},
       manufacturados:{},
       userCocina:true,
 
@@ -186,6 +185,15 @@ export default {
         }
         this.verificaStock();
       });
+    },
+    
+    async getCategorias(){
+      await this.service.getAll("rubroManufacturado").then(data => {
+      this.categoriasData = data;
+      console.log(this.categoriasData);
+      
+      })
+    
     },
     verificaStock() {
       var clase;
