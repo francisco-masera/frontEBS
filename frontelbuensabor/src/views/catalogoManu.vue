@@ -14,11 +14,8 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown right text="Filtrar por categoría" class="filtroCategoria" variant="white">
-        <b-dropdown-item>Pizza</b-dropdown-item>
-        <b-dropdown-item>Hamburguesa</b-dropdown-item>
-        <b-dropdown-item>Papas</b-dropdown-item>
-        <b-dropdown-item>Postre</b-dropdown-item>
+      <b-dropdown dropright text="Filtrar por categoría" class="filtroCategoria" variant="white"> 
+        <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
       </b-dropdown>
       <b-table
         hover
@@ -77,7 +74,7 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown right text="Filtrar por categoría" class="filtroCategoria" variant="white"> 
+      <b-dropdown dropright text="Filtrar por categoría" class="filtroCategoria" variant="white" > 
         <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
       </b-dropdown>
       <b-table
@@ -93,6 +90,13 @@
         class="tabla"
         @row-dblclicked="verDetalle"
       >
+      <template v-slot:cell(precio)="row">$ {{row.item.precioVenta}}</template>
+       <template v-slot:cell(categoria)="row">
+          <b-badge class="Badgecategoria">{{row.item.rubro.denominacion}}</b-badge>
+        </template>
+        <template v-slot:cell(stock)>
+          <div id="stockColor" style="background-color:#ED3247"></div>
+        </template>
       </b-table>
     
       <b-pagination
@@ -172,6 +176,7 @@ export default {
     async getManufacturados() {
       await this.service.getAll("manufacturado").then(data => {
         this.manufacturadosData = data;
+        console.log(this.manufacturadosData)
         if (this.userCocina === true) {
           this.tituloTabla = ["denominacion", "categoria", "stock", "tiempo"];
         } else {
@@ -258,5 +263,10 @@ span:hover {
   border-radius: 300px;
   float: left;
   margin-right: 10px;
+}
+.Badgecategoria{
+  width: 90px;
+  margin-left: 0px;
+  font-size: 11pt;
 }
 </style>
