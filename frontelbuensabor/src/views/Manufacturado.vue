@@ -187,11 +187,12 @@ export default {
       let sumatoria = 0;
       this.costos.forEach((costo, index) => sumatoria += costo * this.recetas[index].cantidadInsumo);
       this.costo = sumatoria;
-     
     },
 
     modificarInsumo(){
-      this.$router.push({ path: "/modificarManufacturado/"+this.manufacturadoEncontrado.id})
+      localStorage.setItem("manufacturado", JSON.stringify(this.manufacturadoEncontrado));
+      localStorage.setItem("recetas", JSON.stringify(this.recetas));
+      this.$router.push({ path: "/modificarManufacturado/"});
     }
   },
 };

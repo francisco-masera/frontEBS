@@ -1,8 +1,9 @@
 <template>  
-
+<div>
+  <cabecera/>
+  <menuLateral/>
   <div v-if="userCocina">    
-    <cabecera></cabecera>
-  <div id="nav"><menuLateral></menuLateral>
+  <div id="nav">
   </div>
 
     <div class="costado"></div>
@@ -54,9 +55,7 @@
     <router-view />
   </div>
   <div v-else>
-    <div class="header"></div>
     <div id="nav">
-      <menuLateral></menuLateral>
     </div>
 
     <div class="costado"></div>
@@ -109,10 +108,9 @@
         class="paginador"
       ></b-pagination>
     </b-container>
-
     <router-view />
   </div>
-  
+  </div>
 </template>
 
 <script>
@@ -226,13 +224,6 @@ export default {
 };
 </script>
 <style>
-.header {
-  background-color: blue;
-  width: 100%;
-  top: 0;
-  min-height: 200px;
-}
-
 #imagenBuscar {
   width: 25px;
 }

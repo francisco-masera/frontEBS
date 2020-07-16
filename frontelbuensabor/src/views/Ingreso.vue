@@ -13,7 +13,7 @@
     <b-row>
       <b-col xs="6" sm="6" md="3" lg="3" xl="3"></b-col>
       <b-col xs="12" sm="12" md="6" lg="6" xl="6">
-         <b-alert  v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
+         <b-alert  v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
           <b-alert  v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
           <b-alert  v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
         <div class="ingresoForm">

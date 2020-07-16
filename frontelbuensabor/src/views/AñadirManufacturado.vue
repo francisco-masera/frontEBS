@@ -6,16 +6,16 @@
 
     <div class="costado"></div>
     <b-container class="informacion">
-      <h1 id="titulo" v-if="esNuevo">Añadir producto</h1>
+      <h1 id="titulo" v-if="this.esNuevo">Añadir producto</h1>
       <h1 id="titulo" v-else>Modificar producto</h1>
-      <div  id="paso1">
+      <div id="paso1">
       <h2>Información básica</h2>
       <b-form>
           <div class="lineaForm">
                 <label class="labelForm">
                   Nombre
                 </label>
-                <b-form-input class="campoForm" v-model="manufacturado.denominación" id="nombreInsumo">
+                <b-form-input class="campoForm" v-model="manufacturado.denominacion" id="nombreInsumo">
                 </b-form-input>*
             </div>
              <div class="lineaForm" id="lineaDescripcion">
@@ -35,13 +35,13 @@
             
             <div class="lineaForm">
                 <b-form-group id="contenedorCheck">
-                  <b-form-checkbox id="checkbox-1" name="checkbox-1" value="celiaco" v-model="manufacturado.aptoCeliaco" unchecked-value="no_venta">
+                  <b-form-checkbox id="checkbox-1" name="checkbox-1" value="celiaco" v-model="this.manufacturado.aptoCeliaco" unchecked-value="no_venta">
                       Apto para celíacos
                     </b-form-checkbox>
-                    <b-form-checkbox id="checkbox-2"  name="checkbox-1" value="vegano" v-model="manufacturado.vegano" unchecked-value="no_extra">
+                    <b-form-checkbox id="checkbox-2" v-model="this.manufacturado.vegano" name="checkbox-1" value="vegano" unchecked-value="no_extra">
                         Producto vegano
                     </b-form-checkbox>
-                    <b-form-checkbox id="checkbox-2"  name="checkbox-1" value="vegano" v-model="manufacturado.vegetariano" unchecked-value="no_extra">
+                    <b-form-checkbox id="checkbox-3" name="checkbox-1" value="vegano" v-model="this.manufacturado.vegetariano" unchecked-value="no_extra">
                         Producto vegetariano
                     </b-form-checkbox>
                 </b-form-group>
@@ -90,7 +90,7 @@
             </div>
               <div class="lineaFormDerecha" style="float:right">
                 <b-button pill class="boton2" size="md" @click.prevent="siguiente2">Cancelar</b-button>
-                <b-button pill class="boton" size="md" @click.prevent="siguiente2" >Siguiente</b-button>
+                <b-button pill class="boton" size="md" @click.prevent="siguiente2">Siguiente</b-button>
             </div>
            
       </b-form>
@@ -103,7 +103,7 @@
         <div>
             <img :src="'@/assets/images/productos/' + manufacturado.imagen" class="imagenProducto"/>
         <h3>
-          {{manufacturado.denominación}}
+          {{manufacturado.denominacion}}
          <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
             <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
           </b-button>
@@ -123,7 +123,7 @@
          <div class="infoIngredientes">
           <h2>Ingredientes</h2>   
           <li
-                v-for="(ingrediente, index) in manufacturado.ingredientes"
+                v-for="(ingrediente, index) in ingredientes"
                 :key="index"
               >
                 {{ ingrediente.denominacion }} {{ ingrediente.cantidad }} {{ ingrediente.unidadMedida }}
@@ -149,129 +149,72 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 export default {
   mounted() {
-    this.getInsumos();
-    this.modificar();
-
+    this.manufacturado = JSON.parse(localStorage.getItem("manufacturado"));
+    this.recetas = JSON.parse(localStorage.getItem("recetas"));
   },
   props: {
-        user:{},
-      },
+    user:{},
+  },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
   data() {
     return {     
-    insumosData: [],
-    
-    manufacturado:{
-      aptoCeliaco:false,
-      denominación:"",
-      descripcion:"",
-      imagen:"",
-      tiempo:0,
-      vegano:false,
-      vegetariano:false,
-      ingredientes:[],
-    },
+      insumosData: [],
+      manufacturado:[],
+      recetas : [],
+      ingredientes: [],
+      esNuevo:true,
 
-    esNuevo:true,
-
-    ingrediente:"",
-    cantidad:0,
-    unidadMedida:"",
-
-    insumoEncontrado: {
-            id:"",
-            denominacion:"",
-            unidad:"",
-            costo:0,
-            categoria:"",
-            unidadMedida:0,
-            stockActual:0,
-            stockMin:0,
-            stockMax:0,
-            precioVenta:0,
-            descripcion: "",
-            imagen:""
-        },
-
-      
+      ingrediente:"",
+      cantidad:0,
+      unidadMedida:"",
 
       opcionesUnidad:[
-      {value:null, text:""},
-      {value:"kg", text:"kg"},
-      {value:"g", text:"g"},
-      {value:"l", text:"l"},
-      {value:"ml", text:"ml"},
-      {value:"u", text:"u"}
+        {value:null, text:""},
+        {value:"kg", text:"kg"},
+        {value:"g", text:"g"},
+        {value:"l", text:"l"},
+        {value:"ml", text:"ml"},
+        {value:"u", text:"u"}
       ],
-      
-    
     };
-    
   },
 
   methods: {
     siguiente1(){
-      document.getElementById("paso1").style.display="none";
-      document.getElementById("paso2").style.display="block";     
-      
+      document.getElementById("paso1").style.display = "none";
+      document.getElementById("paso2").style.display = "block";     
     },
+
     siguiente2(){
-      document.getElementById("paso2").style.display="none";
-      document.getElementById("paso3").style.display="block";
+      document.getElementById("paso2").style.display = "none";
+      document.getElementById("paso3").style.display = "block";
     },
 
-    async buscarIngrediente(){
-        //logica que busca ingrediente en base de datos        
-        this.getInsumoXNombre(this.ingrediente);
-        
-        this.manufacturado.ingredientes.push({id:this.insumoEncontrado.id, denominacion:this.insumoEncontrado.denominacion,cantidad:this.cantidad,unidadMedida:this.unidadMedida});
-        this.ingrediente="",
-        this.cantidad="",
-        this.unidadMedida=null;
-       
-        
-   },
+    verificarCheck(){
 
-     getInsumoXNombre(nombre) {           
-      this.insumoEncontrado =  this.insumosData.find(
-        insumo => insumo.denominacion === nombre
-      );
-     },
+    },
 
-     async getInsumos() {
-      const res = await fetch("/insumos.json");
-      const resJson = await res.json();
-      this.insumosData = resJson.insumos;
-      
-        
-  },
+    modificar(){
+      if(this.manufacturado != undefined){
+        this.esNuevo = false;
+      }      
+    },
 
-  async modificar(){
-    if(parseInt(this.$route.params.id, 10)!=undefined){      
-       var parametroId = parseInt(this.$route.params.id, 10);
-        const res = await fetch("/articuloManufacturado.json");
-        const resJson = await res.json();
-        this.manufacturado = await resJson.manufacturados.find(
-        (manu) => manu.id === parametroId
-        
-      );
-      if(this.manufacturado!=undefined){
-          this.esNuevo=false;
-        }      
-    }
-  },
+    buscarIngrediente(){
+
+    },
+
     userVerifica(){
-          this.user=JSON.parse(sessionStorage.getItem('user'));
-          if(this.user==undefined){
-            this.$router.push({ name: 'Home'})
-          }
-          if(this.user.rol != "admin"){
-            this.$router.push({ name: 'Home'})
-          }
-        }, 
+      this.user = JSON.parse(sessionStorage.getItem('user'));
+      if(this.user == undefined) {
+        this.$router.push({ name: 'Home'})
+      } else if(this.user.rol != "admin") {
+        this.$router.push({ name: 'Home'})
+      }
+    }, 
   }
 };
 </script>
