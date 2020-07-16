@@ -32,7 +32,7 @@
 
             <b-form-input
               id="contraseña-input"
-              v-model="contraseña"              
+              v-model="contrasenia"              
               required
               type="password"
               placeholder="Contraseña"
@@ -64,7 +64,7 @@ export default {
   data() {
     return {
       email:"",
-      contraseña:"",
+      contrasenia:"",
       user:{},
       alertDatosNull:false,
       alertDatosErroneos:false,
@@ -80,10 +80,10 @@ export default {
    },
 
    async ingresar(){
-      if(this.email!="" && this.contraseña!=""){        
+      if(this.email != "" && this.contrasenia != ""){        
         await this.buscaEmpleados();
         
-        if(this.user !=undefined && this.user.contrasenia == this.contraseña){
+        if(this.user != undefined && this.user.contrasenia == this.contrasenia){
           if(!this.user.baja){
             sessionStorage.setItem('user',JSON.stringify(this.user));
             sessionStorage.setItem('active',true)

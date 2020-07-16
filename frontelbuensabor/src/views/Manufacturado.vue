@@ -7,12 +7,12 @@
       <b-container class="informacion">
         <h1>Detalle producto manufacturado</h1>
      
-        <div v-if="userCocina">
+        <div v-if="this.esCocinero()">
           <div>
             <img :src="'http://localhost:9001/images/productos/' + manufacturadoEncontrado.imagen" class="imagenProducto"/>
             <h3>
               {{ manufacturadoEncontrado.denominacion }}
-              <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
+              <b-button id="cocina-btn-grp" size="sm" @click="modificarInsumo()" class="botonImagen">
                 <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
               </b-button>
             </h3>
@@ -120,7 +120,6 @@ export default {
   data() {
     return {
       manufacturadoEncontrado: [],
-      userCocina: false, 
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
@@ -130,6 +129,10 @@ export default {
   },
 
   methods: {
+    esCocinero (){
+     return JSON.parse(sessionStorage.getItem("user")).rol == "cocina";
+    },
+
     async getManufacturadoXId() {
       let idManufacturado = parseInt(this.$route.params.id, 10);
       await this.service.getOne("manufacturado", idManufacturado).then((data)=>{      
@@ -310,5 +313,8 @@ export default {
 
 #admin-btn-grp{
   float: center; 
+}
+#cocina-btn-grp{
+  float: unset; 
 }
 </style>
