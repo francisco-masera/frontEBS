@@ -1,13 +1,13 @@
 <template>  
-
-  <div v-if="userCocina">    
+<div>
     <cabecera></cabecera>
-  <div id="nav"><menuLateral></menuLateral>
-  </div>
+    <div id="nav"><menuLateral></menuLateral></div>
 
     <div class="costado"></div>
-    <b-container class="informacion">
-      <h1>Catálogo manufacturados</h1>
+    
+  <div v-if="userCocina"> 
+   <b-container class="informacion">  
+  <h1>Catálogo manufacturados</h1>
       <b-nav-form class="buscador">
         <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar manufacturado"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
@@ -49,19 +49,13 @@
         aria-controls="my-tablaInsumos"
         class="paginador"
       ></b-pagination>
-    </b-container>
-
+  
+    </b-container>   
     <router-view />
   </div>
   <div v-else>
-    <div class="header"></div>
-    <div id="nav">
-      <menuLateral></menuLateral>
-    </div>
-
-    <div class="costado"></div>
-    <b-container class="informacion">
-      <h1>Catálogo manufacturados</h1>
+  <b-container class="informacion">  
+   <h1>Catálogo manufacturados</h1>
       <a id="seleccion-manufacturado" href>
         <span class="hrefManu">PRODUCTOS</span>
       </a>
@@ -108,11 +102,12 @@
         aria-controls="my-tablaInsumos"
         class="paginador"
       ></b-pagination>
-    </b-container>
-
+   
+       </b-container>   
     <router-view />
-  </div>
-  
+ </div>  
+</div>
+
 </template>
 
 <script>
@@ -265,8 +260,9 @@ span:hover {
   margin-right: 10px;
 }
 .Badgecategoria{
-  width: 90px;
+  width: 105px;
   margin-left: 0px;
   font-size: 11pt;
+ 
 }
 </style>
