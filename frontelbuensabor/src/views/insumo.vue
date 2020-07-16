@@ -362,11 +362,11 @@ export default {
         },
 
     async getOrdenCompra() {
-       var parametroId = parseInt(this.$route.params.id, 16);
+       var parametroId = parseInt(this.$route.params.id, 10);
       await this.service.getOne("compras/historialCompras",parametroId).then(data=>{
         data.forEach(o => {
           
-          var dateStr=o.fechaCompra; //returned from mysql timestamp/datetime field
+          var dateStr=o.fechaCompra;
           var a=dateStr.slice(2,-15);
           console.log(dateStr);
           console.log(a);
@@ -384,7 +384,7 @@ export default {
     },
 
     async getUltimaCompra() {
-      var parametroId = parseInt(this.$route.params.id, 16);
+      var parametroId = parseInt(this.$route.params.id, 10);
       await this.service
         .getOne("compras/historial", parametroId)
         .then((data) => {

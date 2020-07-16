@@ -20,6 +20,7 @@ export default class Service {
       .catch((error) => console.log(error));
     return responseEntity;
   }
+  
   async getOne(subPath, id) {
     await axios
       .get(serverUrl + "/" + subPath + "/" + id, config)
