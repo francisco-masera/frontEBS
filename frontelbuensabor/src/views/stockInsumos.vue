@@ -232,7 +232,7 @@ export default {
 }
 
 .Badgecategoria{
-  width: 90px;
+  width: 140px;
   margin-left: 0px;
   font-size: 11pt;
 }
