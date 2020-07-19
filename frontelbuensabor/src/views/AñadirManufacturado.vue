@@ -6,57 +6,99 @@
 
     <div class="costado"></div>
     <b-container class="informacion">
-      <h1 id="titulo" v-if="this.esNuevo">Añadir producto</h1>
+      <h1 id="titulo" v-if="esNuevo">Añadir producto</h1>
       <h1 id="titulo" v-else>Modificar producto</h1>
       <div id="paso1">
       <h2>Información básica</h2>
-      <b-form>
+      <b-form id="form1">
           <div class="lineaForm">
-                <label class="labelForm">
-                  Nombre
-                </label>
-                <b-form-input class="campoForm" v-model="manufacturado.denominacion" id="nombreInsumo">
-                </b-form-input>*
+            <b-form-group>
+              <label class="labelForm">
+                Nombre *
+              </label>
+              <b-form-input 
+              class="campoForm" 
+              v-model.lazy="form1.denominacion" 
+              id="nombreInsumo" 
+              :state="!$v.form1.denominacion.$invalid"
+              placeholder="Ingrese un nombre"/>
+              <br/>
+              <b-form-invalid-feedback>
+                <br/> Este campo es obligatorio.
+              </b-form-invalid-feedback>
+            </b-form-group>
             </div>
-             <div class="lineaForm" id="lineaDescripcion">
-                <label class="labelForm">
-                  Descripción
-                </label>
-                <b-form-textarea id="descripcion" class="campoForm" v-model="manufacturado.descripcion" placeholder="Enter something..." rows="3" max-rows="6">
-                </b-form-textarea>*
-            </div>
-            
-            <div class="lineaForm">
-                <label class="labelForm">
-                  Imagen
-                </label>
-                <b-form-file  class="campoForm" id="imagen"></b-form-file>
-            </div>
-            
-            <div class="lineaForm">
-                <b-form-group id="contenedorCheck">
-                  <b-form-checkbox id="checkbox-1" name="checkbox-1" value="celiaco" v-model="this.manufacturado.aptoCeliaco" unchecked-value="no_venta">
-                      Apto para celíacos
-                    </b-form-checkbox>
-                    <b-form-checkbox id="checkbox-2" v-model="this.manufacturado.vegano" name="checkbox-1" value="vegano" unchecked-value="no_extra">
-                        Producto vegano
-                    </b-form-checkbox>
-                    <b-form-checkbox id="checkbox-3" name="checkbox-1" value="vegano" v-model="this.manufacturado.vegetariano" unchecked-value="no_extra">
-                        Producto vegetariano
-                    </b-form-checkbox>
+           
+            <div class="lineaForm" id="lineaDescripcion">
+                <b-form-group>
+                  <label class="labelForm">
+                    Descripción
+                  </label>
+                  <b-form-textarea
+                  id="descripcion" 
+                  class="campoForm" 
+                  v-model.lazy="form1.descripcion" 
+                  :state="!$v.form1.descripcion.$invalid"
+                  placeholder="Ingrese una descripción"
+                  rows="3" 
+                  max-rows="6"
+                  />*
+                <b-form-invalid-feedback>
+                  <br/> Este campo es obligatorio.
+                </b-form-invalid-feedback>
                 </b-form-group>
+            </div>
+             <br>
+            <div class="lineaForm">
+              <b-form-group>
+                <label class="labelForm">
+                  Imagen *
+                </label>
+                <b-form-file
+                  class="campoForm"
+                  id="imagen"
+                  v-model.lazy="form1.imagen"
+                  :state="!$v.form1.imagen.$invalid"/>
+                   <b-form-invalid-feedback>
+                  <br/> Este campo es obligatorio.
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </div>
+            
+            <div class="lineaForm">
+              <b-form-group id="contenedorCheck">
+                <b-form-checkbox
+                  id="checkbox-1"
+                  name="checkbox-1"
+                  value="celiaco">
+                    Apto para celíacos
+                </b-form-checkbox>
+                <b-form-checkbox 
+                  id="checkbox-2"
+                  name="checkbox-1"
+                  value="vegano">
+                  Producto vegano
+                </b-form-checkbox>
+                <b-form-checkbox
+                  id="checkbox-3"
+                  name="checkbox-1"
+                  value="vegetariano"
+                  v-model="manufacturado.vegetariano">
+                  Producto vegetariano
+                </b-form-checkbox>
+              </b-form-group>
             </div>
             <div class="lineaForm">
                 <h4 id="datos">*Datos necesarios</h4>
             </div>
             <div class="lineaFormDerecha" style="float:right">
                 <b-button pill class="boton2" size="md">Cancelar</b-button>
-                <b-button pill class="boton" size="md" @click="siguiente1" >Siguiente</b-button>
+                <b-button pill @click.prevent="onSubmit1" class="boton" size="md">Siguiente</b-button>
             </div>
       </b-form>
       </div>
 
-      <div  id="paso2">
+      <div id="paso2">
       <h2>Composición</h2>
       <b-form>
           <div class="lineaForm">
@@ -96,7 +138,7 @@
       </b-form>
       </div>
 
-     <div  id="paso3">
+     <div id="paso3">
       <h2>Revisión</h2>
       <b-form>
           <div>
@@ -147,10 +189,20 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Vue from 'vue';
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
+import { required } from 'vuelidate/lib/validators'
+import { validationMixin } from 'vuelidate'
+
 export default {
+  mixins: [validationMixin],
   mounted() {
+    this.userVerifica();
+    this.esNuevo = this.manufacturado != undefined ? this.esNuevo = false : "";  
     this.manufacturado = JSON.parse(localStorage.getItem("manufacturado"));
     this.recetas = JSON.parse(localStorage.getItem("recetas"));
+    this.completarCamposForm1();
   },
   props: {
     user:{},
@@ -159,18 +211,28 @@ export default {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
+
   data() {
-    return {     
+    return {
+      checkBoxes: {
+        esVegano : true,
+        esVegtariano : false,
+        esAptoCeliacos : false,
+      },
       insumosData: [],
       manufacturado:[],
       recetas : [],
       ingredientes: [],
       esNuevo:true,
-
       ingrediente:"",
       cantidad:0,
       unidadMedida:"",
-
+      userData: this.$props.user,
+      form1: {
+        denominacion: "",
+        descripcion: "",
+        imagen: [],
+      },
       opcionesUnidad:[
         {value:null, text:""},
         {value:"kg", text:"kg"},
@@ -183,9 +245,15 @@ export default {
   },
 
   methods: {
+    
+    completarCamposForm1(){
+      this.form1.denominacion = this.manufacturado.denominacion;
+      this.form1.descripcion = this.manufacturado.descripcion;
+    },
+
     siguiente1(){
-      document.getElementById("paso1").style.display = "none";
-      document.getElementById("paso2").style.display = "block";     
+        document.getElementById("paso1").style.display = "none";
+        document.getElementById("paso2").style.display = "block";     
     },
 
     siguiente2(){
@@ -193,28 +261,38 @@ export default {
       document.getElementById("paso3").style.display = "block";
     },
 
-    verificarCheck(){
-
-    },
-
-    modificar(){
-      if(this.manufacturado != undefined){
-        this.esNuevo = false;
-      }      
-    },
-
     buscarIngrediente(){
 
     },
 
     userVerifica(){
-      this.user = JSON.parse(sessionStorage.getItem('user'));
-      if(this.user == undefined) {
-        this.$router.push({ name: 'Home'})
-      } else if(this.user.rol != "admin") {
-        this.$router.push({ name: 'Home'})
-      }
+      this.userData = JSON.parse(sessionStorage.getItem('user'));
+      this.userData == undefined  || (this.userData.rol != 'admin' && this.userData.rol != 'cocina') ? 
+        this.$router.push({ name: 'Home'}) : "";
     }, 
+
+    onSubmit1() {
+      this.$v.$touch();
+      if (this.$v.form1.$anyError) {
+        return;
+      }
+      this.siguiente1();
+    },
+
+  },
+
+  validations: {
+    form1: {
+      denominacion: {
+        required
+      },
+      descripcion: {
+        required
+      },
+      imagen : {
+        required
+      }
+    }
   }
 };
 </script>
@@ -223,6 +301,7 @@ export default {
 
 #titulo{
     line-height: 1.2rem;
+    color: #151515;
 }
 #nombreInsumo{
     margin-top: -5px;
@@ -288,9 +367,9 @@ export default {
 }
 
 #imagen__BV_file_outer_{
-   margin-top: -5px;
-    width: 90%;
-    float:right;
+  margin-top: -5px;
+  width: 88%;
+  float:right;
 }
 
 .botonAñadirInsumo{
