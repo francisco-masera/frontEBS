@@ -12,12 +12,12 @@
             <img :src="'http://localhost:9001/images/productos/' + manufacturadoEncontrado.imagen" class="imagenProducto"/>
             <h3>
               {{ manufacturadoEncontrado.denominacion }}
-              <b-button id="cocina-btn-grp" size="sm" @click="modificarInsumo()" class="botonImagen">
+              <b-button id="cocina-btn-grp" size="sm" @click="modificarInsumo" class="botonImagen">
                 <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
               </b-button>
             </h3>
             <div class="stock">
-              <div id="stockColor" style="background-color:#ED3247"></div>
+              <div id="stockColor"></div>
               <b-badge class="categoria">{{ manufacturadoEncontrado.rubro.denominacion }}</b-badge>
             </div>
             <div id="descripcionInsumo">
@@ -48,10 +48,10 @@
               <h3>
                 {{ manufacturadoEncontrado.denominacion }}
               <b-btn-group id="admin-btn-grp"> 
-                 <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
+                 <b-button size="sm" @click="modificarInsumo" class="botonImagen">
                   <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
                 </b-button>
-                <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
+                <b-button size="sm" @click="openModalEliminar" class="botonImagen">
                   <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
                 </b-button>
               </b-btn-group>
@@ -190,8 +190,8 @@ export default {
     },
 
     modificarInsumo(){
-      localStorage.setItem("manufacturado", JSON.stringify(this.manufacturadoEncontrado));
-      localStorage.setItem("recetas", JSON.stringify(this.recetas));
+      sessionStorage.setItem("manufacturado", JSON.stringify(this.manufacturadoEncontrado));
+      sessionStorage.setItem("recetas", JSON.stringify(this.recetas));
       this.$router.push({ path: "/modificarManufacturado/"});
     }
   },
@@ -315,6 +315,7 @@ export default {
 #admin-btn-grp{
   float: center; 
 }
+
 #cocina-btn-grp{
   float: unset; 
 }

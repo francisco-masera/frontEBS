@@ -60,7 +60,7 @@
         <span class="hrefManu">PRODUCTOS</span>
       </a>
       <a id="seleccion-manufacturado" href>
-        <span class="hrefManu" style="margin-left:50px">CATEGORÍAS</span>
+        <span class="hrefManu" style="margin-left:30px; margin-right:10px">CATEGORÍAS</span>
       </a>
       <b-nav-form class="buscador">
         <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar producto"></b-form-input>

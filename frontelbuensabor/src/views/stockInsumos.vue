@@ -77,7 +77,6 @@ export default {
   mounted() {
     this.userVerifica();
     this.getInsumos();
-    
   },
   components: {
     menuLateral: MenuLateral,
@@ -154,7 +153,6 @@ export default {
     
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
-      
     },
    
     async getPreciosUnitariosActuales() {
@@ -184,7 +182,7 @@ export default {
     },
 
     agregarInsumoCompra(id){   
-     this.$refs['modal'].show()  
+      this.$refs['modal'].show()  
       this.getInsumoXid(id);
     },
 
