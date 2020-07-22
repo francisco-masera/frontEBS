@@ -18,7 +18,7 @@
         :outlined="true"
         :borderless="true"
         class="tabla"
-        @row-dblclicked="verDetalle"
+        
       >
         <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria" >{{row.item.categoria}}</b-badge>          
@@ -41,46 +41,41 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Service from "@/service/Service.js";
 export default {
   mounted() {
-    this.getInsumos();
+    this.getSugerencias();
   },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    
   },
   data() {
     return {
       perPage: 7,
       currentPage: 1,
-      titulosTabla: ["denominación", "costo", "categoria", "estado"],
+      titulosTabla: ["denominacion", "descripcion", "costo"],
       sugerenciasData: [],
+       service: new Service(),
     };
   },
-  methods: {
-    async getInsumos() {
-      const res = await fetch("/sugerenciaChef.json");
-      const resJson = await res.json();
-      this.sugerenciasData = resJson.sugerencias;
-      this.sugerenciasData.forEach((element) => {
-        element.costo = "$" + element.costo;
-        element.esNuevo
-          ? (element.estado = "Nuevo")
-          : (element.estado = "Modificación");
+  methods: {    
+    async getSugerencias() {
+      await this.service.getAll("sugerencia").then(data => {
+        this.sugerenciasData = data;
+        console.log(this.sugerenciasData)       
+       
       });
-      console.log(this.sugerenciasData);
     },
-    verDetalle(record){
-      
-      this.$router.push({ path: '/sugerencia/'+ record.id})
-    }
-  },
+
   computed: {
     rows() {
       return this.sugerenciasData.length;
     },
   },
-};
+}
+}
 </script>
 
 <style>

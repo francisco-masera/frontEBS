@@ -84,6 +84,7 @@
         class="tabla"
         @row-dblclicked="verDetalle"
       >
+       
       <template v-slot:cell(precio)="row">$ {{row.item.precioVenta}}</template>
        <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{row.item.rubro.denominacion}}</b-badge>
@@ -137,6 +138,7 @@ export default {
       manufacturados:{},
       userCocina:true,
 
+      costos:[],
       stock: true,
       service: new Service(),
    
@@ -212,6 +214,7 @@ export default {
     },
     agregarInsumo() {}
   },
+
   
   computed: {
     rows() {
