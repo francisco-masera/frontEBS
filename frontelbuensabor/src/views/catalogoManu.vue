@@ -14,9 +14,15 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown dropright text="Filtrar por categoría" class="filtroCategoria" variant="white"> 
-        <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
-      </b-dropdown>
+          <b-form-select
+            :options="categoriasData"
+            value-field="denominacion"
+            text-field="denominacion"
+            v-model="categoriasData.denominacion"
+            class="selectCategorias"
+          >
+          <b-form-select-option>Filtrar por categoría</b-form-select-option>
+          </b-form-select>
       <b-table
         hover
         responsive
@@ -27,6 +33,7 @@
         :current-page="currentPage"
         :borderless="true"
         id="tablaManufac"
+        :filter="categoriasData.denominacion"
         class="tabla"
         @row-dblclicked="verDetalle"
       >
@@ -68,9 +75,16 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown dropright text="Filtrar por categoría" class="filtroCategoria" variant="white" > 
-        <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
-      </b-dropdown>
+        <b-form-select
+            :options="categoriasData"
+            value-field="denominacion"
+            text-field="denominacion"
+            v-model="categoriasData.denominacion"
+            class="selectCategorias"
+          >
+          <b-form-select-option>Filtrar por categoría</b-form-select-option>
+          </b-form-select>
+         
       <b-table
         hover
         responsive
@@ -82,6 +96,7 @@
         :borderless="true"
         id="tablaManufac"
         class="tabla"
+        :filter="categoriasData.denominacion"
         @row-dblclicked="verDetalle"
       >
       <template v-slot:cell(precio)="row">$ {{row.item.precioVenta}}</template>
@@ -136,7 +151,6 @@ export default {
       categoriasData:{},
       manufacturados:{},
       userCocina:true,
-
       stock: true,
       service: new Service(),
    
@@ -257,5 +271,11 @@ span:hover {
   margin-left: 0px;
   font-size: 11pt;
  
+}
+.selectCategorias {
+  border: solid 1px;
+  border-color: lightgray;
+  width: 200px;
+  margin-bottom: 20px;
 }
 </style>
