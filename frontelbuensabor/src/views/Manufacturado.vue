@@ -190,8 +190,8 @@ export default {
     },
 
     modificarInsumo(){
-      sessionStorage.setItem("manufacturado", JSON.stringify(this.manufacturadoEncontrado));
-      sessionStorage.setItem("recetas", JSON.stringify(this.recetas));
+      localStorage.setItem("manufacturado", JSON.stringify(this.manufacturadoEncontrado));
+      localStorage.setItem("recetas", JSON.stringify(this.recetas));
       this.$router.push({ path: "/modificarManufacturado/"});
     }
   },

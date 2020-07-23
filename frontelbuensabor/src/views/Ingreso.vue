@@ -69,7 +69,7 @@ export default {
       alertDatosNull:false,
       alertDatosErroneos:false,
       esCliente:false,
-     service : new Service()
+      service : new Service()
     };
   },
 

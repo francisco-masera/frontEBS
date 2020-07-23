@@ -100,17 +100,16 @@
         <b-form>
           <div class="lineaForm">
             <b-table 
-              hover responsive selectable
-              select-mode="multi"
+              hover responsive fixed
               :items="insumosData" 
               :fields="camposTablaInsumos" 
               :outlined="true" 
               :per-page="perPage" 
               :current-page="currentPage" 
-              :borderless="true"
-              @row-selected="agregarInsumo"
+              :borderless="true"            
               id="tablaInsumos" 
-              class="tabla">
+              class="tabla"
+              >
                <template v-slot:table-colgroup="scope">
                 <col
                   v-for="field in scope.fields"
@@ -119,20 +118,22 @@
                   id="idInsumo"
                 >
               </template>
+              <template v-slot:cell(check)="row">
+                <b-form-group>
+                  <input type="checkbox" 
+                  :id="row.item.idInsumo"
+                  @input="agregarInsumo($event, row.index, row.item)"/>
+                </b-form-group>
+              </template>
               <template v-slot:cell(denominacion)="row">
                 {{ row.item.denominacion }}
               </template>
-              <template v-slot:cell(unidadMedida)>
-               <b-dropdown id="listaUnidades" text="Unidad de medida" class="m-2">
-                  <b-dropdown-header>
-                    Elija una unidad de medida
-                  </b-dropdown-header>
-                  <b-dropdown-item v-for="opcion in opcionesUnidad" :key="opcion.key">
-                    {{opcion.text}}
-                  </b-dropdown-item>
-               </b-dropdown>
+              <template v-slot:cell(unidadMedida)="row">  
+                <selector :id="row.item.idInsumo + ' select'" 
+                :idInsumo="row.item.idInsumo"
+                @itemClick="cambiarValor($event, row.index)"/>
               </template>
-               <template v-slot:cell(cantidad)>
+              <template v-slot:cell(cantidad)>
                   <b-form-input type="number" id="cantidadInsumo" step="0.01" min="0.00"/>
               </template>
             </b-table>
@@ -197,14 +198,14 @@
 </template>
 
 <script>
-
+import Vue from 'vue';
+Vue.use(Vuelidate);
+import { required } from 'vuelidate/lib/validators';
+import { validationMixin } from 'vuelidate';
+import Vuelidate from 'vuelidate';
 import MenuLateral from '@/components/MenuLateral.vue';
 import Header from "@/components/Header.vue";
-import Vue from 'vue';
-import Vuelidate from 'vuelidate';
-Vue.use(Vuelidate);
-import { required } from 'vuelidate/lib/validators'
-import { validationMixin } from 'vuelidate'
+import ListaUnidades from "@/components/SelectorUnidades.vue";
 import Service from '@/service/Service.js';
 import Formatter from '@/utilidades/Formatters.js';
 export default {
@@ -212,8 +213,8 @@ export default {
   mounted() {
     this.userVerifica();
     this.esNuevo = this.manufacturado != undefined ? this.esNuevo = false : "";  
-    this.manufacturado = JSON.parse(sessionStorage.getItem("manufacturado"));
-    this.recetas = JSON.parse(sessionStorage.getItem("recetas"));
+    this.manufacturado = JSON.parse(localStorage.getItem("manufacturado"));
+    this.recetas = JSON.parse(localStorage.getItem("recetas"));
     this.completarCamposForm1();
   },
   props: {
@@ -222,6 +223,7 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    selector: ListaUnidades,
   },
   
   data() {
@@ -233,13 +235,12 @@ export default {
         descripcion: "",
         imagen: [],
       },
-
-      opcionesUnidad: [
-        {key: 1, value: "Kg", text: "Kilogramos"},
-        {key: 2, value: "g", text: "Gramos"},
-        {key: 3, value: "l", text: "Litros"},
-        {key: 4, value: "ml", text: "Mililitros"},
-        {key: 5, value: "u", text: "Unidades"}
+      
+      camposTablaInsumos: [
+        { key: 'check', label: 'Seleccionar' },
+        { key: 'denominacion', label: 'Denominación' },
+        { key: 'unidadMedida', label: 'Undidad de Medida' },
+        { key: 'cantidad', label: 'Cantidad' }
       ],
 
       ingredientes: [],
@@ -247,14 +248,10 @@ export default {
       manufacturado: [],
       recetas: [],
       recetaNueva: [],
-      camposTablaInsumos: [
-        {key: 'denominacion', label: 'Denominación'},
-        {key: 'unidadMedida', label: 'Undidad de Medida'},
-        {key: 'cantidad', label: 'Cantidad'}
-      ],
-
+     
       currentPage: 1,  
       esNuevo: true,
+      filaElegida: -1,
       ingrediente: "",
       perPage: 7,
       unidadMedida: "",
@@ -285,11 +282,21 @@ export default {
       }); 
     },
 
-    agregarInsumo(items){
-      this.recetaNueva = items;
-      console.log(items.unidadMedida);
+    agregarInsumo(check, index, item){
+      console.log(check.target.checked, index, item);
+      if(check.target.checked){
+        this.recetaNueva.push(item);
+      }else{
+        this.recetaNueva.indexOf(index) != -1 ? this.recetaNueva.splice(index, 1) : "";
+      }
     },
     
+    cambiarValor(unidad, id){
+      let insumoEncontrado = this.recetaNueva.find(insumo => insumo.idInsumo == id);
+      console.log(insumoEncontrado.unidadMedida);
+      this.recetaNueva.find(insumo => {if(insumo.idInsumo == id){insumo = insumoEncontrado}});
+    },
+
     userVerifica(){
       this.userData = JSON.parse(sessionStorage.getItem('user'));
       this.userData == undefined  || (this.userData.rol != 'admin' && this.userData.rol != 'cocina') ? 
@@ -301,6 +308,7 @@ export default {
       if (this.$v.form1.$anyError) {
         return;
       }
+
       this.manufacturado.denominacion = document.getElementById("denominacionManufacturado").value;
       this.manufacturado.descripcion = document.getElementById("descripcionManufacturado").value;
       this.manufacturado.imagen = document.getElementById("imagen").files[0];
@@ -309,7 +317,7 @@ export default {
       const vegetariano = vegano ? "true" : document.getElementById("checkbox-3").checked; 
       this.manufacturado.vegano = vegano;
       this.manufacturado.vegetariano = vegetariano;
-      sessionStorage.setItem("manufacturado", this.manufacturado);
+      localStorage.setItem("manufacturado", this.manufacturado);
       this.siguiente1();
     },
   
@@ -317,15 +325,15 @@ export default {
       const recetaNueva = this.recetaNueva.length > 0 
       ? this.recetaNueva : 
       "No se han seleccionado ingredientes";
-      sessionStorage.setItem("recetaNueva", recetaNueva);
+      localStorage.setItem("recetaNueva", recetaNueva);
       this.manufacturado.tiempoCocina = document.getElementById("tiempoCocina").value;
-      sessionStorage.setItem("manufacturado", this.manufacturado);
+      localStorage.setItem("manufacturado", this.manufacturado);
       this.siguiente2();
     },
     
     volver(){
-      sessionStorage.removeItem("recetas");
-      sessionStorage.removeItem("manufacturado");
+      localStorage.removeItem("recetas");
+      localStorage.removeItem("manufacturado");
       this.$router.push({ path: "/catalogoManu/"});
     },
   },
@@ -355,35 +363,34 @@ export default {
 
 
 #titulo{
-    line-height: 1.2rem;
-    color: #151515;
+  line-height: 1.2rem;
+  color: #151515;
 }
 #nombreInsumo{
-    margin-top: -5px;
-    width: 85%;
+  margin-top: -5px;
+  width: 85%;
 }
 #cantidad{
-    margin-top: -5px;
-    width: 20%;
-    margin-right: 30px;
+  margin-top: -5px;
+  width: 20%;
+  margin-right: 30px;
 }
 
 #unidad{
-    margin-top: -5px;
-    width: 10%;
-    margin-right: 20px;
+  margin-top: -5px;
+  width: 10%;
+  margin-right: 20px;
 }
 #unidadMedida{
-    margin-top: -5px;
-    width: 40%;
-    margin-right: 30px;
-
+  margin-top: -5px;
+  width: 40%;
+  margin-right: 30px;
 }
 
 .lineaForm{
-   width: 100%;
-    margin-top: 20px;
-    min-height: 40px;
+  width: 100%;
+  margin-top: 20px;
+  min-height: 40px;
 }
 .lineaFormDerecha{
   margin-top: 50px;
@@ -393,7 +400,7 @@ export default {
 }
 
 #datos{
-    float:right;
+  float:right;
 }
 
 #paso1{
@@ -409,8 +416,8 @@ export default {
 }
 
 #ingrediente{
-    margin-top: -5px;
-    width: 65%;
+  margin-top: -5px;
+  width: 65%;
 }
 
 #lineaDescripcion{
@@ -418,7 +425,7 @@ export default {
 }
 
 #descripcion{
- float:right;
+  float:right;
   width: 80%;
   margin-left: 10px;
   border:1px solid #ced4da;

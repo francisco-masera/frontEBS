@@ -176,9 +176,9 @@ export default {
         }
     },
 
-    verDetalle(record){
+    verDetalle(item){
       console.log("detalle")
-      this.$router.push({ path: '/manufacturadoDetalle/'+ record.id})
+      this.$router.push({ path: '/manufacturadoDetalle/'+ item.id})
     },
      
   
