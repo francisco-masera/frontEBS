@@ -123,7 +123,6 @@ export default {
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
-      costos: [],
       costo: 0.0,
     };
   },
@@ -174,19 +173,34 @@ export default {
       }
     },
     
-    async obtenerCosto(){
+    generarStringCantidades(){
+      
+      let cantidadInsumos = [];
+      this.recetas.forEach(receta => cantidadInsumos.push(receta.cantidadInsumo));
+      let cantidadInsumosStr = cantidadInsumos.join(",");
+        
+      return cantidadInsumosStr;
+    },
+
+    generarStringIds(){
+      
       let idsInsumos = [];
       this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
       let idsInsumosStr = idsInsumos.join(",");
+      
+      return idsInsumosStr;
+    },
+    
+    async obtenerCosto(){
+      let idsInsumosStr = this.generarStringIds();
+      let cantidadInsumos = this.generarStringCantidades();
       await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
         params : {
-          "idsInsumosStr" : idsInsumosStr
+          "idsInsumosStr" : idsInsumosStr,
+          "cantidadInsumos": cantidadInsumos,
         }
-      }).then(response => this.costos = response.data);
-
-      let sumatoria = 0;
-      this.costos.forEach((costo, index) => sumatoria += costo * this.recetas[index].cantidadInsumo);
-      this.costo = sumatoria;
+      }).then(response => this.costo = response.data);
+      console.log(this.costo);
     },
 
     modificarInsumo(){

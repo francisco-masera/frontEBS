@@ -1,6 +1,7 @@
 <template>
-  <b-form-select name="ddl" class="m-2">
+  <b-form-select name="ddl" class="m-2" :id="$props.idInsumo + ' select'">
     <b-form-select-option
+      :disabled="$props.checked"
       v-for="opcion in opciones"
       :key="opcion.clave"
       :value="opcion.valor"
@@ -25,7 +26,7 @@ export default {
     };
   },
 
-  props: ["idInsumo"],
+  props: ["idInsumo", "checked"],
 
   mounted() {
     this.log();
@@ -37,7 +38,6 @@ export default {
     },
     capturarValor() {
       let selector = document.getElementById(this.$props.idInsumo + " select");
-      console.log(selector);
       let valorSeleccionado = selector.options[selector.selectedIndex].value;
       return valorSeleccionado;
     },

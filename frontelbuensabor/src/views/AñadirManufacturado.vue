@@ -129,7 +129,8 @@
                 {{ row.item.denominacion }}
               </template>
               <template v-slot:cell(unidadMedida)="row">  
-                <selector :id="row.item.idInsumo + ' select'" 
+                <selector
+                name="selector"
                 :idInsumo="row.item.idInsumo"
                 @itemClick="cambiarValor($event, row.index)"/>
               </template>
@@ -248,7 +249,8 @@ export default {
       manufacturado: [],
       recetas: [],
       recetaNueva: [],
-     
+      selects: [],
+      
       currentPage: 1,  
       esNuevo: true,
       filaElegida: -1,
@@ -290,11 +292,16 @@ export default {
         this.recetaNueva.indexOf(index) != -1 ? this.recetaNueva.splice(index, 1) : "";
       }
     },
+
+    quitarSelect(select){
+      let idx = this.selects.indexOf(select);
+      this.selects.splice(idx, 1);
+    },
     
-    cambiarValor(unidad, id){
-      let insumoEncontrado = this.recetaNueva.find(insumo => insumo.idInsumo == id);
-      console.log(insumoEncontrado.unidadMedida);
-      this.recetaNueva.find(insumo => {if(insumo.idInsumo == id){insumo = insumoEncontrado}});
+    cambiarValor(){
+      this.selects = document.getElementsByName("selector");
+      const selectsArray =  Array.prototype.slice.call(this.selects);
+      console.log(selectsArray);
     },
 
     userVerifica(){
