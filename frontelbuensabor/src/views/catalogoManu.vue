@@ -14,9 +14,15 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown dropright text="Filtrar por categoría" class="filtroCategoria" variant="white"> 
-        <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
-      </b-dropdown>
+          <b-form-select
+            :options="categoriasData"
+            value-field="denominacion"
+            text-field="denominacion"
+            v-model="categoriasData.denominacion"
+            class="selectCategorias"
+          >
+          <b-form-select-option>Filtrar por categoría</b-form-select-option>
+          </b-form-select>
       <b-table
         hover
         responsive
@@ -27,6 +33,7 @@
         :current-page="currentPage"
         :borderless="true"
         id="tablaManufac"
+        :filter="categoriasData.denominacion"
         class="tabla"
         @row-dblclicked="verDetalle"
       >
@@ -68,9 +75,16 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-      <b-dropdown dropright text="Filtrar por categoría" class="filtroCategoria" variant="white" > 
-        <b-dropdown-item v-for="cate in categoriasData" :key="cate.id" :value="cate.denominacion">{{cate.denominacion}}</b-dropdown-item>
-      </b-dropdown>
+        <b-form-select
+            :options="categoriasData"
+            value-field="denominacion"
+            text-field="denominacion"
+            v-model="categoriasData.denominacion"
+            class="selectCategorias"
+          >
+          <b-form-select-option>Filtrar por categoría</b-form-select-option>
+          </b-form-select>
+         
       <b-table
         hover
         responsive
@@ -82,6 +96,7 @@
         :borderless="true"
         id="tablaManufac"
         class="tabla"
+        :filter="categoriasData.denominacion"
         @row-dblclicked="verDetalle"
       >
        
@@ -91,6 +106,9 @@
         </template>
         <template v-slot:cell(stock)>
           <div id="stockColor" style="background-color:#ED3247"></div>
+        </template>
+         <template v-slot:cell(costo)>
+          <div v-for="costo in costos" v-bind:key="costo">{{costo}}</div>
         </template>
       </b-table>
     
@@ -114,12 +132,15 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import axios from "axios";
 import Service from "@/service/Service.js";
+import Formatter from "@/utilidades/Formatters.js";
 export default {
   mounted() {    
     this.getManufacturados();
     this.userVerifica();
     this.getCategorias();
+   
     
   },
    components: {
@@ -137,10 +158,16 @@ export default {
       categoriasData:{},
       manufacturados:{},
       userCocina:true,
+<<<<<<< HEAD
 
       costos:[],
+=======
+>>>>>>> desarrollo
       stock: true,
       service: new Service(),
+      costos:[],
+      formatter: new Formatter()
+
    
     };
   },
@@ -185,8 +212,10 @@ export default {
             "stock"
           ];
         }
-        this.verificaStock();
+        this.obtenerCostos();
       });
+       
+        this.verificaStock();
     },
     
     async getCategorias(){
@@ -196,6 +225,26 @@ export default {
       
       })
     
+    },
+     async obtenerCostos(){
+       console.log("Prueba")
+       console.log(this.manufacturadosData)
+      let idsManufStr = this.generarStringIds();
+      await axios.get("http://localhost:9001/buensabor/manufacturado/costos", { 
+        params : {
+          "idsManufacturadosStr" : idsManufStr,
+          }
+      }).then(response => this.costos = response.data);
+      console.log("costos")
+      console.log(this.costos);
+    },
+    generarStringIds(){
+      
+      let idManuf = [];
+      this.manufacturadosData.forEach(manufacturado => idManuf.push(manufacturado.id));
+      let idsManufStr = idManuf.join(",");
+     return idsManufStr;
+
     },
     verificaStock() {
       var clase;
@@ -267,5 +316,11 @@ span:hover {
   margin-left: 0px;
   font-size: 11pt;
  
+}
+.selectCategorias {
+  border: solid 1px;
+  border-color: lightgray;
+  width: 200px;
+  margin-bottom: 20px;
 }
 </style>
