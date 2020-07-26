@@ -99,15 +99,15 @@
         :filter="categoriasData.denominacion"
         @row-dblclicked="verDetalle"
       >
-      <template v-slot:cell(precio)="row">$ {{row.item.precioVenta}}</template>
+      <template v-slot:cell(precio)="row">{{ formatter.formatMoney(row.item.precioVenta) }}</template>
        <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{row.item.rubro.denominacion}}</b-badge>
         </template>
         <template v-slot:cell(stock)>
           <div id="stockColor" style="background-color:#ED3247"></div>
         </template>
-         <template v-slot:cell(costo)>
-          <div v-for="costo in costos" v-bind:key="costo">{{costo}}</div>
+         <template v-slot:cell(costo)="row">
+          <div>{{ formatter.formatMoney(row.item.costo) }}</div>
         </template>
       </b-table>
     
@@ -139,8 +139,6 @@ export default {
     this.getManufacturados();
     this.userVerifica();
     this.getCategorias();
-   
-    
   },
    components: {
     menuLateral: MenuLateral,
@@ -162,9 +160,9 @@ export default {
       costos:[],
       formatter: new Formatter()
 
-   
     };
   },
+
   methods: {
     
     nuevoManufacturado() {
@@ -196,48 +194,60 @@ export default {
         this.manufacturadosData = data;
         console.log(this.manufacturadosData)
         if (this.userCocina === true) {
-          this.tituloTabla = ["denominacion", "categoria", "stock", "tiempo"];
+          this.tituloTabla = [
+            {key:"denominacion", label:"Denominación"},
+            {key:"categoria", label:"Categoría"},
+            {key:"stock", label:"Stock"},
+            {key:"tiempo", label:"Tiempo"}
+          ]
         } else {
           this.tituloTabla = [
-            "denominacion",
-            "costo",
-            "precio",
-            "categoria",
-            "stock"
+            {key:"denominacion", label:"Denominación"},
+            {key:"costo", label:"Costo"},
+            {key:"precio", label:"Precio"},
+            {key:"categoria", label:"Categoría"},
+            {key:"stock", label:"Stock"},
           ];
         }
         this.obtenerCostos();
       });
-       
         this.verificaStock();
     },
     
+    agregarCostos(){
+      this.manufacturadosData.forEach((manufacturado, i) => {
+        this.manufacturadosData[i].costo = this.costos[i]
+      });
+    },
+
     async getCategorias(){
       await this.service.getAll("rubroManufacturado").then(data => {
       this.categoriasData = data;
       console.log(this.categoriasData);
-      
       })
     
     },
      async obtenerCostos(){
-       console.log("Prueba")
-       console.log(this.manufacturadosData)
+      console.log("Prueba")
+      console.log(this.manufacturadosData)
       let idsManufStr = this.generarStringIds();
       await axios.get("http://localhost:9001/buensabor/manufacturado/costos", { 
         params : {
           "idsManufacturadosStr" : idsManufStr,
           }
-      }).then(response => this.costos = response.data);
-      console.log("costos")
-      console.log(this.costos);
+      }).then(response => {
+        this.costos = response.data; 
+        this.agregarCostos();
+        return;
+      });
     },
+  
     generarStringIds(){
       
       let idManuf = [];
       this.manufacturadosData.forEach(manufacturado => idManuf.push(manufacturado.id));
       let idsManufStr = idManuf.join(",");
-     return idsManufStr;
+      return idsManufStr;
 
     },
     verificaStock() {
@@ -255,14 +265,13 @@ export default {
         console.log("suficiente");
       }
     },
-    agregarInsumo() {}
   },
-  
+
   computed: {
     rows() {
       return this.manufacturadosData.length;
-    }
-  }
+    }  
+  },
 };
 </script>
 <style>

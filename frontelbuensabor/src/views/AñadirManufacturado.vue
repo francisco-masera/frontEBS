@@ -199,12 +199,12 @@ export default {
       
 
       opcionesUnidad:[
-      {value:null, text:""},
-      {value:"kg", text:"kg"},
-      {value:"g", text:"g"},
-      {value:"l", text:"l"},
-      {value:"ml", text:"ml"},
-      {value:"u", text:"u"}
+        {value:null, text:""},
+        {value:"kg", text:"kg"},
+        {value:"g", text:"g"},
+        {value:"l", text:"l"},
+        {value:"ml", text:"ml"},
+        {value:"u", text:"u"}
       ],
       
     
