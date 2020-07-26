@@ -135,14 +135,21 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import axios from "axios";
 import Service from "@/service/Service.js";
+<<<<<<< HEAD
 import Formatter from "@/utilidades/Formatters.js";
+=======
+import axios from "axios";
+>>>>>>> 1423d439185aefbf5bcaa064ad226b14ad6f71e6
 export default {
-  mounted() {    
+  mounted() {
     this.getManufacturados();
     this.userVerifica();
     this.getCategorias();
+<<<<<<< HEAD
    
     
+=======
+>>>>>>> 1423d439185aefbf5bcaa064ad226b14ad6f71e6
   },
    components: {
     menuLateral: MenuLateral,
@@ -157,7 +164,6 @@ export default {
       tituloTabla: [],
       manufacturadosData: [],
       categoriasData:{},
-      manufacturados:{},
       userCocina:true,
       stock: true,
       service: new Service(),
@@ -168,7 +174,6 @@ export default {
     };
   },
   methods: {
-    
     nuevoManufacturado() {
       this.$router.push({ name: 'AñadirManufacturado'})
     },
@@ -192,11 +197,9 @@ export default {
       this.$router.push({ path: '/manufacturadoDetalle/'+ record.id})
     },
      
-  
     async getManufacturados() {
-      await this.service.getAll("manufacturado").then(data => {
+        await this.service.getAll("manufacturado").then(data => {
         this.manufacturadosData = data;
-        
         if (this.userCocina === true) {
           this.tituloTabla = ["denominacion", "categoria", "stock", "tiempo"];
         } else {
@@ -208,19 +211,15 @@ export default {
             "stock"
           ];
         }
-        this.obtenerCostos();
       });
-       
-        this.verificaStock();
+      this.getCostos()
+      this.verificaStock();
     },
     
     async getCategorias(){
       await this.service.getAll("rubroManufacturado").then(data => {
       this.categoriasData = data;
-     
-      
       })
-    
     },
      async obtenerCostos(){
        
@@ -267,7 +266,22 @@ export default {
         
       }
     },
-    agregarInsumo() {}
+
+    agregarInsumo() {},
+
+    async getCostos(){
+      console.log("obtener costo")
+      let idsM = [];
+      this.manufacturadosData.forEach(m => idsM.push(m.id));
+      let idsManufacturadosStr = idsM.join(",")
+      console.log(idsManufacturadosStr);
+      
+      await axios.get("http://localhost:9001/buensabor/manufacturado/costos", { 
+        params : {
+          "idsManufacturadosStr" : idsManufacturadosStr,
+         },
+      }).then(response => console.log(response.data));
+    }
   },
 
   

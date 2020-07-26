@@ -196,10 +196,10 @@ export default {
           "cantidadInsumos" : cantInsumo
         }
       }).then(response => this.costos = response.data);
-       console.log("costo "+this.costos);
+       console.log("costo "+ this.costos);
       
     },
-
+    
     modificarInsumo(){
       this.$router.push({ path: "/modificarManufacturado/"+this.manufacturadoEncontrado.id})
     }
