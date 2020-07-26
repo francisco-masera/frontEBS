@@ -121,6 +121,7 @@
               <template v-slot:cell(check)="row">
                 <b-form-group>
                   <input type="checkbox" 
+                  name="checkInsumo"
                   :id="row.item.idInsumo"
                   @input="agregarInsumo($event, row.index, row.item)"/>
                 </b-form-group>
@@ -138,6 +139,15 @@
                   <b-form-input type="number" id="cantidadInsumo" step="0.01" min="0.00"/>
               </template>
             </b-table>
+            <b-pagination 
+            v-model="currentPage"
+            size="sm"
+            align="right" 
+            :total-rows="rows" 
+            :per-page="perPage" 
+            aria-controls="my-tablaInsumos" 
+            class="paginador">
+            </b-pagination>
           </div>
           <div class="lineaForm">
             <label class="labelForm">
@@ -284,8 +294,14 @@ export default {
       }); 
     },
 
+    habilitarCheckBox(){
+      let checkBoxes = document.getElementsByName("checkInsumo");
+      const checksBoxesArray = Array.prototype.slice.call(checkBoxes);
+      
+    },
+
     agregarInsumo(check, index, item){
-      console.log(check.target.checked, index, item);
+      console.log(check.target.checked,item);
       if(check.target.checked){
         this.recetaNueva.push(item);
       }else{
