@@ -193,7 +193,7 @@ export default {
       await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
         params : {
           "idsInsumosStr" : idsInsumosStr,
-          "cantInsumo" : cantInsumo
+          "cantidadInsumos" : cantInsumo
         }
       }).then(response => this.costos = response.data);
        console.log("costo "+this.costos);

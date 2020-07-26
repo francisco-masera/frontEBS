@@ -18,11 +18,13 @@
         :outlined="true"
         :borderless="true"
         class="tabla"
+        @row-dblclicked="verDetalle"
         
       >
-        <template v-slot:cell(categoria)="row">
-          <b-badge class="Badgecategoria" >{{row.item.categoria}}</b-badge>          
+       <template v-for="(costo,i) in costos">
+          <div :key="i">{{costo}}</div>
         </template>
+        
       </b-table>
       <b-pagination
         v-model="currentPage"
@@ -42,6 +44,7 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
+import axios from "axios";
 export default {
   mounted() {
     this.getSugerencias();
@@ -58,22 +61,60 @@ export default {
       titulosTabla: ["denominacion", "descripcion", "costo"],
       sugerenciasData: [],
        service: new Service(),
+       costos:[],
     };
   },
   methods: {    
     async getSugerencias() {
       await this.service.getAll("sugerencia").then(data => {
         this.sugerenciasData = data;
-        console.log(this.sugerenciasData)       
+         
        
       });
+       await this.obtenerCostos();   
     },
 
-  computed: {
+    async obtenerCostos(){
+       
+      let idsManufStr = this.generarStringIds();
+      await axios.get("http://localhost:9001/buensabor/sugerencia/costos", { 
+        params : {
+          "idsSugerenciasStr" : idsManufStr,
+          }
+      }).then(response => {
+        this.costos = response.data;
+        this.agregarCostos();
+        return;
+      });
+      console.log(this.sugerenciasData)
+    },
+
+    async agregarCostos(){
+      this.sugerenciasData.forEach((sugerencia,i) =>      
+      sugerencia.costo = "$" + this.costos[i])
+      },
+    
+
+    generarStringIds(){
+      
+      let idManuf = [];
+      this.sugerenciasData.forEach(sugerencia => idManuf.push(sugerencia.id));
+      let idsManufStr = idManuf.join(",");
+     return idsManufStr;
+
+    },
+
+     verDetalle(record){
+      
+      this.$router.push({ path: '/sugerencia/'+ record.id})
+    },
+     
+
+   computed: {
     rows() {
       return this.sugerenciasData.length;
-    },
-  },
+    }
+  }
 }
 }
 </script>

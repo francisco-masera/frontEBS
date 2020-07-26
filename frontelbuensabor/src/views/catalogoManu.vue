@@ -104,12 +104,13 @@
        <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{row.item.rubro.denominacion}}</b-badge>
         </template>
+        <template v-for="(costo,i) in costos">
+          <div :key="i">{{costo}}</div>
+        </template>
         <template v-slot:cell(stock)>
           <div id="stockColor" style="background-color:#ED3247"></div>
         </template>
-         <template v-slot:cell(costo)>
-          <div v-for="costo in costos" v-bind:key="costo">{{costo}}</div>
-        </template>
+        
       </b-table>
     
       <b-pagination
@@ -151,18 +152,13 @@ export default {
   data() {
     return {
       user:{},
-      perPage: 7,
+      perPage: 2,
       currentPage: 1,
       tituloTabla: [],
       manufacturadosData: [],
       categoriasData:{},
       manufacturados:{},
       userCocina:true,
-<<<<<<< HEAD
-
-      costos:[],
-=======
->>>>>>> desarrollo
       stock: true,
       service: new Service(),
       costos:[],
@@ -192,7 +188,7 @@ export default {
     },
 
     verDetalle(record){
-      console.log("detalle")
+      
       this.$router.push({ path: '/manufacturadoDetalle/'+ record.id})
     },
      
@@ -200,7 +196,7 @@ export default {
     async getManufacturados() {
       await this.service.getAll("manufacturado").then(data => {
         this.manufacturadosData = data;
-        console.log(this.manufacturadosData)
+        
         if (this.userCocina === true) {
           this.tituloTabla = ["denominacion", "categoria", "stock", "tiempo"];
         } else {
@@ -221,23 +217,34 @@ export default {
     async getCategorias(){
       await this.service.getAll("rubroManufacturado").then(data => {
       this.categoriasData = data;
-      console.log(this.categoriasData);
+     
       
       })
     
     },
      async obtenerCostos(){
-       console.log("Prueba")
-       console.log(this.manufacturadosData)
+       
       let idsManufStr = this.generarStringIds();
       await axios.get("http://localhost:9001/buensabor/manufacturado/costos", { 
         params : {
           "idsManufacturadosStr" : idsManufStr,
           }
-      }).then(response => this.costos = response.data);
-      console.log("costos")
-      console.log(this.costos);
+      }).then(response => {
+        this.costos = response.data;
+        this.agregarCostos();
+        return;
+      });
+
+      await this.agregarCostos();
+      console.log(this.manufacturadosData)
+
     },
+
+   async agregarCostos(){
+      this.manufacturadosData.forEach((manufacturado,i) =>      
+      manufacturado.costo = "$" + this.costos[i])
+      },
+    
     generarStringIds(){
       
       let idManuf = [];
@@ -246,19 +253,18 @@ export default {
      return idsManufStr;
 
     },
+
     verificaStock() {
       var clase;
       if (this.stock === false) {
         clase = document.getElementById("stockColor");
-        console.log(clase);
-        console.log(this.stock);
+        
         clase.style.backgroundColor = "#ED3247";
-        console.log(clase);
-        console.log("insuficiente");
+        
       } else {
         clase = document.getElementById("stockColor");
         clase.style.backgroundColor = "#8BC34A";
-        console.log("suficiente");
+        
       }
     },
     agregarInsumo() {}
