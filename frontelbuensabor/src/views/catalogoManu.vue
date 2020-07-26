@@ -135,21 +135,14 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import axios from "axios";
 import Service from "@/service/Service.js";
-<<<<<<< HEAD
 import Formatter from "@/utilidades/Formatters.js";
-=======
-import axios from "axios";
->>>>>>> 1423d439185aefbf5bcaa064ad226b14ad6f71e6
 export default {
   mounted() {
     this.getManufacturados();
     this.userVerifica();
     this.getCategorias();
-<<<<<<< HEAD
    
     
-=======
->>>>>>> 1423d439185aefbf5bcaa064ad226b14ad6f71e6
   },
    components: {
     menuLateral: MenuLateral,
