@@ -11,10 +11,8 @@
       <h1>Detalle producto</h1>
 
       <div>
-        <img
-          :src="'@/assets/images/productos/' + sugerenciaEncontrada.imagen"
-          class="imagenProducto"
-        />
+        
+         <img :src="'http://localhost:9001/images/productos/' + sugerenciaEncontrada.imagen" class="imagenProducto"/>
         <h3>
           {{sugerenciaEncontrada.denominacion}}
           <b-btn-group id="admin-btn-grp"> 
@@ -31,18 +29,22 @@
         </div>
         <div class="infoProductoVenta">
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>{{ costo }}</b-card-text>
+            <b-card-text>${{ costo }}</b-card-text>
           </b-card>
           <b-card header="Tiempo" class="tarjetaInfo">
-            <b-card-text>{{ sugerenciaEncontrada.tiempo }}</b-card-text>
+            <b-card-text>{{ sugerenciaEncontrada.tiempoCocina }} min.</b-card-text>
           </b-card>
         </div>
         <div class="infoIngredientes">
           <h2>Ingredientes</h2>
-          <li
-            v-for="(ingrediente, index) in sugerenciaEncontrada.ingredientes"
-            :key="index"
-          >{{ ingrediente }}</li>
+         <ul>
+                <li
+                  v-for="(receta, index) in recetas"
+                  :key="index"
+                >
+                  {{ receta.insumo.denominacion }} {{ receta.cantidadInsumo }}{{ receta.insumo.unidadMedida }}
+                </li>
+              </ul>
         </div>
         <div class="botonesSugerencia">
           <b-button pill class="boton" size="md" @click="aceptarSugerencia()">Aprobar</b-button>
@@ -82,7 +84,7 @@ export default {
       sugerenciaEncontrada: [],
       service: new Service(),
       recetas: [],
-      costos: [],
+      costo: 0,
     };
   },
 
@@ -97,7 +99,7 @@ export default {
     },
     
     async getRecetas(id){
-      await axios.get("http://localhost:9001/buensabor/sugerencia/" 
+      await axios.get("http://localhost:9001/buensabor/sugerencia/recetasSugerencia/" 
       + id)
       .then((response)=> this.recetas = response.data);
       await this.obtenerCosto();
@@ -106,7 +108,7 @@ export default {
     },
 
      async obtenerCosto(){
-      console.log("obtener costo")
+      
       let idsInsumos = [];
       this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
       let idsInsumosStr = idsInsumos.join(",");
@@ -117,8 +119,8 @@ export default {
           "idsInsumosStr" : idsInsumosStr,
           "cantidadInsumos" : cantInsumo
         }
-      }).then(response => this.costos = response.data);
-       console.log("costo "+ this.costos);
+      }).then(response => this.costo = response.data);
+       
       
     },
       async generarStringCantidades(){
