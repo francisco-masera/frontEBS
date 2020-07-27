@@ -31,7 +31,7 @@
         </div>
         <div class="infoProductoVenta">
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>{{ sugerenciaEncontrada.costo }}</b-card-text>
+            <b-card-text>{{ costo }}</b-card-text>
           </b-card>
           <b-card header="Tiempo" class="tarjetaInfo">
             <b-card-text>{{ sugerenciaEncontrada.tiempo }}</b-card-text>
@@ -106,19 +106,28 @@ export default {
     },
 
      async obtenerCosto(){
+      console.log("obtener costo")
       let idsInsumos = [];
       this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
       let idsInsumosStr = idsInsumos.join(",");
-      await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
+      let cantInsumo = await this.generarStringCantidades();
+      
+      await axios.get("http://localhost:9001/buensabor/sugerencia/costo", { 
         params : {
-          "idsInsumosStr" : idsInsumosStr
+          "idsInsumosStr" : idsInsumosStr,
+          "cantidadInsumos" : cantInsumo
         }
       }).then(response => this.costos = response.data);
-
-      let sumatoria = 0;
-      this.costos.forEach((costo, index) => sumatoria += costo * this.recetas[index].cantidadInsumo);
-      this.costo = sumatoria;
-     
+       console.log("costo "+ this.costos);
+      
+    },
+      async generarStringCantidades(){
+      
+        let cantInsumo = [];
+        this.recetas.forEach(receta => cantInsumo.push(receta.cantidadInsumo));
+        let cantInsumoStr = cantInsumo.join(",");
+        
+        return cantInsumoStr;
     },
 
 
