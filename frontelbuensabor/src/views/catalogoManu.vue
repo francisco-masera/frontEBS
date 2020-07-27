@@ -99,8 +99,7 @@
         :filter="categoriasData.denominacion"
         @row-dblclicked="verDetalle"
       >
-       
-      <template v-slot:cell(precio)="row">$ {{row.item.precioVenta}}</template>
+      <template v-slot:cell(precio)="row">{{ formatter.formatMoney(row.item.precioVenta) }}</template>
        <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{row.item.rubro.denominacion}}</b-badge>
         </template>
@@ -110,7 +109,9 @@
         <template v-slot:cell(stock)>
           <div id="stockColor" style="background-color:#ED3247"></div>
         </template>
-        
+         <template v-for="(costo, i) in costos">
+          <div :key="i"> {{costo}} </div>
+        </template>
       </b-table>
     
       <b-pagination
@@ -141,8 +142,6 @@ export default {
     this.getManufacturados();
     this.userVerifica();
     this.getCategorias();
-   
-    
   },
    components: {
     menuLateral: MenuLateral,
@@ -163,9 +162,9 @@ export default {
       costos:[],
       formatter: new Formatter()
 
-   
     };
   },
+
   methods: {
     nuevoManufacturado() {
       this.$router.push({ name: 'AñadirManufacturado'})
@@ -194,55 +193,57 @@ export default {
         await this.service.getAll("manufacturado").then(data => {
         this.manufacturadosData = data;
         if (this.userCocina === true) {
-          this.tituloTabla = ["denominacion", "categoria", "stock", "tiempo"];
+          this.tituloTabla = [
+            {key:"denominacion", label:"Denominación"},
+            {key:"categoria", label:"Categoría"},
+            {key:"stock", label:"Stock"},
+            {key:"tiempo", label:"Tiempo"}
+          ]
         } else {
           this.tituloTabla = [
-            "denominacion",
-            "costo",
-            "precio",
-            "categoria",
-            "stock"
+            {key:"denominacion", label:"Denominación"},
+            {key:"costo", label:"Costo"},
+            {key:"precio", label:"Precio"},
+            {key:"categoria", label:"Categoría"},
+            {key:"stock", label:"Stock"},
           ];
         }
       });
-      this.getCostos()
-      this.verificaStock();
+        this.verificaStock();
     },
     
+    agregarCostos(){
+      this.manufacturadosData.forEach((manufacturado, i) =>
+        this.manufacturadosData[i].costo = this.formatter.formatMoney(this.costos[i])
+      );
+    },
+
     async getCategorias(){
       await this.service.getAll("rubroManufacturado").then(data => {
       this.categoriasData = data;
+      console.log(this.categoriasData);
       })
     },
      async obtenerCostos(){
-       
+      console.log("Prueba")
+      console.log(this.manufacturadosData)
       let idsManufStr = this.generarStringIds();
       await axios.get("http://localhost:9001/buensabor/manufacturado/costos", { 
         params : {
           "idsManufacturadosStr" : idsManufStr,
           }
       }).then(response => {
-        this.costos = response.data;
+        this.costos = response.data; 
         this.agregarCostos();
-        return;
       });
-
-      await this.agregarCostos();
-      console.log(this.manufacturadosData)
-
     },
-
-   async agregarCostos(){
-      this.manufacturadosData.forEach((manufacturado,i) =>      
-      manufacturado.costo = "$" + this.costos[i])
-      },
-    
+  
     generarStringIds(){
       
       let idManuf = [];
       this.manufacturadosData.forEach(manufacturado => idManuf.push(manufacturado.id));
       let idsManufStr = idManuf.join(",");
-     return idsManufStr;
+      return idsManufStr;
 
     },
 
@@ -259,30 +260,13 @@ export default {
         
       }
     },
-
-    agregarInsumo() {},
-
-    async getCostos(){
-      console.log("obtener costo")
-      let idsM = [];
-      this.manufacturadosData.forEach(m => idsM.push(m.id));
-      let idsManufacturadosStr = idsM.join(",")
-      console.log(idsManufacturadosStr);
-      
-      await axios.get("http://localhost:9001/buensabor/manufacturado/costos", { 
-        params : {
-          "idsManufacturadosStr" : idsManufacturadosStr,
-         },
-      }).then(response => console.log(response.data));
-    }
   },
 
-  
   computed: {
     rows() {
       return this.manufacturadosData.length;
-    }
-  }
+    }  
+  },
 };
 </script>
 <style>
