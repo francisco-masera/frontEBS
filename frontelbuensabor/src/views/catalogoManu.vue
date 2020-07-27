@@ -106,8 +106,8 @@
         <template v-slot:cell(stock)>
           <div id="stockColor" style="background-color:#ED3247"></div>
         </template>
-         <template v-slot:cell(costo)="row">
-          <div>{{ formatter.formatMoney(row.item.costo) }}</div>
+         <template v-for="(costo, i) in costos">
+          <div :key="i"> {{costo}} </div>
         </template>
       </b-table>
     
@@ -215,9 +215,9 @@ export default {
     },
     
     agregarCostos(){
-      this.manufacturadosData.forEach((manufacturado, i) => {
-        this.manufacturadosData[i].costo = this.costos[i]
-      });
+      this.manufacturadosData.forEach((manufacturado, i) =>
+        this.manufacturadosData[i].costo = this.formatter.formatMoney(this.costos[i])
+      );
     },
 
     async getCategorias(){
@@ -238,7 +238,6 @@ export default {
       }).then(response => {
         this.costos = response.data; 
         this.agregarCostos();
-        return;
       });
     },
   
