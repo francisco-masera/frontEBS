@@ -103,9 +103,6 @@
        <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{row.item.rubro.denominacion}}</b-badge>
         </template>
-        <template v-for="(costo,i) in costos">
-          <div :key="i">{{costo}}</div>
-        </template>
         <template v-slot:cell(stock)>
           <div id="stockColor" style="background-color:#ED3247"></div>
         </template>
@@ -138,7 +135,7 @@ import axios from "axios";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 export default {
-  mounted() {
+  mounted() {    
     this.getManufacturados();
     this.userVerifica();
     this.getCategorias();
@@ -151,25 +148,24 @@ export default {
   data() {
     return {
       user:{},
-      perPage: 2,
+      perPage: 7,
       currentPage: 1,
       tituloTabla: [],
       manufacturadosData: [],
       categoriasData:{},
+      manufacturados:{},
       userCocina:true,
       stock: true,
       service: new Service(),
       costos:[],
       formatter: new Formatter()
-
     };
   },
-
   methods: {
+    
     nuevoManufacturado() {
       this.$router.push({ name: 'AñadirManufacturado'})
     },
-
     userVerifica(){
         this.user=JSON.parse(sessionStorage.getItem('user'));
         
@@ -183,15 +179,16 @@ export default {
           this.$router.push({ name: 'Home'});
         }
     },
-
     verDetalle(record){
-      
+      console.log("detalle")
       this.$router.push({ path: '/manufacturadoDetalle/'+ record.id})
     },
      
+  
     async getManufacturados() {
-        await this.service.getAll("manufacturado").then(data => {
+      await this.service.getAll("manufacturado").then(data => {
         this.manufacturadosData = data;
+        console.log(this.manufacturadosData)
         if (this.userCocina === true) {
           this.tituloTabla = [
             {key:"denominacion", label:"Denominación"},
@@ -208,6 +205,7 @@ export default {
             {key:"stock", label:"Stock"},
           ];
         }
+        this.obtenerCostos();
       });
         this.verificaStock();
     },
@@ -217,12 +215,12 @@ export default {
         this.manufacturadosData[i].costo = this.formatter.formatMoney(this.costos[i])
       );
     },
-
     async getCategorias(){
       await this.service.getAll("rubroManufacturado").then(data => {
       this.categoriasData = data;
       console.log(this.categoriasData);
       })
+    
     },
      async obtenerCostos(){
       console.log("Prueba")
@@ -244,24 +242,23 @@ export default {
       this.manufacturadosData.forEach(manufacturado => idManuf.push(manufacturado.id));
       let idsManufStr = idManuf.join(",");
       return idsManufStr;
-
     },
-
     verificaStock() {
       var clase;
       if (this.stock === false) {
         clase = document.getElementById("stockColor");
-        
+        console.log(clase);
+        console.log(this.stock);
         clase.style.backgroundColor = "#ED3247";
-        
+        console.log(clase);
+        console.log("insuficiente");
       } else {
         clase = document.getElementById("stockColor");
         clase.style.backgroundColor = "#8BC34A";
-        
+        console.log("suficiente");
       }
     },
   },
-
   computed: {
     rows() {
       return this.manufacturadosData.length;
@@ -276,16 +273,13 @@ export default {
   top: 0;
   min-height: 200px;
 }
-
 #imagenBuscar {
   width: 25px;
 }
-
 #imagenAgregar {
   width: 20px;
   margin: 0px;
 }
-
 .filtroCategoria {
   float: left;
   margin-bottom: 25px;
