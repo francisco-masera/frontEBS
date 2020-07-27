@@ -5,6 +5,6 @@ export default class Formatter {
       currency: "ARS",
       minimumFractionDigits: 2,
     });
-    return formatter.format(money);
+    return formatter.format(parseFloat(money));
   };
 }

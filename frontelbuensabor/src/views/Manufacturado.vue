@@ -173,23 +173,33 @@ export default {
         console.log("suficiente");
       }
     },
+
+    async generarStringCantidades(){
+      
+        let cantInsumo = [];
+        this.recetas.forEach(receta => cantInsumo.push(receta.cantidadInsumo));
+        let cantInsumoStr = cantInsumo.join(",");
+        
+        return cantInsumoStr;
+    },
     
     async obtenerCosto(){
+      console.log("obtener costo")
       let idsInsumos = [];
       this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
       let idsInsumosStr = idsInsumos.join(",");
+      let cantInsumo = await this.generarStringCantidades();
+      
       await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
         params : {
-          "idsInsumosStr" : idsInsumosStr
+          "idsInsumosStr" : idsInsumosStr,
+          "cantidadInsumos" : cantInsumo
         }
       }).then(response => this.costos = response.data);
-
-      let sumatoria = 0;
-      this.costos.forEach((costo, index) => sumatoria += costo * this.recetas[index].cantidadInsumo);
-      this.costo = sumatoria;
-     
+       console.log("costo "+ this.costos);
+      
     },
-
+    
     modificarInsumo(){
       this.$router.push({ path: "/modificarManufacturado/"+this.manufacturadoEncontrado.id})
     }
