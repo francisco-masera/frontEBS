@@ -253,6 +253,15 @@ export default {
         { key: 'unidadMedida', label: 'Undidad de Medida' },
         { key: 'cantidad', label: 'Cantidad' }
       ],
+      
+      opcionesUnidad:[
+        {value:null, text:""},
+        {value:"kg", text:"kg"},
+        {value:"g", text:"g"},
+        {value:"l", text:"l"},
+        {value:"ml", text:"ml"},
+        {value:"u", text:"u"}
+      ],
 
       ingredientes: [],
       insumosData: [],

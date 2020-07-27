@@ -17,7 +17,7 @@
               </b-button>
             </h3>
             <div class="stock">
-              <div id="stockColor"></div>
+              <div id="stockColor" style="background-color:#ED3247"></div>
               <b-badge class="categoria">{{ manufacturadoEncontrado.rubro.denominacion }}</b-badge>
             </div>
             <div id="descripcionInsumo">
@@ -123,6 +123,7 @@ export default {
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
+      costos: [],
       costo: 0.0,
     };
   },
@@ -172,41 +173,35 @@ export default {
         console.log("suficiente");
       }
     },
-    
-    generarStringCantidades(){
-      
-      let cantidadInsumos = [];
-      this.recetas.forEach(receta => cantidadInsumos.push(receta.cantidadInsumo));
-      let cantidadInsumosStr = cantidadInsumos.join(",");
-        
-      return cantidadInsumosStr;
-    },
 
-    generarStringIds(){
+    async generarStringCantidades(){
       
-      let idsInsumos = [];
-      this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
-      let idsInsumosStr = idsInsumos.join(",");
-      
-      return idsInsumosStr;
+        let cantInsumo = [];
+        this.recetas.forEach(receta => cantInsumo.push(receta.cantidadInsumo));
+        let cantInsumoStr = cantInsumo.join(",");
+        
+        return cantInsumoStr;
     },
     
     async obtenerCosto(){
-      let idsInsumosStr = this.generarStringIds();
-      let cantidadInsumos = this.generarStringCantidades();
+      console.log("obtener costo")
+      let idsInsumos = [];
+      this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
+      let idsInsumosStr = idsInsumos.join(",");
+      let cantInsumo = await this.generarStringCantidades();
+      
       await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
         params : {
           "idsInsumosStr" : idsInsumosStr,
-          "cantidadInsumos": cantidadInsumos,
+          "cantidadInsumos" : cantInsumo
         }
-      }).then(response => this.costo = response.data);
-      console.log(this.costo);
+      }).then(response => this.costos = response.data);
+       console.log("costo "+ this.costos);
+      
     },
-
+    
     modificarInsumo(){
-      localStorage.setItem("manufacturado", JSON.stringify(this.manufacturadoEncontrado));
-      localStorage.setItem("recetas", JSON.stringify(this.recetas));
-      this.$router.push({ path: "/modificarManufacturado/"});
+      this.$router.push({ path: "/modificarManufacturado/"+this.manufacturadoEncontrado.id})
     }
   },
 };
@@ -329,7 +324,6 @@ export default {
 #admin-btn-grp{
   float: center; 
 }
-
 #cocina-btn-grp{
   float: unset; 
 }

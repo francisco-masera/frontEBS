@@ -169,6 +169,7 @@ p {
   background-color: transparent;
   border: none;
   padding: 0px;
+  display: inline-block;
 }
 .botonImagen:hover {
   background-color: transparent;

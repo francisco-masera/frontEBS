@@ -11,37 +11,40 @@
       <h1>Detalle producto</h1>
 
       <div>
-        <img
-          :src="'@/assets/images/productos/' + sugerenciaEncontrada.imagen"
-          class="imagenProducto"
-        />
+        
+         <img :src="'http://localhost:9001/images/productos/' + sugerenciaEncontrada.imagen" class="imagenProducto"/>
         <h3>
-          {{sugerenciaEncontrada.denominación}}
-          <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
-            <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
-          </b-button>
+          {{sugerenciaEncontrada.denominacion}}
+          <b-btn-group id="admin-btn-grp"> 
+                 <b-button size="sm" @click="modificarInsumo(insumoEncontrado.idInsumo)" class="botonImagen">
+                  <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
+                </b-button>
+               
+          </b-btn-group>
         </h3>
-        <div class="stock">
-          <b-badge class="categoria">{{ sugerenciaEncontrada.categoria }}</b-badge>
-        </div>
+        
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
           <p>{{ sugerenciaEncontrada.descripcion }}</p>
         </div>
         <div class="infoProductoVenta">
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>{{ sugerenciaEncontrada.costo }}</b-card-text>
+            <b-card-text>${{ costo }}</b-card-text>
           </b-card>
           <b-card header="Tiempo" class="tarjetaInfo">
-            <b-card-text>{{ sugerenciaEncontrada.tiempo }}</b-card-text>
+            <b-card-text>{{ sugerenciaEncontrada.tiempoCocina }} min.</b-card-text>
           </b-card>
         </div>
         <div class="infoIngredientes">
           <h2>Ingredientes</h2>
-          <li
-            v-for="(ingrediente, index) in sugerenciaEncontrada.ingredientes"
-            :key="index"
-          >{{ ingrediente }}</li>
+         <ul>
+                <li
+                  v-for="(receta, index) in recetas"
+                  :key="index"
+                >
+                  {{ receta.insumo.denominacion }} {{ receta.cantidadInsumo }}{{ receta.insumo.unidadMedida }}
+                </li>
+              </ul>
         </div>
         <div class="botonesSugerencia">
           <b-button pill class="boton" size="md" @click="aceptarSugerencia()">Aprobar</b-button>
@@ -66,6 +69,8 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Service from "@/service/Service.js";
+import axios from "axios";
 export default {
   mounted() {
     this.getSugerenciaXid();
@@ -76,22 +81,57 @@ export default {
   },
   data() {
     return {
-      sugerenciaEncontrada: []
+      sugerenciaEncontrada: [],
+      service: new Service(),
+      recetas: [],
+      costo: 0,
     };
   },
 
   methods: {
 
-      async getSugerenciaXid() {
-      var parametroId = parseInt(this.$route.params.id, 10);
-      const res = await fetch("/sugerenciaChef.json");
-      const resJson = await res.json();
-
-      this.sugerenciaEncontrada = await resJson.sugerencias.find(
-        sugerencia => sugerencia.id === parametroId
-      );
-      console.log(this.sugerenciaEncontrada);
+    async getSugerenciaXid() {
+      let parametroId = parseInt(this.$route.params.id, 10);
+      await this.service.getOne("sugerencia", parametroId).then((data)=>{      
+        this.sugerenciaEncontrada = data;
+        this.getRecetas(parametroId);
+      });
     },
+    
+    async getRecetas(id){
+      await axios.get("http://localhost:9001/buensabor/sugerencia/recetasSugerencia/" 
+      + id)
+      .then((response)=> this.recetas = response.data);
+      await this.obtenerCosto();
+      
+      
+    },
+
+     async obtenerCosto(){
+      
+      let idsInsumos = [];
+      this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
+      let idsInsumosStr = idsInsumos.join(",");
+      let cantInsumo = await this.generarStringCantidades();
+      
+      await axios.get("http://localhost:9001/buensabor/sugerencia/costo", { 
+        params : {
+          "idsInsumosStr" : idsInsumosStr,
+          "cantidadInsumos" : cantInsumo
+        }
+      }).then(response => this.costo = response.data);
+       
+      
+    },
+      async generarStringCantidades(){
+      
+        let cantInsumo = [];
+        this.recetas.forEach(receta => cantInsumo.push(receta.cantidadInsumo));
+        let cantInsumoStr = cantInsumo.join(",");
+        
+        return cantInsumoStr;
+    },
+
 
     aceptarSugerencia() {
       this.$refs["modal"].show();
@@ -211,5 +251,7 @@ export default {
 .botonesSugerencia {
   float: right;
 }
+
+
 
 </style>

@@ -12,22 +12,28 @@
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"/>
         </b-button>
       </b-nav-form>
+
       <b-table hover responsive :items="insumosData" :fields="tituloTabla" @row-dblclicked="verDetalle" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
+        
         <template v-slot:cell(acción)="row">
           <b-button size="sm" @click="agregarInsumoCompra(row.item.id)" class="botonImagen">
             <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
           </b-button>
         </template>
+
         <template v-slot:cell(categoria)="row">
-          <b-badge class="Badgecategoria" >{{row.item.rubroInsumo.denominacion}}</b-badge>
-          
+          <b-badge class="Badgecategoria" >{{row.item.rubroInsumo.denominacion}}</b-badge>          
         </template>
+
         <template v-slot:cell(stockActual)="row">
-         {{row.item.stock.actual}}
-          
+         {{row.item.stock.actual}}          
         </template>
-          
+          <template v-for="(costo, i) in costos">
+          <div :key="i"> {{costo}} </div>
+        </template>
       </b-table>
+       
+
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
       <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
       </b-pagination>
@@ -73,6 +79,7 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
+import Formatter from "@/utilidades/Formatters.js";
 export default {
   mounted() {
     this.userVerifica();
@@ -98,7 +105,7 @@ export default {
         "acción",
       ],
       insumosData: [],
-    
+      costos:[],
       insumo: {
         id: 0,
         denominacion: "",
@@ -124,6 +131,7 @@ export default {
         },
         service : new Service(),
         preciosUnitarios: [],
+        formatter: new Formatter(),
       };
   },
   methods: {
@@ -140,10 +148,10 @@ export default {
      async getInsumos() {
       await this.service.getAll("insumo").then(data=>{
         this.insumosData = data;
-        
-      });
+        this.getPreciosUnitariosActuales();
+      }); 
+       console.log("tercero");     
       
-       await this.getPreciosUnitariosActuales();
        
     },
    
@@ -156,28 +164,29 @@ export default {
     },
    
     async getPreciosUnitariosActuales() {
-      console.log("segundo");
+      
       await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales/")
       .then((response) => {
         this.preciosUnitarios = response.data;     
-        
+        this.setPreciosUnitariosActuales()
       });
-      await this.setPreciosUnitariosActuales();
+      console.log("segundo");     
+      
     },
 
   
 
     setPreciosUnitariosActuales(){
-        for (let index = 0; index < this.preciosUnitarios.length; index++) {      
+      console.log("primero");
+       for (let index = 0; index < this.preciosUnitarios.length; index++) {  
+         this.costos.push(this.preciosUnitarios[index].precioUnitario);
+       }
+       console.log(this.costos)
        
-        this.insumosData.map(insumo => {       
-          if(insumo.idInsumo == this.preciosUnitarios[index].insumo.idInsumo) {
-            Object.assign(insumo, {"costo":this.preciosUnitarios[index].precioUnitario}); 
-          }   
-         
-
-        });  
-      }
+       this.insumosData.forEach((insumo, i) =>
+        this.insumosData[i].costo = this.formatter.formatMoney(this.costos[i])
+      );
+       
       console.log(this.insumosData)
     },
 
