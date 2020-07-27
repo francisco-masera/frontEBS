@@ -16,14 +16,15 @@
           class="imagenProducto"
         />
         <h3>
-          {{sugerenciaEncontrada.denominación}}
-          <b-button size="sm" @click="modificarInsumo()" class="botonImagen">
-            <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
-          </b-button>
+          {{sugerenciaEncontrada.denominacion}}
+          <b-btn-group id="admin-btn-grp"> 
+                 <b-button size="sm" @click="modificarInsumo(insumoEncontrado.idInsumo)" class="botonImagen">
+                  <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
+                </b-button>
+               
+          </b-btn-group>
         </h3>
-        <div class="stock">
-          <b-badge class="categoria">{{ sugerenciaEncontrada.categoria }}</b-badge>
-        </div>
+        
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
           <p>{{ sugerenciaEncontrada.descripcion }}</p>
@@ -66,6 +67,8 @@
 <script>
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
+import Service from "@/service/Service.js";
+import axios from "axios";
 export default {
   mounted() {
     this.getSugerenciaXid();
@@ -76,22 +79,48 @@ export default {
   },
   data() {
     return {
-      sugerenciaEncontrada: []
+      sugerenciaEncontrada: [],
+      service: new Service(),
+      recetas: [],
+      costos: [],
     };
   },
 
   methods: {
 
-      async getSugerenciaXid() {
-      var parametroId = parseInt(this.$route.params.id, 10);
-      const res = await fetch("/sugerenciaChef.json");
-      const resJson = await res.json();
-
-      this.sugerenciaEncontrada = await resJson.sugerencias.find(
-        sugerencia => sugerencia.id === parametroId
-      );
-      console.log(this.sugerenciaEncontrada);
+    async getSugerenciaXid() {
+      let parametroId = parseInt(this.$route.params.id, 10);
+      await this.service.getOne("sugerencia", parametroId).then((data)=>{      
+        this.sugerenciaEncontrada = data;
+        this.getRecetas(parametroId);
+      });
     },
+    
+    async getRecetas(id){
+      await axios.get("http://localhost:9001/buensabor/sugerencia/" 
+      + id)
+      .then((response)=> this.recetas = response.data);
+      await this.obtenerCosto();
+      
+      
+    },
+
+     async obtenerCosto(){
+      let idsInsumos = [];
+      this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
+      let idsInsumosStr = idsInsumos.join(",");
+      await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
+        params : {
+          "idsInsumosStr" : idsInsumosStr
+        }
+      }).then(response => this.costos = response.data);
+
+      let sumatoria = 0;
+      this.costos.forEach((costo, index) => sumatoria += costo * this.recetas[index].cantidadInsumo);
+      this.costo = sumatoria;
+     
+    },
+
 
     aceptarSugerencia() {
       this.$refs["modal"].show();
@@ -211,5 +240,7 @@ export default {
 .botonesSugerencia {
   float: right;
 }
+
+
 
 </style>
