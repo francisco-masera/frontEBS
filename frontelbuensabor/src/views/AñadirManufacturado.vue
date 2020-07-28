@@ -110,14 +110,14 @@
               id="tablaInsumos" 
               class="tabla"
               >
-               <template v-slot:table-colgroup="scope">
+              <!--  <template v-slot:table-colgroup="scope">
                 <col
                   v-for="field in scope.fields"
                   :key="field.idInsumo"
                   hidden
                   id="idInsumo"
                 >
-              </template>
+              </template> -->
               <template v-slot:cell(check)="row">
                 <b-form-group>
                   <input type="checkbox" 
@@ -304,9 +304,9 @@ export default {
     },
 
     habilitarCheckBox(){
-      let checkBoxes = document.getElementsByName("checkInsumo");
-      const checksBoxesArray = Array.prototype.slice.call(checkBoxes);
-      
+      [document.getElementsByName("tablaInsumos tr")].forEach(row => {
+        row.addEventListener
+      });
     },
 
     agregarInsumo(check, index, item){
