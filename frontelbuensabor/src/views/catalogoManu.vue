@@ -9,20 +9,12 @@
    <b-container class="informacion">  
   <h1>Catálogo manufacturados</h1>
       <b-nav-form class="buscador">
-        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar manufacturado"></b-form-input>
+        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar manufacturado" v-model="busqueda"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-          <b-form-select
-            :options="categoriasData"
-            value-field="denominacion"
-            text-field="denominacion"
-            v-model="categoriasData.denominacion"
-            class="selectCategorias"
-          >
-          <b-form-select-option>Filtrar por categoría</b-form-select-option>
-          </b-form-select>
+         
       <b-table
         hover
         responsive
@@ -33,7 +25,7 @@
         :current-page="currentPage"
         :borderless="true"
         id="tablaManufac"
-        :filter="categoriasData.denominacion"
+        :filter="busqueda"
         class="tabla"
         @row-dblclicked="verDetalle"
       >
@@ -70,20 +62,12 @@
         <span class="hrefManu" style="margin-left:50px">CATEGORÍAS</span>
       </a>
       <b-nav-form class="buscador">
-        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar producto"></b-form-input>
+        <b-form-input size="sm" class="mr-sm-2" v-model="busqueda" placeholder="Buscar producto"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-        <b-form-select
-            :options="categoriasData"
-            value-field="denominacion"
-            text-field="denominacion"
-            v-model="categoriasData.denominacion"
-            class="selectCategorias"
-          >
-          <b-form-select-option>Filtrar por categoría</b-form-select-option>
-          </b-form-select>
+       
          
       <b-table
         hover
@@ -96,7 +80,7 @@
         :borderless="true"
         id="tablaManufac"
         class="tabla"
-        :filter="categoriasData.denominacion"
+        :filter="busqueda"
         @row-dblclicked="verDetalle"
       >
       <template v-slot:cell(precio)="row">{{ formatter.formatMoney(row.item.precioVenta) }}</template>
@@ -158,6 +142,7 @@ export default {
       stock: true,
       service: new Service(),
       costos:[],
+      busqueda:'',
       formatter: new Formatter()
     };
   },
@@ -258,11 +243,13 @@ export default {
         console.log("suficiente");
       }
     },
+     
   },
   computed: {
     rows() {
       return this.manufacturadosData.length;
-    }  
+    }
+   
   },
 };
 </script>
