@@ -67,7 +67,7 @@
             </div>
             <div class="infoProductoVenta">
               <b-card header="Costo" class="tarjetaInfo">
-                <b-card-text>{{ this.formatter.formatMoney(this.costo) }}</b-card-text>
+                <b-card-text>{{ this.formatter.formatMoney(costo) }}</b-card-text>
               </b-card>
               <b-card header="Precio venta" class="tarjetaInfo">
                 <b-card-text >{{ this.formatter.formatMoney(manufacturadoEncontrado.precioVenta) }}
@@ -123,8 +123,7 @@ export default {
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
-      costos: [],
-      costo: 0.0,
+      costo: [],
     };
   },
 
@@ -174,34 +173,40 @@ export default {
       }
     },
 
-    async generarStringCantidades(){
+    generarStringCantidades(){
       
-        let cantInsumo = [];
-        this.recetas.forEach(receta => cantInsumo.push(receta.cantidadInsumo));
-        let cantInsumoStr = cantInsumo.join(",");
+      let cantidadesInsumos = [];
+      this.recetas.forEach(receta => cantidadesInsumos.push(receta.cantidadInsumo));
+      let cantidadesInsumosStr = cantidadesInsumos.join(",");
         
-        return cantInsumoStr;
+      return cantidadesInsumosStr;
     },
     
-    async obtenerCosto(){
-      console.log("obtener costo")
+    generarStringIds(){
+       
       let idsInsumos = [];
       this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
-      let idsInsumosStr = idsInsumos.join(",");
-      let cantInsumo = await this.generarStringCantidades();
+      let idsInsumoStr = idsInsumos.join(",");
+        
+      return idsInsumoStr;
+    },
+
+    async obtenerCosto(){
+
+      let idsInsumosStr = this.generarStringIds();
+      let cantidadesInsumos = this.generarStringCantidades();
       
       await axios.get("http://localhost:9001/buensabor/manufacturado/costo", { 
         params : {
           "idsInsumosStr" : idsInsumosStr,
-          "cantidadInsumos" : cantInsumo
+          "cantidadInsumos" : cantidadesInsumos
         }
-      }).then(response => this.costos = response.data);
-       console.log("costo "+ this.costos);
+      }).then(response => this.costo = response.data);
       
     },
     
     modificarInsumo(){
-      this.$router.push({ path: "/modificarManufacturado"})
+      this.$router.push({ path: "/modificarManufacturado/" + this.manufacturadoEncontrado.id})
     }
   },
 };

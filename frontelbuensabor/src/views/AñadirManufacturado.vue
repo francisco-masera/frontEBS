@@ -101,42 +101,36 @@
           <div class="lineaForm">
             <b-table 
               hover responsive fixed
+              selectable select-mode="multi"
               :items="insumosData" 
               :fields="camposTablaInsumos" 
               :outlined="true" 
               :per-page="perPage" 
               :current-page="currentPage" 
-              :borderless="true"            
+              :borderless="true"
+              @row-selected="setIngredientes"
               id="tablaInsumos" 
               class="tabla"
               >
-              <!--  <template v-slot:table-colgroup="scope">
-                <col
-                  v-for="field in scope.fields"
-                  :key="field.idInsumo"
-                  hidden
-                  id="idInsumo"
-                >
-              </template> -->
-              <template v-slot:cell(check)="row">
-                <b-form-group>
-                  <input type="checkbox" 
-                  name="checkInsumo"
-                  :id="row.item.idInsumo"
-                  @input="agregarInsumo($event, row.index, row.item)"/>
-                </b-form-group>
-              </template>
               <template v-slot:cell(denominacion)="row">
                 {{ row.item.denominacion }}
               </template>
-              <template v-slot:cell(unidadMedida)="row">  
-                <selector
-                name="selector"
+              <template  v-slot:cell(unidadMedida)="row">
+                <detalle
+                :row="row"
+                />
+                
+               <!--  <medidas
+                name="medidasModal"
                 :idInsumo="row.item.idInsumo"
-                @itemClick="cambiarValor($event, row.index)"/>
+                @ok="agregarValor($event, row.item.idInsumo)"/> -->
+              </template>
+              <template v-slot:cell(unidadElegida)="row">
+                <b-form-input type="text" readonly style="width:100%" :id="`u ${row.item.idInsumo}`"/>
               </template>
               <template v-slot:cell(cantidad)>
-                  <b-form-input type="number" id="cantidadInsumo" step="0.01" min="0.00"/>
+                  <b-form-input type="number" id="cantidadInsumo" 
+                  step="0.01" min="0.00" style="width:100%"/> 
               </template>
             </b-table>
             <b-pagination 
@@ -216,25 +210,25 @@ import { validationMixin } from 'vuelidate';
 import Vuelidate from 'vuelidate';
 import MenuLateral from '@/components/MenuLateral.vue';
 import Header from "@/components/Header.vue";
-import ListaUnidades from "@/components/SelectorUnidades.vue";
+//import ModalMedidas from "@/components/ModalMedidas.vue";
+import DetalleMedidas from "@/components/DetalleMedidas.vue";
 import Service from '@/service/Service.js';
 import Formatter from '@/utilidades/Formatters.js';
 export default {
   mixins: [validationMixin],
   mounted() {
     this.userVerifica();
+    this.getManufacturadoXId();
     this.esNuevo = this.manufacturado != undefined ? this.esNuevo = false : "";  
-    this.manufacturado = JSON.parse(localStorage.getItem("manufacturado"));
-    this.recetas = JSON.parse(localStorage.getItem("recetas"));
-    this.completarCamposForm1();
   },
   props: {
     user:{},
   },
   components: {
-    menuLateral: MenuLateral,
     cabecera: Header,
-    selector: ListaUnidades,
+    menuLateral: MenuLateral,
+  //  medidas: ModalMedidas,
+    detalle: DetalleMedidas,
   },
   
   data() {
@@ -248,19 +242,19 @@ export default {
       },
       
       camposTablaInsumos: [
-        { key: 'check', label: 'Seleccionar' },
         { key: 'denominacion', label: 'Denominación' },
-        { key: 'unidadMedida', label: 'Undidad de Medida' },
+        { key: 'unidadMedida', label: 'Unidad de Medida' },
+        { key: 'unidadElegida', label: 'Unidad Elegida' },
         { key: 'cantidad', label: 'Cantidad' }
       ],
       
       opcionesUnidad:[
-        {value:null, text:""},
-        {value:"kg", text:"kg"},
-        {value:"g", text:"g"},
-        {value:"l", text:"l"},
-        {value:"ml", text:"ml"},
-        {value:"u", text:"u"}
+        { value: null, text: "" },
+        { value: "kg", text: "kg" },
+        { value: "g", text: "g" },
+        { value: "l", text: "l" },
+        { value: "ml", text: "ml" },
+        { value: "u", text: "u" }
       ],
 
       ingredientes: [],
@@ -268,12 +262,9 @@ export default {
       manufacturado: [],
       recetas: [],
       recetaNueva: [],
-      selects: [],
-      
+      selected: [],
       currentPage: 1,  
       esNuevo: true,
-      filaElegida: -1,
-      ingrediente: "",
       perPage: 7,
       unidadMedida: "",
       userData: this.$props.user
@@ -281,94 +272,90 @@ export default {
   },
 
   methods: {
-    completarCamposForm1(){
-      this.form1.denominacion = this.manufacturado.denominacion;
-      this.form1.descripcion = this.manufacturado.descripcion;
-    },
 
-    siguiente1(){
-        document.getElementById("paso1").style.display = "none";
-        document.getElementById("paso2").style.display = "block";   
-        this.getInsumos();  
-    },
-
-    siguiente2(){
-      document.getElementById("paso2").style.display = "none";
-      document.getElementById("paso3").style.display = "block";
-    },
-
-    async getInsumos() {
-      await this.service.getAll("insumo").then(data=>{
-        this.insumosData = data;
-      }); 
-    },
-
-    habilitarCheckBox(){
-      [document.getElementsByName("tablaInsumos tr")].forEach(row => {
-        row.addEventListener
-      });
-    },
-
-    agregarInsumo(check, index, item){
-      console.log(check.target.checked,item);
-      if(check.target.checked){
-        this.recetaNueva.push(item);
-      }else{
-        this.recetaNueva.indexOf(index) != -1 ? this.recetaNueva.splice(index, 1) : "";
-      }
-    },
-
-    quitarSelect(select){
-      let idx = this.selects.indexOf(select);
-      this.selects.splice(idx, 1);
-    },
-    
-    cambiarValor(){
-      this.selects = document.getElementsByName("selector");
-      const selectsArray =  Array.prototype.slice.call(this.selects);
-      console.log(selectsArray);
-    },
-
-    userVerifica(){
-      this.userData = JSON.parse(sessionStorage.getItem('user'));
-      this.userData == undefined  || (this.userData.rol != 'admin' && this.userData.rol != 'cocina') ? 
-      this.$router.push({ name: 'Home'}) : "";
-    }, 
-
-    onSubmit1() {
-      this.$v.$touch();
-      if (this.$v.form1.$anyError) {
-        return;
-      }
-
-      this.manufacturado.denominacion = document.getElementById("denominacionManufacturado").value;
-      this.manufacturado.descripcion = document.getElementById("descripcionManufacturado").value;
-      this.manufacturado.imagen = document.getElementById("imagen").files[0];
-      this.manufacturado.aptoCeliaco = document.getElementById("checkbox-1").checked;
-      const vegano = document.getElementById("checkbox-2").checked;
-      const vegetariano = vegano ? "true" : document.getElementById("checkbox-3").checked; 
-      this.manufacturado.vegano = vegano;
-      this.manufacturado.vegetariano = vegetariano;
-      localStorage.setItem("manufacturado", this.manufacturado);
-      this.siguiente1();
-    },
-  
-    onSubmit2(){
-      const recetaNueva = this.recetaNueva.length > 0 
-      ? this.recetaNueva : 
-      "No se han seleccionado ingredientes";
-      localStorage.setItem("recetaNueva", recetaNueva);
-      this.manufacturado.tiempoCocina = document.getElementById("tiempoCocina").value;
-      localStorage.setItem("manufacturado", this.manufacturado);
-      this.siguiente2();
-    },
-    
-    volver(){
-      localStorage.removeItem("recetas");
-      localStorage.removeItem("manufacturado");
-      this.$router.push({ path: "/catalogoManu/"});
-    },
+  async getManufacturadoXId(){
+    await this.service.getOne("manufacturado", this.$route.params.id)
+    .then((data) => this.manufacturado = data).then(()=>this.completarCamposForm1());
   },
+
+  completarCamposForm1(){
+    this.form1.denominacion = this.manufacturado.denominacion;
+    this.form1.descripcion = this.manufacturado.descripcion;
+  },
+
+  siguiente1(){
+    document.getElementById("paso1").style.display = "none";
+    document.getElementById("paso2").style.display = "block";   
+    this.getInsumos();  
+  },
+
+  siguiente2(){
+    document.getElementById("paso2").style.display = "none";
+    document.getElementById("paso3").style.display = "block";
+  },
+  
+  async getInsumos() {
+    await this.service.getAll("insumo").then(data=>{
+      this.insumosData = data;
+    }); 
+  },
+
+  setIngredientes(items){
+    this.ingredientes = items;
+  },
+  
+  habilitarMedida(idInsumo){
+    if(this.ingredientes != null && this.ingredientes != undefined)
+      return this.ingredientes.find((ingrediente) => ingrediente.idInsumo == idInsumo);
+  },
+  agregarValor(valorSeleccionado, idInsumo){
+    if(this.ingredientes != null && this.ingredientes != undefined){
+      let insumo = this.ingredientes.filter((ingrediente) => ingrediente.idInsumo == idInsumo);
+      insumo.unidadMedida = valorSeleccionado;
+      this.ingredientes.map((ingrediente) => ingrediente.idInsumo == idInsumo ? ingrediente = insumo : "");
+      document.getElementById(`u ${idInsumo}`).value = valorSeleccionado;
+    }
+    console.log(this.ingredientes[0].unidadMedida);
+  },
+
+  userVerifica(){
+    this.userData = JSON.parse(sessionStorage.getItem('user'));
+    this.userData == undefined  || (this.userData.rol != 'admin' && this.userData.rol != 'cocina') ? 
+    this.$router.push({ name: 'Home'}) : "";
+  }, 
+
+  onSubmit1() {
+    this.$v.$touch();
+    if (this.$v.form1.$anyError) {
+      return;
+    }
+    this.manufacturado.denominacion = document.getElementById("denominacionManufacturado").value;
+    this.manufacturado.descripcion = document.getElementById("descripcionManufacturado").value;
+    this.manufacturado.imagen = document.getElementById("imagen").files[0];
+    this.manufacturado.aptoCeliaco = document.getElementById("checkbox-1").checked;
+    const vegano = document.getElementById("checkbox-2").checked;
+    const vegetariano = vegano ? "true" : document.getElementById("checkbox-3").checked; 
+    this.manufacturado.vegano = vegano;
+    this.manufacturado.vegetariano = vegetariano;
+    localStorage.setItem("manufacturado", this.manufacturado);
+    this.siguiente1();
+  },
+
+  onSubmit2(){
+    const recetaNueva = this.recetaNueva.length > 0 
+    ? this.recetaNueva : 
+    "No se han seleccionado ingredientes";
+    localStorage.setItem("recetaNueva", recetaNueva);
+    this.manufacturado.tiempoCocina = document.getElementById("tiempoCocina").value;
+    localStorage.setItem("manufacturado", this.manufacturado);
+    this.siguiente2();
+  },
+  
+  volver(){
+    this.$router.push({ path: "/catalogoManu/"});
+  },
+
+},
   
   computed: {
     rows() {
