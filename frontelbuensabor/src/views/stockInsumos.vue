@@ -7,13 +7,22 @@
     <b-container class="informacion">
       <h1>Stock de insumos</h1>
       <b-nav-form class="buscador">
-        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo"></b-form-input>
+        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo" v-model="busqueda"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
           <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"/>
         </b-button>
       </b-nav-form>
 
-      <b-table hover responsive :items="insumosData" :fields="tituloTabla" @row-dblclicked="verDetalle" :outlined="true" :per-page="perPage" :current-page="currentPage" :borderless="true" id="tablaInsumos" class="tabla">
+      <b-table hover responsive :items="insumosData" 
+      :fields="tituloTabla" 
+      @row-dblclicked="verDetalle" 
+      :outlined="true" 
+      :per-page="perPage" 
+      :current-page="currentPage" 
+      :borderless="true" 
+      id="tablaInsumos" 
+      class="tabla"
+      :filter="busqueda">
         
         <template v-slot:cell(acción)="row">
           <b-button size="sm" @click="agregarInsumoCompra(row.item.id)" class="botonImagen">
@@ -133,6 +142,7 @@ export default {
         service : new Service(),
         preciosUnitarios: [],
         formatter: new Formatter(),
+        busqueda:''
       };
   },
   methods: {
