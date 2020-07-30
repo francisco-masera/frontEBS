@@ -195,8 +195,8 @@ export default {
           "idsInsumosStr" : idsInsumosStr,
           "cantidadInsumos" : cantInsumo
         }
-      }).then(response => this.costos = response.data);
-       console.log("costo "+ this.costos);
+      }).then(response => this.costo = response.data);
+       console.log("costo "+ this.costo);
       
     },
     
