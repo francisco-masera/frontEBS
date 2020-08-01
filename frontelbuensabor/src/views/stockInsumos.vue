@@ -24,7 +24,7 @@
       class="tabla"
       :filter="busqueda">
         
-        <template v-slot:cell(acción)="row">
+        <template v-slot:cell(accion)="row">
           <b-button size="sm" @click="agregarInsumoCompra(row.item.id)" class="botonImagen">
             <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
           </b-button>
@@ -38,7 +38,7 @@
          {{row.item.stock.actual}}          
         </template>
           <template v-for="(costo, i) in costos">
-          <div :key="i"> {{costo}} </div>
+            <div :key="i"></div>
         </template>
       </b-table>
        
@@ -92,7 +92,7 @@ import Formatter from "@/utilidades/Formatters.js";
 export default {
   mounted() {
     this.userVerifica();
-    this.getInsumos();
+    this.getPreciosUnitariosActuales();
     
   },
   components: {
@@ -106,14 +106,16 @@ export default {
 
       perPage: 7,
       currentPage: 1,
+
       tituloTabla: [
-        "denominacion",
-        "unidadMedida",
-        "categoria",
-        "stockActual",
-        "costo",
-        "acción",
+        { key: 'denominacion', label: 'Denominación' },
+        { key: 'unidadMedida', label: 'Unidad de Medida' },
+        { key: 'categoria', label: 'Categoría' },
+        { key: 'stockActual', label: 'Stock Actual' },
+        { key: 'costo', label: 'Costo' },
+        { key: 'accion', label: 'Acción' }
       ],
+
       insumosData: [],
       costos:[],
       insumo: {
@@ -126,18 +128,18 @@ export default {
       },
       
        insumoEncontrado: {
-            id:"",
-            denominacion:"",
-            unidad:"",
-            costo:0,
-            categoria:"",
-            unidadMedida:0,
-            stockActual:0,
-            stockMin:0,
-            stockMax:0,
-            precioVenta:0,
-            descripcion: "",
-            imagen:""
+          id:"",
+          denominacion:"",
+          unidad:"",
+          costo:0,
+          categoria:"",
+          unidadMedida:0,
+          stockActual:0,
+          stockMin:0,
+          stockMax:0,
+          precioVenta:0,
+          descripcion: "",
+          imagen:""
         },
         service : new Service(),
         preciosUnitarios: [],
@@ -147,8 +149,8 @@ export default {
   },
   methods: {
    userVerifica(){
-      this.user=JSON.parse(sessionStorage.getItem('user'));
-      if(this.user==undefined){
+      this.user = JSON.parse(sessionStorage.getItem('user'));
+      if(this.user == undefined){
         this.$router.push({ name: 'Home'})
       }
       if(this.user.rol != "admin"){
@@ -156,51 +158,43 @@ export default {
       }
     },
 
-     async getInsumos() {
-      await this.service.getAll("insumo").then(data=>{
-        this.insumosData = data;
-        this.getPreciosUnitariosActuales();
-      }); 
-       console.log("tercero");     
-      
-       
-    },
-   
     agregarInsumo() {
       window.location.href = "/añadirInsumo/"; 
     },
     
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
-      
+    },
+   
+    async getInsumos() {
+      await this.service.getAll("insumo").then((data) => {
+        this.insumosData = data;
+      });
+      return this.insumosData;
     },
    
     async getPreciosUnitariosActuales() {
-      
+      let insumos = [];
       await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales/")
-      .then((response) => {
-        this.preciosUnitarios = response.data;     
-        this.setPreciosUnitariosActuales()
-      });
-      console.log("segundo");     
-      
+      .then((response) =>
+        this.preciosUnitarios = response.data
+      ).then(insumos = await this.getInsumos())
+      .then(
+      this.setPreciosUnitariosActuales(insumos));
+    },
+    
+    auxSetPrecios(insumo){
+      const item = this.preciosUnitarios.find((costo)=> insumo.idInsumo == costo.insumo.idInsumo);
+      return item != undefined ? this.formatter.formatMoney(item.precioUnitario) : "Sin Registro";
     },
 
-  
-
-      setPreciosUnitariosActuales(){
-      console.log("primero");
-      for (let index = 0; index < this.preciosUnitarios.length; index++) { 
-        this.costos.push(this.preciosUnitarios[index].precioUnitario);
-      }
-      console.log(this.costos)
-       
-      this.insumosData.forEach((insumo, i) =>
-        this.costos[i] != undefined ? this.insumosData[i].costo = 
-         this.formatter.formatMoney(this.costos[i]) : this.insumosData[i].costo = "Sin registros"
-      );
+    setPreciosUnitariosActuales(insumos){
+      insumos.forEach((insumo,i) => (
+        insumos[i].costo = this.auxSetPrecios(insumo)
+      ));
+      this.costos = insumos;
     },
-
+    
     agregarInsumoCompra(id){   
      this.$refs['modal'].show()  
       this.getInsumoXid(id);
