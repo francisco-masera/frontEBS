@@ -186,18 +186,17 @@ export default {
 
   
 
-    setPreciosUnitariosActuales(){
+      setPreciosUnitariosActuales(){
       console.log("primero");
-       for (let index = 0; index < this.preciosUnitarios.length; index++) {  
-         this.costos.push(this.preciosUnitarios[index].precioUnitario);
-       }
-       console.log(this.costos)
+      for (let index = 0; index < this.preciosUnitarios.length; index++) { 
+        this.costos.push(this.preciosUnitarios[index].precioUnitario);
+      }
+      console.log(this.costos)
        
-       this.insumosData.forEach((insumo, i) =>
-        this.insumosData[i].costo = this.formatter.formatMoney(this.costos[i])
+      this.insumosData.forEach((insumo, i) =>
+        this.costos[i] != undefined ? this.insumosData[i].costo = 
+         this.formatter.formatMoney(this.costos[i]) : this.insumosData[i].costo = "Sin registros"
       );
-       
-      console.log(this.insumosData)
     },
 
     agregarInsumoCompra(id){   
