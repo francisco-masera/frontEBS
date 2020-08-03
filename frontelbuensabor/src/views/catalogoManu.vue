@@ -182,6 +182,7 @@ export default {
       busqueda:'',
       formatter: new Formatter(),
       esProducto:true,
+      estadoEliminado: false,
       categoriaNueva:{
         denominacion:"",
         baja:false
@@ -313,18 +314,22 @@ export default {
     
    },
 
-   eliminarCategoria(){
-     /* this.service.delete("rubroManufacturado",this.categoriaEliminar).then(data =>{
-        this.categoriaEliminar = data;
-        this.$bvToast.toast(`Categoría eliminada`, {        
+    async eliminarCategoria(){
+      await this.service
+        .delete("rubroManufacturado", this.categoriaEliminar.id)
+        .then(data =>{
+          this.categoriaEliminar =data;
+          this.$bvToast.toast(`Categoría eliminada`, {        
           autoHideDelay: 5000,
           toaster:'b-toaster-top-center',
           solid: true,
         });
-         this.$refs["eliminarCategoriaModal"].hide();
+        this.$refs["eliminarCategoriaModal"].hide();
         this.getCategorias();
-      })*/      
-   },
+        }
+        )      
+    },
+     
 
    cancelar(){
      this.$refs["eliminarCategoriaModal"].hide();
@@ -340,8 +345,10 @@ export default {
           toaster:'b-toaster-top-center',
           solid: true,
         });
+        this.categoriaNueva={};
         this.$refs["modalAgregarCategoria"].hide();
         this.getCategorias();
+        console.log(this.categoriaNueva)
 
       },)
        
