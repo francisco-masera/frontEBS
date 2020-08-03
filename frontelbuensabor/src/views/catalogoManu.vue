@@ -55,19 +55,10 @@
   <div v-else>
   <b-container class="informacion">  
    <h1>Catálogo manufacturados</h1>
-<<<<<<< HEAD
-      <a id="seleccion-manufacturado" href>
-        <span class="hrefManu">PRODUCTOS</span>
-      </a>
-      <a id="seleccion-manufacturado" href>
-        <span class="hrefManu" style="margin-left:30px; margin-right:10px">CATEGORÍAS</span>
-      </a>
-=======
    
     <b-button class="hrefManu" @click="cambiarAProductos()">PRODUCTOS</b-button>
     <b-button class="hrefManu" @click="cambiarACategorias()">CATEGORÍAS</b-button>
     <div v-if="esProducto">      
->>>>>>> desarrollo
       <b-nav-form class="buscador">
         <b-form-input size="sm" class="mr-sm-2" v-model="busqueda" placeholder="Buscar producto"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
