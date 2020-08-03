@@ -170,6 +170,7 @@ p {
   border: none;
   padding: 0px;
   display: inline-block;
+  margin:5px
 }
 .botonImagen:hover {
   background-color: transparent;
