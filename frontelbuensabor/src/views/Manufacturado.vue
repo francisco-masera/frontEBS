@@ -48,9 +48,6 @@
               <h3>
                 {{ manufacturadoEncontrado.denominacion }}
               <b-btn-group id="admin-btn-grp"> 
-                 <b-button size="sm" @click="modificarInsumo" class="botonImagen">
-                  <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
-                </b-button>
                 <b-button size="sm" @click="openModalEliminar" class="botonImagen">
                   <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
                 </b-button>

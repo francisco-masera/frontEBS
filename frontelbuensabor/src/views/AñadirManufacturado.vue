@@ -34,13 +34,13 @@
                 Descripción
               </label>
               <b-form-textarea
-              id="descripcionManufacturado" 
-              class="campoForm" 
-              v-model.lazy="form1.descripcion" 
-              :state="!$v.form1.descripcion.$invalid"
-              placeholder="Ingrese una descripción"
-              rows="3" 
-              max-rows="6"
+                id="descripcionManufacturado" 
+                class="campoForm" 
+                v-model.lazy="form1.descripcion" 
+                :state="!$v.form1.descripcion.$invalid"
+                placeholder="Ingrese una descripción"
+                rows="3" 
+                max-rows="6"
               />*
             <b-form-invalid-feedback>
               <br/> Este campo es obligatorio.
@@ -48,21 +48,6 @@
             </b-form-group>
           </div>
            <br>
-          <div class="lineaForm">
-            <b-form-group>
-              <label class="labelForm">
-                Imagen *
-              </label>
-              <b-form-file
-                class="campoForm"
-                id="imagen"
-                v-model.lazy="form1.imagen"
-                :state="!$v.form1.imagen.$invalid"/>
-                 <b-form-invalid-feedback>
-                <br/> Este campo es obligatorio.
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </div>
           <div class="lineaForm">
             <b-form-group id="contenedorCheck">
               <b-form-checkbox
@@ -89,18 +74,18 @@
               <h4 id="datos">*Datos necesarios</h4>
           </div>
           <div class="lineaFormDerecha" style="float:right">
-              <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
-              <b-button pill class="boton" size="md" @click.prevent="onSubmit1">Siguiente</b-button>
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit1">Siguiente</b-button>
           </div>
         </b-form>
       </div>
 
-      <div id="paso2">
+      <div id="paso2" style="display:none">
         <h2>Composición</h2>
         <b-form>
           <div class="lineaForm">
             <b-table 
-              hover responsive fixed
+              hover responsive="sm" fixed
               selectable select-mode="multi"
               :items="insumosData" 
               :fields="camposTablaInsumos" 
@@ -115,34 +100,27 @@
               <template v-slot:cell(denominacion)="row">
                 {{ row.item.denominacion }}
               </template>
-              <template  v-slot:cell(unidadMedida)="row">
-                <detalle
-                :row="row"
-                />
-                
-               <!--  <medidas
-                name="medidasModal"
-                :idInsumo="row.item.idInsumo"
-                @ok="agregarValor($event, row.item.idInsumo)"/> -->
-              </template>
-              <template v-slot:cell(unidadElegida)="row">
-                <b-form-input type="text" readonly style="width:100%" :id="`u ${row.item.idInsumo}`"/>
-              </template>
-              <template v-slot:cell(cantidad)>
-                  <b-form-input type="number" id="cantidadInsumo" 
-                  step="0.01" min="0.00" style="width:100%"/> 
-              </template>
             </b-table>
             <b-pagination 
-            v-model="currentPage"
-            size="sm"
-            align="right" 
-            :total-rows="rows" 
-            :per-page="perPage" 
-            aria-controls="my-tablaInsumos" 
-            class="paginador">
+              v-model="currentPage"
+              size="sm"
+              align="right" 
+              :total-rows="rows" 
+              :per-page="perPage" 
+              aria-controls="my-tablaInsumos" 
+              class="paginador">
             </b-pagination>
           </div>
+          <b-toast id="toast-insumos" variant="warning" solid>
+            <template v-slot:toast-title>
+              <div class="d-flex flex-grow-1 align-items-baseline">
+                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+                <strong class="mr-auto">¡Atención!</strong>
+              </div>
+            </template>
+              Marque al menos un elemento <br>
+              de la tabla para continuar.
+          </b-toast>
           <div class="lineaForm">
             <label class="labelForm">
               Tiempo en cocina
@@ -158,42 +136,101 @@
       </div>
 
       <div id="paso3">
-        <h2>Revisión</h2>
-        <b-form>
-          <div>
-            <div>
-              <img :src="'@/assets/images/productos/' + manufacturado.imagen" class="imagenProducto"/>
-              <h3>
-                {{ manufacturado.denominacion }}
-                <b-button size="sm" id="btn-editar" class="botonImagen">
-                  <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
-                </b-button>
-              </h3>
-              <div id="descripcionInsumo">
-                <h2>Descripción</h2>
-                <p>{{ manufacturado.descripcion }}</p>
+        <b-form id="form3">
+          <div class="lineaForm">
+            <b-table hover responsive="sm" fixed
+              :fields="camposTablaDetalle"
+              :items="ingredientes">
+              <template v-slot:cell(ingrediente)="row">
+                {{row.item.denominacion}}    
+              </template>
+              <template v-slot:cell(unidad)="row">
+              <b-form-group>
+                <medida
+                  name="medidas"
+                  :idInsumo="row.item.idInsumo"
+                  @selected="onDataInput($event, row.item.idInsumo, 'unidad')">
+                </medida>
+              </b-form-group>
+              </template>
+              <template v-slot:cell(cantidad)="row">
+                <cantidad
+                  name="cantidadesInput"
+                  :idInsumo="row.item.idInsumo"
+                  @kpress="onDataInput($event, row.item.idInsumo, '')">
+                </cantidad>
+              </template>
+            </b-table>
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit3">Siguiente</b-button>
+          </div>
+          <b-toast id="toast-datos" variant="warning" solid>
+            <template v-slot:toast-title>
+              <div class="d-flex flex-grow-1 align-items-baseline">
+                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+                <strong class="mr-auto">¡Atención!</strong>
               </div>
-              <div class="infoProductoVenta">
-                <b-card header="Tiempo" class="tarjetaInfo">
-                  <b-card-text>
+            </template>
+            Todos los datos de esta página son <br>
+            obligatorios para continuar.<br>
+            Recuerde: Las cantidades deben ser sólo números.<br>
+            Verifique los datos.
+          </b-toast>
+        </b-form>
+      </div>
+      
+      <br>
+      <div id="revision" style="display:none">
+        <h2>Revisión</h2>
+        <br>
+        <b-form id="formRevision">
+          <div>
+            <h3>
+              {{ manufacturado.denominacion }}
+              <b-button size="sm" id="btn-editar" class="botonImagen">
+                <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
+              </b-button>
+            </h3>
+            <div id="descripcionInsumo">
+              <h2>Descripción</h2>
+              <p>{{ manufacturado.descripcion }}</p>
+            </div>
+            <div class="infoProductoVenta">
+              <b-card header="Tiempo" class="tarjetaInfo">
+                <b-card-text>
                   {{ manufacturado.tiempoCocina }} min 
                 </b-card-text>
-                </b-card>
-              </div>
-              <div class="infoIngredientes">
-                <h2>Ingredientes</h2>   
-                <li
-                  v-for="(ingrediente, index) in recetaNueva"
-                  :key="index"
-                >
-                  {{ ingrediente.denominacion }} {{ ingrediente.cantidadInsumo }} {{ ingrediente.unidadMedida }}
-                </li>
-              </div>
-            </div>   
+              </b-card>
+            </div>
+            <div class="lineaForm">
+              <b-form-group>
+                <label class="labelForm">Imagen *</label>
+                <b-form-file
+                  class="campoForm"
+                  id="imagen"
+                  v-model.lazy="formRevision.imagen"
+                  :state="!$v.formRevision.imagen.$invalid"
+                />
+                <b-form-invalid-feedback>
+                  <br/> Este campo es obligatorio.
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </div>
+            <div class="infoIngredientes">
+              <h2>Ingredientes</h2>
+              <li id="listaIngredientes"
+                v-for="(receta, index) in recetasNuevas"
+                :key="index"
+              >
+                {{ receta.insumo.denominacion }} 
+                {{ receta.cantidadInsumo }} 
+                {{ receta.insumo.unidadMedida }}
+              </li>
+            </div> 
           </div>   
           <div class="lineaFormDerecha">
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
-            <b-button pill class="boton" size="md">Guardar</b-button>
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="guardar">Guardar</b-button>
           </div>
         </b-form>
       </div>
@@ -210,16 +247,16 @@ import { validationMixin } from 'vuelidate';
 import Vuelidate from 'vuelidate';
 import MenuLateral from '@/components/MenuLateral.vue';
 import Header from "@/components/Header.vue";
-//import ModalMedidas from "@/components/ModalMedidas.vue";
 import DetalleMedidas from "@/components/DetalleMedidas.vue";
+import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from '@/service/Service.js';
 import Formatter from '@/utilidades/Formatters.js';
 export default {
   mixins: [validationMixin],
   mounted() {
-    this.userVerifica();
+    this.verificarUsuario();
     this.getManufacturadoXId();
-    this.esNuevo = this.manufacturado != undefined ? this.esNuevo = false : "";  
+    this.esNuevo = this.$route.params.id != 0 ? !this.esNuevo : this.esNuevo;  
   },
   props: {
     user:{},
@@ -227,8 +264,8 @@ export default {
   components: {
     cabecera: Header,
     menuLateral: MenuLateral,
-  //  medidas: ModalMedidas,
-    detalle: DetalleMedidas,
+    medida: DetalleMedidas,
+    cantidad: DetalleCantidad,
   },
   
   data() {
@@ -238,16 +275,18 @@ export default {
       form1: {
         denominacion: "",
         descripcion: "",
+      },
+      formRevision:{
         imagen: [],
       },
-      
       camposTablaInsumos: [
         { key: 'denominacion', label: 'Denominación' },
-        { key: 'unidadMedida', label: 'Unidad de Medida' },
-        { key: 'unidadElegida', label: 'Unidad Elegida' },
-        { key: 'cantidad', label: 'Cantidad' }
       ],
-      
+      camposTablaDetalle: [
+        { key: 'ingrediente', label: 'Ingrediente' },
+        { key: 'unidad', label: 'UnidadMedida' },
+        { key: 'cantidad', label: 'Cantidad' },
+      ],
       opcionesUnidad:[
         { value: null, text: "" },
         { value: "kg", text: "kg" },
@@ -256,16 +295,18 @@ export default {
         { value: "ml", text: "ml" },
         { value: "u", text: "u" }
       ],
-
+      
+      cantidades: [],
       ingredientes: [],
       insumosData: [],
       manufacturado: [],
-      recetas: [],
-      recetaNueva: [],
+      recetasNuevas: [],
       selected: [],
+    
       currentPage: 1,  
       esNuevo: true,
       perPage: 7,
+      titulo: "",
       unidadMedida: "",
       userData: this.$props.user
     };
@@ -273,89 +314,178 @@ export default {
 
   methods: {
 
-  async getManufacturadoXId(){
-    await this.service.getOne("manufacturado", this.$route.params.id)
-    .then((data) => this.manufacturado = data).then(()=>this.completarCamposForm1());
-  },
+    verificarUsuario(){
+      this.userData = JSON.parse(sessionStorage.getItem('user'));
+      this.userData == undefined  || (this.userData.rol != 'cocina') ? 
+      this.$router.push({ name: 'Home'}) : "";
+    }, 
 
-  completarCamposForm1(){
-    this.form1.denominacion = this.manufacturado.denominacion;
-    this.form1.descripcion = this.manufacturado.descripcion;
-  },
+    async getManufacturadoXId(){
+      await this.service.getOne("manufacturado", this.$route.params.id)
+      .then((data) => this.manufacturado = data).then(()=>this.completarCamposForm1());
+    },
+    
+    completarCamposForm1(){
+      this.form1.denominacion = this.manufacturado.denominacion;
+      this.form1.descripcion = this.manufacturado.descripcion;
+    },
 
-  siguiente1(){
-    document.getElementById("paso1").style.display = "none";
-    document.getElementById("paso2").style.display = "block";   
-    this.getInsumos();  
-  },
+    onSubmit1() {
+      this.$v.$touch();
+      if (this.$v.form1.$anyError) {
+        return;
+      }
+      this.manufacturado.denominacion = document.getElementById("denominacionManufacturado").value;
+      this.manufacturado.descripcion = document.getElementById("descripcionManufacturado").value;
+      this.manufacturado.aptoCeliaco = document.getElementById("checkbox-1").checked;
+      const vegano = document.getElementById("checkbox-2").checked;
+      const vegetariano = vegano ? "true" : document.getElementById("checkbox-3").checked; 
+      this.manufacturado.vegano = vegano;
+      this.manufacturado.vegetariano = vegetariano;
+      this.siguiente1();
+    },
 
-  siguiente2(){
-    document.getElementById("paso2").style.display = "none";
-    document.getElementById("paso3").style.display = "block";
-  },
-  
-  async getInsumos() {
-    await this.service.getAll("insumo").then(data=>{
-      this.insumosData = data;
-    }); 
-  },
+    siguiente1(){
+      document.getElementById("paso1").style.display = "none";
+      document.getElementById("paso2").style.display = "block";
+      this.getInsumos();  
+    },
 
-  setIngredientes(items){
-    this.ingredientes = items;
-  },
-  
-  habilitarMedida(idInsumo){
-    if(this.ingredientes != null && this.ingredientes != undefined)
-      return this.ingredientes.find((ingrediente) => ingrediente.idInsumo == idInsumo);
-  },
-  agregarValor(valorSeleccionado, idInsumo){
-    if(this.ingredientes != null && this.ingredientes != undefined){
-      let insumo = this.ingredientes.filter((ingrediente) => ingrediente.idInsumo == idInsumo);
-      insumo.unidadMedida = valorSeleccionado;
-      this.ingredientes.map((ingrediente) => ingrediente.idInsumo == idInsumo ? ingrediente = insumo : "");
-      document.getElementById(`u ${idInsumo}`).value = valorSeleccionado;
-    }
-    console.log(this.ingredientes[0].unidadMedida);
-  },
+    async getInsumos() {
+      await this.service.getAll("insumo").then(data=>{
+        this.insumosData = data;
+      }); 
+    },
 
-  userVerifica(){
-    this.userData = JSON.parse(sessionStorage.getItem('user'));
-    this.userData == undefined  || (this.userData.rol != 'admin' && this.userData.rol != 'cocina') ? 
-    this.$router.push({ name: 'Home'}) : "";
-  }, 
+    setIngredientes(items){
+      this.ingredientes = items;
+    },
 
-  onSubmit1() {
-    this.$v.$touch();
-    if (this.$v.form1.$anyError) {
-      return;
-    }
-    this.manufacturado.denominacion = document.getElementById("denominacionManufacturado").value;
-    this.manufacturado.descripcion = document.getElementById("descripcionManufacturado").value;
-    this.manufacturado.imagen = document.getElementById("imagen").files[0];
-    this.manufacturado.aptoCeliaco = document.getElementById("checkbox-1").checked;
-    const vegano = document.getElementById("checkbox-2").checked;
-    const vegetariano = vegano ? "true" : document.getElementById("checkbox-3").checked; 
-    this.manufacturado.vegano = vegano;
-    this.manufacturado.vegetariano = vegetariano;
-    localStorage.setItem("manufacturado", this.manufacturado);
-    this.siguiente1();
-  },
+    onSubmit2(){
+      if(this.ingredientes.length > 0){
+        this.manufacturado.tiempoCocina = document.getElementById("tiempoCocina").value;
+        this.ingredientes.forEach(item => item.unidadMedida = null);
+        this.siguiente2();
+      }else{
+        this.$bvToast.show('toast-insumos');
+      }
+    },
 
-  onSubmit2(){
-    const recetaNueva = this.recetaNueva.length > 0 
-    ? this.recetaNueva : 
-    "No se han seleccionado ingredientes";
-    localStorage.setItem("recetaNueva", recetaNueva);
-    this.manufacturado.tiempoCocina = document.getElementById("tiempoCocina").value;
-    localStorage.setItem("manufacturado", this.manufacturado);
-    this.siguiente2();
-  },
-  
-  volver(){
-    this.$router.push({ path: "/catalogoManu/"});
-  },
+    siguiente2(){
+      document.getElementById("paso2").style.display = "none";
+      document.getElementById("paso3").style.display = "block";
+    },
 
-},
+    onDataInput(valor, idInsumo, target){
+      let item = {};
+      let index = -1;
+      if(target == "unidad"){      
+        item = this.buscarItem(idInsumo, target);
+        item.unidadMedida = valor;
+        index = this.encontrarIndice(idInsumo, this.ingredientes);
+        this.ingredientes[index] = item;
+      }else{
+        index = this.encontrarIndice(idInsumo, this.cantidades);
+        item = this.buscarItem(idInsumo, target);
+        valor = parseFloat(valor);
+        this.onUpdateCantidad(valor, index, item, idInsumo);
+      }
+    },
+
+    buscarItem(id, target){
+      if(target == "unidad"){
+        return this.ingredientes.find((ingrediente) => 
+          ingrediente.idInsumo == id
+        );
+      }else{
+        return this.cantidades.find((item) => item.id == id);
+      }
+    },
+
+    encontrarIndice(id, array){
+      if(array.length > 0)
+        return array.findIndex(i => i.id == id);
+      else return -1;
+    },
+    
+    onUpdateCantidad(valor, index, item, id){
+      if(index == -1){
+        this.cantidades.push({ cantidad: valor, id: id });
+      }else if(isNaN(valor) && item != undefined){
+        this.cantidades.splice(index, 1);
+      }else if(valor == null){
+        valor = String(item.cantidad).split('');
+        valor.pop();
+        valor = valor.join('');
+        this.actualizarValorCantidad(valor, item, index);
+      }else{
+        this.actualizarValorCantidad(valor, item, index);   
+      }
+    },
+
+     actualizarValorCantidad(valor, item, index){
+      item.cantidad = valor;
+      this.cantidades.splice(index, 1, item);
+      console.log(this.cantidades[index].cantidad);
+    },    
+
+    onSubmit3(){
+      let camposCompletos = this.verificarDatosForm3();
+      if(camposCompletos){  
+        this.cantidades.forEach(c => this.setRecetasNuevas(c.cantidad, c.id));
+        this.siguiente3()
+      }else{
+        this.$bvToast.show('toast-datos');
+      }
+    },
+    
+    setRecetasNuevas(cantidad, idInsumo){
+      let insumo = this.ingredientes.find(i => i.idInsumo == idInsumo);
+      this.recetasNuevas.push({ cantidadInsumo: cantidad, insumo: insumo });
+    },
+    
+    siguiente3(){
+      document.getElementById("paso3").style.display = "none";
+      document.getElementById("revision").style.display = "block";
+    },
+
+    verificarDatosForm3(){ 
+      let cantidadesLen = document.getElementsByName("cantidadesInput").length;
+      let rExp = new RegExp("(^|[ \\t])([-+]?(\\d+|\\.\\d+|\\d+\\.\\d*))($|[^+-.])");
+      let soloNumeros = this.cantidades.every(c => rExp.test(c.cantidad)); 
+      console.log("solo num", soloNumeros);
+      return (soloNumeros && this.cantidades.length == cantidadesLen 
+        && this.ingredientes.every(e => e.unidadMedida != null));
+    },
+
+    async guardar(){
+      let img = document.getElementById("imagen").files[0];
+      if(img != undefined){
+        await this.service.save("sugerencia", this.manufacturado)
+        .then(data => { 
+          console.log(data);
+          this.recetasNuevas.map(r => r.idSugerencia = this.manufacturado.id);
+          this.guardarRecetas(data.id);
+          return; 
+        });        
+      }
+    },
+
+    async guardarRecetas(){
+      await this.recetasNuevas.forEach(r => {
+        console.log(this.service.save("recetaSugerida", r));
+        console.log(r.idSugerencia);
+        return;
+      });
+    },
+
+    volver(){
+      this.manufacturado == undefined ? 
+      this.$router.push({ path: "/catalogoManu/"}) 
+      : this.$router.push({ path: "/manufacturadoDetalle/" + this.manufacturado.id}) ;
+    },
+
+  },
   
   computed: {
     rows() {
@@ -371,6 +501,9 @@ export default {
       descripcion: {
         required
       },
+    },
+
+    formRevision:{
       imagen : {
         required
       }
@@ -454,6 +587,10 @@ export default {
   margin-top: -5px;
   width: 88%;
   float:right;
+}
+
+#listaIngredientes{
+  margin-left: 18px;
 }
 
 .botonAñadirInsumo{
