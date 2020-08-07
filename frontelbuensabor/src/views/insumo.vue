@@ -305,29 +305,6 @@ export default {
 
     },
 
-    
-    /*async saveInsumo(){
-      const res =  await fetch("/saveInsumo.json");
-      const resJson = await res.json();
-      this.insumoService = this.service.save(
-        "insumo",
-        resJson.insumos[0],
-        resJson.insumos[0].id
-      );
-      console.log(this.insumoService);
-    },
-
-    async updateInsumo() {
-      const res = await fetch("/saveInsumo.json");
-      const resJson = await res.json();
-      this.insumoService = this.service.update(
-        "insumo",
-        resJson.insumos[0],
-        resJson.insumos[0].id
-      );
-      console.log(this.insumoService);
-    },*/
-
     async eliminarInsumo() {
       let id = parseInt(this.$route.params.id); 
       this.contraseniaVerificada = this.verificarContrasenia();

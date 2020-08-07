@@ -8,12 +8,14 @@
       <b-col xs="12" sm="12" md="4" lg="4" xl="4"></b-col>
     </b-row>
     <b-row>
+
       <b-col xs="12" sm="12" md="4" lg="4" xl="4"></b-col>
 
       <b-col class="colIngreso" xs="12" sm="12" md="4" lg="4" xl="4">
         <b-alert v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
         <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
         <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
+
         <div class="ingresoForm">
           <form>
             <div class="tituloIngreso">Ingresar</div>
@@ -59,6 +61,7 @@ export default {
 
   data() {
     return {
+
       email: "",
       contrasenia: "",
       user: {},
@@ -66,6 +69,7 @@ export default {
       alertDatosErroneos: false,
       esCliente: false,
       service: new Service(),
+
     };
   },
 

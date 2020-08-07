@@ -197,8 +197,9 @@ export default {
   methods: {
     
     nuevoManufacturado() {
-      this.$router.push({ name: 'AñadirManufacturado'})
+      this.$router.push({ path: "/modificarManufacturado/" + undefined})
     },
+
     userVerifica(){
         this.user=JSON.parse(sessionStorage.getItem('user'));
         
@@ -210,9 +211,10 @@ export default {
           this.$router.push({ name: 'Home'});
         }
     },
-    verDetalle(record){
+
+    verDetalle(item){
       console.log("detalle")
-      this.$router.push({ path: '/manufacturadoDetalle/'+ record.id})
+      this.$router.push({ path: '/manufacturadoDetalle/'+ item.id})
     },
      
   
@@ -264,7 +266,6 @@ export default {
     },
   
     generarStringIds(){
-      
       let idManuf = [];
       this.manufacturadosData.forEach(manufacturado => idManuf.push(manufacturado.id));
       let idsManufStr = idManuf.join(",");
@@ -371,12 +372,6 @@ export default {
 };
 </script>
 <style>
-.header {
-  background-color: blue;
-  width: 100%;
-  top: 0;
-  min-height: 200px;
-}
 #imagenBuscar {
   width: 25px;
 }

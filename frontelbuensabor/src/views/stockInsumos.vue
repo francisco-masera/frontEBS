@@ -196,7 +196,7 @@ export default {
     },
     
     agregarInsumoCompra(id){   
-     this.$refs['modal'].show()  
+      this.$refs['modal'].show()  
       this.getInsumoXid(id);
     },
 

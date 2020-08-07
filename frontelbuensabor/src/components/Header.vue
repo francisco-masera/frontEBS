@@ -80,7 +80,7 @@ export default {
       botones: [],
       user:{},      
       esCliente:false,
-      esHome:false,
+      es_Home:false,
     };
   },
  
@@ -88,69 +88,62 @@ export default {
     this.verificaUsuario();
     
   },
-  props: ["imagen", "id",  "screenLength","es-Home"],
+  props: ["imagen", "id",  "screenLength","esHome"],
 
   methods: {
     verificaUsuario(){
-     this.esHome=this.$props.esHome;
+      this.es_Home = this.$props.esHome;
       this.user=JSON.parse(sessionStorage.getItem('user'));
       
       var boton;
-   if(this.user!=null){
-     if(this.user === "cliente"){      
-      this.esCliente=true;
-      boton = [0,"Mis direcciones","misDirecciones.png",""];
+      if(this.user!=null){
+        if(this.user === "cliente"){      
+          this.esCliente=true;
+          boton = [0,"Mis direcciones","misDirecciones.png",""];
           this.botones.push(boton);
           boton = [1,"Mis pedidos","Pedidos.png",""];
           this.botones.push(boton); 
           boton = [2,"Cerrar sesión","cerrarSesion.png",""];
           this.botones.push(boton);  
-    }else{
-      
-      this.esCliente=false;
-      if(this.user.rol==="admin"){
-          boton = [0,"Stock de insumos","stock.png",""];
-          this.botones.push(boton);
-          boton = [1,"Catálogo","manufacturados.png",""];
-          this.botones.push(boton);    
-          boton = [2,"Sugerencias del chef","sugerenciasChef.png",""];
-          this.botones.push(boton);
-          boton = [3,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);   
-                
-        }else if(this.user.rol==="cocina"){
-          boton = [0,"Manufacturados","manufacturados.png",""];
-          this.botones.push(boton);
-          boton = [1,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
-
-        }else if(this.user.rol==="delivery"){
-          boton = [0,"Pedidos","Pedidos.png",""];
-          this.botones.push(boton);
-          boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
-          this.botones.push(boton);  
-          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
-
-        }else if(this.user.rol==="cajero"){
-          boton = [0,"Pedidos","Pedidos.png",""];
-          this.botones.push(boton);
-          boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
-          this.botones.push(boton);  
-          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
-        }
-    }
-   }
-    
-  },
         
+        }else{
+          this.esCliente = false;
+          if(this.user.rol==="admin"){
+            boton = [0,"Stock de insumos","stock.png",""];
+            this.botones.push(boton);
+            boton = [1,"Catálogo","manufacturados.png",""];
+            this.botones.push(boton);    
+            boton = [2,"Sugerencias del chef","sugerenciasChef.png",""];
+            this.botones.push(boton);
+            boton = [3,"Cerrar sesión","cerrarSesion.png",""];
+            this.botones.push(boton);   
+                  
+          }else if(this.user.rol==="cocina"){
+            boton = [0,"Manufacturados","manufacturados.png",""];
+            this.botones.push(boton);
+            boton = [1,"Cerrar sesión","cerrarSesion.png",""];
+            this.botones.push(boton);  
 
+          }else if(this.user.rol==="delivery"){
+            boton = [0,"Pedidos","Pedidos.png",""];
+            this.botones.push(boton);
+            boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
+            this.botones.push(boton);  
+            boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+            this.botones.push(boton);  
+
+          }else if(this.user.rol==="cajero"){
+            boton = [0,"Pedidos","Pedidos.png",""];
+            this.botones.push(boton);
+            boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
+            this.botones.push(boton);  
+            boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+            this.botones.push(boton);  
+          }
+        }
+      } 
+    },
   },
-  
-  
-
-  
 };
 </script>
 
