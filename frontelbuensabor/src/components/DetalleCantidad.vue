@@ -16,7 +16,6 @@ export default {
   props: ["idInsumo"],
   methods: {
     capturarValor(e) {
-      console.log(e.which);
       if(e.which != 8){
         let valorSeleccionado = document.getElementById(this.$props.idInsumo).value;
         this.$emit("kpress", valorSeleccionado);

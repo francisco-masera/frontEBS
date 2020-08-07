@@ -20,7 +20,7 @@ export default class Service {
       .catch((error) => console.log(error));
     return responseEntity;
   }
-  
+
   async getOne(subPath, id) {
     await axios
       .get(serverUrl + "/" + subPath + "/" + id, config)
@@ -30,36 +30,26 @@ export default class Service {
   }
 
   async save(subPath, entity) {
-    try {
-      let response = await axios.post(serverUrl + "/" + subPath + "/", entity, config);
-      return response.data;
-
-    } catch (error) {
-      console.log(error);
-    }
+    await axios
+      .post(serverUrl + "/" + subPath + "/", entity, config)
+      .then((response) => (responseEntity = response.data))
+      .catch((error) => console.log(error));
+    return responseEntity;
   }
 
   async update(subPath, entity, id) {
-    try {
-      await axios
-        .put(serverUrl + "/" + subPath + "/" + id, entity, config)
-        .then((response) => (responseEntity = response.data))
-        .catch((error) => console.log(error));
-      return this.getOne(subPath, id);
-    } catch (error) {
-      console.log(error);
-    }
+    await axios
+      .put(serverUrl + "/" + subPath + "/" + id, entity, config)
+      .then((response) => (responseEntity = response.data))
+      .catch((error) => console.log(error));
+    return this.getOne(subPath, id);
   }
 
   async delete(subPath, id) {
-    try {
-      await axios
-        .delete(serverUrl + "/" + subPath + "/" + id, config)
-        .then((response) => (this.responseEntity = response.status))
-        .catch((error) => console.log(error));
-      return this.responseEntity;
-    } catch (error) {
-      console.log(error);
-    }
+    await axios
+      .delete(serverUrl + "/" + subPath + "/" + id, config)
+      .then((response) => (responseEntity = response.data))
+      .catch((error) => console.log(error));
+    return responseEntity;
   }
 }

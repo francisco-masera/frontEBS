@@ -197,8 +197,9 @@ export default {
   methods: {
     
     nuevoManufacturado() {
-      this.$router.push({ name: 'AñadirManufacturado'})
+      this.$router.push({ path: "/modificarManufacturado/" + undefined})
     },
+
     userVerifica(){
         this.user=JSON.parse(sessionStorage.getItem('user'));
         
@@ -265,7 +266,6 @@ export default {
     },
   
     generarStringIds(){
-      
       let idManuf = [];
       this.manufacturadosData.forEach(manufacturado => idManuf.push(manufacturado.id));
       let idsManufStr = idManuf.join(",");

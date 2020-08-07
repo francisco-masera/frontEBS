@@ -130,7 +130,7 @@ export default {
     },
 
     async getManufacturadoXId() {
-      let idManufacturado = parseInt(this.$route.params.id, 10);
+      let idManufacturado = parseInt(this.$route.params.id);
       await this.service.getOne("manufacturado", idManufacturado).then((data)=>{      
         this.manufacturadoEncontrado = data;
         this.getRecetas(idManufacturado);

@@ -24,7 +24,8 @@
                 placeholder="Ingrese un nombre"/>
               <br/>
               <b-form-invalid-feedback>
-                <br/> Este campo es obligatorio.
+                <br/> Este campo es obligatorio.<br>
+                Recuerde ingresar sólo letras.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -43,7 +44,8 @@
                 max-rows="6"
               />*
             <b-form-invalid-feedback>
-              <br/> Este campo es obligatorio.
+              <br/> Este campo es obligatorio.<br>              
+              Recuerde ingresar sólo letras.
             </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -82,7 +84,7 @@
 
       <div id="paso2" style="display:none">
         <h2>Composición</h2>
-        <b-form>
+        <b-form id="form2">
           <div class="lineaForm">
             <b-table 
               hover responsive="sm" fixed
@@ -122,11 +124,23 @@
               de la tabla para continuar.
           </b-toast>
           <div class="lineaForm">
-            <label class="labelForm">
-              Tiempo en cocina
-            </label>
-            <b-form-input type="number" class="campoForm" id="tiempoCocina" v-model="manufacturado.tiempoCocina">                    
-            </b-form-input>             
+            <b-form-group>
+              <label class="labelForm">
+                Tiempo en cocina
+              </label>
+              <b-form-input 
+              type="number" 
+              class="campoForm" 
+              id="tiempoCocina" 
+              v-model.lazy="form2.tiempoCocina"
+              :state="!$v.form2.tiempoCocina.$invalid">                    
+              </b-form-input>   
+              <b-form-invalid-feedback>
+              <br/> Este campo es obligatorio <br>           
+              y sólo admite números mayores a cero <br>
+              sin coma ni punto.
+            </b-form-invalid-feedback>  
+            </b-form-group>        
           </div>
           <div class="lineaFormDerecha" style="float:right">
             <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
@@ -227,6 +241,15 @@
                 {{ receta.insumo.unidadMedida }}
               </li>
             </div> 
+            <b-toast id="toast-img" variant="warning" solid>
+            <template v-slot:toast-title>
+              <div class="d-flex flex-grow-1 align-items-baseline">
+                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+                <strong class="mr-auto">¡Atención!</strong>
+              </div>
+            </template>
+              La imagen seleccionada no es válida.
+          </b-toast>
           </div>   
           <div class="lineaFormDerecha">
             <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
@@ -242,8 +265,9 @@
 <script>
 import Vue from 'vue';
 Vue.use(Vuelidate);
-import { required } from 'vuelidate/lib/validators';
+import { required, numeric, integer } from 'vuelidate/lib/validators';
 import { validationMixin } from 'vuelidate';
+import { helpers } from 'vuelidate/lib/validators'
 import Vuelidate from 'vuelidate';
 import MenuLateral from '@/components/MenuLateral.vue';
 import Header from "@/components/Header.vue";
@@ -251,12 +275,13 @@ import DetalleMedidas from "@/components/DetalleMedidas.vue";
 import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from '@/service/Service.js';
 import Formatter from '@/utilidades/Formatters.js';
+import axios from "axios";
+
 export default {
   mixins: [validationMixin],
   mounted() {
     this.verificarUsuario();
-    this.getManufacturadoXId();
-    this.esNuevo = this.$route.params.id != 0 ? !this.esNuevo : this.esNuevo;  
+    this.esNuevo = this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
   },
   props: {
     user:{},
@@ -276,6 +301,11 @@ export default {
         denominacion: "",
         descripcion: "",
       },
+
+      form2: {
+        tiempoCocina: ""
+      },
+      
       formRevision:{
         imagen: [],
       },
@@ -296,10 +326,11 @@ export default {
         { value: "u", text: "u" }
       ],
       
+      manufacturado: {},
+
       cantidades: [],
       ingredientes: [],
       insumosData: [],
-      manufacturado: [],
       recetasNuevas: [],
       selected: [],
     
@@ -318,11 +349,13 @@ export default {
       this.userData = JSON.parse(sessionStorage.getItem('user'));
       this.userData == undefined  || (this.userData.rol != 'cocina') ? 
       this.$router.push({ name: 'Home'}) : "";
+      this.$route.params.id !== "undefined" ? this.getManufacturadoXId() : "";
     }, 
 
     async getManufacturadoXId(){
       await this.service.getOne("manufacturado", this.$route.params.id)
-      .then((data) => this.manufacturado = data).then(()=>this.completarCamposForm1());
+      .then((data) => this.manufacturado = data).then(()=>this.$route.params.id != "undefined" 
+      ? this.completarCamposForm1() : "");
     },
     
     completarCamposForm1(){
@@ -339,7 +372,7 @@ export default {
       this.manufacturado.descripcion = document.getElementById("descripcionManufacturado").value;
       this.manufacturado.aptoCeliaco = document.getElementById("checkbox-1").checked;
       const vegano = document.getElementById("checkbox-2").checked;
-      const vegetariano = vegano ? "true" : document.getElementById("checkbox-3").checked; 
+      const vegetariano = vegano ? true : document.getElementById("checkbox-3").checked; 
       this.manufacturado.vegano = vegano;
       this.manufacturado.vegetariano = vegetariano;
       this.siguiente1();
@@ -348,7 +381,8 @@ export default {
     siguiente1(){
       document.getElementById("paso1").style.display = "none";
       document.getElementById("paso2").style.display = "block";
-      this.getInsumos();  
+      this.getInsumos();
+      this.$route.params.id != "undefined" ? this.completarCamposForm2() : "";
     },
 
     async getInsumos() {
@@ -357,13 +391,21 @@ export default {
       }); 
     },
 
+    completarCamposForm2(){
+      this.form2.tiempoCocina = this.manufacturado.tiempoCocina;
+    },
+
     setIngredientes(items){
       this.ingredientes = items;
     },
 
     onSubmit2(){
+      this.$v.touch;
+      if (this.$v.form2.$anyError) {
+        return;
+      }
       if(this.ingredientes.length > 0){
-        this.manufacturado.tiempoCocina = document.getElementById("tiempoCocina").value;
+        this.manufacturado.tiempoCocina = parseInt(document.getElementById("tiempoCocina").value);
         this.ingredientes.forEach(item => item.unidadMedida = null);
         this.siguiente2();
       }else{
@@ -426,7 +468,6 @@ export default {
      actualizarValorCantidad(valor, item, index){
       item.cantidad = valor;
       this.cantidades.splice(index, 1, item);
-      console.log(this.cantidades[index].cantidad);
     },    
 
     onSubmit3(){
@@ -453,34 +494,82 @@ export default {
       let cantidadesLen = document.getElementsByName("cantidadesInput").length;
       let rExp = new RegExp("(^|[ \\t])([-+]?(\\d+|\\.\\d+|\\d+\\.\\d*))($|[^+-.])");
       let soloNumeros = this.cantidades.every(c => rExp.test(c.cantidad)); 
-      console.log("solo num", soloNumeros);
       return (soloNumeros && this.cantidades.length == cantidadesLen 
         && this.ingredientes.every(e => e.unidadMedida != null));
     },
 
     async guardar(){
-      let img = document.getElementById("imagen").files[0];
-      if(img != undefined){
-        await this.service.save("sugerencia", this.manufacturado)
-        .then(data => { 
-          console.log(data);
-          this.recetasNuevas.map(r => r.idSugerencia = this.manufacturado.id);
-          this.guardarRecetas(data.id);
-          return; 
-        });        
+
+      this.$v.$touch();
+      if (this.$v.formRevision.$anyError) {
+        return;
       }
+      let img = document.getElementById("imagen").files[0];
+      let sugerencia = Object.assign({}, this.manufacturado);
+      
+      delete sugerencia.id;
+      sugerencia.imagen = img.name;
+      
+      let estadoImagen = await this.guardarImagen(img);
+      let estadoSugerencia = false;
+      
+      estadoImagen === true ? 
+      estadoSugerencia = await this.guardarSugerencia(sugerencia)
+        : this.$bvToast.show('toast-img');
+
+      typeof estadoSugerencia === "object" ? this.guardarRecetas(estadoSugerencia) : alert("error");
     },
 
-    async guardarRecetas(){
-      await this.recetasNuevas.forEach(r => {
-        console.log(this.service.save("recetaSugerida", r));
-        console.log(r.idSugerencia);
+   async guardarImagen(imagen){
+      const formData = new FormData();
+      formData.append("file", imagen);
+      await axios.post("http://localhost:9001/buensabor/sugerencia/uploadImg", formData, 
+      { 
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          "Access-Control-Allow-Origins": "*",                   
+          "cache-control": "no-cache",
+        }
+      }).catch(error => { 
+        console.log(error);
+        return error;
+      });
+      return true;
+    },
+    
+    async guardarSugerencia(sugerencia){
+      await this.service.save("sugerencia", sugerencia).then(data => sugerencia = data)
+      .catch(error => {
+        console.log(error); 
+        return error;
+      });
+      return sugerencia;
+    },
+
+    guardarRecetas(sugerencia){
+      let sugerenciaChef = this.setKeyIdSugerencia(sugerencia);
+      this.recetasNuevas.forEach(r => {
+        r.sugerenciaChef = sugerenciaChef
+        this.auxGuardarRecetas(r);
         return;
       });
     },
 
+    async auxGuardarRecetas(receta){
+      await axios.post("http://localhost:9001/buensabor/recetaSugerida/guardarReceta/" 
+      + receta.sugerenciaChef.idSugerencia, 
+        receta,
+      );
+    },
+
+    setKeyIdSugerencia(sugerencia){
+      sugerencia.idSugerencia = sugerencia.id;
+      delete sugerencia.id;
+      return sugerencia;
+    },
+    
     volver(){
-      this.manufacturado == undefined ? 
+      this.esNuevo ? 
       this.$router.push({ path: "/catalogoManu/"}) 
       : this.$router.push({ path: "/manufacturadoDetalle/" + this.manufacturado.id}) ;
     },
@@ -496,11 +585,21 @@ export default {
   validations: {
     form1: {
       denominacion: {
-        required
+        required,
+        alpha: helpers.regex('alpha', /^[a-zA-ZÀ-ž\s]*$/)
       },
       descripcion: {
-        required
+        required,
+        alpha: helpers.regex('alpha', /^[a-zA-ZÀ-ž\s]*$/)
       },
+    },
+
+    form2:{
+      tiempoCocina : {
+        required,
+        numeric,
+        integer
+      }
     },
 
     formRevision:{
