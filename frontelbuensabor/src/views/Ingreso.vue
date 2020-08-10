@@ -1,5 +1,4 @@
 <template>
-<body>
   <div class="ingreso">
     <div class="logo">
       <b-img src="@/assets/images/sistema/logo-01.png" class="imagen"></b-img>
@@ -32,9 +31,8 @@
         <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md">¡Ingresar!</b-button>
       </form>
     </div>
-    <div class="abajo"></div>
+    <div class="abajoIngreso"></div>
   </div>
-</body>
 </template>
 <script>
 import Service from "@/service/Service.js";
@@ -126,26 +124,30 @@ export default {
     text-align: center;
     margin-top: 30px;
     font-weight: bold;
-    font-size: 15pt;
+
+    font-size: 13pt;
   }
   .logo {
-    height: 50%;
+    height: 25%;
     width: 50%;
     margin: 0px auto;
     text-align: center;
     margin-top: 5%;
   }
   .ingresoForm {
-    height: 50%;
+
+    height: 40%;
+
     width: 70%;
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
-    margin-top: 15%;
+
   }
   .imagen {
-    width: 170px;
-    height: 65px;
+    width: 160px;
+    height: 60px;
+
   }
 
   .emailForm {
@@ -154,8 +156,10 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
-    width: 150px;
-    font-size: 8pt;
+
+    width: 70%;
+    font-size: 7pt;
+
     margin-left: 35px;
     margin-right: 5px;
     margin-top: 5px;
@@ -167,8 +171,10 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
-    width: 150px;
-    font-size: 8pt;
+
+    width: 70%;
+    font-size: 7pt;
+
     margin-left: 35px;
     margin-right: 5px;
     margin-top: 5px;
@@ -176,25 +182,32 @@ export default {
 
   .botonIngreso {
     background-color: #e7511e;
-    width: 80px;
-    height: 25px;
+
+    width: 60px;
+    height: 17px;
     margin-top: 5%;
     margin-left: 35%;
     margin-bottom: 5%;
-    font-size: 11px;
+    font-size: 9px;
     text-align: center;
+    padding: 0%;
+
   }
   .olvido {
     text-align: right;
     margin-top: 5%;
-    font-size: 8pt;
+
+    font-size: 7pt;
+
     margin-right: 30px;
   }
 }
 
 @media screen and (min-width: 640px) {
   .ingresoForm {
-    height: 15%;
+
+    height: 35%;
+
     width: 35%;
     margin-bottom: 10%;
     background-color: white;
@@ -202,13 +215,15 @@ export default {
     margin-top: 15px;
   }
   .imagen {
-    width: 110px;
-    height: 60px;
+
+    width: 150px;
+    height: 70px;
   }
 
   .logo {
-    height: 50%;
-    width: 50%;
+    height: 25%;
+    width: 25%;
+
     margin: 0px auto;
     text-align: center;
     margin-top: 2%;
@@ -230,15 +245,19 @@ export default {
   }
 
   .logo {
-    height: 50%;
-    width: 50%;
+
+    height: 15%;
+    width: 25%;
+
     margin: 0px auto;
     text-align: center;
     margin-top: 5%;
     margin-left: 25%;
   }
   .ingresoForm {
-    height: 50%;
+
+    height: 25%;
+
     width: 60%;
     margin: 0px auto;
     background-color: white;
@@ -256,7 +275,10 @@ export default {
     border-top: 5%;
     border-bottom: 1;
     background-color: transparent;
-    width: 350px;
+
+    width: 70%;
+
+
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -269,7 +291,10 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
-    width: 350px;
+
+    width: 70%;
+
+
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -328,7 +353,10 @@ export default {
     border-top: 5%;
     border-bottom: 1;
     background-color: transparent;
-    width: 400px;
+
+    width: 70%;
+
+
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -341,7 +369,9 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
-    width: 400px;
+
+    width: 70%;
+
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -357,6 +387,9 @@ export default {
     margin-bottom: 5%;
     font-size: 15px;
   }
+
+
+
   .olvido {
     text-align: right;
     margin-top: 5%;
@@ -367,8 +400,10 @@ export default {
 
 @media screen and (min-width: 1440px) {
   .logo {
-    height: 50%;
-    width: 50%;
+
+    height: 25%;
+    width: 25%;
+
     margin: 0px auto;
     text-align: center;
     margin-top: 40px;
@@ -385,7 +420,8 @@ export default {
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
-    margin-top: 5%;
+
+
   }
 
   .emailForm {
@@ -394,7 +430,9 @@ export default {
     border-top: 5%;
     border-bottom: 1;
     background-color: transparent;
-    width: 400px;
+
+    width: 70%;
+
     font-size: 14pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -407,7 +445,9 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
-    width: 400px;
+
+    width: 70%;
+
     font-size: 14pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -426,9 +466,27 @@ export default {
 }
 
 .ingreso {
- 
-  font-family: "Baloo Bhaina 2";
+
   background-color: #f2e6d1;
-  
+  font-family: "Baloo Bhaina 2";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.abajoIngreso {
+  background-image: url("../assets/images/sistema/reticula.png");
+  background-repeat: repeat-x;
+  width: 100%;
+  background-color: #f2e6d1;
+  min-height: 60px;
+  background-size: contain;
+  bottom: 0;
+  position: absolute;
+
 }
 </style>
