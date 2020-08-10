@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div class="logo"><b-img src="@/assets/images/sistema/logo-01.png" class="imagen"></b-img></div>
+  <div class="ingreso">
+    <div class="logo">
+      <b-img src="@/assets/images/sistema/logo-01.png" class="imagen"></b-img>
+    </div>
     <b-alert v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
     <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
     <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
@@ -31,7 +33,7 @@
         <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md">¡Ingresar!</b-button>
       </form>
     </div>
-    <div class="abajo"></div>
+    <div class="abajoIngreso"></div>
   </div>
 </template>
 <script>
@@ -119,340 +121,333 @@ export default {
 };
 </script>
 <style>
-
-
-@media screen and (min-width: 320px){
-
+@media screen and (min-width: 320px) {
   .tituloIngreso {
-  text-align: center;
-  margin-top: 30px;
-  font-weight: bold;
-  font-size: 15pt;
-}
-.logo {
-  height: 50%;
-  width: 50%;
-  margin: 0px auto;
-  text-align: center;
-  margin-top: 5%;
-}
-.ingresoForm {
-  height: 50%;
-  width: 70%;
-  margin: 0px auto;
-  background-color: white;
-  border: 1px solid gray;
-  margin-top: 15%;
-}
-.imagen{
- width: 170px; 
- height: 65px;
-
-}
-
-.emailForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 0px;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 150px;
-  font-size: 8pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
-
-.contraseñaForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 0px;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 150px;
-  font-size: 8pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
-
-.botonIngreso {
-  background-color: #e7511e;
-  width: 80px;
-  height: 25px;
-  margin-top: 5%;
-  margin-left: 35%;
-  margin-bottom: 5%;
-  font-size: 11px;
-  text-align: center;
- 
-}
-.olvido {
-  text-align: right;
-  margin-top: 5%;
-  font-size: 8pt;
-  margin-right: 30px;
-}
-}
-
-
-@media screen and (min-width: 640px){
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 13pt;
+  }
+  .logo {
+    height: 25%;
+    width: 50%;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 5%;
+  }
   .ingresoForm {
-  height: 15%;
-  width: 35%;
-  margin-bottom: 10%;
-  background-color: white;
-  border: 1px solid gray;
-  margin-top: 15px;
+    height: 40%;
+    width: 70%;
+    margin: 0px auto;
+    background-color: white;
+    border: 1px solid gray;
+  }
+  .imagen {
+    width: 160px;
+    height: 60px;
+  }
 
+  .emailForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+    font-size: 7pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .contraseñaForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+    font-size: 7pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .botonIngreso {
+    background-color: #e7511e;
+    width: 60px;
+    height: 17px;
+    margin-top: 5%;
+    margin-left: 35%;
+    margin-bottom: 5%;
+    font-size: 9px;
+    text-align: center;
+    padding: 0%;
+  }
+  .olvido {
+    text-align: right;
+    margin-top: 5%;
+    font-size: 7pt;
+    margin-right: 30px;
+  }
 }
-.imagen{
- width: 110px; 
- height: 60px;
 
-}
+@media screen and (min-width: 640px) {
+  .ingresoForm {
+    height: 35%;
+    width: 35%;
+    margin-bottom: 10%;
+    background-color: white;
+    border: 1px solid gray;
+    margin-top: 15px;
+  }
+  .imagen {
+    width: 150px;
+    height: 70px;
+  }
 
-.logo {
-  height: 50%;
-  width: 50%;
-  margin: 0px auto;
-  text-align: center;
-  margin-top: 2%;
-}
-
+  .logo {
+    height: 25%;
+    width: 25%;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 2%;
+  }
 
   .tituloIngreso {
-  text-align: center;
-  margin-top: 15px;
-  font-weight: bold;
-  font-size: 12pt;
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 12pt;
+  }
 }
-}
-@media screen and (min-width: 768px){
-
+@media screen and (min-width: 768px) {
   .tituloIngreso {
-  text-align: center;
-  margin-top: 30px;
-  font-weight: bold;
-  font-size: 18pt;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 18pt;
+  }
+
+  .logo {
+    height: 15%;
+    width: 25%;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 25%;
+  }
+  .ingresoForm {
+    height: 25%;
+    width: 60%;
+    margin: 0px auto;
+    background-color: white;
+    border: 1px solid gray;
+    margin-top: 20%;
+  }
+  .imagen {
+    width: 300px;
+    height: 160px;
+  }
+
+  .emailForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 5%;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+
+    font-size: 12pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .contraseñaForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+
+    font-size: 12pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .botonIngreso {
+    background-color: #e7511e;
+    width: 90px;
+    height: 40px;
+    margin-top: 5%;
+    margin-left: 35%;
+    margin-bottom: 5%;
+    font-size: 15px;
+  }
+  .olvido {
+    text-align: right;
+    margin-top: 5%;
+    font-size: 12pt;
+    margin-right: 30px;
+  }
 }
 
-.logo {
-  height: 50%;
-  width: 50%;
-  margin: 0px auto;
-  text-align: center;
-  margin-top: 5%;
-  margin-left: 25%;
-}
-.ingresoForm {
-  height: 50%;
-  width: 60%;
-  margin: 0px auto;
-  background-color: white;
-  border: 1px solid gray;
-  margin-top: 20%;
-}
-.imagen{
- width: 300px; 
- height: 160px;
-
-}
-
-.emailForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 5%;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 350px;
-  font-size: 12pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
-
-.contraseñaForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 0px;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 350px;
-  font-size: 12pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
-
-.botonIngreso {
-  background-color: #e7511e;
-  width: 90px;
-  height: 40px;
-  margin-top: 5%;
-  margin-left: 35%;
-  margin-bottom: 5%;
-  font-size: 15px;
- 
-}
-.olvido {
-  text-align: right;
-  margin-top: 5%;
-  font-size: 12pt;
-  margin-right: 30px;
-}
-} 
-
-@media screen and (min-width: 1280px){
+@media screen and (min-width: 1280px) {
   .tituloIngreso {
-  text-align: center;
-  margin-top: 30px;
-  font-weight: bold;
-  font-size: 18pt;
+    text-align: center;
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 18pt;
+  }
+
+  .logo {
+    height: 50%;
+    width: 50%;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 25%;
+  }
+  .ingresoForm {
+    height: 50%;
+    width: 40%;
+    margin: 0px auto;
+    background-color: white;
+    border: 1px solid gray;
+    margin-top: 5%;
+  }
+  .imagen {
+    width: 310px;
+    height: 160px;
+  }
+
+  .emailForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 5%;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+
+    font-size: 12pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .contraseñaForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+    font-size: 12pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .botonIngreso {
+    background-color: #e7511e;
+    width: 90px;
+    height: 40px;
+    margin-top: 5%;
+    margin-left: 40%;
+    margin-bottom: 5%;
+    font-size: 15px;
+  }
+
+  .olvido {
+    text-align: right;
+    margin-top: 5%;
+    font-size: 12pt;
+    margin-right: 30px;
+  }
 }
 
-.logo {
-  height: 50%;
-  width: 50%;
-  margin: 0px auto;
-  text-align: center;
-  margin-top: 5%;
-  margin-left: 25%;
-}
-.ingresoForm {
-  height: 50%;
-  width: 40%;
-  margin: 0px auto;
-  background-color: white;
-  border: 1px solid gray;
-  margin-top: 5%;
-}
-.imagen{
- width: 310px; 
- height: 160px;
+@media screen and (min-width: 1440px) {
+  .logo {
+    height: 25%;
+    width: 25%;
+    margin: 0px auto;
+    text-align: center;
+    margin-top: 40px;
+  }
 
-}
+  .imagen {
+    width: 260px;
+    height: 120px;
+  }
 
-.emailForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 5%;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 400px;
-  font-size: 12pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
+  .ingresoForm {
+    height: 40%;
+    width: 30%;
+    margin: 0px auto;
+    background-color: white;
+    border: 1px solid gray;
+  }
 
-.contraseñaForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 0px;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 400px;
-  font-size: 12pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
+  .emailForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 5%;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+    font-size: 14pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
 
-.botonIngreso {
-  background-color: #e7511e;
-  width: 90px;
-  height: 40px;
-  margin-top: 5%;
-  margin-left: 40%;
-  margin-bottom: 5%;
-  font-size: 15px;
- 
-}
-.olvido {
-  text-align: right;
-  margin-top: 5%;
-  font-size: 12pt;
-  margin-right: 30px;
+  .contraseñaForm {
+    border-right: 0px;
+    border-left: 0px;
+    border-top: 0px;
+    border-bottom: 1;
+    background-color: transparent;
+    width: 70%;
+    font-size: 14pt;
+    margin-left: 35px;
+    margin-right: 5px;
+    margin-top: 5px;
+  }
+
+  .botonIngreso {
+    background-color: #e7511e;
+    width: 105px;
+    height: 40px;
+    margin-top: 5%;
+    margin-left: 35%;
+    margin-bottom: 5%;
+    font-size: 17px;
+  }
 }
 
-}
-
-@media screen and (min-width: 1440px){
-.logo {
-  height: 50%;
-  width: 50%;
-  margin: 0px auto;
-  text-align: center;
-  margin-top: 40px;
-}
-
-
-.imagen{
- width: 260px; 
- height: 120px;
-
-}
-
-.ingresoForm {
-  height: 40%;
-  width: 30%;
-  margin: 0px auto;
-  background-color: white;
-  border: 1px solid gray;
-  margin-top: 5%;
-}
-
-.emailForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 5%;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 400px;
-  font-size: 14pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
-
-.contraseñaForm {
-  border-right: 0px;
-  border-left: 0px;
-  border-top: 0px;
-  border-bottom: 1;
-  background-color: transparent;
-  width: 400px;
-  font-size: 14pt;
-  margin-left: 35px;
-  margin-right: 5px;
-  margin-top: 5px;
-}
-
-.botonIngreso {
-  background-color: #e7511e;
-  width: 105px;
-  height: 40px;
-  margin-top: 5%;
-  margin-left: 35%;
-  margin-bottom: 5%;
-  font-size: 17px;
- 
-}
-
-}
-
-
-
-body {
+.ingreso {
   background-color: #f2e6d1;
   font-family: "Baloo Bhaina 2";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
 }
 
-
-
-
-
-
-
+.abajoIngreso {
+  background-image: url("../assets/images/sistema/reticula.png");
+  background-repeat: repeat-x;
+  width: 100%;
+  background-color: #f2e6d1;
+  min-height: 60px;
+  background-size: contain;
+  bottom: 0;
+  position: absolute;
+}
 </style>
