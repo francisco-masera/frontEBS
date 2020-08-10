@@ -6,7 +6,6 @@
     <b-alert v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
     <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
     <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
-
     <div class="ingresoForm">
       <form>
         <div class="tituloIngreso">Ingresar</div>
@@ -28,7 +27,6 @@
           placeholder="Contraseña"
           class="contraseñaForm"
         ></b-form-input>
-
         <div class="olvido">Olvidé mi contraseña</div>
         <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md">¡Ingresar!</b-button>
       </form>
@@ -126,6 +124,7 @@ export default {
     text-align: center;
     margin-top: 30px;
     font-weight: bold;
+
     font-size: 13pt;
   }
   .logo {
@@ -136,15 +135,19 @@ export default {
     margin-top: 5%;
   }
   .ingresoForm {
+
     height: 40%;
+
     width: 70%;
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
+
   }
   .imagen {
     width: 160px;
     height: 60px;
+
   }
 
   .emailForm {
@@ -153,8 +156,10 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
     font-size: 7pt;
+
     margin-left: 35px;
     margin-right: 5px;
     margin-top: 5px;
@@ -166,8 +171,10 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
     font-size: 7pt;
+
     margin-left: 35px;
     margin-right: 5px;
     margin-top: 5px;
@@ -175,6 +182,7 @@ export default {
 
   .botonIngreso {
     background-color: #e7511e;
+
     width: 60px;
     height: 17px;
     margin-top: 5%;
@@ -183,18 +191,23 @@ export default {
     font-size: 9px;
     text-align: center;
     padding: 0%;
+
   }
   .olvido {
     text-align: right;
     margin-top: 5%;
+
     font-size: 7pt;
+
     margin-right: 30px;
   }
 }
 
 @media screen and (min-width: 640px) {
   .ingresoForm {
+
     height: 35%;
+
     width: 35%;
     margin-bottom: 10%;
     background-color: white;
@@ -202,6 +215,7 @@ export default {
     margin-top: 15px;
   }
   .imagen {
+
     width: 150px;
     height: 70px;
   }
@@ -209,6 +223,7 @@ export default {
   .logo {
     height: 25%;
     width: 25%;
+
     margin: 0px auto;
     text-align: center;
     margin-top: 2%;
@@ -230,15 +245,19 @@ export default {
   }
 
   .logo {
+
     height: 15%;
     width: 25%;
+
     margin: 0px auto;
     text-align: center;
     margin-top: 5%;
     margin-left: 25%;
   }
   .ingresoForm {
+
     height: 25%;
+
     width: 60%;
     margin: 0px auto;
     background-color: white;
@@ -256,7 +275,9 @@ export default {
     border-top: 5%;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
+
 
     font-size: 12pt;
     margin-left: 35px;
@@ -270,7 +291,9 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
+
 
     font-size: 12pt;
     margin-left: 35px;
@@ -330,7 +353,9 @@ export default {
     border-top: 5%;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
+
 
     font-size: 12pt;
     margin-left: 35px;
@@ -344,7 +369,9 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
+
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -361,6 +388,8 @@ export default {
     font-size: 15px;
   }
 
+
+
   .olvido {
     text-align: right;
     margin-top: 5%;
@@ -371,8 +400,10 @@ export default {
 
 @media screen and (min-width: 1440px) {
   .logo {
+
     height: 25%;
     width: 25%;
+
     margin: 0px auto;
     text-align: center;
     margin-top: 40px;
@@ -389,6 +420,8 @@ export default {
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
+
+
   }
 
   .emailForm {
@@ -397,7 +430,9 @@ export default {
     border-top: 5%;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
+
     font-size: 14pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -410,7 +445,9 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
+
     width: 70%;
+
     font-size: 14pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -429,6 +466,7 @@ export default {
 }
 
 .ingreso {
+
   background-color: #f2e6d1;
   font-family: "Baloo Bhaina 2";
   position: absolute;
@@ -449,5 +487,6 @@ export default {
   background-size: contain;
   bottom: 0;
   position: absolute;
+
 }
 </style>
