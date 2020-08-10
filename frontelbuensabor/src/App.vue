@@ -77,8 +77,10 @@ p {
   background-size: contain;
   bottom: 0;
   margin-top: 0px;
+  position: absolute;
   
 }
+
 .boton {
   float: left;
   border: none;

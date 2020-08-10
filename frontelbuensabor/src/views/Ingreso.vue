@@ -1,57 +1,39 @@
 <template>
-  <b-container fluid class="ingreso">
-    <b-row>
-      <b-col xs="12" sm="12" md="4" lg="4" xl="4"></b-col>
-      <b-col class="margenLogo" xs="12" sm="12" md="4" lg="4" xl="4">
-        <b-img src="@/assets/images/sistema/logo-01.png" style="width:60%"></b-img>
-      </b-col>
-      <b-col xs="12" sm="12" md="4" lg="4" xl="4"></b-col>
-    </b-row>
-    <b-row>
+  <div>
+    <div class="logo"><b-img src="@/assets/images/sistema/logo-01.png" class="imagen"></b-img></div>
+    <b-alert v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
+    <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
+    <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
 
-      <b-col xs="12" sm="12" md="4" lg="4" xl="4"></b-col>
+    <div class="ingresoForm">
+      <form>
+        <div class="tituloIngreso">Ingresar</div>
 
-      <b-col class="colIngreso" xs="12" sm="12" md="4" lg="4" xl="4">
-        <b-alert v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
-        <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
-        <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
+        <b-form-input
+          id="email-input"
+          v-model="email"
+          required
+          type="email"
+          placeholder="Usuario"
+          class="emailForm"
+        ></b-form-input>
 
-        <div class="ingresoForm">
-          <form>
-            <div class="tituloIngreso">Ingresar</div>
+        <b-form-input
+          id="contraseña-input"
+          v-model="contrasenia"
+          required
+          type="password"
+          placeholder="Contraseña"
+          class="contraseñaForm"
+        ></b-form-input>
 
-            <b-form-input
-              id="email-input"
-              v-model="email"
-              required
-              type="email"
-              placeholder="Usuario"
-              class="emailForm"
-            ></b-form-input>
-
-            <b-form-input
-              id="contraseña-input"
-              v-model="contrasenia"
-              required
-              type="password"
-              placeholder="Contraseña"
-              class="contraseñaForm"
-            ></b-form-input>
-
-            <div class="olvido">Olvidé mi contraseña</div>
-            <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md">¡Ingresar!</b-button>
-          </form>
-        </div>
-      </b-col>
-
-      <b-col xs="12" sm="12" md="4" lg="4" xl="4"></b-col>
-    </b-row>
-    <b-row>
-      <b-col class="abajo" xs="12" sm="12" md="12" lg="12" xl="12"></b-col>
-    </b-row>
-  </b-container>
+        <div class="olvido">Olvidé mi contraseña</div>
+        <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md">¡Ingresar!</b-button>
+      </form>
+    </div>
+    <div class="abajo"></div>
+  </div>
 </template>
-
 <script>
 import Service from "@/service/Service.js";
 export default {
@@ -61,7 +43,6 @@ export default {
 
   data() {
     return {
-
       email: "",
       contrasenia: "",
       user: {},
@@ -69,7 +50,6 @@ export default {
       alertDatosErroneos: false,
       esCliente: false,
       service: new Service(),
-
     };
   },
 
@@ -138,11 +118,36 @@ export default {
   },
 };
 </script>
-
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
-.prueba {
+
+
+@media screen and (min-width: 320px){
+
+  .tituloIngreso {
+  text-align: center;
+  margin-top: 30px;
+  font-weight: bold;
+  font-size: 15pt;
+}
+.logo {
+  height: 50%;
+  width: 50%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 5%;
+}
+.ingresoForm {
+  height: 50%;
+  width: 70%;
+  margin: 0px auto;
+  background-color: white;
   border: 1px solid gray;
+  margin-top: 15%;
+}
+.imagen{
+ width: 170px; 
+ height: 65px;
+
 }
 
 .emailForm {
@@ -151,10 +156,10 @@ export default {
   border-top: 0px;
   border-bottom: 1;
   background-color: transparent;
-  width: 300px;
-  font-size: 11pt;
+  width: 150px;
+  font-size: 8pt;
   margin-left: 35px;
-  margin-right: 10px;
+  margin-right: 5px;
   margin-top: 5px;
 }
 
@@ -164,55 +169,290 @@ export default {
   border-top: 0px;
   border-bottom: 1;
   background-color: transparent;
-  width: 300px;
-  font-size: 11pt;
+  width: 150px;
+  font-size: 8pt;
   margin-left: 35px;
-  margin-right: 10px;
+  margin-right: 5px;
   margin-top: 5px;
 }
 
+.botonIngreso {
+  background-color: #e7511e;
+  width: 80px;
+  height: 25px;
+  margin-top: 5%;
+  margin-left: 35%;
+  margin-bottom: 5%;
+  font-size: 11px;
+  text-align: center;
+ 
+}
 .olvido {
   text-align: right;
   margin-top: 5%;
-  font-size: 10pt;
+  font-size: 8pt;
   margin-right: 30px;
 }
-.tituloIngreso {
+}
+
+
+@media screen and (min-width: 640px){
+  .ingresoForm {
+  height: 15%;
+  width: 35%;
+  margin-bottom: 10%;
+  background-color: white;
+  border: 1px solid gray;
+  margin-top: 15px;
+
+}
+.imagen{
+ width: 110px; 
+ height: 60px;
+
+}
+
+.logo {
+  height: 50%;
+  width: 50%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 2%;
+}
+
+
+  .tituloIngreso {
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 12pt;
+}
+}
+@media screen and (min-width: 768px){
+
+  .tituloIngreso {
   text-align: center;
   margin-top: 30px;
   font-weight: bold;
-  font-size: 15pt;
+  font-size: 18pt;
 }
-.margenLogo {
-  margin-top: 3%;
-  align-content: center;
-  text-align:center;
-  
+
+.logo {
+  height: 50%;
+  width: 50%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 5%;
+  margin-left: 25%;
 }
-.ingreso {
-  background-color: #f2e6d1;
-  font-family: "Baloo Bhaina 2";
+.ingresoForm {
+  height: 50%;
+  width: 60%;
+  margin: 0px auto;
+  background-color: white;
+  border: 1px solid gray;
+  margin-top: 20%;
+}
+.imagen{
+ width: 300px; 
+ height: 160px;
+
+}
+
+.emailForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 5%;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 350px;
+  font-size: 12pt;
+  margin-left: 35px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.contraseñaForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 350px;
+  font-size: 12pt;
+  margin-left: 35px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.botonIngreso {
+  background-color: #e7511e;
+  width: 90px;
+  height: 40px;
+  margin-top: 5%;
+  margin-left: 35%;
+  margin-bottom: 5%;
+  font-size: 15px;
+ 
+}
+.olvido {
+  text-align: right;
+  margin-top: 5%;
+  font-size: 12pt;
+  margin-right: 30px;
+}
+} 
+
+@media screen and (min-width: 1280px){
+  .tituloIngreso {
+  text-align: center;
+  margin-top: 30px;
+  font-weight: bold;
+  font-size: 18pt;
+}
+
+.logo {
+  height: 50%;
+  width: 50%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 5%;
+  margin-left: 25%;
+}
+.ingresoForm {
+  height: 50%;
+  width: 40%;
+  margin: 0px auto;
+  background-color: white;
+  border: 1px solid gray;
+  margin-top: 5%;
+}
+.imagen{
+ width: 310px; 
+ height: 160px;
+
+}
+
+.emailForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 5%;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 400px;
+  font-size: 12pt;
+  margin-left: 35px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.contraseñaForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 400px;
+  font-size: 12pt;
+  margin-left: 35px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.botonIngreso {
+  background-color: #e7511e;
+  width: 90px;
+  height: 40px;
+  margin-top: 5%;
+  margin-left: 40%;
+  margin-bottom: 5%;
+  font-size: 15px;
+ 
+}
+.olvido {
+  text-align: right;
+  margin-top: 5%;
+  font-size: 12pt;
+  margin-right: 30px;
+}
+
+}
+
+@media screen and (min-width: 1440px){
+.logo {
+  height: 50%;
+  width: 50%;
+  margin: 0px auto;
+  text-align: center;
+  margin-top: 40px;
+}
+
+
+.imagen{
+ width: 260px; 
+ height: 120px;
+
+}
+
+.ingresoForm {
+  height: 40%;
+  width: 30%;
+  margin: 0px auto;
+  background-color: white;
+  border: 1px solid gray;
+  margin-top: 5%;
+}
+
+.emailForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 5%;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 400px;
+  font-size: 14pt;
+  margin-left: 35px;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
+.contraseñaForm {
+  border-right: 0px;
+  border-left: 0px;
+  border-top: 0px;
+  border-bottom: 1;
+  background-color: transparent;
+  width: 400px;
+  font-size: 14pt;
+  margin-left: 35px;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 .botonIngreso {
   background-color: #e7511e;
   width: 105px;
-  height: 30px;
+  height: 40px;
   margin-top: 5%;
-  margin-left: 15px;
+  margin-left: 35%;
+  margin-bottom: 5%;
+  font-size: 17px;
+ 
 }
-.ingresoForm {
-  margin-top: 40px;
-  margin-bottom: 20%;
-  height: 245px;
-  width: 370px;
-  background-color: white;
-  border: 1px solid gray;
-}
-.colIngreso {
-  display: flex;
 
-  text-align: center;
 }
-</style
->|
+
+
+
+body {
+  background-color: #f2e6d1;
+  font-family: "Baloo Bhaina 2";
+}
+
+
+
+
+
+
+
+</style>
