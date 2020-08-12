@@ -35,14 +35,13 @@
         </template>
 
         <template v-slot:cell(stockActual)="row">
-         {{row.item.stock.actual}}          
+         {{ row.item.stock.actual }}          
         </template>
-          <template v-for="(costo, i) in costos">
+          <template v-for="(precio, i) in preciosUnitarios">
             <div :key="i"></div>
         </template>
       </b-table>
        
-
       <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
       <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
       </b-pagination>
@@ -112,7 +111,7 @@ export default {
         { key: 'unidadMedida', label: 'Unidad de Medida' },
         { key: 'categoria', label: 'Categoría' },
         { key: 'stockActual', label: 'Stock Actual' },
-        { key: 'costo', label: 'Costo' },
+        { key: 'precio', label: 'Precio Unitario' },
         { key: 'accion', label: 'Acción' }
       ],
 
@@ -122,7 +121,7 @@ export default {
         id: 0,
         denominacion: "",
         unidad: "",
-        costo: 0,
+        precio: 0,
         stockActual: 0,
         categoría: "",
       },
@@ -131,7 +130,7 @@ export default {
           id:"",
           denominacion:"",
           unidad:"",
-          costo:0,
+          precio: 0,
           categoria:"",
           unidadMedida:0,
           stockActual:0,
@@ -184,15 +183,15 @@ export default {
     },
     
     auxSetPrecios(insumo){
-      const item = this.preciosUnitarios.find((costo)=> insumo.idInsumo == costo.insumo.idInsumo);
+      const item = this.preciosUnitarios.find((precio)=> insumo.idInsumo == precio.insumo.idInsumo);
       return item != undefined ? this.formatter.formatMoney(item.precioUnitario) : "Sin Registro";
     },
 
     setPreciosUnitariosActuales(insumos){
-      insumos.forEach((insumo,i) => (
-        insumos[i].costo = this.auxSetPrecios(insumo)
+      insumos.forEach((insumo, i) => (
+        insumos[i].precio = this.auxSetPrecios(insumo)
       ));
-      this.costos = insumos;
+      this.preciosUnitarios = insumos;
     },
     
     agregarInsumoCompra(id){   

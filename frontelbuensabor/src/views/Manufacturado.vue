@@ -47,11 +47,11 @@
             <div>
               <h3>
                 {{ manufacturadoEncontrado.denominacion }}
-              <b-btn-group id="admin-btn-grp"> 
-                <b-button size="sm" @click="openModalEliminar" class="botonImagen">
-                  <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
-                </b-button>
-              </b-btn-group>
+                <b-btn-group id="admin-btn-grp"> 
+                  <b-button size="sm" @click="openModalEliminar" class="botonImagen">
+                    <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
+                  </b-button>
+                </b-btn-group>
               </h3>
             </div>
             <div class="stock">
@@ -120,7 +120,7 @@ export default {
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
-      costo: [],
+      costo: 0,
     };
   },
 
@@ -171,7 +171,6 @@ export default {
     },
 
     generarStringCantidades(){
-      
       let cantidadesInsumos = [];
       this.recetas.forEach(receta => cantidadesInsumos.push(receta.cantidadInsumo));
       let cantidadesInsumosStr = cantidadesInsumos.join(",");
@@ -218,12 +217,6 @@ export default {
 
 #imagenBuscar {
   width: 25px;
-}
-
-#imagenAgregar {
-  width: 20px;
-  margin: 0px;
-  margin-left: 10px;
 }
 
 .imagenProducto {

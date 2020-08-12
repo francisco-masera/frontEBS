@@ -10,14 +10,12 @@ export default {};
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
 
-
 h1 {
   font-family: "Baloo Bhaina 2";
   font-weight: 600;
   font-size: 18pt;
   color: #151515;
   text-align: left;
-  
 }
 
 h2 {
@@ -49,15 +47,15 @@ p {
   color: #151515;
 }
 
-.labelForm{
+.labelForm {
   font-family: "Baloo Bhaina 2";
   font-weight: 600;
   font-size: 12pt;
   color: #151515;
-  float:left;
+  float: left;
 }
 
-.campoForm{
+.campoForm {
   border-right: 0px;
   border-left: 0px;
   border-top: 0px;
@@ -65,7 +63,7 @@ p {
   background-color: transparent;
   font-size: 11pt;
   margin-left: 10px;
-  float:left;
+  float: left;
 }
 
 .abajo {
@@ -77,104 +75,102 @@ p {
   background-size: contain;
   bottom: 0;
   margin-top: 0px;
- 
-  
 }
 
 .boton {
   float: left;
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF;
+  color: #ffffff;
   font-weight: 600;
   width: 105px;
   height: 30px;
-  margin:5px;
+  margin: 5px;
   margin-bottom: 90px;
 }
 
-.boton:hover{
+.boton:hover {
   border: #e7511e;
-  background-color: #FFFFFF;
-  border-style:solid;
+  background-color: #ffffff;
+  border-style: solid;
   border-width: 1px;
-  color:#e7511e;
+  color: #e7511e;
 }
 
 .boton:active {
   float: left;
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF;
+  color: #ffffff;
 }
 .boton:visited {
   float: left;
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF;
+  color: #ffffff;
 }
 
 .boton:focus {
   border: #e7511e;
-  background-color: #FFFFFF;
-  border-style:solid;
+  background-color: #ffffff;
+  border-style: solid;
   border-width: 1px;
-  color:#e7511e;
+  color: #e7511e;
 }
 
 .boton2 {
   float: left;
-  color:#e7511e !important;
+  color: #e7511e !important;
   border: #e7511e;
-  background-color: #FFFFFF;
-  border-style:solid;
+  background-color: #ffffff;
+  border-style: solid;
   border-width: 1px;
   font-weight: 600;
   width: 105px;
   height: 30px;
-  
-  margin:5px;
+
+  margin: 5px;
 }
 
-.boton2:hover{
+.boton2:hover {
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF !important;
-  
+  color: #ffffff !important;
 }
-.boton2:focus{
+.boton2:focus {
   border: none;
   background-color: #e7511e;
-  color:#FFFFFF !important;
+  color: #ffffff !important;
 }
 
-.boton2:visited{
+.boton2:visited {
   border: #e7511e;
-  background-color: #FFFFFF;
-  border-style:solid;
+  background-color: #ffffff;
+  border-style: solid;
   border-width: 1px;
-  color:#e7511e;
+  color: #e7511e;
 }
-.boton2:active{
+.boton2:active {
   border: #e7511e;
-  background-color: #FFFFFF;
-  border-style:solid;
+  background-color: #ffffff;
+  border-style: solid;
   border-width: 1px;
-  color:#e7511e;
+  color: #e7511e;
 }
-
 
 .buscador {
   float: right;
   margin-bottom: 25px;
 }
+
 .botonImagen {
   background-color: transparent;
   border: none;
   padding: 0px;
   display: inline-block;
-  margin:5px
+  margin: 5px;
 }
+
 .botonImagen:hover {
   background-color: transparent;
   border: none;
@@ -194,7 +190,6 @@ p {
   border: none;
 }
 
-
 .tarjetaInfo {
   text-align: center;
   width: 116px;
@@ -204,11 +199,10 @@ p {
   font-weight: 400;
   font-size: 11pt;
   color: #151515;
-  
 }
 
-.infoProductoVenta{
-    float: right;
+.infoProductoVenta {
+  float: right;
 }
 
 .costado {
@@ -239,6 +233,7 @@ p {
   color: #151515;
   margin-bottom: 100px;
 }
+
 #imagenAgregar {
   width: 20px;
   margin: 0px;
@@ -282,7 +277,6 @@ p {
   border-radius: 10px;
   width: 130px;
 }
-
 
 @media screen and (max-width: 604px) {
   .informacion {
