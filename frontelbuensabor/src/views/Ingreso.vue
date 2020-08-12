@@ -3,7 +3,7 @@
     <div class="logo">
       <b-img src="@/assets/images/sistema/logo-01.png" class="imagen"></b-img>
     </div>
-    <b-alert v-model="alertDatosNull">Debe ingrersar usuario y contraseña</b-alert>
+    <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
     <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
     <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
     <div class="ingresoForm">
@@ -206,7 +206,7 @@ export default {
 @media screen and (min-width: 640px) {
   .ingresoForm {
 
-    height: 35%;
+    height: 45%;
 
     width: 35%;
     margin-bottom: 10%;
@@ -221,7 +221,7 @@ export default {
   }
 
   .logo {
-    height: 25%;
+    height: 20%;
     width: 25%;
 
     margin: 0px auto;
@@ -256,7 +256,7 @@ export default {
   }
   .ingresoForm {
 
-    height: 25%;
+    height: 30%;
 
     width: 60%;
     margin: 0px auto;
@@ -321,30 +321,30 @@ export default {
 @media screen and (min-width: 1280px) {
   .tituloIngreso {
     text-align: center;
-    margin-top: 30px;
+    margin-top: 25px;
     font-weight: bold;
-    font-size: 18pt;
+    font-size: 16pt;
   }
 
   .logo {
-    height: 50%;
-    width: 50%;
+    height: 25%;
+    width: 25%;
     margin: 0px auto;
     text-align: center;
     margin-top: 5%;
-    margin-left: 25%;
+    
   }
   .ingresoForm {
-    height: 50%;
-    width: 40%;
+    height: 40%;
+    width: 30%;
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
-    margin-top: 5%;
+   
   }
   .imagen {
-    width: 310px;
-    height: 160px;
+    width: 240px;
+    height: 100px;
   }
 
   .emailForm {
@@ -357,7 +357,7 @@ export default {
     width: 70%;
 
 
-    font-size: 12pt;
+    font-size: 9pt;
     margin-left: 35px;
     margin-right: 5px;
     margin-top: 5px;
@@ -372,7 +372,7 @@ export default {
 
     width: 70%;
 
-    font-size: 12pt;
+    font-size: 9pt;
     margin-left: 35px;
     margin-right: 5px;
     margin-top: 5px;
@@ -380,12 +380,12 @@ export default {
 
   .botonIngreso {
     background-color: #e7511e;
-    width: 90px;
-    height: 40px;
+    width: 80px;
+    height: 30px;
     margin-top: 5%;
     margin-left: 40%;
     margin-bottom: 5%;
-    font-size: 15px;
+    font-size: 13px;
   }
 
 
@@ -393,7 +393,7 @@ export default {
   .olvido {
     text-align: right;
     margin-top: 5%;
-    font-size: 12pt;
+    font-size: 9pt;
     margin-right: 30px;
   }
 }
