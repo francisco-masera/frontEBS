@@ -84,7 +84,7 @@
             </template>
            
           </b-table>
-          <b-button pill class="boton" size="md">Añadir</b-button>
+          <b-button pill class="boton" size="md">Agregar Existencia</b-button>
           <b-pagination
             v-model="currentPage"
             size="sm"
@@ -176,7 +176,7 @@
             </template>
             
           </b-table>
-          <b-button pill class="boton" size="md">Añadir</b-button>
+          <b-button pill class="boton" size="md">Agregar Existencia</b-button>
           <b-pagination
             v-model="currentPage"
             size="sm"
@@ -418,8 +418,6 @@ export default {
   margin-bottom: 30px;
 }
 
-
-
 #stockColor {
   width: 20px;
   height: 20px;
@@ -497,5 +495,8 @@ export default {
   margin-left: auto;
   margin-right: 40%;
   float: right;
+}
+.boton{
+  width: auto;
 }
 </style>

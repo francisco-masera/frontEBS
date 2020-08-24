@@ -275,7 +275,9 @@ p {
   font-size: 12pt;
   background-color: #ffffff;
   border-radius: 10px;
-  width: 130px;
+  /* width: 130px; */
+  width: auto;
+  min-width: 18px;
 }
 
 @media screen and (max-width: 604px) {
