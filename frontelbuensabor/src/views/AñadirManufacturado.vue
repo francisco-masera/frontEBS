@@ -386,7 +386,7 @@ export default {
     },
 
     async getInsumos() {
-      await this.service.getAll("insumo").then(data=>{
+      await this.service.getAll("insumo/insumosProduccion").then(data=>{
         this.insumosData = data;
       }); 
     },
