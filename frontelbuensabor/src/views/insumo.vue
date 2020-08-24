@@ -14,11 +14,11 @@
               @click="modificarInsumo(insumoEncontrado.idInsumo)"
               class="botonImagen"
             >
-              <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
+              <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
             </b-button>
             <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
               <img
-                src="@/assets/images/sistema/eliminar.png"
+                src="http://localhost:9001/images/sistema/eliminar.png"
                 id="imagenAgregar"
               />
             </b-button>
@@ -77,7 +77,7 @@
                 class="botonImagen"
               >
                 <img
-                  src="@/assets/images/sistema/eliminar.png"
+                  src="http://localhost:9001/images/sistema/eliminar.png"
                   id="imagenAgregar"
                 />
               </b-button>
@@ -169,7 +169,7 @@
                 class="botonImagen"
               >
                 <img
-                  src="@/assets/images/sistema/eliminar.png"
+                  src="http://localhost:9001/images/sistema/eliminar.png"
                   id="imagenAgregar"
                 />
               </b-button>
@@ -256,7 +256,6 @@ export default {
       insumoEncontrado: [],    
       ordenCompra: [],
       stock: "",
-      /* ultimaCompra: [], */
       estadoEliminado: false,
       contraseniaEliminar: "",
       contraseniaVerificada: false,
@@ -293,12 +292,6 @@ export default {
         this.insumoEncontrado = data[0]
       );
     },
-
-   /*  async getUltimaCompra() {
-      const idInsumo = parseInt(this.$route.params.id);
-      await this.service
-      .getOne("compras/historial", idInsumo).then(data => this.ultimaCompra = data);
-    }, */
 
     async getOrdenCompra(insumo) {
       let parametroId = parseInt(this.$route.params.id);

@@ -202,7 +202,7 @@
             <h3>
               {{ manufacturado.denominacion }}
               <b-button size="sm" id="btn-editar" class="botonImagen">
-                <img src="@/assets/images/sistema/editar.png" id="imagenAgregar" />
+                <img src="http://localhost:9001/images/sistema/.png" id="imagenAgregar" />
               </b-button>
             </h3>
             <div id="descripcionInsumo">

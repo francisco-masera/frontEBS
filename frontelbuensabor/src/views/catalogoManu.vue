@@ -11,7 +11,7 @@
       <b-nav-form class="buscador">
         <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar manufacturado" v-model="busqueda"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
-          <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
+          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
          
@@ -62,7 +62,7 @@
       <b-nav-form class="buscador">
         <b-form-input size="sm" class="mr-sm-2" v-model="busqueda" placeholder="Buscar producto"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
-          <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
+          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
        

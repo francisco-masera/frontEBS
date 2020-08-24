@@ -9,7 +9,7 @@
       <b-nav-form class="buscador">
         <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo" v-model="busqueda"></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
-          <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar"/>
+          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar"/>
         </b-button>
       </b-nav-form>
 
@@ -26,7 +26,7 @@
         
         <template v-slot:cell(accion)="row">
           <b-button size="sm" @click="agregarInsumoCompra(row.item.id)" class="botonImagen">
-            <img src="@/assets/images/sistema/botonAgregar.png" id="imagenAgregar"/>
+            <img src="http://localhost:9001/images/sistema/botonAgregar.png" id="imagenAgregar"/>
           </b-button>
         </template>
 

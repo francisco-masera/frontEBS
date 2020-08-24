@@ -9,24 +9,24 @@
             size="sm"
             class="botonImagen"
           >
-            <img src="@/assets/images/sistema/buscar.png" id="imagenBuscar" />
+            <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
           </b-button>      
       </div>
       <div id="pasosCuadro">
         <div class="pasos">
-          <img src="../assets/images/sistema/iconoPasos-01.png" width="70px" class="imgPasos">
+          <img src="http://localhost:9001/images/sistema/icono pasos-01.png" width="70px" class="imgPasos">
           <div class="pasosTexto">
              <strong>Seleccioná</strong> los productos<br> que quieras.
           </div>         
         </div>
         <div class="pasos">
-          <img src="../assets/images/sistema/iconoPasos-02.png" width="90px" class="imgPasos">
+          <img src="http://localhost:9001/images/sistema/icono pasos-02.png" width="90px" class="imgPasos">
           <div class="pasosTexto">
              <strong>Elegí</strong> el método de<br> pago que prefieras.
           </div>         
         </div>
         <div class="pasos">
-          <img src="../assets/images/sistema/iconoPasos-03.png" width="90px" class="imgPasos">
+          <img src="http://localhost:9001/images/sistema/icono pasos-03.png" width="90px" class="imgPasos">
           <div class="pasosTexto">
              <strong>Seleccioná</strong> la forma<br> de entrega.
           </div>         
@@ -108,7 +108,7 @@ h2{
  
 }
 #home1{  
-  background-image: url("../assets/images/sistema/fondo.png");
+  background-image: url("http://localhost:9001/images/sistema/fondo.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size:cover;
