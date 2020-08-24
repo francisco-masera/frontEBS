@@ -109,19 +109,19 @@ export default {
         }else{
           this.esCliente = false;
           if(this.user.rol==="admin"){
-            boton = [0,"Stock de insumos","stock.png",""];
+            boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
             this.botones.push(boton);
-            boton = [1,"Catálogo","manufacturados.png",""];
+            boton = [1,"Catálogo","manufacturados.png","/catalogoManu"];
             this.botones.push(boton);    
-            boton = [2,"Sugerencias del chef","sugerenciasChef.png",""];
+            boton = [2,"Sugerencias del chef","sugerenciasChef.png","/sugerenciaChef"];
             this.botones.push(boton);
-            boton = [3,"Cerrar sesión","cerrarSesion.png",""];
+            boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
             this.botones.push(boton);   
                   
           }else if(this.user.rol==="cocina"){
-            boton = [0,"Manufacturados","manufacturados.png",""];
+            boton = [0,"Manufacturados","manufacturados.png","/catalogoManu"];
             this.botones.push(boton);
-            boton = [1,"Cerrar sesión","cerrarSesion.png",""];
+            boton = [1,"Cerrar sesión","cerrarSesion.png","/ingreso"];
             this.botones.push(boton);  
 
           }else if(this.user.rol==="delivery"){
@@ -129,7 +129,7 @@ export default {
             this.botones.push(boton);
             boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
             this.botones.push(boton);  
-            boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+            boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
             this.botones.push(boton);  
 
           }else if(this.user.rol==="cajero"){
@@ -137,7 +137,7 @@ export default {
             this.botones.push(boton);
             boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
             this.botones.push(boton);  
-            boton = [2,"Cerrar sesión","cerrarSesion.png",""];
+            boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
             this.botones.push(boton);  
           }
         }
@@ -227,8 +227,11 @@ export default {
 
 
 
+@media (max-width: 1025px){
+}
 
-@media screen and (max-width: 767px){
+
+@media screen and (max-width: 769px){
 
   #navToggle {
   float: right;
@@ -248,16 +251,16 @@ export default {
   .hamburguer {    
     background-color: #ffffff;
     position: absolute;
-    margin-top:450px;
+    margin-top:290px;
     width: 250px;     
-    margin-left: 80px;
+    margin-left: 290px;
     float:right; 
     border-radius: 15px;
     -webkit-box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.33);
     -moz-box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.33);
     box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.33);
     text-align: left;    
-    
+    display:block;
     }
 
     .nav-item{
@@ -312,6 +315,27 @@ display: inline;
 }
 
 
+}
+@media (max-width: 560px){
+   .hamburguer {   
+    margin-left: 150px;
+    }
+   
+}
 
+@media (max-width: 426px){
+   .hamburguer {   
+    margin-left: 100px;
+    }
+   
+}
+@media (max-width: 375px){
+   .hamburguer {   
+    margin-left: 50px;
+    }
+   
+}
+@media (max-width: 320px){
+  
 }
 </style>
