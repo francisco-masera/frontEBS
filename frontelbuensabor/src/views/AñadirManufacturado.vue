@@ -88,17 +88,23 @@
           <div class="lineaForm">
             <b-table 
               hover responsive="sm" fixed
-              selectable select-mode="multi"
               :items="insumosData" 
               :fields="camposTablaInsumos" 
               :outlined="true" 
               :per-page="perPage" 
               :current-page="currentPage" 
               :borderless="true"
-              @row-selected="setIngredientes"
               id="tablaInsumos" 
               class="tabla"
               >
+              <template v-slot:cell(seleccionado)="row">
+                <b-form-group>
+                  <b-form-checkbox 
+                  :key="row.item.idInsumo" 
+                  v-model="row.item.clicked"
+                  @change="cambiarEstadoIngrediente($event, row.item.idInsumo)"></b-form-checkbox>
+                </b-form-group>
+              </template>
               <template v-slot:cell(denominacion)="row">
                 {{ row.item.denominacion }}
               </template>
@@ -310,6 +316,7 @@ export default {
         imagen: [],
       },
       camposTablaInsumos: [
+        { key: 'seleccionado', label: 'Seleccionar' },
         { key: 'denominacion', label: 'Denominación' },
       ],
       camposTablaDetalle: [
@@ -386,7 +393,7 @@ export default {
     },
 
     async getInsumos() {
-      await this.service.getAll("insumo").then(data=>{
+      await this.service.getAll("insumo/insumosProduccion").then(data=>{
         this.insumosData = data;
       }); 
     },
@@ -395,8 +402,24 @@ export default {
       this.form2.tiempoCocina = this.manufacturado.tiempoCocina;
     },
 
-    setIngredientes(items){
-      this.ingredientes = items;
+    agregarIngrediente(id){
+      let ingrediente = this.insumosData.find(i => i.idInsumo == id);
+      console.log(ingrediente);
+      this.ingredientes.push(ingrediente); 
+    },
+
+    eliminarIngrediente(id){
+      let idx = this.ingredientes.findIndex(i => i.idInsumo == id);
+      this.ingredientes.splice(idx, 1);
+    },
+
+    cambiarEstadoIngrediente(valor, id){
+      console.log(valor, id);
+      let existe = this.ingredientes.some(i => {return i.idInsumo == id ? true  : false});     
+      if(existe)
+        valor ? this.agregarIngrediente(id) : this.eliminarIngrediente(id);
+      else if(valor)
+        this.agregarIngrediente(id);
     },
 
     onSubmit2(){
