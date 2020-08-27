@@ -7,16 +7,24 @@
     <b-container class="informacion">
       <h1>Detalle de insumo</h1>
       <div v-if="!esInsumoVenta">
-        <h3>{{ insumoEncontrado.denominacion }}
+        <h3>
+          {{ insumoEncontrado.denominacion }}
           <b-btn-group>
             <b-button
               size="sm"
               @click="modificarInsumo(insumoEncontrado.idInsumo)"
               class="botonImagen"
             >
-              <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
+              <img
+                src="http://localhost:9001/images/sistema/editar.png"
+                id="imagenAgregar"
+              />
             </b-button>
-            <b-button size="sm" @click="openModalEliminar()" class="botonImagen">
+            <b-button
+              size="sm"
+              @click="openModalEliminar()"
+              class="botonImagen"
+            >
               <img
                 src="http://localhost:9001/images/sistema/eliminar.png"
                 id="imagenAgregar"
@@ -82,7 +90,6 @@
                 />
               </b-button>
             </template>
-           
           </b-table>
           <b-button pill class="boton" size="md">Agregar Existencia</b-button>
           <b-pagination
@@ -99,14 +106,30 @@
       </div>
 
       <div v-else id="insumo">
-        <img :src="'http://localhost:9001/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
-        <h3>{{ insumoEncontrado.insumo.denominacion }}
-          <b-btn-group> 
-            <b-button size="sm" @click="modificarInsumo(insumoEncontrado.insumo.idInsumo)" class="botonImagen" >
-              <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar"/>
+        <img
+          :src="
+            'http://localhost:9001/images/productos/' + insumoEncontrado.imagen
+          "
+          class="imagenProducto"
+        />
+        <h3>
+          {{ insumoEncontrado.insumo.denominacion }}
+          <b-btn-group>
+            <b-button
+              size="sm"
+              @click="modificarInsumo(insumoEncontrado.insumo.idInsumo)"
+              class="botonImagen"
+            >
+              <img
+                src="http://localhost:9001/images/sistema/editar.png"
+                id="imagenAgregar"
+              />
             </b-button>
             <b-button size="sm" @click="openModalEliminar" class="botonImagen">
-              <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
+              <img
+                src="http://localhost:9001/images/sistema/eliminar.png"
+                id="imagenAgregar"
+              />
             </b-button>
           </b-btn-group>
         </h3>
@@ -144,7 +167,9 @@
             <b-card-text>{{ costo }}</b-card-text>
           </b-card>
           <b-card header="Precio de venta" class="tarjetaInfo">
-            <b-card-text>{{ this.formatter.formatMoney(insumoEncontrado.precioVenta) }} </b-card-text>
+            <b-card-text
+              >{{ this.formatter.formatMoney(insumoEncontrado.precioVenta) }}
+            </b-card-text>
           </b-card>
         </div>
         <div class="HistorialCompra">
@@ -174,7 +199,6 @@
                 />
               </b-button>
             </template>
-            
           </b-table>
           <b-button pill class="boton" size="md">Agregar Existencia</b-button>
           <b-pagination
@@ -195,18 +219,54 @@
       ref="modal"
       hide-footer
       title="Eliminar insumo"
-      class="modalEliminar">
+      class="modalEliminar"
+    >
       <form>
-        <b-form-input  v-model="contraseniaEliminar" class="contraseñaForm" placeholder="Contraseña">
+        <b-form-input
+          v-model="contraseniaEliminar"
+          class="contraseñaForm"
+          placeholder="Contraseña"
+        >
         </b-form-input>
-        <b-button pill class="boton" size="md" @click="eliminarInsumo()">Eliminar</b-button>
+        <b-button pill class="boton" size="md" @click="verificarContrasenia"
+          >Eliminar</b-button
+        >
       </form>
+      <b-toast id="toast-eliminar-exito" variant="success" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+        ¡Insumo eliminado con éxito!
+      </b-toast>
+      <b-toast id="toast-eliminar-error" variant="warning" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+        ¡La contraseña no es correcta!
+      </b-toast>
     </b-modal>
     <b-modal
       ref="modalEliminarRegistro"
       hide-footer
       title="Eliminar asiento"
-      class="modalEliminar">
+      class="modalEliminar"
+    >
       <form>
         ¿Desea anular el asiento de compra?
         <b-button pill class="boton" size="md">Anular</b-button>
@@ -221,10 +281,9 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
-
 export default {
   mounted() {
-    this.verificarUsuario();  
+    this.verificarUsuario();
   },
   components: {
     menuLateral: MenuLateral,
@@ -240,20 +299,19 @@ export default {
         { key: "precioUnitario", label: "Precio Unitario" },
         { key: "precioTotal", label: "Precio Total" },
         { key: "accion", label: "Acción" },
-
       ],
 
-      oCompra:{
-        "id": 0,
-        "fechaDeCompra": 0,
-        "cantidad": 0,
-        "precioUnitario": 0,
-        "precioTotal": 0
+      oCompra: {
+        id: 0,
+        fechaDeCompra: 0,
+        cantidad: 0,
+        precioUnitario: 0,
+        precioTotal: 0,
       },
 
       costo: 0,
       esInsumoVenta: false,
-      insumoEncontrado: [],    
+      insumoEncontrado: [],
       ordenCompra: [],
       stock: "",
       estadoEliminado: false,
@@ -265,21 +323,23 @@ export default {
   },
 
   methods: {
-    verificarUsuario(){
-      this.user = JSON.parse(sessionStorage.getItem('user'));
-      this.user == undefined || this.user.rol != "admin" ? this.$router.push({ name: 'Home'}) : this.getInsumoxId();
+    verificarUsuario() {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+      this.user === undefined || this.user.rol !== "admin"
+        ? this.$router.push({ name: "Home" })
+        : this.getInsumoxId();
     },
 
     async getInsumoxId() {
       var parametroId = parseInt(this.$route.params.id);
-      let insumo = await this.service.getOne("insumo", parametroId)
+      let insumo = await this.service.getOne("insumo", parametroId);
       await this.setInsumo(insumo);
     },
 
-    async setInsumo(insumo){
-      if(!insumo.esInsumo){
-        await this.getInsumoVentaxId().then(()=> this.getOrdenCompra(insumo));
-      }else {
+    async setInsumo(insumo) {
+      if (!insumo.esInsumo) {
+        await this.getInsumoVentaxId().then(() => this.getOrdenCompra(insumo));
+      } else {
         this.insumoEncontrado = insumo;
         this.getOrdenCompra(insumo);
       }
@@ -288,63 +348,68 @@ export default {
     async getInsumoVentaxId() {
       var parametroId = parseInt(this.$route.params.id);
       this.esInsumoVenta = true;
-      await this.service.getOne("insumoVenta/insumo", parametroId).then(data =>
-        this.insumoEncontrado = data[0]
-      );
+      await this.service
+        .getOne("insumoVenta/insumo", parametroId)
+        .then((data) => (this.insumoEncontrado = data[0]));
     },
 
     async getOrdenCompra(insumo) {
       let parametroId = parseInt(this.$route.params.id);
       let precio = 0;
-      await this.service.getOne("compras/historialCompras", parametroId).then(data=>{
-        data.forEach((o, i) => {
-          
-          let dateTime = o.fechaCompra;
-          let date = dateTime.split('T')[0];
-          console.log(date);
-          date = date.split('-');
-          let time = dateTime.split('T')[1];
-          time = time.split(':');      
+      await this.service
+        .getOne("compras/historialCompras", parametroId)
+        .then((data) => {
+          data.forEach((o, i) => {
+            let dateTime = o.fechaCompra;
+            let date = dateTime.split("T")[0];
+            date = date.split("-");
+            let time = dateTime.split("T")[1];
+            time = time.split(":");
 
-          dateTime = new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2])
-          .toLocaleString().replace(",","").replace(/:.. /," ");
-          
-          i == 0 ? precio = o.precioUnitario : "";
+            dateTime = new Date(
+              date[0],
+              date[1] - 1,
+              date[2],
+              time[0],
+              time[1],
+              time[2]
+            )
+              .toLocaleString()
+              .replace(",", "")
+              .replace(/:.. /, " ");
 
-          let precioTotal = o.cantidad*o.precioUnitario;
-          this.ordenCompra.push({ "id":o.id,"fechaDeCompra": dateTime,
-          "cantidad": o.cantidad, "precioUnitario": this.formatter.formatMoney(o.precioUnitario)
-          ,"precioTotal": this.formatter.formatMoney(precioTotal) });
-        });              
-         
-      });     
+            i == 0 ? (precio = o.precioUnitario) : "";
+
+            let precioTotal = o.cantidad * o.precioUnitario;
+            this.ordenCompra.push({
+              id: o.id,
+              fechaDeCompra: dateTime,
+              cantidad: o.cantidad,
+              precioUnitario: this.formatter.formatMoney(o.precioUnitario),
+              precioTotal: this.formatter.formatMoney(precioTotal),
+            });
+          });
+        });
       this.setCosto(precio);
       this.verificarStockVenta(insumo);
     },
 
-    setCosto(precioUnitario){
-      console.log(precioUnitario);
-      this.costo = precioUnitario === undefined 
-      ? this.formatter.formatMoney(0.0) 
-      : this.formatter.formatMoney(precioUnitario);
-     
+    setCosto(precioUnitario) {
+      this.costo =
+        precioUnitario === undefined
+          ? this.formatter.formatMoney(0.0)
+          : this.formatter.formatMoney(precioUnitario);
     },
 
     verificarStockVenta(insumo) {
       let clase;
-      if (
-        parseInt(insumo.stock.actual) <=
-        parseInt(insumo.stock.minimo)
-      ) {
+      if (parseInt(insumo.stock.actual) <= parseInt(insumo.stock.minimo)) {
         this.stock = "insuficiente";
         clase = document.getElementById("stockColor");
         clase.style.backgroundColor = "#ED3247";
-        console.log("insuficiente");
       } else if (
-        parseInt(insumo.stock.actual) >
-        parseInt(insumo.stock.minimo) &&
-        parseInt(insumo.stock.actual) <
-        parseInt(insumo.stock.maximo)
+        parseInt(insumo.stock.actual) > parseInt(insumo.stock.minimo) &&
+        parseInt(insumo.stock.actual) < parseInt(insumo.stock.maximo)
       ) {
         this.stock = "moderado";
         clase = document.getElementById("stockColor");
@@ -358,25 +423,31 @@ export default {
     },
 
     async eliminarInsumo() {
-      let id = parseInt(this.$route.params.id); 
-      this.contraseniaVerificada = this.verificarContrasenia();
-      this.contraseniaVerificada ?
-      await this.service
+      let id =
+        this.insumoEncontrado.insumo === undefined
+          ? this.insumoEncontrado.idInsumo
+          : this.insumoEncontrado.insumo.idInsumo;
+      this.service
         .delete("insumo", id)
-        .then((response) => 
-          this.estadoEliminado = response.data[0]) :
-      console.log("error");
+        .then(
+          this.$bvToast.show("toast-eliminar-exito"),
+          this.$refs["modal"].hide()
+        );
     },
 
     async verificarContrasenia() {
-      let contraseniaEliminar = this.contraseniaEliminar;
-       await axios.get(
-        "http://localhost:9001/buensabor/persona/validarContrasenia/" +
-          1,{ params: {
-            "password" : contraseniaEliminar
-            },
-          }
-      ).then((response)=> this.datos = response.data[0])
+      let contraseniaVerificada = await axios
+        .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
+          params: {
+            id: this.user.id,
+            password: this.contraseniaEliminar,
+          },
+        })
+        .then((res) => res.data);
+      console.log(contraseniaVerificada);
+      contraseniaVerificada
+        ? this.eliminarInsumo()
+        : this.$bvToast.show("toast-eliminar-error");
     },
 
     openModalEliminar() {
@@ -385,7 +456,6 @@ export default {
 
     modificarInsumo(id) {
       window.location.href = "/modificarInsumo/" + id;
-      console.log(id);
     },
 
     eliminarRegistro() {
@@ -496,7 +566,7 @@ export default {
   margin-right: 40%;
   float: right;
 }
-.boton{
+.boton {
   width: auto;
 }
 </style>
