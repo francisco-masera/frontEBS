@@ -7,77 +7,128 @@
     <b-container class="informacion">
       <h1>Stock de insumos</h1>
       <b-nav-form class="buscador">
-        <b-form-input size="sm" class="mr-sm-2" placeholder="Buscar insumo" v-model="busqueda"></b-form-input>
+        <b-form-input
+          size="sm"
+          class="mr-sm-2"
+          placeholder="Buscar insumo"
+          v-model="busqueda"
+        ></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
-          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar"/>
+          <img
+            src="http://localhost:9001/images/sistema/buscar.png"
+            id="imagenBuscar"
+          />
         </b-button>
       </b-nav-form>
 
-      <b-table hover responsive :items="insumosData" 
-      :fields="tituloTabla" 
-      @row-dblclicked="verDetalle" 
-      :outlined="true" 
-      :per-page="perPage" 
-      :current-page="currentPage" 
-      :borderless="true" 
-      id="tablaInsumos" 
-      class="tabla"
-      :filter="busqueda">
-        
+      <b-table
+        hover
+        responsive="sm"
+        :items="insumosData"
+        :fields="tituloTabla"
+        :outlined="true"
+        :per-page="perPage"
+        :current-page="currentPage"
+        :borderless="true"
+        id="tablaInsumos"
+        class="tabla"
+        :filter="busqueda"
+      >
         <template v-slot:cell(accion)="row">
-          <b-button size="sm" @click="agregarInsumoCompra(row.item.id)" class="botonImagen">
-            <img src="http://localhost:9001/images/sistema/botonAgregar.png" id="imagenAgregar"/>
+          <b-button
+            size="sm"
+            @click="agregarInsumoCompra(row.item.id)"
+            class="botonImagen"
+          >
+            <img
+              src="http://localhost:9001/images/sistema/botonAgregar.png"
+              id="imagenAgregar"
+            />
           </b-button>
         </template>
 
         <template v-slot:cell(categoria)="row">
-          <b-badge class="Badgecategoria" >{{row.item.rubroInsumo.denominacion}}</b-badge>          
+          <b-badge class="Badgecategoria">{{
+            row.item.rubroInsumo.denominacion
+          }}</b-badge>
         </template>
 
         <template v-slot:cell(stockActual)="row">
-         {{ row.item.stock.actual }}          
+          {{ row.item.stock.actual }}
         </template>
-          <template v-for="(precio, i) in preciosUnitarios">
-            <div :key="i"></div>
+        <template v-for="(precio, i) in preciosUnitarios">
+          <div :key="i"></div>
+        </template>
+        <template v-slot:cell(detalle)="row">
+          <b-button pill class="boton" @click="verDetalle(row.item)"
+            >Detalles</b-button
+          >
         </template>
       </b-table>
-       
-      <b-button pill class="boton" size="md" @click="agregarInsumo()">Nuevo</b-button>
-      <b-pagination v-model="currentPage" size="sm" align="right" :total-rows="rows" :per-page="perPage" aria-controls="my-tablaInsumos" class="paginador">
+
+      <b-button pill class="boton" size="md" @click="agregarInsumo"
+        >Nuevo</b-button
+      >
+      <b-pagination
+        v-model="currentPage"
+        size="sm"
+        align="right"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-tablaInsumos"
+        class="paginador"
+      >
       </b-pagination>
     </b-container>
-     <b-modal ref="modal" hide-footer hide-header centered title>
-    <h2>Añadir existencia</h2>
-    <h4>{{insumoEncontrado.denominacion}}</h4>
-    <form class="estiloForm">
-      <table>
-       <tr>
-        <td>
-       <label class="mr-sm-2" for="inline-form-custom-select-pref">Fecha</label>
-       </td>
-      <td>
-       <b-form-datepicker  for="inline-form-custom-select-pref" id="example-datepicker" size="sm"></b-form-datepicker>
-      </td>
-      </tr>
-      <tr>
-        <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Unidad de medida</label></td>
-        <td>{{insumoEncontrado.unidadMedida}}</td>
-      </tr>
-      <tr>
-        <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Cantidad</label></td>
-        <td> <b-form-input></b-form-input></td>
-      </tr>
-      <tr>
-        <td> <label class="mr-sm-2" for="inline-form-custom-select-pref">Precio por unidad</label></td>
-        <td> <b-form-input></b-form-input></td>
-      </tr>
-      <tr>
-       <b-button pill class="boton" size="md">Añadir</b-button>
-      </tr>
-      </table>
-    </form>
-    
-  </b-modal>
+    <b-modal ref="modal" hide-footer hide-header centered title>
+      <h2>Añadir existencia</h2>
+      <h4>{{ insumoEncontrado.denominacion }}</h4>
+      <form class="estiloForm">
+        <table>
+          <tr>
+            <td>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Fecha</label
+              >
+            </td>
+            <td>
+              <b-form-datepicker
+                for="inline-form-custom-select-pref"
+                id="example-datepicker"
+                size="sm"
+              ></b-form-datepicker>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Unidad de medida</label
+              >
+            </td>
+            <td>{{ insumoEncontrado.unidadMedida }}</td>
+          </tr>
+          <tr>
+            <td>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Cantidad</label
+              >
+            </td>
+            <td><b-form-input></b-form-input></td>
+          </tr>
+          <tr>
+            <td>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Precio por unidad</label
+              >
+            </td>
+            <td><b-form-input></b-form-input></td>
+          </tr>
+          <tr>
+            <b-button pill class="boton" size="md">Añadir</b-button>
+          </tr>
+        </table>
+      </form>
+    </b-modal>
     <router-view />
   </div>
 </template>
@@ -92,31 +143,31 @@ export default {
   mounted() {
     this.userVerifica();
     this.getPreciosUnitariosActuales();
-    
   },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
   },
-     
+
   data() {
     return {
-      user:{},
+      user: {},
 
       perPage: 7,
       currentPage: 1,
 
       tituloTabla: [
-        { key: 'denominacion', label: 'Denominación' },
-        { key: 'unidadMedida', label: 'Unidad de Medida' },
-        { key: 'categoria', label: 'Categoría' },
-        { key: 'stockActual', label: 'Stock Actual' },
-        { key: 'precio', label: 'Precio Unitario' },
-        { key: 'accion', label: 'Acción' }
+        { key: "denominacion", label: "Denominación" },
+        { key: "unidadMedida", label: "Unidad de Medida" },
+        { key: "categoria", label: "Categoría" },
+        { key: "stockActual", label: "Stock Actual" },
+        { key: "precio", label: "Precio Unitario" },
+        { key: "detalle", label: "Detalle" },
+        { key: "accion", label: "Acción" },
       ],
 
       insumosData: [],
-      costos:[],
+      costos: [],
       insumo: {
         id: 0,
         denominacion: "",
@@ -125,90 +176,93 @@ export default {
         stockActual: 0,
         categoría: "",
       },
-      
-       insumoEncontrado: {
-          id:"",
-          denominacion:"",
-          unidad:"",
-          precio: 0,
-          categoria:"",
-          unidadMedida:0,
-          stockActual:0,
-          stockMin:0,
-          stockMax:0,
-          precioVenta:0,
-          descripcion: "",
-          imagen:""
-        },
-        service : new Service(),
-        preciosUnitarios: [],
-        formatter: new Formatter(),
-        busqueda:''
-      };
+
+      insumoEncontrado: {
+        id: "",
+        denominacion: "",
+        unidad: "",
+        precio: 0,
+        categoria: "",
+        unidadMedida: 0,
+        stockActual: 0,
+        stockMin: 0,
+        stockMax: 0,
+        precioVenta: 0,
+        descripcion: "",
+        imagen: "",
+      },
+      service: new Service(),
+      preciosUnitarios: [],
+      formatter: new Formatter(),
+      busqueda: "",
+    };
   },
   methods: {
-   userVerifica(){
-      this.user = JSON.parse(sessionStorage.getItem('user'));
-      if(this.user == undefined){
-        this.$router.push({ name: 'Home'})
+    userVerifica() {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+      if (this.user == undefined) {
+        this.$router.push({ name: "Home" });
       }
-      if(this.user.rol != "admin"){
-        this.$router.push({ name: 'Home'})
+      if (this.user.rol != "admin") {
+        this.$router.push({ name: "Home" });
       }
     },
 
     agregarInsumo() {
-      window.location.href = "/añadirInsumo/"; 
+      window.location.href = "/añadirInsumo/";
     },
-    
+
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
     },
-   
+
     async getInsumos() {
       await this.service.getAll("insumo").then((data) => {
         this.insumosData = data;
       });
       return this.insumosData;
     },
-   
+
     async getPreciosUnitariosActuales() {
       let insumos = [];
-      await axios.get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales/")
-      .then((response) =>
-        this.preciosUnitarios = response.data
-      ).then(insumos = await this.getInsumos())
-      .then(
-      this.setPreciosUnitariosActuales(insumos));
-    },
-    
-    auxSetPrecios(insumo){
-      const item = this.preciosUnitarios.find((precio)=> insumo.idInsumo == precio.insumo.idInsumo);
-      return item != undefined ? this.formatter.formatMoney(item.precioUnitario) : "Sin Registro";
+      await axios
+        .get(
+          "http://localhost:9001/buensabor/compras/preciosUnitariosActuales/"
+        )
+        .then((response) => (this.preciosUnitarios = response.data))
+        .then((insumos = await this.getInsumos()))
+        .then(this.setPreciosUnitariosActuales(insumos));
     },
 
-    setPreciosUnitariosActuales(insumos){
-      insumos.forEach((insumo, i) => (
-        insumos[i].precio = this.auxSetPrecios(insumo)
-      ));
+    auxSetPrecios(insumo) {
+      const item = this.preciosUnitarios.find(
+        (precio) => insumo.idInsumo == precio.insumo.idInsumo
+      );
+      return item != undefined
+        ? this.formatter.formatMoney(item.precioUnitario)
+        : "Sin Registro";
+    },
+
+    setPreciosUnitariosActuales(insumos) {
+      insumos.forEach(
+        (insumo, i) => (insumos[i].precio = this.auxSetPrecios(insumo))
+      );
       this.preciosUnitarios = insumos;
     },
-    
-    agregarInsumoCompra(id){   
-      this.$refs['modal'].show()  
+
+    agregarInsumoCompra(id) {
+      this.$refs["modal"].show();
       this.getInsumoXid(id);
     },
 
     async getInsumoXid(id) {
-      
       const res = await fetch("/insumos.json");
       const resJson = await res.json();
-      
+
       this.insumoEncontrado = await resJson.insumos.find(
-        insumo => insumo.id === id
+        (insumo) => insumo.id === id
       );
-      
-    }
+    },
   },
   computed: {
     rows() {
@@ -216,7 +270,6 @@ export default {
     },
   },
 };
-
 </script>
 <style>
 .header {
@@ -235,18 +288,24 @@ export default {
   margin: 0px;
 }
 
-.estiloForm{
+.estiloForm {
   font-size: 12px;
   margin-left: 100px;
   font-family: "Baloo Bhaina 2";
   text-align: left;
 }
 
-.Badgecategoria{
+.Badgecategoria {
   width: 140px;
   margin-left: 0px;
   font-size: 11pt;
 }
 
+#tablaInsumos {
+  width: 100%;
+}
 
+.boton {
+  margin: auto;
+}
 </style>

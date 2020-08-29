@@ -16,7 +16,7 @@
       >
       <b-table
         hover
-        responsive
+        responsive="sm"
         :items="items"
         :fields="titulos"
         :per-page="4"

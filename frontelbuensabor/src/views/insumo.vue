@@ -67,7 +67,7 @@
           Historial de Compra
           <b-table
             hover
-            responsive
+            responsive="sm"
             small
             :items="ordenCompra"
             :fields="titulosTabla"
@@ -176,7 +176,7 @@
           Historial de Compra
           <b-table
             hover
-            responsive
+            responsive="sm"
             small
             :items="ordenCompra"
             :fields="titulosTabla"
