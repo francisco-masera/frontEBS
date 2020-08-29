@@ -66,9 +66,6 @@
         </template>
       </b-table>
 
-      <b-button pill class="boton" size="md" @click="agregarInsumo"
-        >Nuevo</b-button
-      >
       <b-pagination
         v-model="currentPage"
         size="sm"
@@ -79,6 +76,9 @@
         class="paginador"
       >
       </b-pagination>
+      <b-button pill class="boton" size="md" @click="agregarInsumo"
+        >Nuevo</b-button
+      >
     </b-container>
     <b-modal ref="modal" hide-footer hide-header centered title>
       <h2>Añadir existencia</h2>
