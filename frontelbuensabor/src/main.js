@@ -7,7 +7,7 @@ import router from './router'
 import store from './store'
 import axios from 'axios'
 
-Vue.use(VueAxios,axios)
+Vue.use(axios)
 Vue.config.productionTip = false
 
 new Vue({
