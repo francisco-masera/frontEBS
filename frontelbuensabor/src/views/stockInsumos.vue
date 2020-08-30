@@ -244,12 +244,21 @@ export default {
     },
 
     async refrescarTabla(id) {
+      let precio = 0;
       let insumo = await this.service.getOne("insumo", id);
-      let precioUnitario = await this.service.getOne(
-        "compras/precioUnitario",
-        id
-      );
-      insumo.precio = this.formatter.formatMoney(precioUnitario);
+      await this.service
+        .getOne("compras/precioUnitario", id)
+        .then((res) => (precio = res))
+        .then(
+          setTimeout(() => {
+            this.setInsumoOnRefresh(insumo, precio, id);
+          }, 500)
+        );
+    },
+
+    setInsumoOnRefresh(insumo, precio, id) {
+      insumo.precio =
+        precio != 0.0 ? this.formatter.formatMoney(precio) : "Sin Registro";
       this.insumosData.map((i, index) =>
         i.idInsumo == id ? this.insumosData.splice(index, 1, insumo) : ""
       );
