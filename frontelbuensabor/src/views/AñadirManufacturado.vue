@@ -744,12 +744,7 @@ export default {
   margin-top: 20px;
   min-height: 40px;
 }
-.lineaFormDerecha {
-  margin-top: 50px;
-  float: right;
-  margin-right: 0px;
-  margin-bottom: 50px;
-}
+
 
 #datos {
   float: right;

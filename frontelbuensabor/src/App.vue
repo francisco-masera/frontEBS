@@ -205,6 +205,12 @@ p {
   float: right;
 }
 
+.lineaFormDerecha {
+  margin-top: 50px;
+  float: right;
+  margin-right: 0px;
+  margin-bottom: 50px;
+}
 .costado {
   background-image: url("http://localhost:9001/images/sistema/reticulaVertical.png");
   background-repeat: repeat-y;

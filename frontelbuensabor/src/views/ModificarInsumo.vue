@@ -236,6 +236,7 @@
               >{{this.categoriasData[26].denominacion}}</b-button>
             </b-collapse>
           </div>
+          
           <div class="lineaFormDerecha" style="float:right" v-if="esInsumoVenta">
             <b-button pill class="boton2" size="md">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="siguiente2()">Siguiente</b-button>
@@ -383,11 +384,11 @@ export default {
     verificaInsumo() {
       if (document.getElementById("checkbox-1").checked) {
         this.esInsumoVenta = true;
-        this.insumoEncontrado.esInsumo = true;
+        this.insumoEncontrado.esInsumo = false;
         console.log("venta");
       } else {
         this.esInsumoVenta = false;
-        this.insumoEncontrado.esInsumo = false;
+        this.insumoEncontrado.esInsumo = true;
         console.log("no venta");
       }
     },
@@ -438,6 +439,7 @@ export default {
   min-height: 40px;
 }
 
+
 #datos {
   float: right;
 }
@@ -477,6 +479,7 @@ export default {
   width: auto;
   margin-top: 5%;
   font-size: 11pt;
+ 
 }
 .divCategorias {
   float: left;
