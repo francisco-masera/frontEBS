@@ -47,10 +47,11 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
+import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
 export default {
   mounted() {
-    this.getSugerencias();
+    this.verificarUsuario();
   },
   components: {
     menuLateral: MenuLateral,
@@ -68,10 +69,20 @@ export default {
       ],
       sugerenciasData: [],
       service: new Service(),
+      formatter: new Formatter(),
       costos: [],
+      user: {},
     };
   },
   methods: {
+    verificarUsuario() {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+      if (this.user != null)
+        this.user.rol != "admin"
+          ? this.$router.push({ name: "Home" })
+          : this.getSugerencias();
+      else this.$router.push({ name: "Home" });
+    },
     async getSugerencias() {
       await this.service.getAll("sugerencia").then((data) => {
         this.sugerenciasData = data;
@@ -95,9 +106,10 @@ export default {
       console.log(this.sugerenciasData);
     },
 
-    async agregarCostos() {
+    agregarCostos() {
       this.sugerenciasData.forEach(
-        (sugerencia, i) => (sugerencia.costo = "$" + this.costos[i])
+        (sugerencia, i) =>
+          (sugerencia.costo = this.formatter.formatMoney(this.costos[i]))
       );
     },
 

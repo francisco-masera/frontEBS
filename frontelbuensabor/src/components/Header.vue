@@ -86,7 +86,6 @@ export default {
  
   mounted() {
     this.verificaUsuario();
-    
   },
   props: ["imagen", "id",  "screenLength","esHome"],
 
