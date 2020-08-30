@@ -158,10 +158,10 @@ export default {
 
       tituloTabla: [
         { key: "denominacion", label: "Denominación" },
-        { key: "unidadMedida", label: "Unidad de Medida" },
+        { key: "unidadMedida", label: "U.Medida" },
         { key: "categoria", label: "Categoría" },
-        { key: "stockActual", label: "Stock Actual" },
-        { key: "precio", label: "Precio Unitario" },
+        { key: "stockActual", label: "Stock" },
+        { key: "precio", label: "Precio" },
         { key: "detalle", label: "Detalle" },
         { key: "accion", label: "Acción" },
       ],
