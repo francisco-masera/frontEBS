@@ -106,14 +106,17 @@
             <b-button
               class="Badgecategoria"
               v-b-toggle.misBebidas
-            >{{this.categoriasData[0].denominacion}}</b-button>
+              @click="guardaCategoria(categoriasData[0].id)"
+              >{{this.categoriasData[0].denominacion}}</b-button>
             <b-button
               class="Badgecategoria"
               v-b-toggle.miAlmacen
+              @click="guardaCategoria(categoriasData[1].id)"
             >{{this.categoriasData[1].denominacion}}</b-button>
             <b-button
               class="Badgecategoria"
               v-b-toggle.misLacteos
+              @click="guardaCategoria(categoriasData[2].id)"
             >{{this.categoriasData[2].denominacion}}</b-button>
             <b-button
               class="Badgecategoria"
@@ -122,6 +125,7 @@
             <b-button
               class="Badgecategoria"
               v-b-toggle.misCarnes
+              @click="guardaCategoria(categoriasData[4].id)"
             >{{this.categoriasData[4].denominacion}}</b-button>
           </div>
           <div class="categorias2">
@@ -129,10 +133,12 @@
               <b-button
                 class="Badgecategoria"
                 v-b-toggle.bebidasAlcohol
+                @click="guardaCategoria(categoriasData[5].id)"
               >{{this.categoriasData[5].denominacion}}</b-button>
               <b-button
                 class="Badgecategoria"
                 v-b-toggle.bebidasSAlcohol
+                @click="guardaCategoria(categoriasData[6].id)"
               >{{this.categoriasData[6].denominacion}}</b-button>
             </b-collapse>
             <b-collapse id="miAlmacen">
@@ -147,6 +153,7 @@
               <b-button
                 class="Badgecategoria"
                 v-b-toggle.panificados
+                @click="guardaCategoria(categoriasData[9].id)"
               >{{this.categoriasData[9].denominacion}}</b-button>
               <b-button
                 class="Badgecategoria"
@@ -193,10 +200,12 @@
               <b-button
                 class="Badgecategoria"
                 v-b-toggle.gasificada
+                @click="guardaCategoria(categoriasData[18].id)"
               >{{this.categoriasData[18].denominacion}}</b-button>
               <b-button
                 class="Badgecategoria"
                 v-b-toggle.NoGasificada
+                @click="guardaCategoria(categoriasData[19].id)"
               >{{this.categoriasData[19].denominacion}}</b-button>
             </b-collapse>
              <b-collapse id="panificados">
