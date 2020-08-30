@@ -159,7 +159,7 @@ export default {
     },
 
     agregarInsumo() {
-      window.location.href = "/añadirInsumo/"; 
+     this.$router.push({ path: "/modificarInsumo/" + undefined})
     },
     
     verDetalle(record) {
