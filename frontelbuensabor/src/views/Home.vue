@@ -90,7 +90,7 @@ export default {
 }
 </script>
 <style>
-h1{
+#buscador h1{
   color:#FFFFFF;
   font-family: "Baloo Bhaina 2";
   font-weight: 600;
