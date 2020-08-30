@@ -64,6 +64,14 @@
             >Detalles</b-button
           >
         </template>
+        <template v-slot:cell(alta)="row">
+          <b-button
+            :disabled="!row.item.baja"
+            class="boton"
+            @click="setAlta(row.item.idInsumo)"
+            >Alta</b-button
+          >
+        </template>
       </b-table>
 
       <b-pagination
@@ -162,8 +170,9 @@ export default {
         { key: "categoria", label: "Categoría" },
         { key: "stockActual", label: "Stock Actual" },
         { key: "precio", label: "Precio Unitario" },
-        { key: "detalle", label: "Detalle" },
         { key: "accion", label: "Acción" },
+        { key: "detalle", label: "Detalle" },
+        { key: "alta", label: "Alta" },
       ],
 
       insumosData: [],
@@ -214,6 +223,36 @@ export default {
 
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
+    },
+
+    async setAlta(id) {
+      const config = {
+        headers: {
+          "Content-type": "application/json; charset=utf-8",
+          "Access-Control-Allow-Origins": "*",
+          "Access-Control-Allow-Methods": ["PUT"],
+          "Access-Control-Allow-Headers": "Content-Type",
+          "cache-control": "no-cache",
+        },
+      };
+      await axios
+        .put(
+          "http://localhost:9001/buensabor/insumo/alta/" + parseInt(id),
+          config
+        )
+        .then(this.refrescarTabla(id));
+    },
+
+    async refrescarTabla(id) {
+      let insumo = await this.service.getOne("insumo", id);
+      let precioUnitario = await this.service.getOne(
+        "compras/precioUnitario",
+        id
+      );
+      insumo.precio = this.formatter.formatMoney(precioUnitario);
+      this.insumosData.map((i, index) =>
+        i.idInsumo == id ? this.insumosData.splice(index, 1, insumo) : ""
+      );
     },
 
     async getInsumos() {
