@@ -64,14 +64,14 @@
             >Detalles</b-button
           >
         </template>
-        <template v-slot:cell(alta)="row">
+<!--         <template v-slot:cell(alta)="row">
           <b-button
             :disabled="!row.item.baja"
             class="boton"
             @click="setAlta(row.item.idInsumo)"
             >Alta</b-button
           >
-        </template>
+        </template> -->
       </b-table>
 
       <b-pagination
@@ -166,13 +166,12 @@ export default {
 
       tituloTabla: [
         { key: "denominacion", label: "Denominación" },
-        { key: "unidadMedida", label: "Unidad de Medida" },
+        { key: "unidadMedida", label: "U.Medida" },
         { key: "categoria", label: "Categoría" },
-        { key: "stockActual", label: "Stock Actual" },
-        { key: "precio", label: "Precio Unitario" },
-        { key: "accion", label: "Acción" },
+        { key: "stockActual", label: "Stock" },
+        { key: "precio", label: "Precio" },
         { key: "detalle", label: "Detalle" },
-        { key: "alta", label: "Alta" },
+        { key: "accion", label: "Acción" },
       ],
 
       insumosData: [],
@@ -209,23 +208,25 @@ export default {
   methods: {
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
-      if (this.user == undefined) {
+      if (this.user == undefined || this.user.rol != "admin") {
         this.$router.push({ name: "Home" });
       }
-      if (this.user.rol != "admin") {
+   /*    if (this.user.rol != "admin") {
         this.$router.push({ name: "Home" });
-      }
+      } */
     },
 
     agregarInsumo() {
-      window.location.href = "/añadirInsumo/";
+
+     this.$router.push({ path: "/modificarInsumo/" + undefined})
+
     },
 
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
     },
 
-    async setAlta(id) {
+ /*    async setAlta(id) {
       const config = {
         headers: {
           "Content-type": "application/json; charset=utf-8",
@@ -241,7 +242,7 @@ export default {
           config
         )
         .then(this.refrescarTabla(id));
-    },
+    }, */
 
     async refrescarTabla(id) {
       let precio = 0;
