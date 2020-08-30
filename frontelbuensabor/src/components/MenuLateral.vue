@@ -1,7 +1,7 @@
 <template>
  <div>
   <b-card id="MenuLateral" border-variant="dark" >
-        <img src="@/assets/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
+        <img src="http://localhost:9001/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
         <b-card-text> 
           <p id="nombre">{{this.user.nombre}} {{this.user.apellido}}</p>
           <p id="rol">{{rol}}</p>
@@ -9,7 +9,7 @@
           <b-nav-item class="botonesMenu" v-for="boton in botones"
           :key="boton[0]" v-bind:href="boton[3]">
           
-          <b-img v-bind:src="require('@/assets/images/sistema/'+boton[2])" fluid class="iconosMenu"></b-img>
+          <b-img v-bind:src="'http://localhost:9001/images/sistema/'  + boton[2]" fluid class="iconosMenu"></b-img>
                {{boton[1]}}
                
           </b-nav-item>

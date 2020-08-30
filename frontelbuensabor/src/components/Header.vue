@@ -2,7 +2,7 @@
   <b-navbar id="headerHome" toggleable="md" type="dark" v-if="esHome"> 
     <b-container> 
       <div id="logoContainer">
-      <b-img id="brandImg" alt="" src="@/assets/images/sistema/logo.png" ></b-img>
+      <b-img id="brandImg" alt="" src="http://localhost:9001/images/sistema/logo.png" ></b-img>
     </div>
     <div>
         <b-collapse id="nav-collapse" is-nav>
@@ -21,7 +21,7 @@
   <b-navbar id="header" toggleable="md" type="dark" v-else>
     <b-container>      
     <div id="logoContainer">
-      <b-img id="brandImg" alt="" src="@/assets/images/sistema/logo.png" ></b-img>
+      <b-img id="brandImg" alt="" src="http://localhost:9001/images/sistema/logo.png" ></b-img>
     </div>
     <b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
     <div class="hamburguer">
@@ -32,18 +32,18 @@
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
             <b-nav-item :to="{ name: 'perfil' }">
-              <b-img :src="require(`@/assets/images/sistema/userDefaultChico.png`)" alt="" id="foto" fluid class="botonImagenHeader">
+              <b-img src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
               </b-img>
               <label id="usuario">Pepito</label>
             </b-nav-item>
             <b-nav-item :to="{ name: 'carrito' }">
-              <b-img id="carrito" fluid src="@/assets/images/sistema/carrito.png" class="botonImagenHeader">
+              <b-img id="carrito" fluid src="http://localhost:9001/images/sistema/carrito.png" class="botonImagenHeader">
               </b-img>
               <label id="usuario">Mi carrito
               </label>
             </b-nav-item>
              <b-nav-item class="menuLateral" v-for="boton in botones" :key="boton[0]" v-bind:href="boton[3]">
-              <b-img v-bind:src="require('@/assets/images/sistema/'+boton[2])" fluid class="iconosMenu"></b-img>
+              <b-img v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]" fluid class="iconosMenu"></b-img>
                 {{boton[1]}}
             </b-nav-item>
           </b-navbar-nav>
@@ -54,13 +54,13 @@
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="itemsEmpleado">
             <b-nav-item :to="{ name: 'perfil' }">
-              <b-img :src="require(`@/assets/images/sistema/userDefaultChico.png`)" alt="" id="foto" fluid class="botonImagenHeader">
+              <b-img src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
               </b-img>
               <label id="usuario">{{this.user.nombre}}
               </label>
             </b-nav-item>
             <b-nav-item class="menuLateral" v-for="boton in botones" :key="boton[0]" v-bind:href="boton[3]">
-              <b-img v-bind:src="require('@/assets/images/sistema/'+boton[2])" fluid class="iconosMenu"></b-img>
+              <b-img v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]" fluid class="iconosMenu"></b-img>
                 {{boton[1]}}
             </b-nav-item>
           </b-navbar-nav>
@@ -86,7 +86,6 @@ export default {
  
   mounted() {
     this.verificaUsuario();
-    
   },
   props: ["imagen", "id",  "screenLength","esHome"],
 

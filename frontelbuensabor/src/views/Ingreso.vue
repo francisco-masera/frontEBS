@@ -1,7 +1,7 @@
 <template>
   <div class="ingreso">
     <div class="logo">
-      <b-img src="@/assets/images/sistema/logo-01.png" class="imagen"></b-img>
+      <b-img src="http://localhost:9001/images/sistema/logo-01.png" class="imagen"></b-img>
     </div>
     <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
     <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
@@ -479,7 +479,7 @@ export default {
 }
 
 .abajoIngreso {
-  background-image: url("../assets/images/sistema/reticula.png");
+  background-image: url("http://localhost:9001/images/sistema/reticula.png");
   background-repeat: repeat-x;
   width: 100%;
   background-color: #f2e6d1;

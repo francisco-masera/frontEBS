@@ -23,7 +23,7 @@ export default class Service {
 
   async getOne(subPath, id) {
     await axios
-      .get(serverUrl + "/" + subPath + "/" + id, config)
+      .get(serverUrl + "/" + subPath + "/" + parseInt(id), config)
       .then((response) => (responseEntity = response.data))
       .catch((error) => console.log(error));
     return responseEntity;
@@ -39,7 +39,7 @@ export default class Service {
 
   async update(subPath, entity, id) {
     await axios
-      .put(serverUrl + "/" + subPath + "/" + id, entity, config)
+      .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
       .then((response) => (responseEntity = response.data))
       .catch((error) => console.log(error));
     return this.getOne(subPath, id);
@@ -47,7 +47,7 @@ export default class Service {
 
   async delete(subPath, id) {
     await axios
-      .delete(serverUrl + "/" + subPath + "/" + id, config)
+      .delete(serverUrl + "/" + subPath + "/" + parseInt(id), config)
       .then((response) => (responseEntity = response.data))
       .catch((error) => console.log(error));
     return responseEntity;
