@@ -64,7 +64,7 @@
             >Detalles</b-button
           >
         </template>
-<!--         <template v-slot:cell(alta)="row">
+        <!--         <template v-slot:cell(alta)="row">
           <b-button
             :disabled="!row.item.baja"
             class="boton"
@@ -211,22 +211,20 @@ export default {
       if (this.user == undefined || this.user.rol != "admin") {
         this.$router.push({ name: "Home" });
       }
-   /*    if (this.user.rol != "admin") {
+      /*    if (this.user.rol != "admin") {
         this.$router.push({ name: "Home" });
       } */
     },
 
     agregarInsumo() {
-
-     this.$router.push({ path: "/modificarInsumo/" + undefined})
-
+      this.$router.push({ path: "/modificarInsumo/" + undefined });
     },
 
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
     },
 
- /*    async setAlta(id) {
+    /*    async setAlta(id) {
       const config = {
         headers: {
           "Content-type": "application/json; charset=utf-8",
