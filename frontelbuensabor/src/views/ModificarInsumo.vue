@@ -58,7 +58,7 @@
             <h4 id="datos">*Datos necesarios</h4>
           </div>
           <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="siguiente1">Siguiente</b-button>
           </div>
         </b-form>
@@ -90,11 +90,11 @@
             <h4 id="datos">*Datos necesarios</h4>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-if="esNuevo">
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="agregarInsumo">Guardar</b-button>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-else>
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="updateInsumo">Guardar</b-button>
           </div>
         </b-form>
@@ -247,15 +247,15 @@
           </div>
           
           <div class="lineaFormDerecha" style="float:right" v-if="esInsumoVenta">
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="siguiente2()">Siguiente</b-button>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-else-if="esNuevo">
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="agregarInsumo">Guardar</b-button>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-else>
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="updateInsumo">Guardar</b-button>
           </div>
         </b-form>
