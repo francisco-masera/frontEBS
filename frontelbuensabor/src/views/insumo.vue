@@ -20,7 +20,8 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-button
+            <b-button @click="modalAltaVisible = true" size="sm" variant="success" />
+            <!--    <b-button
               size="sm"
               @click="openModalEliminar()"
               class="botonImagen"
@@ -29,7 +30,7 @@
                 src="http://localhost:9001/images/sistema/eliminar.png"
                 id="imagenAgregar"
               />
-            </b-button>
+            </b-button> -->
           </b-btn-group>
         </h3>
         <div class="stock">
@@ -125,12 +126,13 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-button size="sm" @click="openModalEliminar" class="botonImagen">
+            <b-checkbox switch @change="mostrarModal" />
+            <!-- <b-button size="sm" @click="openModalEliminar" class="botonImagen">
               <img
                 src="http://localhost:9001/images/sistema/eliminar.png"
                 id="imagenAgregar"
               />
-            </b-button>
+            </b-button> -->
           </b-btn-group>
         </h3>
         <div class="stock">
@@ -215,7 +217,8 @@
       </div>
     </b-container>
     <router-view />
-    <b-modal
+    <modalSwitch id="altaBaja" v-show="modalAltaVisible" />
+    <!--  <b-modal
       ref="modal"
       hide-footer
       title="Eliminar insumo"
@@ -260,7 +263,7 @@
         </template>
         ¡La contraseña no es correcta!
       </b-toast>
-    </b-modal>
+    </b-modal>-->
     <b-modal
       ref="modalEliminarRegistro"
       hide-footer
@@ -281,6 +284,7 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
+import modalSwitch from "@/components/ModalAltaBaja.vue";
 export default {
   mounted() {
     this.verificarUsuario();
@@ -288,6 +292,7 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    modalSwitch: modalSwitch,
   },
   data() {
     return {
@@ -317,6 +322,7 @@ export default {
       estadoEliminado: false,
       contraseniaEliminar: "",
       contraseniaVerificada: false,
+      modalAltaVisible: false,
       service: new Service(),
       formatter: new Formatter(),
     };
@@ -450,9 +456,10 @@ export default {
         : this.$bvToast.show("toast-eliminar-error");
     },
 
-    openModalEliminar() {
+    /*    openModalEliminar() {
       this.$refs["modal"].show();
     },
+ */
 
     modificarInsumo(id) {
       window.location.href = "/modificarInsumo/" + id;

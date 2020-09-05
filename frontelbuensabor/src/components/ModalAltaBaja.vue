@@ -1,14 +1,14 @@
 <template>
-  <b-modal hide-footer title="Eliminar insumo" class="modalEliminar">
+  <b-modal
+    hide-footer
+    title="Eliminar insumo"
+    class="modalEliminar"
+    role="dialog"
+  >
     <form>
-      <b-form-input
-        class="contraseñaForm"
-        placeholder="Contraseña"
-      >
+      <b-form-input class="contraseñaForm" placeholder="Contraseña">
       </b-form-input>
-      <b-button pill class="boton" size="md"
-        >Eliminar</b-button
-      >
+      <b-button pill class="boton" size="md">Eliminar</b-button>
     </form>
     <b-toast id="toast-eliminar-exito" variant="success" solid>
       <template v-slot:toast-title>
@@ -44,9 +44,9 @@
 <script>
 export default {
   methods: {
-    close() {
+    /*  close() {
       this.$emit("close");
-    },
+    }, */
   },
 };
 </script>
