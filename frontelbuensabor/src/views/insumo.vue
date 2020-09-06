@@ -20,17 +20,14 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-button @click="modalAltaVisible = true" size="sm" variant="success" />
-            <!--    <b-button
+
+            <b-checkbox
+              switch
+              @change="mostrarModalAB"
               size="sm"
-              @click="openModalEliminar()"
-              class="botonImagen"
-            >
-              <img
-                src="http://localhost:9001/images/sistema/eliminar.png"
-                id="imagenAgregar"
-              />
-            </b-button> -->
+              v-model="switchChecked"
+              ref="switchModal"
+            />
           </b-btn-group>
         </h3>
         <div class="stock">
@@ -126,13 +123,13 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-checkbox switch @change="mostrarModal" />
-            <!-- <b-button size="sm" @click="openModalEliminar" class="botonImagen">
-              <img
-                src="http://localhost:9001/images/sistema/eliminar.png"
-                id="imagenAgregar"
-              />
-            </b-button> -->
+            <b-checkbox
+              switch
+              @change="mostrarModalAB"
+              size="sm"
+              v-model="switchChecked"
+              ref="switchModal"
+            />
           </b-btn-group>
         </h3>
         <div class="stock">
@@ -217,22 +214,25 @@
       </div>
     </b-container>
     <router-view />
-    <modalSwitch id="altaBaja" v-show="modalAltaVisible" />
-    <!--  <b-modal
-      ref="modal"
-      hide-footer
-      title="Eliminar insumo"
+    <b-modal
+      ref="modalAB"
+      title="Alta/Baja"
       class="modalEliminar"
+      @close="setEstadoCheckBaja"
+      no-close-on-esc
+      hide-footer
+      no-close-on-backdrop
+      modal-header-close
     >
       <form>
         <b-form-input
-          v-model="contraseniaEliminar"
+          v-model="contraseniaUsuario"
           class="contraseñaForm"
           placeholder="Contraseña"
         >
         </b-form-input>
-        <b-button pill class="boton" size="md" @click="verificarContrasenia"
-          >Eliminar</b-button
+        <b-button pill class="boton" size="sm" @click="verificarContrasenia"
+          >Modificar estado</b-button
         >
       </form>
       <b-toast id="toast-eliminar-exito" variant="success" solid>
@@ -247,7 +247,7 @@
             ></b-img>
           </div>
         </template>
-        ¡Insumo eliminado con éxito!
+        ¡Insumo modificado con éxito!
       </b-toast>
       <b-toast id="toast-eliminar-error" variant="warning" solid>
         <template v-slot:toast-title>
@@ -263,7 +263,7 @@
         </template>
         ¡La contraseña no es correcta!
       </b-toast>
-    </b-modal>-->
+    </b-modal>
     <b-modal
       ref="modalEliminarRegistro"
       hide-footer
@@ -284,7 +284,6 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
-import modalSwitch from "@/components/ModalAltaBaja.vue";
 export default {
   mounted() {
     this.verificarUsuario();
@@ -292,7 +291,6 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
-    modalSwitch: modalSwitch,
   },
   data() {
     return {
@@ -319,10 +317,9 @@ export default {
       insumoEncontrado: [],
       ordenCompra: [],
       stock: "",
-      estadoEliminado: false,
-      contraseniaEliminar: "",
+      contraseniaUsuario: "",
       contraseniaVerificada: false,
-      modalAltaVisible: false,
+      switchChecked: undefined,
       service: new Service(),
       formatter: new Formatter(),
     };
@@ -348,6 +345,7 @@ export default {
       } else {
         this.insumoEncontrado = insumo;
         this.getOrdenCompra(insumo);
+        this.switchChecked = !this.insumoEncontrado.baja;
       }
     },
 
@@ -356,7 +354,8 @@ export default {
       this.esInsumoVenta = true;
       await this.service
         .getOne("insumoVenta/insumo", parametroId)
-        .then((data) => (this.insumoEncontrado = data[0]));
+        .then((data) => (this.insumoEncontrado = data[0]))
+        .then((this.switchChecked = !this.insumoEncontrado.baja));
     },
 
     async getOrdenCompra(insumo) {
@@ -428,16 +427,19 @@ export default {
       }
     },
 
-    async eliminarInsumo() {
+    async cambiarEstadoBaja() {
       let id =
         this.insumoEncontrado.insumo === undefined
           ? this.insumoEncontrado.idInsumo
           : this.insumoEncontrado.insumo.idInsumo;
-      this.service
+
+      await this.service
         .delete("insumo", id)
+        .then((data) => (this.insumoEncontrado = data))
         .then(
           this.$bvToast.show("toast-eliminar-exito"),
-          this.$refs["modal"].hide()
+          (this.switchChecked = !!this.insumoEncontrado.baja),
+          this.$refs.modalAB.hide()
         );
     },
 
@@ -446,23 +448,28 @@ export default {
         .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
           params: {
             id: this.user.id,
-            password: this.contraseniaEliminar,
+            password: this.contraseniaUsuario,
           },
         })
         .then((res) => res.data);
-      console.log(contraseniaVerificada);
       contraseniaVerificada
-        ? this.eliminarInsumo()
-        : this.$bvToast.show("toast-eliminar-error");
+        ? this.cambiarEstadoBaja()
+        : (this.$bvToast.show("toast-eliminar-error"),
+          (this.switchChecked = !!this.switchChecked));
     },
-
-    /*    openModalEliminar() {
-      this.$refs["modal"].show();
-    },
- */
 
     modificarInsumo(id) {
       window.location.href = "/modificarInsumo/" + id;
+    },
+
+    mostrarModalAB() {
+      this.$refs.modalAB.show();
+      this.modalABAbierto = true;
+    },
+
+    setEstadoCheckBaja() {
+      this.$refs.switchModal.checked = this.insumoEncontrado.baja;
+      this.switchChecked = !this.switchChecked;
     },
 
     eliminarRegistro() {
