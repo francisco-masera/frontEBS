@@ -408,13 +408,13 @@ export default {
 
     verificarStockVenta(insumo) {
       let clase;
-      if (parseInt(insumo.stock.actual) <= parseInt(insumo.stock.minimo)) {
+      if (parseFloat(insumo.stock.actual) <= parseFloat(insumo.stock.minimo)) {
         this.stock = "insuficiente";
         clase = document.getElementById("stockColor");
         clase.style.backgroundColor = "#ED3247";
       } else if (
-        parseInt(insumo.stock.actual) > parseInt(insumo.stock.minimo) &&
-        parseInt(insumo.stock.actual) < parseInt(insumo.stock.maximo)
+        parseFloat(insumo.stock.actual) > parseFloat(insumo.stock.minimo) &&
+        parseFloat(insumo.stock.actual) < parseFloat(insumo.stock.maximo)
       ) {
         this.stock = "moderado";
         clase = document.getElementById("stockColor");
