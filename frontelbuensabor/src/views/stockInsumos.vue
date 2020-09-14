@@ -214,22 +214,38 @@ export default {
   methods: {
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
-      if (this.user == undefined) {
-        this.$router.push({ name: "Home" });
-      }
-      if (this.user.rol != "admin") {
+      if (this.user == undefined || this.user.rol != "admin") {
         this.$router.push({ name: "Home" });
       }
     },
 
     agregarInsumo() {
-
-     this.$router.push({ path: "/modificarInsumo/" + undefined})
-
+      this.$router.push({ path: "/modificarInsumo/" + undefined });
     },
 
     verDetalle(record) {
       window.location.href = "/insumoDetalle/" + record.idInsumo;
+    },
+
+    async refrescarTabla(id) {
+      let precio = 0;
+      let insumo = await this.service.getOne("insumo", id);
+      await this.service
+        .getOne("compras/precioUnitario", id)
+        .then((res) => (precio = res))
+        .then(
+          setTimeout(() => {
+            this.setInsumoOnRefresh(insumo, precio, id);
+          }, 500)
+        );
+    },
+
+    setInsumoOnRefresh(insumo, precio, id) {
+      insumo.precio =
+        precio != 0.0 ? this.formatter.formatMoney(precio) : "Sin Registro";
+      this.insumosData.map((i, index) =>
+        i.idInsumo == id ? this.insumosData.splice(index, 1, insumo) : ""
+      );
     },
 
     async getInsumos() {

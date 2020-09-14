@@ -21,16 +21,14 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-button
+
+            <b-checkbox
+              switch
+              @change="mostrarModalAB"
               size="sm"
-              @click="openModalEliminar()"
-              class="botonImagen"
-            >
-              <img
-                src="http://localhost:9001/images/sistema/eliminar.png"
-                id="imagenAgregar"
-              />
-            </b-button>
+              v-model="switchChecked"
+              ref="switchModal"
+            />
           </b-btn-group>
         </h3>
         <div class="stock">
@@ -129,12 +127,13 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-button size="sm" @click="openModalEliminar" class="botonImagen">
-              <img
-                src="http://localhost:9001/images/sistema/eliminar.png"
-                id="imagenAgregar"
-              />
-            </b-button>
+            <b-checkbox
+              switch
+              @change="mostrarModalAB"
+              size="sm"
+              v-model="switchChecked"
+              ref="switchModal"
+            />
           </b-btn-group>
         </h3>
         <div class="stock">
@@ -219,15 +218,26 @@
       </div>
     </b-container>
     <router-view />
-  
-  
-  <!-- Modal de eliminar insumo, donde pide contraseña de confirmación--> 
-    <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
+    <b-modal
+      ref="modalAB"
+      title="Alta/Baja"
+      class="modalEliminar"
+      @close="setEstadoCheckBaja"
+      no-close-on-esc
+      hide-footer
+      no-close-on-backdrop
+      modal-header-close
+    >
       <form>
-        <b-form-input v-model="contraseniaEliminar" class="contraseñaForm" placeholder="Contraseña" ></b-form-input>
-        <b-button pill class="boton" size="md" @click="verificarContrasenia">
-          Eliminar
-        </b-button>
+        <b-form-input
+          v-model="contraseniaUsuario"
+          class="contraseñaForm"
+          placeholder="Contraseña"
+        >
+        </b-form-input>
+        <b-button pill class="boton" size="sm" @click="verificarContrasenia"
+          >Modificar estado</b-button
+        >
       </form>
 
       <!-- Toast que muestra la confirmación de eliminado con éxito-->
@@ -237,7 +247,7 @@
             <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12" ></b-img>
           </div>
         </template>
-        ¡Insumo eliminado con éxito!
+        ¡Insumo modificado con éxito!
       </b-toast>
 
       <!-- Toast que muestra el error en la eliminación del insumo por error en contraseña-->
@@ -356,9 +366,9 @@ export default {
       insumoEncontrado: [],
       ordenCompra: [],
       stock: "",
-      estadoEliminado: false,
-      contraseniaEliminar: "",
+      contraseniaUsuario: "",
       contraseniaVerificada: false,
+      switchChecked: undefined,
       service: new Service(),
       formatter: new Formatter(),
     };
@@ -384,6 +394,7 @@ export default {
       } else {
         this.insumoEncontrado = insumo;
         this.getOrdenCompra(insumo);
+        this.switchChecked = !this.insumoEncontrado.baja;
       }
     },
 
@@ -392,7 +403,8 @@ export default {
       this.esInsumoVenta = true;
       await this.service
         .getOne("insumoVenta/insumo", parametroId)
-        .then((data) => (this.insumoEncontrado = data[0]));
+        .then((data) => (this.insumoEncontrado = data[0]))
+        .then((this.switchChecked = !this.insumoEncontrado.baja));
     },
 
     async getOrdenCompra(insumo) {
@@ -445,13 +457,13 @@ export default {
 
     verificarStockVenta(insumo) {
       let clase;
-      if (parseInt(insumo.stock.actual) <= parseInt(insumo.stock.minimo)) {
+      if (parseFloat(insumo.stock.actual) <= parseFloat(insumo.stock.minimo)) {
         this.stock = "insuficiente";
         clase = document.getElementById("stockColor");
         clase.style.backgroundColor = "#ED3247";
       } else if (
-        parseInt(insumo.stock.actual) > parseInt(insumo.stock.minimo) &&
-        parseInt(insumo.stock.actual) < parseInt(insumo.stock.maximo)
+        parseFloat(insumo.stock.actual) > parseFloat(insumo.stock.minimo) &&
+        parseFloat(insumo.stock.actual) < parseFloat(insumo.stock.maximo)
       ) {
         this.stock = "moderado";
         clase = document.getElementById("stockColor");
@@ -464,16 +476,19 @@ export default {
       }
     },
 
-    async eliminarInsumo() {
+    async cambiarEstadoBaja() {
       let id =
         this.insumoEncontrado.insumo === undefined
           ? this.insumoEncontrado.idInsumo
           : this.insumoEncontrado.insumo.idInsumo;
-      this.service
+
+      await this.service
         .delete("insumo", id)
+        .then((data) => (this.insumoEncontrado = data))
         .then(
           this.$bvToast.show("toast-eliminar-exito"),
-          this.$refs["modal"].hide()
+          (this.switchChecked = !!this.insumoEncontrado.baja),
+          this.$refs.modalAB.hide()
         );
     },
 
@@ -482,22 +497,28 @@ export default {
         .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
           params: {
             id: this.user.id,
-            password: this.contraseniaEliminar,
+            password: this.contraseniaUsuario,
           },
         })
         .then((res) => res.data);
-      console.log(contraseniaVerificada);
       contraseniaVerificada
-        ? this.eliminarInsumo()
-        : this.$bvToast.show("toast-eliminar-error");
-    },
-
-    openModalEliminar() {
-      this.$refs["modal"].show();
+        ? this.cambiarEstadoBaja()
+        : (this.$bvToast.show("toast-eliminar-error"),
+          (this.switchChecked = !!this.switchChecked));
     },
 
     modificarInsumo(id) {
       window.location.href = "/modificarInsumo/" + id;
+    },
+
+    mostrarModalAB() {
+      this.$refs.modalAB.show();
+      this.modalABAbierto = true;
+    },
+
+    setEstadoCheckBaja() {
+      this.$refs.switchModal.checked = this.insumoEncontrado.baja;
+      this.switchChecked = !this.switchChecked;
     },
 
     eliminarRegistro() {
