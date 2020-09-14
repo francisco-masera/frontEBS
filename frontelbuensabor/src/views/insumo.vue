@@ -77,18 +77,7 @@
             id="tablaInsumos"
             class="tabla"
           >
-            <template v-slot:cell(accion)="row">
-              <b-button
-                size="sm"
-                @click="eliminarRegistro(row.item.idInsumo)"
-                class="botonImagen"
-              >
-                <img
-                  src="http://localhost:9001/images/sistema/eliminar.png"
-                  id="imagenAgregar"
-                />
-              </b-button>
-            </template>
+            
           </b-table>
           <b-button pill class="boton" size="md" @click="agregarInsumoCompra()">Agregar Existencia</b-button>
           <b-pagination
@@ -190,18 +179,7 @@
             id="tablaInsumos"
             class="tabla"
           >
-            <template v-slot:cell(accion)="row">
-              <b-button
-                size="sm"
-                @click="eliminarRegistro(row.item.idInsumo)"
-                class="botonImagen"
-              >
-                <img
-                  src="http://localhost:9001/images/sistema/eliminar.png"
-                  id="imagenAgregar"
-                />
-              </b-button>
-            </template>
+            
           </b-table>
           <b-button pill class="boton" size="md" @click="agregarInsumoCompra()">Agregar Existencia</b-button>
           <b-pagination
@@ -228,14 +206,14 @@
       no-close-on-backdrop
       modal-header-close
     >
-      <form>
+      <form class="estiloForm">
         <b-form-input
           v-model="contraseniaUsuario"
           class="contraseñaForm"
           placeholder="Contraseña"
         >
         </b-form-input>
-        <b-button pill class="boton" size="sm" @click="verificarContrasenia"
+        <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia"
           >Modificar estado</b-button
         >
       </form>
@@ -261,18 +239,11 @@
       </b-toast>
     </b-modal>
 
-    <!-- Modal para anular registro de compra-->
-    <b-modal ref="modalEliminarRegistro" hide-footer title="Eliminar asiento" class="modalEliminar">
-      <form>
-        ¿Desea anular el asiento de compra?
-        <b-button pill class="boton" size="md">Anular</b-button>
-      </form>
-    </b-modal>
-
+ 
    <!-- Modal para para añadir un registro de compra-->
-    <b-modal ref="modal" hide-footer hide-header centered title>
+    <b-modal ref="modalAñadir" hide-footer hide-header centered title>
       <h2>Añadir existencia</h2>
-      <h4>{{ insumoEncontrado.denominacion }}</h4>
+      <h4>{{ compra.insumo.denominacion }}</h4>
       <form class="estiloForm">
         <table>
           <tr>
@@ -292,7 +263,7 @@
                 Unidad de medida
               </label>
             </td>
-            <td>{{ insumoEncontrado.unidadMedida }}</td>
+            <td>{{ compra.insumo.unidadMedida }}</td>
           </tr>
           <tr>
             <td>
@@ -317,9 +288,11 @@
             </td>
           </tr>
           <tr>
-            <b-button pill class="boton" size="md" @click="añadirCompra()">
-              Añadir
-            </b-button>
+            <td colspan="2">
+              <b-button pill class="boton botonAñadirExistencia" size="md" @click="añadirCompra()">
+                Añadir
+              </b-button>
+            </td>
           </tr>
         </table>
       </form>
@@ -351,7 +324,6 @@ export default {
         { key: "cantidad", label: "Cantidad" },
         { key: "precioUnitario", label: "Precio Unitario" },
         { key: "precioTotal", label: "Precio Total" },
-        { key: "accion", label: "Acción" },
       ],
 
       compra: {
@@ -408,6 +380,7 @@ export default {
     },
 
     async getOrdenCompra(insumo) {
+      this.ordenCompra=[];
       let parametroId = parseInt(this.$route.params.id);
       let precio = 0;
       await this.service
@@ -521,13 +494,17 @@ export default {
       this.switchChecked = !this.switchChecked;
     },
 
-    eliminarRegistro() {
-      this.$refs["modalEliminarRegistro"].show();
-    },
+   
 
   //Abre modal para cargar nuevo stock de insumos
     agregarInsumoCompra() {
-      this.$refs["modal"].show();      
+      console.log(this.insumoEncontrado)
+      this.$refs["modalAñadir"].show();
+      if(this.insumoEncontrado.esInsumo){
+        this.compra.insumo = this.insumoEncontrado;
+        }else{
+          this.compra.insumo=this.insumoEncontrado.insumo;
+        }
     },
 
   //Muestra la confirmación de la carga de insumo
@@ -541,18 +518,18 @@ export default {
       },
 
   //Hace la petición al back para añadir el nuevo registro de compra, el cual en el back hace la logica de aumento de stock
-    async añadirCompra(){
+    async añadirCompra(){ 
       this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
-      this.compra.insumo.idInsumo = this.insumoEncontrado.id;      
+            
       await this.service.save("compras",this.compra)
       .then((data) => {
         this.toast(data);
-        this.$refs["modal"].hide();
+        this.$refs["modalAñadir"].hide();
         this.compra.fechaCompra='';
         this.compra.cantidad=0;
         this.compra.precioUnitario=0;
         this.compra.insumo={};    
-        this.getPreciosUnitariosActuales();
+        this.getOrdenCompra(this.compra.insumo);
       })
     },
 
@@ -648,20 +625,39 @@ export default {
 }
 
 .modal-dialog {
-  margin-top: 200px;
-  text-align: center;
+  margin: 1.75rem auto;
+  max-width: 500px;
   font-family: "Baloo Bhaina 2";
   font-weight: 400;
   font-size: 11pt;
   justify-content: center;
+  height: auto;
 }
-.modal-dialog .boton {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: 40%;
-  float: right;
+.estiloForm{
+  text-align: center;
 }
+.estiloForm table{
+  display: inline;
+  text-align: left;
+}
+
+.botonAñadirExistencia{
+  margin-bottom: 10px;
+  display: block;
+  margin-left: 180px;
+  margin-right: 180px;
+  margin-top:20px;
+}
+
 .boton {
   width: auto;
+  min-width: 105px;
+}
+
+.botonEliminar{
+  display: inline-block;
+  float:none;
+  margin-top: 20px;
+  margin-bottom:10px;
 }
 </style>
