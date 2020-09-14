@@ -110,23 +110,39 @@
 
 <!-- Renderiza insumo que se vende directamente, como las bebidas-->       
       <div v-else id="insumo">
-        <img :src=" 'http://localhost:9001/images/productos/' + insumoEncontrado.imagen" class="imagenProducto"/>
-        <h3>{{ insumoEncontrado.insumo.denominacion }}
+        <img
+          :src="
+            'http://localhost:9001/images/productos/' + insumoEncontrado.imagen
+          "
+          class="imagenProducto"
+        />
+        <h3>
+          {{ insumoEncontrado.insumo.denominacion }}
           <b-btn-group>
-            <b-button size="sm" @click="modificarInsumo(insumoEncontrado.insumo.idInsumo)" class="botonImagen">
-              <img src="http://localhost:9001/images/sistema/editar.png"  id="imagenAgregar"/>
+            <b-button
+              size="sm"
+              @click="modificarInsumo(insumoEncontrado.insumo.idInsumo)"
+              class="botonImagen"
+            >
+              <img
+                src="http://localhost:9001/images/sistema/editar.png"
+                id="imagenAgregar"
+              />
             </b-button>
             <b-button size="sm" @click="openModalEliminar" class="botonImagen">
-              <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
+              <img
+                src="http://localhost:9001/images/sistema/eliminar.png"
+                id="imagenAgregar"
+              />
             </b-button>
           </b-btn-group>
         </h3>
         <div class="stock">
           <div id="stockColor" style="background-color:#ED3247"></div>
           Stock {{ stock }}
-          <b-badge class="Badgecategoria">
-            {{insumoEncontrado.insumo.rubroInsumo.denominacion}}
-          </b-badge>
+          <b-badge class="Badgecategoria">{{
+            insumoEncontrado.insumo.rubroInsumo.denominacion
+          }}</b-badge>
         </div>
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
@@ -134,31 +150,29 @@
         </div>
         <div id="infoProductoVenta">
           <b-card header="Stock actual" class="tarjetaInfo">
-            <b-card-text>
-              {{ insumoEncontrado.insumo.stock.actual }}
+            <b-card-text
+              >{{ insumoEncontrado.insumo.stock.actual }}
               {{ insumoEncontrado.insumo.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock min" class="tarjetaInfo">
-            <b-card-text >
-              {{ insumoEncontrado.insumo.stock.minimo }}
+            <b-card-text
+              >{{ insumoEncontrado.insumo.stock.minimo }}
               {{ insumoEncontrado.insumo.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock max" class="tarjetaInfo">
-            <b-card-text>
-              {{ insumoEncontrado.insumo.stock.maximo }}
+            <b-card-text
+              >{{ insumoEncontrado.insumo.stock.maximo }}
               {{ insumoEncontrado.insumo.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>
-              {{ costo }}
-            </b-card-text>
+            <b-card-text>{{ costo }}</b-card-text>
           </b-card>
           <b-card header="Precio de venta" class="tarjetaInfo">
-            <b-card-text>
-              {{ this.formatter.formatMoney(insumoEncontrado.precioVenta) }}
+            <b-card-text
+              >{{ this.formatter.formatMoney(insumoEncontrado.precioVenta) }}
             </b-card-text>
           </b-card>
         </div>
@@ -183,7 +197,10 @@
                 @click="eliminarRegistro(row.item.idInsumo)"
                 class="botonImagen"
               >
-                <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
+                <img
+                  src="http://localhost:9001/images/sistema/eliminar.png"
+                  id="imagenAgregar"
+                />
               </b-button>
             </template>
           </b-table>
@@ -205,10 +222,10 @@
   
   
   <!-- Modal de eliminar insumo, donde pide contraseña de confirmación--> 
-    <b-modal ref="modalEliminar" hide-footer title="Eliminar insumo">
-      <form class="estiloForm">
+    <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
+      <form>
         <b-form-input v-model="contraseniaEliminar" class="contraseñaForm" placeholder="Contraseña" ></b-form-input>
-        <b-button pill class="botonEliminar boton" size="md" @click="verificarContrasenia">
+        <b-button pill class="boton" size="md" @click="verificarContrasenia">
           Eliminar
         </b-button>
       </form>
@@ -236,16 +253,16 @@
 
     <!-- Modal para anular registro de compra-->
     <b-modal ref="modalEliminarRegistro" hide-footer title="Eliminar asiento" class="modalEliminar">
-      <form class="estiloForm">
-        <p>¿Desea anular el asiento de compra?</p>
-        <b-button pill class="botonEliminar boton" size="md">Anular</b-button>
+      <form>
+        ¿Desea anular el asiento de compra?
+        <b-button pill class="boton" size="md">Anular</b-button>
       </form>
     </b-modal>
 
    <!-- Modal para para añadir un registro de compra-->
-    <b-modal ref="modalCompra" hide-footer hide-header centered title>
+    <b-modal ref="modal" hide-footer hide-header centered title>
       <h2>Añadir existencia</h2>
-      <h4>{{ insumoEncontrado.insumo.denominacion }}</h4>
+      <h4>{{ insumoEncontrado.denominacion }}</h4>
       <form class="estiloForm">
         <table>
           <tr>
@@ -255,8 +272,7 @@
               </label>
             </td>
             <td>
-              <b-form-datepicker for="inline-form-custom-select-pref"
-                id="example-datepicker" size="sm" v-model="compra.fechaCompra">
+              <b-form-datepicker for="inline-form-custom-select-pref" id="example-datepicker" size="sm" v-model="compra.fechaCompra">
               </b-form-datepicker>
             </td>
           </tr>
@@ -266,7 +282,7 @@
                 Unidad de medida
               </label>
             </td>
-            <td>{{ insumoEncontrado.insumo.unidadMedida }}</td>
+            <td>{{ insumoEncontrado.unidadMedida }}</td>
           </tr>
           <tr>
             <td>
@@ -291,11 +307,9 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2">
-              <b-button pill class="boton botonAñadirExistencia" size="md" @click="añadirCompra()">
-                Añadir
-              </b-button>
-            </td>
+            <b-button pill class="boton" size="md" @click="añadirCompra()">
+              Añadir
+            </b-button>
           </tr>
         </table>
       </form>
@@ -459,7 +473,7 @@ export default {
         .delete("insumo", id)
         .then(
           this.$bvToast.show("toast-eliminar-exito"),
-          this.$refs["modalEliminar"].hide()
+          this.$refs["modal"].hide()
         );
     },
 
@@ -479,7 +493,7 @@ export default {
     },
 
     openModalEliminar() {
-      this.$refs["modalEliminar"].show();
+      this.$refs["modal"].show();
     },
 
     modificarInsumo(id) {
@@ -492,7 +506,7 @@ export default {
 
   //Abre modal para cargar nuevo stock de insumos
     agregarInsumoCompra() {
-      this.$refs["modalCompra"].show();      
+      this.$refs["modal"].show();      
     },
 
   //Muestra la confirmación de la carga de insumo
@@ -508,17 +522,16 @@ export default {
   //Hace la petición al back para añadir el nuevo registro de compra, el cual en el back hace la logica de aumento de stock
     async añadirCompra(){
       this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
-      this.compra.insumo.idInsumo = this.insumoEncontrado.idInsumo;   
-      console.log(this.compra)   
+      this.compra.insumo.idInsumo = this.insumoEncontrado.id;      
       await this.service.save("compras",this.compra)
       .then((data) => {
         this.toast(data);
-        this.$refs["modalCompra"].hide();
+        this.$refs["modal"].hide();
         this.compra.fechaCompra='';
         this.compra.cantidad=0;
         this.compra.precioUnitario=0;
         this.compra.insumo={};    
-        this.getInsumoxId();
+        this.getPreciosUnitariosActuales();
       })
     },
 
@@ -614,41 +627,20 @@ export default {
 }
 
 .modal-dialog {
-  margin: 1.75rem auto;
-  max-width: 500px;
+  margin-top: 200px;
+  text-align: center;
   font-family: "Baloo Bhaina 2";
   font-weight: 400;
   font-size: 11pt;
   justify-content: center;
-  height: auto;
 }
-.estiloForm{
-  text-align: center;
+.modal-dialog .boton {
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: 40%;
+  float: right;
 }
-.estiloForm table{
-  display: inline;
-  text-align: left;
-}
-
-
-
-.botonAñadirExistencia{
-  margin-bottom: 10px;
-  display: block;
-  margin-left: 180px;
-  margin-right: 180px;
-  margin-top:20px;
-}
-
 .boton {
   width: auto;
-  min-width: 105px;
-}
-
-.botonEliminar{
-  display: inline-block;
-  float:none;
-  margin-top: 20px;
-  margin-bottom:10px;
 }
 </style>
