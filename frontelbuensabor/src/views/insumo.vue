@@ -241,55 +241,55 @@
 
  
    <!-- Modal para para añadir un registro de compra-->
+    <div style="display:flex">
     <b-modal ref="modalAñadir" hide-footer hide-header centered title>
       <h2>Añadir existencia</h2>
-      <h4>{{ compra.insumo.denominacion }}</h4>
+      <h4 style="margin-bottom:5%">{{ compra.insumo.denominacion }}</h4>
       <form class="estiloForm">
         <table>
           <tr>
             <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">
-                Fecha
-              </label>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Fecha</label
+              >
             </td>
             <td>
-              <b-form-datepicker for="inline-form-custom-select-pref" id="example-datepicker" size="sm" v-model="compra.fechaCompra">
-              </b-form-datepicker>
+              <b-form-datepicker
+                for="inline-form-custom-select-pref"
+                id="example-datepicker"
+                size="sm"
+                v-model="compra.fechaCompra"
+                class="campoForm"
+              ></b-form-datepicker>
             </td>
           </tr>
           <tr>
             <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">
-                Unidad de medida
-              </label>
+              <label for="inline-form-custom-select-pref"
+              >Unidad de medida</label
+              >
             </td>
-            <td>{{ compra.insumo.unidadMedida }}</td>
+            <td><label id="medida">{{compra.insumo.unidadMedida}}</label></td>
           </tr>
           <tr>
             <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">
-                Cantidad
-              </label>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Cantidad</label
+              >
             </td>
-            <td>
-              <b-form-input v-model="compra.cantidad">
-              </b-form-input>
-            </td>
+            <td><b-form-input  v-model="compra.cantidad" class="campoForm"></b-form-input></td>
           </tr>
           <tr>
             <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref">
-                Precio por unidad
-              </label>
+              <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                >Precio por unidad</label
+              >
             </td>
-            <td>
-              <b-form-input v-model="compra.precioUnitario">
-              </b-form-input>
-            </td>
+            <td><b-form-input  v-model="compra.precioUnitario" class="campoForm"></b-form-input></td>
           </tr>
           <tr>
-            <td colspan="2">
-              <b-button pill class="boton botonAñadirExistencia" size="md" @click="añadirCompra()">
+            <td>
+              <b-button pill class="boton" id="botonModal" size="md" @click="añadirCompra()">
                 Añadir
               </b-button>
             </td>
@@ -297,7 +297,7 @@
         </table>
       </form>
     </b-modal>
-    
+    </div>
   </div>
 </template>
 
@@ -660,4 +660,15 @@ export default {
   margin-top: 20px;
   margin-bottom:10px;
 }
+
+#botonModal{
+  margin-top: 10%;
+  margin-left: 80%;
+}
+
+#medida{
+  margin-left: 10%;
+  margin-top: 5%;
+}
+
 </style>
