@@ -80,7 +80,7 @@
         >Nuevo</b-button
       >
     </b-container>
-
+    <div style="display:flex">
     <b-modal ref="modal" hide-footer hide-header centered title>
       <h2>Añadir existencia</h2>
       <h4>{{ insumoEncontrado.denominacion }}</h4>
@@ -98,16 +98,17 @@
                 id="example-datepicker"
                 size="sm"
                 v-model="compra.fechaCompra"
+                class="campoForm"
               ></b-form-datepicker>
             </td>
           </tr>
           <tr>
             <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Unidad de medida</label
+              <label for="inline-form-custom-select-pref"
+              >Unidad de medida</label
               >
             </td>
-            <td>{{ insumoEncontrado.unidadMedida }}</td>
+            <td><label id="medida">{{insumoEncontrado.unidadMedida}}</label></td>
           </tr>
           <tr>
             <td>
@@ -115,7 +116,7 @@
                 >Cantidad</label
               >
             </td>
-            <td><b-form-input  v-model="compra.cantidad"></b-form-input></td>
+            <td><b-form-input  v-model="compra.cantidad" class="campoForm"></b-form-input></td>
           </tr>
           <tr>
             <td>
@@ -123,11 +124,11 @@
                 >Precio por unidad</label
               >
             </td>
-            <td><b-form-input  v-model="compra.precioUnitario"></b-form-input></td>
+            <td><b-form-input  v-model="compra.precioUnitario" class="campoForm"></b-form-input></td>
           </tr>
           <tr>
             <td colspan="2">
-              <b-button pill class="boton" size="md" @click="añadirCompra()">
+              <b-button pill class="boton" id="botonModal" size="md" @click="añadirCompra()">
                 Añadir
               </b-button>
             </td>
@@ -135,6 +136,7 @@
         </table>
       </form>
     </b-modal>
+    </div>
     <router-view />
   </div>
 </template>
@@ -283,20 +285,25 @@ export default {
     },
 
     agregarInsumoCompra(insumo) {
-      this.getInsumoXid(insumo.idInsumo);
+      this.getInsumoxId(insumo.idInsumo);
+      console.log(insumo.idInsumo);
+      console.log(insumo.denominacion);
       this.$refs["modal"].show();
       
     },
 
-    async getInsumoXid(id) {
-      const res = await fetch("/insumos.json");
-      const resJson = await res.json();
-
-      this.insumoEncontrado = await resJson.insumos.find(
-        (insumo) => insumo.id === id
-      );
+   
+     async getInsumoxId(id) {
+      
+      await this.service.getOne("insumo", id).then((data)=>{
+        this.insumoEncontrado=data;
+      });
+      
     },
 
+
+    
+     
      toast(data, append = false) {
         this.$bvToast.toast(`Se incorporaron ${data.cantidad} existencias al producto`, {
           title: `Alta de producto`,
@@ -368,5 +375,16 @@ export default {
 .boton {
   margin: auto;
 }
+#botonModal{
+  margin-top: 10%;
+  margin-left: 20%;
+}
+
+#medida{
+  margin-left: 10%;
+  margin-top: 5%;
+}
+
+
 
 </style>
