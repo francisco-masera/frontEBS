@@ -20,15 +20,15 @@
               id="nombreInsumo"
             ></b-form-input>*
           </div>
-          <div class="lineaForm">
+          <div class="lineaForm" style="display:flex">
             <label class="labelForm">Stock mínimo</label>
             <b-form-input class="campoForm" id="stockMin" v-model="insumoEncontrado.stock.minimo"></b-form-input>*
             <br />
-            <label class="labelForm">Stock máximo</label>
+            <label class="labelForm" style="margin-left:10px">Stock máximo</label>
 
             <b-form-input class="campoForm" id="stockMax" v-model="insumoEncontrado.stock.maximo"></b-form-input>*
           </div>
-          <div class="lineaForm">
+          <div class="lineaForm" style="display:flex">
             <label class="labelForm">Unidad de medida</label>
             <b-form-select
               id="unidadMedida"
@@ -57,7 +57,7 @@
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
-          <div class="lineaFormDerecha" style="float:right">
+          <div class="lineaFormDerecha" style="display: flex">
             <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="siguiente1">Siguiente</b-button>
           </div>
@@ -67,11 +67,11 @@
       <div id="paso2">
         <h2>Información de venta</h2>
         <b-form>
-          <div class="lineaForm">
+          <div class="lineaForm" style="display:flex">
             <label class="labelForm">Precio de venta</label>
             <b-form-input class="campoForm" id="precioVenta" v-model="informacionVenta.precioVenta"></b-form-input>*
           </div>
-          <div class="lineaForm" id="lineaDescripcion">
+          <div class="lineaForm" id="lineaDescripcion" style="display:flex">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
@@ -82,7 +82,7 @@
               max-rows="6"
             ></b-form-textarea>*
           </div>
-          <div class="lineaForm">
+          <div class="lineaForm" style="display:flex">
             <label class="labelForm">Imagen</label>
             <b-form-file class="campoForm" id="imagen"></b-form-file>
           </div>
@@ -436,26 +436,28 @@ export default {
 };
 </script>
 <style>
+
 #titulo {
   line-height: 1.2rem;
 }
 #nombreInsumo {
   margin-top: -5px;
-  width: 85%;
+  width: 50%;
 }
 #stockMin {
   margin-top: -5px;
-  width: 30%;
-  margin-right: 30px;
+  width: 10%;
+  padding: 0%;
+  
 }
 
 #stockMax {
   margin-top: -5px;
-  width: 30%;
+  width: 20%;
 }
 #unidadMedida {
   margin-top: -5px;
-  width: 40%;
+  width: 20%;
   margin-right: 30px;
 }
 
@@ -466,19 +468,7 @@ export default {
 }
 
 
-#datos {
-  float: right;
-}
 
-#paso1 {
-  display: block;
-}
-#paso2 {
-  display: none;
-}
-#paso3 {
-  display: none;
-}
 #precioVenta {
   margin-top: -5px;
   width: 80%;
@@ -529,5 +519,21 @@ export default {
 .modalMedida {
   height: 20%;
   width: 20%;
+}
+
+
+
+#datos {
+  float: right;
+}
+
+#paso1 {
+  display: block;
+}
+#paso2 {
+  display: none;
+}
+#paso3 {
+  display: none;
 }
 </style>

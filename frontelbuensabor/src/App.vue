@@ -232,7 +232,7 @@ p {
 .informacion {
   width: 50%;
   min-height: 100px;
-  margin-left: 30%;
+  margin-left: 35%;
   padding: 20px;
   padding-top: 50px;
   font-family: "Baloo Bhaina 2";
