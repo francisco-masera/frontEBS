@@ -69,14 +69,14 @@
         <b-form>
           <div class="lineaForm">
             <label class="labelForm">Precio de venta</label>
-            <b-form-input class="campoForm" id="precioVenta" v-model="insumoEncontrado.precioVenta"></b-form-input>*
+            <b-form-input class="campoForm" id="precioVenta" v-model="informacionVenta.precioVenta"></b-form-input>*
           </div>
           <div class="lineaForm" id="lineaDescripcion">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
               class="campoForm"
-              v-model="insumoEncontrado.descripcion"
+              v-model="informacionVenta.descripcion"
               placeholder="Enter something..."
               rows="3"
               max-rows="6"
@@ -310,6 +310,13 @@ export default {
         },
         unidadMedida: "",
       },
+      informacionVenta:{
+        type: "InformacionInsumoVenta",
+        descripcion:"",
+        precioVenta:0.0,
+        imagen:"",
+        insumo: {},
+      },
       esInsumoVenta: false,
       service: new Service(),
       unidad: "",
@@ -385,10 +392,20 @@ export default {
     async agregarInsumo() {
       console.log("Guarda INSUMO");
       await this.guardaStock();
-      await this.service.save("insumo", this.insumoEncontrado).then((data) => {
+      console.log(this.insumoEncontrado)
+      
+        await this.service.save("insumo", this.insumoEncontrado).then((data) => {
         this.insumoEncontrado = data;
-        this.$refs["modal"].show();
+        this.$refs["modal"].show();        
       });
+      if(!this.insumoEncontrado.esInsumo){
+        this.informacionVenta.insumo = this.insumoEncontrado;
+         await this.service.save("insumoVenta", this.informacionVenta).then((data) => {
+        this.informacionVenta = data;
+        this.$refs["modal"].show();        
+      });
+      }
+      
     },
     verificaInsumo() {
       if (document.getElementById("checkbox-1").checked) {
