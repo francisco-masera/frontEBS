@@ -4,7 +4,7 @@
       <div id="logoContainer">
       <b-img id="brandImg" alt="" src="http://localhost:9001/images/sistema/logo.png" ></b-img>
     </div>
-    <div>
+    <div class="centrarHome">
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="items">          
             <b-nav-item :to="{ name: 'carta' }" >CARTA</b-nav-item>
@@ -222,6 +222,10 @@ export default {
   padding-inline: 2px;
   height: 30px;
   
+}
+
+.centrarHome{
+  text-align: center;
 }
 
 

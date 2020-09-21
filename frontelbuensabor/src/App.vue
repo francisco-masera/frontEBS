@@ -84,9 +84,10 @@ p {
   color: #ffffff;
   font-weight: 600;
   width: 105px;
-  height: 30px;
+  height: 35px;
   margin: 5px;
   margin-bottom: 90px;
+
 }
 
 .boton:hover {
@@ -127,8 +128,7 @@ p {
   border-width: 1px;
   font-weight: 600;
   width: 105px;
-  height: 30px;
-
+  height: 35px;
   margin: 5px;
 }
 
