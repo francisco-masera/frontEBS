@@ -278,6 +278,7 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
+import axios from "axios";
 export default {
   mounted() {
     this.userVerifica();
@@ -400,12 +401,36 @@ export default {
       });
       if(!this.insumoEncontrado.esInsumo){
         this.informacionVenta.insumo = this.insumoEncontrado;
-         await this.service.save("insumoVenta", this.informacionVenta).then((data) => {
+        let img = document.getElementById("imagen").files[0];
+        this.informacionVenta.imagen = img.name;
+        await this.guardarImagen(img);
+        await this.service.save("insumoVenta", this.informacionVenta).then((data) => {
         this.informacionVenta = data;
         this.$refs["modal"].show();        
       });
       }
       
+    },
+    async guardarImagen(imagen) {
+      const formData = new FormData();
+      formData.append("file", imagen);
+      await axios
+        .post(
+          "http://localhost:9001/buensabor/informacionArticulo/uploadImg",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origins": "*",
+              "cache-control": "no-cache",
+            },
+          }
+        )
+        .catch((error) => {
+          console.log(error);
+          return error;
+        });
+      return true;
     },
     verificaInsumo() {
       if (document.getElementById("checkbox-1").checked) {
