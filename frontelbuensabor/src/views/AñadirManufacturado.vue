@@ -1,7 +1,9 @@
 <template>
   <div>
     <cabecera></cabecera>
-    <div id="nav"><menuLateral></menuLateral></div>
+    <div id="nav">
+      <menuLateral></menuLateral>
+    </div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -12,9 +14,7 @@
         <b-form id="form1">
           <div class="lineaForm">
             <b-form-group>
-              <label class="labelForm">
-                Nombre *
-              </label>
+              <label class="labelForm">Nombre *</label>
               <b-form-input
                 class="campoForm"
                 v-model.lazy="form1.denominacion"
@@ -24,17 +24,14 @@
               />
               <br />
               <b-form-invalid-feedback>
-                <br />
-                Este campo es obligatorio.<br />
-                Recuerde ingresar sólo letras.
+                <br />Este campo es obligatorio.
+                <br />Recuerde ingresar sólo letras.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
           <div class="lineaForm" id="lineaDescripcion">
             <b-form-group>
-              <label class="labelForm">
-                Descripción
-              </label>
+              <label class="labelForm">Descripción</label>
               <b-form-textarea
                 id="descripcionManufacturado"
                 class="campoForm"
@@ -45,9 +42,8 @@
                 max-rows="6"
               />*
               <b-form-invalid-feedback>
-                <br />
-                Este campo es obligatorio.<br />
-                Recuerde ingresar sólo letras.
+                <br />Este campo es obligatorio.
+                <br />Recuerde ingresar sólo letras.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -58,35 +54,25 @@
                 id="checkbox-1"
                 name="checkbox-1"
                 v-model="manufacturado.aptoCeliaco"
-              >
-                Apto para celíacos
-              </b-form-checkbox>
+              >Apto para celíacos</b-form-checkbox>
               <b-form-checkbox
                 id="checkbox-2"
                 name="checkbox-1"
                 v-model="manufacturado.vegano"
-              >
-                Producto vegano
-              </b-form-checkbox>
+              >Producto vegano</b-form-checkbox>
               <b-form-checkbox
                 id="checkbox-3"
                 name="checkbox-1"
                 v-model="manufacturado.vegetariano"
-              >
-                Producto vegetariano
-              </b-form-checkbox>
+              >Producto vegetariano</b-form-checkbox>
             </b-form-group>
           </div>
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
           <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click.prevent="onSubmit1"
-              >Siguiente</b-button
-            >
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit1">Siguiente</b-button>
           </div>
         </b-form>
       </div>
@@ -119,9 +105,7 @@
                   ></b-form-checkbox>
                 </b-form-group>
               </template>
-              <template v-slot:cell(denominacion)="row">
-                {{ row.item.denominacion }}
-              </template>
+              <template v-slot:cell(denominacion)="row">{{ row.item.denominacion }}</template>
             </b-table>
             <b-pagination
               v-model="currentPage"
@@ -131,53 +115,38 @@
               :per-page="perPage"
               aria-controls="my-tablaInsumos"
               class="paginador"
-            >
-            </b-pagination>
+            ></b-pagination>
           </div>
           <b-toast id="toast-insumos" variant="warning" solid>
             <template v-slot:toast-title>
               <div class="d-flex flex-grow-1 align-items-baseline">
-                <b-img
-                  blank
-                  blank-color="#ff5555"
-                  class="mr-2"
-                  width="12"
-                  height="12"
-                ></b-img>
+                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
                 <strong class="mr-auto">¡Atención!</strong>
               </div>
             </template>
-            Marque al menos un elemento <br />
-            de la tabla para continuar.
+            Marque al menos un elemento
+            <br />de la tabla para continuar.
           </b-toast>
           <div class="lineaForm">
             <b-form-group>
-              <label class="labelForm">
-                Tiempo en cocina
-              </label>
+              <label class="labelForm">Tiempo en cocina</label>
               <b-form-input
                 type="number"
                 class="campoForm"
                 id="tiempoCocina"
                 v-model.lazy="form2.tiempoCocina"
                 :state="!$v.form2.tiempoCocina.$invalid"
-              >
-              </b-form-input>
+              ></b-form-input>
               <b-form-invalid-feedback>
-                <br />
-                Este campo es obligatorio <br />
-                y sólo admite números mayores a cero <br />
-                sin coma ni punto.
+                <br />Este campo es obligatorio
+                <br />y sólo admite números mayores a cero
+                <br />sin coma ni punto.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
           <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click.prevent="onSubmit2"
-              >Siguiente</b-button
-            >
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit2">Siguiente</b-button>
           </div>
         </b-form>
       </div>
@@ -185,16 +154,8 @@
       <div id="paso3">
         <b-form id="form3">
           <div class="lineaForm">
-            <b-table
-              hover
-              responsive="sm"
-              fixed
-              :fields="camposTablaDetalle"
-              :items="ingredientes"
-            >
-              <template v-slot:cell(ingrediente)="row">
-                {{ row.item.denominacion }}
-              </template>
+            <b-table hover responsive="sm" fixed :fields="camposTablaDetalle" :items="ingredientes">
+              <template v-slot:cell(ingrediente)="row">{{ row.item.denominacion }}</template>
               <template slot="unidadMedida" slot-scope="row">
                 <b-form-group>
                   <b-form-input v-model="row.item.unidadMedida" readonly />
@@ -205,34 +166,23 @@
                   name="cantidadesInput"
                   :idInsumo="row.item.idInsumo"
                   @kpress="onDataInput($event, row.item.idInsumo, '')"
-                >
-                </cantidad>
+                ></cantidad>
               </template>
             </b-table>
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click.prevent="onSubmit3"
-              >Siguiente</b-button
-            >
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit3">Siguiente</b-button>
           </div>
           <b-toast id="toast-datos" variant="warning" solid>
             <template v-slot:toast-title>
               <div class="d-flex flex-grow-1 align-items-baseline">
-                <b-img
-                  blank
-                  blank-color="#ff5555"
-                  class="mr-2"
-                  width="12"
-                  height="12"
-                ></b-img>
+                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
                 <strong class="mr-auto">¡Atención!</strong>
               </div>
             </template>
-            Todos los datos de esta página son <br />
-            obligatorios para continuar.<br />
-            Recuerde: Las cantidades deben ser sólo números.<br />
-            Verifique los datos.
+            Todos los datos de esta página son
+            <br />obligatorios para continuar.
+            <br />Recuerde: Las cantidades deben ser sólo números.
+            <br />Verifique los datos.
           </b-toast>
         </b-form>
       </div>
@@ -246,10 +196,7 @@
             <h3>
               {{ manufacturado.denominacion }}
               <b-button size="sm" id="btn-editar" class="botonImagen">
-                <img
-                  src="http://localhost:9001/images/sistema/editar.png"
-                  id="imagenAgregar"
-                />
+                <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
               </b-button>
             </h3>
             <div id="descripcionInsumo">
@@ -258,9 +205,7 @@
             </div>
             <div class="infoProductoVenta">
               <b-card header="Tiempo" class="tarjetaInfo">
-                <b-card-text>
-                  {{ manufacturado.tiempoCocina }} min
-                </b-card-text>
+                <b-card-text>{{ manufacturado.tiempoCocina }} min</b-card-text>
               </b-card>
             </div>
             <div class="lineaForm">
@@ -273,18 +218,13 @@
                   :state="!$v.formRevision.imagen.$invalid"
                 />
                 <b-form-invalid-feedback>
-                  <br />
-                  Este campo es obligatorio.
+                  <br />Este campo es obligatorio.
                 </b-form-invalid-feedback>
               </b-form-group>
             </div>
             <div class="infoIngredientes">
               <h2>Ingredientes</h2>
-              <li
-                id="listaIngredientes"
-                v-for="(receta, index) in recetasNuevas"
-                :key="index"
-              >
+              <li id="listaIngredientes" v-for="(receta, index) in recetasNuevas" :key="index">
                 {{ receta.insumo.denominacion }}
                 {{ receta.cantidadInsumo }}
                 {{ receta.insumo.unidadMedida }}
@@ -293,26 +233,25 @@
             <b-toast id="toast-img" variant="warning" solid>
               <template v-slot:toast-title>
                 <div class="d-flex flex-grow-1 align-items-baseline">
-                  <b-img
-                    blank
-                    blank-color="#ff5555"
-                    class="mr-2"
-                    width="12"
-                    height="12"
-                  ></b-img>
+                  <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
                   <strong class="mr-auto">¡Atención!</strong>
                 </div>
               </template>
               La imagen seleccionada no es válida.
             </b-toast>
+            <div class="modalMedida">
+              <b-modal ref="modal" hide-footer hide-header centered title>
+                <p class="modalTitulo">¡Sugerencia agregada con éxito!</p>
+
+                <p class="posicion">
+                  <b-button pill size="md" class="botonModal" @click="retornaAlCatalogo()">Aceptar</b-button>
+                </p>
+              </b-modal>
+            </div>
           </div>
           <div class="lineaFormDerecha">
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click.prevent="guardar"
-              >Guardar</b-button
-            >
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="guardar">Guardar</b-button>
           </div>
         </b-form>
       </div>
@@ -612,6 +551,11 @@ export default {
       typeof estadoSugerencia === "object"
         ? this.guardarRecetas(estadoSugerencia)
         : alert("error");
+      this.$refs["modal"].show();
+    },
+
+    retornaAlCatalogo() {
+      window.location.href = "/catalogoManu/";
     },
 
     async guardarImagen(imagen) {
@@ -745,7 +689,6 @@ export default {
   min-height: 40px;
 }
 
-
 #datos {
   float: right;
 }
@@ -842,6 +785,27 @@ export default {
 
   .botonAñadirInsumo {
     float: left;
+  }
+
+  .modalTitulo {
+    margin-top: 7%;
+    text-align: center;
+    font-size: 25px;
+  }
+  .botonModal {
+    border: none;
+    background-color: #e7511e;
+    color: #ffffff;
+    font-weight: 600;
+    width: 105px;
+    height: 30px;
+  }
+  .posicion {
+    text-align: center;
+  }
+  .modalMedida {
+    height: 20%;
+    width: 20%;
   }
 }
 </style>

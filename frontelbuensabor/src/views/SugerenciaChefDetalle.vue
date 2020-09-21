@@ -11,18 +11,12 @@
       <h1>Detalle producto</h1>
 
       <div>
-        
-         <img :src="'http://localhost:9001/images/productos/' + sugerenciaEncontrada.imagen" class="imagenProducto"/>
-        <h3>
-          {{sugerenciaEncontrada.denominacion}}
-          <b-btn-group id="admin-btn-grp"> 
-                 <b-button size="sm" @click="modificarInsumo(insumoEncontrado.idInsumo)" class="botonImagen">
-                  <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
-                </b-button>
-               
-          </b-btn-group>
-        </h3>
-        
+        <img
+          :src="'http://localhost:9001/images/productos/sugeridos/' + sugerenciaEncontrada.imagen"
+          class="imagenProducto"
+        />
+        <h3>{{sugerenciaEncontrada.denominacion}}</h3>
+
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
           <p>{{ sugerenciaEncontrada.descripcion }}</p>
@@ -37,29 +31,40 @@
         </div>
         <div class="infoIngredientes">
           <h2>Ingredientes</h2>
-         <ul>
-                <li
-                  v-for="(receta, index) in recetas"
-                  :key="index"
-                >
-                  {{ receta.insumo.denominacion }} {{ receta.cantidadInsumo }}{{ receta.insumo.unidadMedida }}
-                </li>
-              </ul>
+          <ul>
+            <li
+              v-for="(receta, index) in recetas"
+              :key="index"
+            >{{ receta.insumo.denominacion }} {{ receta.cantidadInsumo }}{{ receta.insumo.unidadMedida }}</li>
+          </ul>
         </div>
         <div class="botonesSugerencia">
           <b-button pill class="boton" size="md" @click="aceptarSugerencia()">Aprobar</b-button>
-          <b-button pill class="boton" size="md">Denegar</b-button>
+          <b-button pill class="boton" size="md" @click="abreModalDenegar()">Denegar</b-button>
+        </div>
+
+        <div class="modalMedida">
+          <b-modal ref="modalDenega" hide-footer hide-header centered title>
+            <p class="modalTitulo">¿Desea eliminar la sugerencia?</p>
+
+            <p class="posicion">
+              <b-button pill size="md" class="botonModal" @click="denegarSugerencia()">Aceptar</b-button>
+              <b-button pill size="md" class="botonModal" @click="vuelveDetalle()">Cancelar</b-button>
+            </p>
+          </b-modal>
         </div>
       </div>
     </b-container>
 
     <router-view />
     <b-modal ref="modal" hide-footer title="Aprobar producto">
-      <p style="text-align: left; font-weight: 600;" >Precio sugerido: ${{sugerenciaEncontrada.precio}}</p>
+      <p
+        style="text-align: left; font-weight: 600;"
+      >Precio sugerido: ${{sugerenciaEncontrada.precio}}</p>
       <form>
-        <div> 
-      <b-form-input class="sugerenciaForm" placeholder="Precio" ></b-form-input>
-        </div> 
+        <div>
+          <b-form-input class="sugerenciaForm" placeholder="Precio"></b-form-input>
+        </div>
         <b-button pill class="boton" size="md">Agregar</b-button>
       </form>
     </b-modal>
@@ -77,7 +82,7 @@ export default {
   },
   components: {
     menuLateral: MenuLateral,
-    cabecera: Header
+    cabecera: Header,
   },
   data() {
     return {
@@ -85,58 +90,73 @@ export default {
       service: new Service(),
       recetas: [],
       costo: 0,
+      sugerenciaEliminar: {},
     };
   },
 
   methods: {
-
     async getSugerenciaXid() {
       let parametroId = parseInt(this.$route.params.id, 10);
-      await this.service.getOne("sugerencia", parametroId).then((data)=>{      
+      await this.service.getOne("sugerencia", parametroId).then((data) => {
         this.sugerenciaEncontrada = data;
         this.getRecetas(parametroId);
+        console.log(this.sugerenciaEncontrada);
       });
     },
-    
-    async getRecetas(id){
-      await axios.get("http://localhost:9001/buensabor/sugerencia/recetasSugerencia/" 
-      + id)
-      .then((response)=> this.recetas = response.data);
+
+    async getRecetas(id) {
+      await axios
+        .get(
+          "http://localhost:9001/buensabor/sugerencia/recetasSugerencia/" + id
+        )
+        .then((response) => (this.recetas = response.data));
       await this.obtenerCosto();
-      
-      
     },
 
-     async obtenerCosto(){
-      
+    async obtenerCosto() {
       let idsInsumos = [];
-      this.recetas.forEach(receta => idsInsumos.push(receta.insumo.idInsumo));
+      this.recetas.forEach((receta) => idsInsumos.push(receta.insumo.idInsumo));
       let idsInsumosStr = idsInsumos.join(",");
       let cantInsumo = await this.generarStringCantidades();
-      
-      await axios.get("http://localhost:9001/buensabor/sugerencia/costo", { 
-        params : {
-          "idsInsumosStr" : idsInsumosStr,
-          "cantidadInsumos" : cantInsumo
-        }
-      }).then(response => this.costo = response.data);
-       
-      
+
+      await axios
+        .get("http://localhost:9001/buensabor/sugerencia/costo", {
+          params: {
+            idsInsumosStr: idsInsumosStr,
+            cantidadInsumos: cantInsumo,
+          },
+        })
+        .then((response) => (this.costo = response.data));
     },
-      async generarStringCantidades(){
-      
-        let cantInsumo = [];
-        this.recetas.forEach(receta => cantInsumo.push(receta.cantidadInsumo));
-        let cantInsumoStr = cantInsumo.join(",");
-        
-        return cantInsumoStr;
+    async generarStringCantidades() {
+      let cantInsumo = [];
+      this.recetas.forEach((receta) => cantInsumo.push(receta.cantidadInsumo));
+      let cantInsumoStr = cantInsumo.join(",");
+
+      return cantInsumoStr;
     },
 
-
+    abreModalDenegar() {
+      this.$refs["modalDenega"].show();
+    },
     aceptarSugerencia() {
       this.$refs["modal"].show();
-    }
-  }
+    },
+
+    vuelveDetalle() {
+      this.$refs["modalDenega"].hide();
+    },
+    async denegarSugerencia() {
+      await this.service
+        .delete("sugerencia", this.sugerenciaEncontrada.id)
+        .then((data) => {
+          this.sugerenciaEliminar = data;
+        });
+        console.log(this.sugerenciaEncontrada.id);
+        console.log(this.sugerenciaEliminar);
+      //window.location.href = "/sugerenciaChef";
+    },
+  },
 };
 </script>
 <style>
@@ -249,9 +269,21 @@ export default {
   float: right;
 }
 .botonesSugerencia {
-  float: right;
+  float: left;
 }
-
-
-
+.botonModal {
+  border: none;
+  background-color: #e7511e;
+  color: #ffffff;
+  font-weight: 600;
+  width: 105px;
+  height: 30px;
+}
+.posicion {
+  text-align: center;
+}
+.modalMedida {
+  height: 20%;
+  width: 20%;
+}
 </style>
