@@ -205,6 +205,11 @@ p {
   float: right;
 }
 
+.slideAB{
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
 .lineaFormDerecha {
   margin-top: 50px;
   float: right;

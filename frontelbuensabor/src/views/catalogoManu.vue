@@ -273,7 +273,6 @@ export default {
     nuevoManufacturado() {
       this.$router.push({ path: "/modificarManufacturado/" + undefined });
     },
-
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
 

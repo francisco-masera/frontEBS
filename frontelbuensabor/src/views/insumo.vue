@@ -22,8 +22,10 @@
               />
             </b-button>
 
+            
             <b-checkbox
-              switch
+              class="slideAB"
+              switch              
               @change="mostrarModalAB"
               size="sm"
               v-model="switchChecked"
@@ -116,8 +118,9 @@
                 id="imagenAgregar"
               />
             </b-button>
-            <b-checkbox
-              switch
+           <b-checkbox
+              class="slideAB"
+              switch              
               @change="mostrarModalAB"
               size="sm"
               v-model="switchChecked"
@@ -213,10 +216,11 @@
           placeholder="Contraseña"
         >
         </b-form-input>
-        <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia"
-          >Modificar estado</b-button
-        >
-      </form>
+        </form>
+        <p class="posicion">
+          <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia">Modificar estado</b-button>
+        </p>
+      
 
       <!-- Toast que muestra la confirmación de eliminado con éxito-->
       <b-toast id="toast-eliminar-exito" variant="success" solid>
@@ -466,6 +470,7 @@ export default {
     },
 
     async verificarContrasenia() {
+      console.log("verifica contraseña")
       let contraseniaVerificada = await axios
         .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
           params: {
@@ -641,6 +646,10 @@ export default {
   text-align: left;
 }
 
+.posicion {
+  text-align: center;
+}
+
 .botonAñadirExistencia{
   margin-bottom: 10px;
   display: block;
@@ -670,5 +679,7 @@ export default {
   margin-left: 10%;
   margin-top: 5%;
 }
+
+
 
 </style>

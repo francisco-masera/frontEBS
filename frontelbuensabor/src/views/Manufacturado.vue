@@ -47,10 +47,15 @@
             <div>
               <h3>
                 {{ manufacturadoEncontrado.denominacion }}
-                <b-btn-group id="admin-btn-grp"> 
-                  <b-button size="sm" @click="openModalEliminar" class="botonImagen">
-                    <img src="http://localhost:9001/images/sistema/eliminar.png" id="imagenAgregar"/>
-                  </b-button>
+                <b-btn-group id="admin-btn-grp">                   
+                  <b-checkbox
+                    class="slideAB"
+                    switch              
+                    @change="mostrarModalAB"
+                    size="sm"
+                    v-model="switchChecked"
+                    ref="switchModal"
+                  />
                 </b-btn-group>
               </h3>
             </div>
@@ -96,6 +101,32 @@
         <b-button pill class="boton" size="md">Eliminar </b-button>
       </form>
     </b-modal>
+
+      <b-modal
+      ref="modalAB"
+      title="Alta/Baja"      
+      class="modalEliminar"
+      @close="setEstadoCheckBaja"
+      no-close-on-esc
+      hide-footer
+      no-close-on-backdrop
+      modal-header-close
+    >
+    ¿Confirma que desea modificar el estado de este manufacturado?
+     <b-button pill class="boton botonEliminar" size="sm" @click="cambiarEstadoBaja"
+          >Aceptar</b-button>
+
+      <!-- Toast que muestra la confirmación de eliminado con éxito-->
+      <b-toast id="toast-eliminar-exito" variant="success" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12" ></b-img>
+          </div>
+        </template>
+        ¡Insumo modificado con éxito!
+      </b-toast>
+
+    </b-modal>
   </div>
 </template>
 
@@ -121,6 +152,7 @@ export default {
       formatter: new Formatter(),
       recetas: [],
       costo: 0,
+      switchChecked: undefined,
     };
   },
 
@@ -133,7 +165,8 @@ export default {
       let idManufacturado = parseInt(this.$route.params.id);
       await this.service.getOne("manufacturado", idManufacturado).then((data)=>{      
         this.manufacturadoEncontrado = data;
-        this.getRecetas(idManufacturado);
+        this.switchChecked = !this.manufacturadoEncontrado.baja;
+        this.getRecetas(idManufacturado);        
       });
     },
 
@@ -155,18 +188,13 @@ export default {
 
     asignarColorStock(stockBajo){
       let claseStock = document.getElementById("stockColor");
-      console.log(stockBajo);
       if (stockBajo){
         this.stock = "insuficiente";
-        console.log(claseStock);
         claseStock.style.backgroundColor = "#ED3247";
-        console.log(claseStock);
-        console.log("insuficiente");
 
       } else {
         this.stock = "suficiente";
         claseStock.style.backgroundColor = "#8BC34A";
-        console.log("suficiente");
       }
     },
 
@@ -203,7 +231,28 @@ export default {
     
     modificarInsumo(){
       this.$router.push({ path: "/modificarManufacturado/" + this.manufacturadoEncontrado.id})
-    }
+    },
+
+    mostrarModalAB() {
+      this.$refs.modalAB.show();
+      this.modalABAbierto = true;
+    },
+
+    async cambiarEstadoBaja() {
+      let id = parseInt(this.$route.params.id);  
+      await this.service
+        .delete("manufacturado", id)
+        .then((data) => (this.manufacturadoEncontrado = data))
+        .then(
+          this.$bvToast.show("toast-eliminar-exito"),
+          (this.switchChecked = !!this.manufacturadoEncontrado.baja),
+          this.$refs.modalAB.hide()
+        );
+    },
+     setEstadoCheckBaja() {
+      this.$refs.switchModal.checked = this.manufacturadoEncontrado.baja;
+      this.switchChecked = !this.switchChecked;
+    },
   },
 };
    
@@ -314,6 +363,18 @@ export default {
 
 .infoProductoVenta{
     float: right;
+}
+
+.boton {
+  width: auto;
+  min-width: 105px;
+}
+
+.botonEliminar{
+  display: inline-block;
+  float:none;
+  margin-top: 20px;
+  margin-bottom:10px;
 }
 
 #admin-btn-grp{
