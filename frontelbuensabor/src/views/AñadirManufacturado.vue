@@ -242,7 +242,6 @@
             <div class="modalMedida">
               <b-modal ref="modal" hide-footer hide-header centered title>
                 <p class="modalTitulo">¡Sugerencia agregada con éxito!</p>
-
                 <p class="posicion">
                   <b-button pill size="md" class="botonModal" @click="retornaAlCatalogo()">Aceptar</b-button>
                 </p>
@@ -548,12 +547,24 @@ export default {
         ? (estadoSugerencia = await this.guardarSugerencia(sugerencia))
         : this.$bvToast.show("toast-img");
 
-      typeof estadoSugerencia === "object"
-        ? this.guardarRecetas(estadoSugerencia)
-        : alert("error");
-      this.$refs["modal"].show();
+     if(typeof estadoSugerencia === "object"){
+       this.guardarRecetas(estadoSugerencia);
+        this.$refs["modal"].show();
+     }else{
+       this.toastError(); 
+     }
+               
+         
     },
 
+   toastError(append = false) {
+        this.$bvToast.toast(`Surgió un error al cargar la nueva sugerencia`, {
+          title: `Error`,
+          toaster: 'b-toaster-top-center',
+          solid: true,
+          appendToast: append
+        })
+      },
     retornaAlCatalogo() {
       window.location.href = "/catalogoManu/";
     },
@@ -592,6 +603,7 @@ export default {
     },
 
     guardarRecetas(sugerencia) {
+      
       let sugerenciaChef = this.setKeyIdSugerencia(sugerencia);
       this.recetasNuevas.forEach((r) => {
         r.sugerenciaChef = sugerenciaChef;
@@ -766,6 +778,27 @@ export default {
   float: none;
 }
 
+  .modalTitulo {
+    margin-top: 7%;
+    text-align: center;
+    font-size: 25px;
+  }
+  .botonModal {
+    border: none;
+    background-color: #e7511e !important;
+    color: #ffffff;
+    font-weight: 600;
+    width: 105px;
+    height: 30px;
+  }
+  .posicion {
+    text-align: center;
+  }
+  .modalMedida {
+    height: 20%;
+    width: 20%;
+  }
+
 @media screen and (max-width: 604px) {
   .lineaForm {
     min-height: 80px;
@@ -787,25 +820,6 @@ export default {
     float: left;
   }
 
-  .modalTitulo {
-    margin-top: 7%;
-    text-align: center;
-    font-size: 25px;
-  }
-  .botonModal {
-    border: none;
-    background-color: #e7511e;
-    color: #ffffff;
-    font-weight: 600;
-    width: 105px;
-    height: 30px;
-  }
-  .posicion {
-    text-align: center;
-  }
-  .modalMedida {
-    height: 20%;
-    width: 20%;
-  }
+
 }
 </style>
