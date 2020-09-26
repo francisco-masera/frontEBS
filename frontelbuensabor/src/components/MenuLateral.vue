@@ -42,7 +42,6 @@ export default {
         
 
         var boton;
-
         if(this.user.rol==="admin"){
           boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
           this.botones.push(boton);
@@ -50,7 +49,7 @@ export default {
           this.botones.push(boton);    
           boton = [2,"Sugerencias del chef","sugerenciasChef.png","/sugerenciaChef"];
           this.botones.push(boton);  
-          boton = [3,"Mis datos","misDatos.png",""];
+          boton = [3,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
           this.botones.push(boton);  
           boton = [4,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  
@@ -59,7 +58,7 @@ export default {
         }else if(this.user.rol==="cocina"){
           boton = [0,"Manufacturados","manufacturados.png","/catalogoManu"];
           this.botones.push(boton);
-          boton = [1,"Mis datos","misDatos.png",""];
+          boton = [1,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
           this.botones.push(boton);  
           boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  
@@ -70,7 +69,7 @@ export default {
           this.botones.push(boton);
           boton = [1,"Mis pedidos","Pedidos.png",""];
           this.botones.push(boton);  
-          boton = [2,"Mis datos","misDatos.png",""];
+          boton = [2,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
           this.botones.push(boton);  
           boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton); 
@@ -81,7 +80,7 @@ export default {
           this.botones.push(boton);
           boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
           this.botones.push(boton); 
-           boton = [2,"Mis datos","misDatos.png",""];
+           boton = [2,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
           this.botones.push(boton);   
           boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton); 
@@ -92,7 +91,7 @@ export default {
           this.botones.push(boton);
           boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
           this.botones.push(boton); 
-           boton = [3,"Mis datos","misDatos.png",""];
+           boton = [3,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
           this.botones.push(boton);   
           boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  

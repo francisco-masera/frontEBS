@@ -64,6 +64,7 @@ p {
   font-size: 11pt;
   margin-left: 10px;
   float: left;
+  height: 25px;
 }
 
 .abajo {
@@ -158,6 +159,38 @@ p {
   color: #e7511e;
 }
 
+.buttonText{
+  color: #e7511e;
+  background-color: transparent;
+  border:none;
+}
+.buttonText:focus{
+  color: #e7511e;
+  background-color: transparent;
+  border:none;
+}
+.buttonText:active{
+  color: #e7511e !important;
+  background-color: transparent !important;
+  border:none;
+}
+.buttonText:hover{
+  color: #e7511e;
+  background-color: transparent;
+  text-decoration: underline;
+  border:none;
+}
+.buttonText:visited{
+  color: #e7511e;
+  background-color: transparent;
+  border:none;
+}
+.buttonText:link{
+  color: #e7511e;
+  background-color: transparent;
+  border:none;
+}
+
 .buscador {
   float: right;
   margin-bottom: 25px;
@@ -237,7 +270,7 @@ p {
 .informacion {
   width: 50%;
   min-height: 100px;
-  margin-left: 35%;
+  margin-left: 30%;
   padding: 20px;
   padding-top: 50px;
   font-family: "Baloo Bhaina 2";
