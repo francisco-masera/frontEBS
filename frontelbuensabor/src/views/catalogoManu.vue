@@ -47,9 +47,9 @@
           <template v-slot:cell(tiempo)="row">{{
             row.item.tiempoCocina + " min"
           }}</template>
-          <template v-slot:cell(stock)>
+        <!--   <template v-slot:cell(stock)>
             <div id="stockColor" style="background-color:#ED3247"></div>
-          </template>
+          </template> -->
           <template v-slot:cell(detalle)="row">
             <b-button pill class="boton" @click="verDetalle(row.item)"
               >Detalles</b-button
@@ -118,9 +118,9 @@
                 row.item.rubro.denominacion
               }}</b-badge>
             </template>
-            <template v-slot:cell(stock)>
+           <!--  <template v-slot:cell(stock)>
               <div id="stockColor" style="background-color:#ED3247"></div>
-            </template>
+            </template> -->
             <template v-for="(costo, i) in costos">
               <div :key="i">{{ costo }}</div>
             </template>
@@ -251,7 +251,7 @@ export default {
       categoriasData: {},
       manufacturados: {},
       userCocina: true,
-      stock: true,
+      //stock: true,
       service: new Service(),
       costos: [],
       busqueda: "",
@@ -297,7 +297,6 @@ export default {
           this.tituloTabla = [
             { key: "denominacion", label: "Denominación" },
             { key: "categoria", label: "Categoría" },
-            { key: "stock", label: "Stock" },
             { key: "tiempo", label: "Tiempo" },
             { key: "detalle", label: "Detalle" },
           ];
@@ -307,13 +306,11 @@ export default {
             { key: "costo", label: "Costo" },
             { key: "precio", label: "Precio" },
             { key: "categoria", label: "Categoría" },
-            { key: "stock", label: "Stock" },
             { key: "detalle", label: "Detalle" },
           ];
         }
         this.obtenerCostos();
       });
-      this.verificaStock();
     },
 
     agregarCostos() {
@@ -359,7 +356,7 @@ export default {
       this.esProducto = false;
     },
 
-    verificaStock() {
+  /*   verificaStock() {
       var clase;
       if (this.stock === false) {
         clase = document.getElementById("stockColor");
@@ -370,7 +367,7 @@ export default {
         clase.style.backgroundColor = "#8BC34A";
       }
     },
-
+ */
     agregarCategoriaModal(id) {
       if (id == undefined) {
         this.categoriaNueva.denominacion = "";
@@ -460,13 +457,13 @@ export default {
   height: 32px;
 }
 
-#stockColor {
+/* #stockColor {
   width: 20px;
   height: 20px;
   border-radius: 300px;
   float: left;
   margin-right: 10px;
-}
+} */
 .Badgecategoria {
   width: 105px;
   margin-left: 0px;

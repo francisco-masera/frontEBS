@@ -6,7 +6,7 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Detalle de insumo</h1>
-      <!-- Renderiza insumo que no se vende directamente, es decir que son insumos propiamente dichos--> 
+      <!-- Renderiza insumo que no se vende directamente, es decir que son insumos propiamente dichos-->
       <div v-if="!esInsumoVenta">
         <h3>
           {{ insumoEncontrado.denominacion }}
@@ -22,10 +22,9 @@
               />
             </b-button>
 
-            
             <b-checkbox
               class="slideAB"
-              switch              
+              switch
               @change="mostrarModalAB"
               size="sm"
               v-model="switchChecked"
@@ -79,9 +78,10 @@
             id="tablaInsumos"
             class="tabla"
           >
-            
           </b-table>
-          <b-button pill class="boton" size="md" @click="agregarInsumoCompra()">Agregar Existencia</b-button>
+          <b-button pill class="boton" size="md" @click="agregarInsumoCompra()"
+            >Agregar Existencia</b-button
+          >
           <b-pagination
             v-model="currentPage"
             size="sm"
@@ -95,9 +95,7 @@
         </div>
       </div>
 
-
-
-<!-- Renderiza insumo que se vende directamente, como las bebidas-->       
+      <!-- Renderiza insumo que se vende directamente, como las bebidas-->
       <div v-else id="insumo">
         <img
           :src="
@@ -118,9 +116,9 @@
                 id="imagenAgregar"
               />
             </b-button>
-           <b-checkbox
+            <b-checkbox
               class="slideAB"
-              switch              
+              switch
               @change="mostrarModalAB"
               size="sm"
               v-model="switchChecked"
@@ -135,6 +133,7 @@
             insumoEncontrado.insumo.rubroInsumo.denominacion
           }}</b-badge>
         </div>
+
         <div id="descripcionInsumo">
           <h2>Descripción</h2>
           <p>{{ insumoEncontrado.descripcion }}</p>
@@ -182,9 +181,10 @@
             id="tablaInsumos"
             class="tabla"
           >
-            
           </b-table>
-          <b-button pill class="boton" size="md" @click="agregarInsumoCompra()">Agregar Existencia</b-button>
+          <b-button pill class="boton" size="md" @click="agregarInsumoCompra()"
+            >Agregar Existencia</b-button
+          >
           <b-pagination
             v-model="currentPage"
             size="sm"
@@ -216,17 +216,28 @@
           placeholder="Contraseña"
         >
         </b-form-input>
-        </form>
-        <p class="posicion">
-          <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia">Modificar estado</b-button>
-        </p>
-      
+      </form>
+      <p class="posicion">
+        <b-button
+          pill
+          class="boton botonEliminar"
+          size="sm"
+          @click="verificarContrasenia"
+          >Modificar estado</b-button
+        >
+      </p>
 
       <!-- Toast que muestra la confirmación de eliminado con éxito-->
       <b-toast id="toast-eliminar-exito" variant="success" solid>
         <template v-slot:toast-title>
           <div class="d-flex flex-grow-1 align-items-baseline">
-            <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12" ></b-img>
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
           </div>
         </template>
         ¡Insumo modificado con éxito!
@@ -236,71 +247,94 @@
       <b-toast id="toast-eliminar-error" variant="warning" solid>
         <template v-slot:toast-title>
           <div class="d-flex flex-grow-1 align-items-baseline">
-            <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12" ></b-img>
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
           </div>
         </template>
         ¡La contraseña no es correcta!
       </b-toast>
     </b-modal>
 
- 
-   <!-- Modal para para añadir un registro de compra-->
+    <!-- Modal para para añadir un registro de compra-->
     <div style="display:flex">
-    <b-modal ref="modalAñadir" hide-footer hide-header centered title>
-      <h2>Añadir existencia</h2>
-      <h4 style="margin-bottom:5%">{{ compra.insumo.denominacion }}</h4>
-      <form class="estiloForm">
-        <table>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Fecha</label
-              >
-            </td>
-            <td>
-              <b-form-datepicker
-                for="inline-form-custom-select-pref"
-                id="example-datepicker"
-                size="sm"
-                v-model="compra.fechaCompra"
-                class="campoForm"
-              ></b-form-datepicker>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label for="inline-form-custom-select-pref"
-              >Unidad de medida</label
-              >
-            </td>
-            <td><label id="medida">{{compra.insumo.unidadMedida}}</label></td>
-          </tr>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Cantidad</label
-              >
-            </td>
-            <td><b-form-input  v-model="compra.cantidad" class="campoForm"></b-form-input></td>
-          </tr>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Precio por unidad</label
-              >
-            </td>
-            <td><b-form-input  v-model="compra.precioUnitario" class="campoForm"></b-form-input></td>
-          </tr>
-          <tr>
-            <td>
-              <b-button pill class="boton" id="botonModal" size="md" @click="añadirCompra()">
-                Añadir
-              </b-button>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </b-modal>
+      <b-modal ref="modalAñadir" hide-footer hide-header centered title>
+        <h2>Añadir existencia</h2>
+        <h4 style="margin-bottom:5%">{{ compra.insumo.denominacion }}</h4>
+        <form class="estiloForm">
+          <table>
+            <tr>
+              <td>
+                <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                  >Fecha</label
+                >
+              </td>
+              <td>
+                <b-form-datepicker
+                  for="inline-form-custom-select-pref"
+                  id="example-datepicker"
+                  size="sm"
+                  v-model="compra.fechaCompra"
+                  class="campoForm"
+                ></b-form-datepicker>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="inline-form-custom-select-pref"
+                  >Unidad de medida</label
+                >
+              </td>
+              <td>
+                <label id="medida">{{ compra.insumo.unidadMedida }}</label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                  >Cantidad</label
+                >
+              </td>
+              <td>
+                <b-form-input
+                  v-model="compra.cantidad"
+                  class="campoForm"
+                ></b-form-input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label class="mr-sm-2" for="inline-form-custom-select-pref"
+                  >Precio por unidad</label
+                >
+              </td>
+              <td>
+                <b-form-input
+                  v-model="compra.precioUnitario"
+                  class="campoForm"
+                ></b-form-input>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <b-button
+                  pill
+                  class="boton"
+                  id="botonModal"
+                  size="md"
+                  @click="añadirCompra()"
+                >
+                  Añadir
+                </b-button>
+              </td>
+            </tr>
+          </table>
+        </form>
+      </b-modal>
     </div>
   </div>
 </template>
@@ -331,12 +365,12 @@ export default {
       ],
 
       compra: {
-        insumo:{},
-        fechaCompra:"",
-        cantidad:0,
-        precioUnitario:0,
+        insumo: {},
+        fechaCompra: "",
+        cantidad: 0,
+        precioUnitario: 0,
       },
-      
+
       costo: 0,
       esInsumoVenta: false,
       insumoEncontrado: [],
@@ -383,8 +417,8 @@ export default {
         .then((this.switchChecked = !this.insumoEncontrado.baja));
     },
 
-    async getOrdenCompra(insumo) {
-      this.ordenCompra=[];
+    async getOrdenCompra() {
+      this.ordenCompra = [];
       let parametroId = parseInt(this.$route.params.id);
       let precio = 0;
       await this.service
@@ -422,7 +456,8 @@ export default {
           });
         });
       this.setCosto(precio);
-      this.verificarStockVenta(insumo);
+      //this.verificarStockVenta(insumo);
+      await this.verificarStock();
     },
 
     setCosto(precioUnitario) {
@@ -432,7 +467,7 @@ export default {
           : this.formatter.formatMoney(precioUnitario);
     },
 
-    verificarStockVenta(insumo) {
+    /*  verificarStockVenta(insumo) {
       let clase;
       if (parseFloat(insumo.stock.actual) <= parseFloat(insumo.stock.minimo)) {
         this.stock = "insuficiente";
@@ -452,6 +487,28 @@ export default {
         clase.style.backgroundColor = "#8BC34A";
       }
     },
+ */
+
+    async verificarStock() {
+      let clase = document.getElementById("stockColor");
+      await this.service
+        .getOne("stock/estadoStock", this.$route.params.id)
+        .then((estado) => {
+          if (estado == 1) {
+            this.stock = "alto";
+            clase.style.backgroundColor = "#ED3247";
+          } else if (estado == 2) {
+            this.stock = "insuficiente";
+            clase.style.backgroundColor = "#ED3247";
+          } else if (estado == 3) {
+            this.stock = "moderado";
+            clase.style.backgroundColor = "#FFEB3B";
+          } else {
+            this.stock = "suficiente";
+            clase.style.backgroundColor = "#8BC34A";
+          }
+        });
+    },
 
     async cambiarEstadoBaja() {
       let id =
@@ -470,7 +527,7 @@ export default {
     },
 
     async verificarContrasenia() {
-      console.log("verifica contraseña")
+      console.log("verifica contraseña");
       let contraseniaVerificada = await axios
         .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
           params: {
@@ -499,45 +556,44 @@ export default {
       this.switchChecked = !this.switchChecked;
     },
 
-   
-
-  //Abre modal para cargar nuevo stock de insumos
+    //Abre modal para cargar nuevo stock de insumos
     agregarInsumoCompra() {
-      console.log(this.insumoEncontrado)
+      console.log(this.insumoEncontrado);
       this.$refs["modalAñadir"].show();
-      if(this.insumoEncontrado.esInsumo){
+      if (this.insumoEncontrado.esInsumo) {
         this.compra.insumo = this.insumoEncontrado;
-        }else{
-          this.compra.insumo=this.insumoEncontrado.insumo;
-        }
+      } else {
+        this.compra.insumo = this.insumoEncontrado.insumo;
+      }
     },
 
-  //Muestra la confirmación de la carga de insumo
+    //Muestra la confirmación de la carga de insumo
     toast(data, append = false) {
-        this.$bvToast.toast(`Se incorporaron ${data.cantidad} existencias al producto`, {
+      this.$bvToast.toast(
+        `Se incorporaron ${data.cantidad} existencias al producto`,
+        {
           title: `Alta de producto`,
-          toaster: 'b-toaster-top-center',
+          toaster: "b-toaster-top-center",
           solid: true,
-          appendToast: append
-        })
-      },
+          appendToast: append,
+        }
+      );
+    },
 
-  //Hace la petición al back para añadir el nuevo registro de compra, el cual en el back hace la logica de aumento de stock
-    async añadirCompra(){ 
+    //Hace la petición al back para añadir el nuevo registro de compra, el cual en el back hace la logica de aumento de stock
+    async añadirCompra() {
       this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
-            
-      await this.service.save("compras",this.compra)
-      .then((data) => {
+
+      await this.service.save("compras", this.compra).then((data) => {
         this.toast(data);
         this.$refs["modalAñadir"].hide();
-        this.compra.fechaCompra='';
-        this.compra.cantidad=0;
-        this.compra.precioUnitario=0;
-        this.compra.insumo={};    
+        this.compra.fechaCompra = "";
+        this.compra.cantidad = 0;
+        this.compra.precioUnitario = 0;
+        this.compra.insumo = {};
         this.getOrdenCompra(this.compra.insumo);
-      })
+      });
     },
-
   },
   computed: {
     rows() {
@@ -638,10 +694,10 @@ export default {
   justify-content: center;
   height: auto;
 }
-.estiloForm{
+.estiloForm {
   text-align: center;
 }
-.estiloForm table{
+.estiloForm table {
   display: inline;
   text-align: left;
 }
@@ -650,12 +706,12 @@ export default {
   text-align: center;
 }
 
-.botonAñadirExistencia{
+.botonAñadirExistencia {
   margin-bottom: 10px;
   display: block;
   margin-left: 180px;
   margin-right: 180px;
-  margin-top:20px;
+  margin-top: 20px;
 }
 
 .boton {
@@ -663,23 +719,20 @@ export default {
   min-width: 105px;
 }
 
-.botonEliminar{
+.botonEliminar {
   display: inline-block;
-  float:none;
+  float: none;
   margin-top: 20px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 
-#botonModal{
+#botonModal {
   margin-top: 10%;
   margin-left: 80%;
 }
 
-#medida{
+#medida {
   margin-left: 10%;
   margin-top: 5%;
 }
-
-
-
 </style>
