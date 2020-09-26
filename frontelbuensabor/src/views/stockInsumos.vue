@@ -33,6 +33,7 @@
         id="tablaInsumos"
         class="tabla"
         :filter="busqueda"
+        :tbody-tr-class="filaBaja"
       >
         <template v-slot:cell(accion)="row">
           <b-button
@@ -220,6 +221,11 @@ export default {
         this.$router.push({ name: "Home" });
       }
     },
+
+    filaBaja(item, type) {
+        if (!item || type !== 'row') return
+        if (item.baja === true) return 'table-danger'
+      },
 
     agregarInsumo() {
       this.$router.push({ path: "/modificarInsumo/" + undefined });
