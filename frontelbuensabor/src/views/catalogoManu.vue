@@ -109,6 +109,7 @@
             id="tablaManufac"
             class="tabla"
             :filter="busqueda"
+            :tbody-tr-class="filaBaja"
           >
             <template v-slot:cell(precio)="row">{{
               formatter.formatMoney(row.item.precioVenta)
@@ -273,6 +274,10 @@ export default {
     nuevoManufacturado() {
       this.$router.push({ path: "/modificarManufacturado/" + undefined });
     },
+    filaBaja(item, type) {
+        if (!item || type !== 'row') return
+        if (item.baja === true) return 'table-danger'
+      },
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
 
