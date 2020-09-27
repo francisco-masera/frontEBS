@@ -2,6 +2,7 @@ import axios from "axios";
 
 var serverUrl = "http://localhost:9001/buensabor";
 var responseEntity = [];
+var entero = 0;
 const config = {
   headers: {
     "Content-type": "application/json; charset=utf-8",
@@ -52,4 +53,12 @@ export default class Service {
       .catch((error) => console.log(error));
     return responseEntity;
   }
+  async deleteRecetas(subPath, id) {
+    await axios
+      .delete(serverUrl + "/" + subPath + "/" + parseInt(id), config)
+      .then((response) => (entero = response.data))
+      .catch((error) => console.log(error));
+    return entero;
+  }
+  
 }
