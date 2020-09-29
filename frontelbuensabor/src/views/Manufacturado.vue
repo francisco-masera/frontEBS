@@ -427,12 +427,7 @@ export default {
   min-width: 105px;
 }
 
-.botonEliminar {
-  display: inline-block;
-  float: none;
-  margin-top: 20px;
-  margin-bottom: 10px;
-}
+
 
 #admin-btn-grp {
   float: center;

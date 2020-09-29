@@ -791,9 +791,7 @@ export default {
     width: 105px;
     height: 30px;
   }
-  .posicion {
-    text-align: center;
-  }
+ 
   .modalMedida {
     height: 20%;
     width: 20%;

@@ -702,9 +702,6 @@ export default {
   text-align: left;
 }
 
-.posicion {
-  text-align: center;
-}
 
 .botonAñadirExistencia {
   margin-bottom: 10px;
@@ -717,13 +714,6 @@ export default {
 .boton {
   width: auto;
   min-width: 105px;
-}
-
-.botonEliminar {
-  display: inline-block;
-  float: none;
-  margin-top: 20px;
-  margin-bottom: 10px;
 }
 
 #botonModal {

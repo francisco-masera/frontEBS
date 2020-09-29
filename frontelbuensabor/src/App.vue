@@ -100,10 +100,11 @@ p {
 }
 
 .boton:active {
-  float: left;
-  border: none;
-  background-color: #e7511e;
-  color: #ffffff;
+ border: #e7511e;
+  background-color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  color: #e7511e;
 }
 .boton:visited {
   float: left;
@@ -287,7 +288,15 @@ p {
   color: #151515;
   border: none;
 }
-
+.posicion {
+  text-align: center;
+}
+.botonEliminar {
+  display: inline-block;
+  float: none;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
 .tabla {
   text-align: left;
 }

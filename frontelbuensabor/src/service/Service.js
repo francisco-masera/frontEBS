@@ -38,10 +38,13 @@ export default class Service {
   }
 
   async update(subPath, entity, id) {
+      console.log(serverUrl + "/" + subPath + "/" + parseInt(id))
+      console.log("entity",entity)
     await axios
       .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
       .then((response) => (responseEntity = response.data))
       .catch((error) => console.log(error));
+      
     return this.getOne(subPath, id);
   }
 
