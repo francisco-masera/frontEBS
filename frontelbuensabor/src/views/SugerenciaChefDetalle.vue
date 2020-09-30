@@ -14,9 +14,10 @@
         <img
           :src="
             'http://localhost:9001/images/productos/sugeridos/' +
-            sugerenciaEncontrada.imagen
+              sugerenciaEncontrada.imagen
           "
           class="imagenProducto"
+          id="imgInsumo"
         />
         <h3>{{ sugerenciaEncontrada.denominacion }}</h3>
 
@@ -26,7 +27,7 @@
         </div>
         <div class="infoProductoVenta">
           <b-card header="Costo" class="tarjetaInfo">
-            <b-card-text>${{ costo }}</b-card-text>
+            <b-card-text>{{ this.formatter.formatMoney(costo) }}</b-card-text>
           </b-card>
           <b-card header="Tiempo" class="tarjetaInfo">
             <b-card-text
@@ -44,16 +45,16 @@
           </ul>
         </div>
         <div class="botonesSugerencia">
-          <b-button pill class="boton" size="md" @click="abreModalAceptar()"
+          <b-button pill class="boton" size="md" @click="abreModalAceptar"
             >Aprobar</b-button
           >
-          <b-button pill class="boton" size="md" @click="abreModalDenegar()"
+          <b-button pill class="boton" size="md" @click="abremodalDenegar"
             >Denegar</b-button
           >
         </div>
 
         <div class="modalMedida">
-          <b-modal ref="modalDenega" hide-footer hide-header centered title>
+          <b-modal ref="modalDeniega" hide-footer hide-header centered title>
             <p class="modalTitulo">¿Desea eliminar la sugerencia?</p>
 
             <p class="posicion">
@@ -61,79 +62,74 @@
                 pill
                 size="md"
                 class="botonModal"
-                @click="denegarSugerencia()"
+                @click="denegarSugerencia"
                 >Aceptar</b-button
               >
-              <b-button
-                pill
-                size="md"
-                class="botonModal"
-                @click="vuelveDetalle()"
+              <b-button pill size="md" class="botonModal" @click="vuelveDetalle"
                 >Cancelar</b-button
               >
             </p>
           </b-modal>
         </div>
         <b-modal ref="modal" hide-footer title="Aprobar producto">
-      <form>
-        <div>
-          <p style="text-align: left; font-weight: 600">
-            Precio sugerido: $ {{ this.precioSugerido }}
-          </p>
-          <b-form-input
-            class="sugerenciaForm"
-            placeholder="Precio"
-            v-model="informacionVenta.precioVenta"
-          ></b-form-input>
-        </div>
-        <div>
-          <p style="text-align: left; font-weight: 600; margin-top:5%">
-            Seleccione una categoría para el producto
-          </p>
-          <b-form-select
-            v-model="informacionVenta.rubro.id"
-            
-            size="sm"
-            class="mt-3"
-          >
-          <b-form-select-option
-           v-for="rubro in rubros"
-           :key="rubro.id"
-           :value="rubro.id"
-           v-model="rubro.id"
-           
-
-     
-    >
-      {{ rubro.denominacion }}
-    </b-form-select-option>
-          </b-form-select>
-        </div>
-        <b-button pill class="boton" size="md" @click="aceptarSugerencia()"
-          >Agregar</b-button
-        >
-      </form>
-    </b-modal>
-     
-    <b-modal ref="modalConfirmacion" hide-footer hide-header centered title>
-            <p class="modalTitulo" v-if="confirmaSugerencia">Sugerencia Aceptada</p>
-            <p class="modalTitulo" v-else>Sugerencia Rechazada</p>
-            <p class="posicion">
-              <b-button
-                pill
-                size="md"
-                class="botonModal"
-                @click="vuelveSugerencias()"
-                >Aceptar</b-button
+          <form>
+            <div>
+              <p style="text-align: left; font-weight: 600">
+                Precio sugerido: {{ formatter.formatMoney(precioSugerido) }}
+              </p>
+              <b-form-input
+                type="number"
+                step="0.01"
+                class="sugerenciaForm"
+                value="0.0"
+                id="precio"
+              ></b-form-input>
+            </div>
+            <div>
+              <p style="text-align: left; font-weight: 600; margin-top:5%">
+                Seleccione una categoría para el producto
+              </p>
+              <b-form-select
+                v-model="informacionVenta.rubro"
+                size="sm"
+                class="mt-3"
+                id="rubrosSelect"
               >
-             
-            </p>
-          </b-modal>
+                <b-form-select-option
+                  v-for="rubro in rubros"
+                  :key="rubro.id"
+                  :value="rubro.id"
+                  v-model="rubro.id"
+                >
+                  {{ rubro.denominacion }}
+                </b-form-select-option>
+              </b-form-select>
+            </div>
+            <b-button pill class="boton" size="md" @click="aceptarSugerencia"
+              >Agregar</b-button
+            >
+          </form>
+        </b-modal>
+
+        <b-modal ref="modalConfirmacion" hide-footer hide-header centered title>
+          <p class="modalTitulo">
+            Sugerencia Aceptada
+          </p>
+          <p class="modalTitulo">Sugerencia Rechazada</p>
+          <p class="posicion">
+            <b-button
+              pill
+              size="md"
+              class="botonModal"
+              @click="vuelveSugerencias"
+              >Aceptar</b-button
+            >
+          </p>
+        </b-modal>
       </div>
     </b-container>
 
     <router-view />
-    
   </div>
 </template>
 
@@ -142,6 +138,7 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
+import Formatter from "@/utilidades/Formatters.js";
 export default {
   mounted() {
     this.getSugerenciaXid();
@@ -154,28 +151,25 @@ export default {
     return {
       sugerenciaEncontrada: [],
       service: new Service(),
+      formatter: new Formatter(),
       recetas: [],
-      costo: 0,
-      sugerenciaEliminar: {},
-      precioSugerido: 0,
+      costo: 0.0,
+      precioSugerido: 0.0,
       informacionVenta: {
+        id: 0,
         type: "ArticuloManufacturado",
         descripcion: "",
         precioVenta: 0.0,
         imagen: "",
         aptoCeliaco: 0,
-        baja:0,
-        denominacion:"lomo simple",
-        tiempoCocina:15,
-        vegano:0,
-        vegetariano:0,
-        confirmaSugerencia:false,
-
-        rubro: {
-          id:0,
-        },
+        baja: false,
+        denominacion: "",
+        tiempoCocina: 15,
+        vegano: 0,
+        vegetariano: 0,
+        rubro: { id: 0 },
       },
-      rubros:[],
+      rubros: [],
     };
   },
 
@@ -185,7 +179,6 @@ export default {
       await this.service.getOne("sugerencia", parametroId).then((data) => {
         this.sugerenciaEncontrada = data;
         this.getRecetas(parametroId);
-        console.log(this.sugerenciaEncontrada);
       });
     },
 
@@ -196,7 +189,6 @@ export default {
         )
         .then((response) => (this.recetas = response.data));
       await this.obtenerCosto();
-      console.log("Recetas " + this.recetas);
     },
 
     async obtenerCosto() {
@@ -222,59 +214,66 @@ export default {
       return cantInsumoStr;
     },
 
-    abreModalDenegar() {
-      this.$refs["modalDenega"].show();
+    abremodalDenegar() {
+      this.$refs["modalDeniega"].show();
     },
+
     abreModalAceptar() {
       this.cargaRubrosManu();
       this.calcularPrecioSugerido();
       this.$refs["modal"].show();
-      
     },
 
-vuelveSugerencias(){
- this.$refs["modalConfirmacion"].show();
- window.location.href = "/sugerenciaChef";
-},
-    async cargaRubrosManu(){
-      await this.service
-        .getAll("rubroManufacturado")
-        .then((data) => {
-          this.rubros = data;
-        }); 
-        console.log(this.rubros);
+    vuelveSugerencias() {
+      this.$refs["modalConfirmacion"].show();
+      window.location.href = "/sugerenciaChef";
+    },
+    async cargaRubrosManu() {
+      await this.service.getAll("rubroManufacturado").then((data) => {
+        this.rubros = data;
+      });
     },
     calcularPrecioSugerido() {
-      var porcentaje = this.costo * 0.2;
-      this.precioSugerido = this.costo + porcentaje;
+      let precioSugerido = this.costo + this.costo * 0.2;
+
+      this.precioSugerido = precioSugerido;
     },
 
     vuelveDetalle() {
-      this.$refs["modalDenega"].hide();
+      this.$refs["modalDeniega"].hide();
     },
+
     async denegarSugerencia() {
       await this.service
         .deleteRecetas(
           "recetaSugerida/eliminaRecetas/",
           this.sugerenciaEncontrada.id
         )
-        .then((data) => {
-          this.sugerenciaEliminar = data;
-        });
-      console.log(this.sugerenciaEncontrada.id);
-      console.log(this.sugerenciaEliminar);
-      await this.service
-        .delete("sugerencia", this.sugerenciaEncontrada.id)
-        .then((data) => {
-          this.sugerenciaEliminar = data;
-        });
-      this.$refs["modalConfirmacion"].show();
+        .then(() => {
+          this.eliminarSugerencia();
+        })
+        .then(() => this.deleteImg())
+        .then(() => {
+          this.toastInfo(
+            "Sugerencia eliminada.\nCompletando la transacción.",
+            "Información"
+          );
+          this.$refs["modalDeniega"].hide();
+        })
+        .catch(() => this.toastInfo("Error al eliminar los registros.", "Error"))
+        .then(() =>
+          setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
+        );
     },
 
+    async deleteImg() {
+      const nombre = this.sugerenciaEncontrada.imagen;
+      await axios.get("http://localhost:9001/buensabor/sugerencia/deleteImg", {
+        params: { nombre },
+      });
+    },
 
     async aceptarSugerencia() {
-      this.confirmaSugerencia = true;
-      console.log(this.informacionVenta.rubro.id);
       this.informacionVenta.descripcion = this.sugerenciaEncontrada.descripcion;
       this.informacionVenta.imagen = this.sugerenciaEncontrada.imagen;
       this.informacionVenta.denominacion = this.sugerenciaEncontrada.denominacion;
@@ -282,29 +281,106 @@ vuelveSugerencias(){
       this.informacionVenta.tiempoCocina = this.sugerenciaEncontrada.tiempoCocina;
       this.informacionVenta.vegano = this.sugerenciaEncontrada.vegano;
       this.informacionVenta.vegetariano = this.sugerenciaEncontrada.vegetariano;
-      //await this.guardarImagen(img);
-      await this.service
-        .save("manufacturado", this.informacionVenta)
-        .then((data) => {
-          this.informacionVenta = data;
-         
-        });
-      this.guardarRecetas(this.sugerenciaEncontrada);
-       this.$refs["modalConfirmacion"].show();
-      this.denegarSugerencia();
+      this.informacionVenta.precioVenta = document.getElementById(
+        "precio"
+      ).value;
+
+      let rubroSeleccionado = document.getElementById("rubrosSelect");
+      let rubroId =
+        rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
+      this.informacionVenta.rubro = parseInt(rubroId);
+      await this.guardarSugerencia()
+        .then((data) => this.guardarRecetas(data))
+        .then(() => this.denegarSugerencia())
+        .then(this.moveImg())
+        .then(() => {
+          this.toastInfo(
+            "Artículo guardado con éxito.\nCompletando la transacción,",
+            "Información"
+          );
+          this.$refs["modal"].hide();
+        })
+        .then(() =>
+          setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
+        )
+        .catch(() => this.toastInfo("Error al aceptar la sugerencia.", "Error"));
     },
 
-    guardarRecetas(sugerencia) {
-      this.recetas.forEach((r) => {
-        this.auxGuardarRecetas(r, sugerencia.id);
-        return;
+    async guardarSugerencia() {
+      let sugerencia = await this.service
+        .save("manufacturado", this.informacionVenta)
+        .then((data) => (this.informacionVenta = data))
+        .catch((error) => {
+          console.log(error);
+          return false;
+        });
+
+      return sugerencia;
+    },
+
+    async moveImg() {
+      const nombre = this.sugerenciaEncontrada.imagen;
+      const lastDot = nombre.lastIndexOf(".");
+      const ext = nombre.substring(lastDot + 1);
+
+      await axios.get("http://localhost:9001/buensabor/sugerencia/moveImg", {
+        params: { nombre, ext },
       });
     },
 
-    async auxGuardarRecetas(receta, id) {
-      await axios.post("http://localhost:9001/buensabor/receta/" + id);
+    async eliminarSugerencia() {
+      await this.service.delete("sugerencia", this.sugerenciaEncontrada.id);
     },
 
+    toastInfo(mensaje, titulo, append = false) {
+      this.$bvToast.toast(mensaje, {
+        title: titulo,
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: append,
+        autoHideDelay: 3000,
+      });
+    },
+
+    async guardarImagen(formData) {
+      await axios
+        .post(
+          "http://localhost:9001/buensabor/manufacturado/uploadImg",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origins": "*",
+              "cache-control": "no-cache",
+            },
+          }
+        )
+        .catch((error) => {
+          console.log(error);
+          return error;
+        });
+      return true;
+    },
+
+    guardarRecetas(manufacturado) {
+      let error = false;
+      this.recetas.forEach(
+        (r) =>
+          (error =
+            typeof this.auxGuardarRecetas(r, manufacturado) == "string"
+              ? true
+              : false)
+      );
+      return error;
+    },
+
+    async auxGuardarRecetas(receta, manufacturado) {
+      receta.manufacturado = manufacturado;
+      return await axios.post(
+        `http://localhost:9001/buensabor/receta/guardarReceta/${manufacturado.id}`,
+        receta
+      );
+    },
   },
 };
 </script>
@@ -331,14 +407,6 @@ vuelveSugerencias(){
   height: 300px;
   object-fit: cover;
   margin-bottom: 30px;
-}
-
-#stockColor {
-  width: 20px;
-  height: 20px;
-  border-radius: 300px;
-  float: left;
-  margin-right: 10px;
 }
 
 .categoria {

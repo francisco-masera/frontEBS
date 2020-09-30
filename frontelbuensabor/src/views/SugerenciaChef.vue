@@ -102,7 +102,8 @@ export default {
           this.costos = response.data;
           this.agregarCostos();
           return;
-        });
+        })
+        .catch((error) => console.log(error));
       console.log(this.sugerenciasData);
     },
 

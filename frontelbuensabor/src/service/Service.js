@@ -2,7 +2,6 @@ import axios from "axios";
 
 var serverUrl = "http://localhost:9001/buensabor";
 var responseEntity = [];
-var entero = 0;
 const config = {
   headers: {
     "Content-type": "application/json; charset=utf-8",
@@ -34,16 +33,16 @@ export default class Service {
     await axios
       .post(serverUrl + "/" + subPath + "/", entity, config)
       .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
+      .catch(() => (responseEntity = undefined));
     return responseEntity;
   }
 
   async update(subPath, entity, id) {
     await axios
       .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
-      .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
-    return this.getOne(subPath, id);
+      .then(() => (responseEntity = this.getOne(subPath, id)))
+      .catch(() => (responseEntity = undefined));
+    return responseEntity;
   }
 
   async delete(subPath, id) {
@@ -53,12 +52,14 @@ export default class Service {
       .catch((error) => console.log(error));
     return responseEntity;
   }
+
   async deleteRecetas(subPath, id) {
     await axios
       .delete(serverUrl + "/" + subPath + "/" + parseInt(id), config)
-      .then((response) => (entero = response.data))
+      .then((response) => {
+        return response.data;
+      })
       .catch((error) => console.log(error));
-    return entero;
+    return;
   }
-  
 }

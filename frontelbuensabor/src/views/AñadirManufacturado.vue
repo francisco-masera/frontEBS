@@ -24,8 +24,8 @@
               />
               <br />
               <b-form-invalid-feedback>
-                <br />Este campo es obligatorio.
-                <br />Recuerde ingresar sólo letras.
+                <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
+                letras.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -42,8 +42,8 @@
                 max-rows="6"
               />*
               <b-form-invalid-feedback>
-                <br />Este campo es obligatorio.
-                <br />Recuerde ingresar sólo letras.
+                <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
+                letras.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -54,25 +54,32 @@
                 id="checkbox-1"
                 name="checkbox-1"
                 v-model="manufacturado.aptoCeliaco"
-              >Apto para celíacos</b-form-checkbox>
+                >Apto para celíacos</b-form-checkbox
+              >
               <b-form-checkbox
                 id="checkbox-2"
                 name="checkbox-1"
                 v-model="manufacturado.vegano"
-              >Producto vegano</b-form-checkbox>
+                >Producto vegano</b-form-checkbox
+              >
               <b-form-checkbox
                 id="checkbox-3"
                 name="checkbox-1"
                 v-model="manufacturado.vegetariano"
-              >Producto vegetariano</b-form-checkbox>
+                >Producto vegetariano</b-form-checkbox
+              >
             </b-form-group>
           </div>
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
           <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click.prevent="onSubmit1">Siguiente</b-button>
+            <b-button pill class="boton2" size="md" @click="volver"
+              >Cancelar</b-button
+            >
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit1"
+              >Siguiente</b-button
+            >
           </div>
         </b-form>
       </div>
@@ -105,7 +112,9 @@
                   ></b-form-checkbox>
                 </b-form-group>
               </template>
-              <template v-slot:cell(denominacion)="row">{{ row.item.denominacion }}</template>
+              <template v-slot:cell(denominacion)="row">{{
+                row.item.denominacion
+              }}</template>
             </b-table>
             <b-pagination
               v-model="currentPage"
@@ -120,7 +129,13 @@
           <b-toast id="toast-insumos" variant="warning" solid>
             <template v-slot:toast-title>
               <div class="d-flex flex-grow-1 align-items-baseline">
-                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+                <b-img
+                  blank
+                  blank-color="#ff5555"
+                  class="mr-2"
+                  width="12"
+                  height="12"
+                ></b-img>
                 <strong class="mr-auto">¡Atención!</strong>
               </div>
             </template>
@@ -138,15 +153,18 @@
                 :state="!$v.form2.tiempoCocina.$invalid"
               ></b-form-input>
               <b-form-invalid-feedback>
-                <br />Este campo es obligatorio
-                <br />y sólo admite números mayores a cero
-                <br />sin coma ni punto.
+                <br />Este campo es obligatorio <br />y sólo admite números
+                mayores a cero <br />sin coma ni punto.
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
           <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click.prevent="onSubmit2">Siguiente</b-button>
+            <b-button pill class="boton2" size="md" @click="volver"
+              >Cancelar</b-button
+            >
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit2"
+              >Siguiente</b-button
+            >
           </div>
         </b-form>
       </div>
@@ -154,8 +172,16 @@
       <div id="paso3">
         <b-form id="form3">
           <div class="lineaForm">
-            <b-table hover responsive="sm" fixed :fields="camposTablaDetalle" :items="ingredientes">
-              <template v-slot:cell(ingrediente)="row">{{ row.item.denominacion }}</template>
+            <b-table
+              hover
+              responsive="sm"
+              fixed
+              :fields="camposTablaDetalle"
+              :items="ingredientes"
+            >
+              <template v-slot:cell(ingrediente)="row">{{
+                row.item.denominacion
+              }}</template>
               <template slot="unidadMedida" slot-scope="row">
                 <b-form-group>
                   <b-form-input v-model="row.item.unidadMedida" readonly />
@@ -169,20 +195,29 @@
                 ></cantidad>
               </template>
             </b-table>
-            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click.prevent="onSubmit3">Siguiente</b-button>
+            <b-button pill class="boton2" size="md" @click="volver"
+              >Cancelar</b-button
+            >
+            <b-button pill class="boton" size="md" @click.prevent="onSubmit3"
+              >Siguiente</b-button
+            >
           </div>
           <b-toast id="toast-datos" variant="warning" solid>
             <template v-slot:toast-title>
               <div class="d-flex flex-grow-1 align-items-baseline">
-                <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+                <b-img
+                  blank
+                  blank-color="#ff5555"
+                  class="mr-2"
+                  width="12"
+                  height="12"
+                ></b-img>
                 <strong class="mr-auto">¡Atención!</strong>
               </div>
             </template>
             Todos los datos de esta página son
-            <br />obligatorios para continuar.
-            <br />Recuerde: Las cantidades deben ser sólo números.
-            <br />Verifique los datos.
+            <br />obligatorios para continuar. <br />Recuerde: Las cantidades
+            deben ser sólo números. <br />Verifique los datos.
           </b-toast>
         </b-form>
       </div>
@@ -196,7 +231,10 @@
             <h3>
               {{ manufacturado.denominacion }}
               <b-button size="sm" id="btn-editar" class="botonImagen">
-                <img src="http://localhost:9001/images/sistema/editar.png" id="imagenAgregar" />
+                <img
+                  src="http://localhost:9001/images/sistema/editar.png"
+                  id="imagenAgregar"
+                />
               </b-button>
             </h3>
             <div id="descripcionInsumo">
@@ -224,7 +262,11 @@
             </div>
             <div class="infoIngredientes">
               <h2>Ingredientes</h2>
-              <li id="listaIngredientes" v-for="(receta, index) in recetasNuevas" :key="index">
+              <li
+                id="listaIngredientes"
+                v-for="(receta, index) in recetasNuevas"
+                :key="index"
+              >
                 {{ receta.insumo.denominacion }}
                 {{ receta.cantidadInsumo }}
                 {{ receta.insumo.unidadMedida }}
@@ -233,7 +275,13 @@
             <b-toast id="toast-img" variant="warning" solid>
               <template v-slot:toast-title>
                 <div class="d-flex flex-grow-1 align-items-baseline">
-                  <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+                  <b-img
+                    blank
+                    blank-color="#ff5555"
+                    class="mr-2"
+                    width="12"
+                    height="12"
+                  ></b-img>
                   <strong class="mr-auto">¡Atención!</strong>
                 </div>
               </template>
@@ -243,14 +291,24 @@
               <b-modal ref="modal" hide-footer hide-header centered title>
                 <p class="modalTitulo">¡Sugerencia agregada con éxito!</p>
                 <p class="posicion">
-                  <b-button pill size="md" class="botonModal" @click="retornaAlCatalogo()">Aceptar</b-button>
+                  <b-button
+                    pill
+                    size="md"
+                    class="botonModal"
+                    @click="retornaAlCatalogo()"
+                    >Aceptar</b-button
+                  >
                 </p>
               </b-modal>
             </div>
           </div>
           <div class="lineaFormDerecha">
-            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click.prevent="guardar">Guardar</b-button>
+            <b-button pill class="boton2" size="md" @click="volver"
+              >Cancelar</b-button
+            >
+            <b-button pill class="boton" size="md" @click.prevent="guardar"
+              >Guardar</b-button
+            >
           </div>
         </b-form>
       </div>
@@ -264,7 +322,7 @@ import Vue from "vue";
 Vue.use(Vuelidate);
 import { required, numeric, integer } from "vuelidate/lib/validators";
 import { validationMixin } from "vuelidate";
-import { helpers } from "vuelidate/lib/validators";
+//import { helpers } from "vuelidate/lib/validators";
 import Vuelidate from "vuelidate";
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
@@ -547,24 +605,22 @@ export default {
         ? (estadoSugerencia = await this.guardarSugerencia(sugerencia))
         : this.$bvToast.show("toast-img");
 
-     if(typeof estadoSugerencia === "object"){
-       this.guardarRecetas(estadoSugerencia);
+      if (typeof estadoSugerencia === "object") {
+        this.guardarRecetas(estadoSugerencia);
         this.$refs["modal"].show();
-     }else{
-       this.toastError(); 
-     }
-               
-         
+      } else {
+        this.toastError();
+      }
     },
 
-   toastError(append = false) {
-        this.$bvToast.toast(`Surgió un error al cargar la nueva sugerencia`, {
-          title: `Error`,
-          toaster: 'b-toaster-top-center',
-          solid: true,
-          appendToast: append
-        })
-      },
+    toastError(append = false) {
+      this.$bvToast.toast(`Surgió un error al cargar la nueva sugerencia`, {
+        title: `Error`,
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: append,
+      });
+    },
     retornaAlCatalogo() {
       window.location.href = "/catalogoManu/";
     },
@@ -603,7 +659,6 @@ export default {
     },
 
     guardarRecetas(sugerencia) {
-      
       let sugerenciaChef = this.setKeyIdSugerencia(sugerencia);
       this.recetasNuevas.forEach((r) => {
         r.sugerenciaChef = sugerenciaChef;
@@ -645,11 +700,9 @@ export default {
     form1: {
       denominacion: {
         required,
-        alpha: helpers.regex("alpha", /^[a-zA-ZÀ-ž\s]*$/),
       },
       descripcion: {
         required,
-        alpha: helpers.regex("alpha", /^[a-zA-ZÀ-ž\s]*$/),
       },
     },
 
@@ -778,26 +831,26 @@ export default {
   float: none;
 }
 
-  .modalTitulo {
-    margin-top: 7%;
-    text-align: center;
-    font-size: 25px;
-  }
-  .botonModal {
-    border: none;
-    background-color: #e7511e !important;
-    color: #ffffff;
-    font-weight: 600;
-    width: 105px;
-    height: 30px;
-  }
-  .posicion {
-    text-align: center;
-  }
-  .modalMedida {
-    height: 20%;
-    width: 20%;
-  }
+.modalTitulo {
+  margin-top: 7%;
+  text-align: center;
+  font-size: 25px;
+}
+.botonModal {
+  border: none;
+  background-color: #e7511e !important;
+  color: #ffffff;
+  font-weight: 600;
+  width: 105px;
+  height: 30px;
+}
+.posicion {
+  text-align: center;
+}
+.modalMedida {
+  height: 20%;
+  width: 20%;
+}
 
 @media screen and (max-width: 604px) {
   .lineaForm {
@@ -819,7 +872,5 @@ export default {
   .botonAñadirInsumo {
     float: left;
   }
-
-
 }
 </style>
