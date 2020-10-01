@@ -64,6 +64,7 @@ p {
   font-size: 11pt;
   margin-left: 10px;
   float: left;
+  
 }
 
 .abajo {
