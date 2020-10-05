@@ -11,22 +11,37 @@
       <h1 id="titulo" v-else>Modificar producto</h1>
       <div id="paso1">
         <h2>Información básica</h2>
-        <b-form>
+        <b-form id="form1">
           <div class="lineaForm">
-            <label class="labelForm">Nombre</label>
+            <label class="labelForm">Nombre </label>
             <b-form-input
               class="campoForm"
-              v-model="insumoEncontrado.denominacion"
+              v-model.lazy="form1.denominacion"
               id="nombreInsumo"
+              :state="!$v.form1.denominacion.$invalid"
             ></b-form-input>*
+            <br />
+              <b-form-invalid-feedback>
+                <br />Este campo es obligatorio.
+                <br />Recuerde ingresar sólo letras.
+              </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Stock mínimo</label>
-            <b-form-input class="campoForm" id="stockMin" v-model="insumoEncontrado.stock.minimo"></b-form-input>*
-            <br />
+            <b-form-input class="campoForm" id="stockMin" v-model.lazy="form1.stockMin" :state="!$v.form1.stockMin.$invalid"></b-form-input>*
+           <br /> 
+              <b-form-invalid-feedback>
+                <br />Este campo es obligatorio.
+                <br />Recuerde ingresar sólo números.
+              </b-form-invalid-feedback>
             <label class="labelForm" style="margin-left:10px">Stock máximo</label>
 
-            <b-form-input class="campoForm" id="stockMax" v-model="insumoEncontrado.stock.maximo"></b-form-input>*
+            <b-form-input class="campoForm" id="stockMax" v-model.lazy="form1.stockMax" :state="!$v.form1.stockMax.$invalid"></b-form-input>*
+            <br />
+            <b-form-invalid-feedback>
+                <br />Este campo es obligatorio.
+                <br />Recuerde ingresar sólo números.
+              </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Unidad de medida</label>
@@ -41,16 +56,16 @@
               <b-form-checkbox
                 id="checkbox-1"
                 name="checkbox-1"
-                value="venta"
+               
                 v-model="esInsumoVenta"
-                unchecked-value="no_venta"
+                
               >Directo a venta</b-form-checkbox>
               <b-form-checkbox
                 id="checkbox-2"
                 name="checkbox-2"
-                value="extra"
+                
                 v-model="insumoEncontrado.esExtra"
-                unchecked-value="no_extra"
+                
               >Extras</b-form-checkbox>
             </b-form-group>
           </div>
@@ -59,43 +74,58 @@
           </div>
           <div class="lineaFormDerecha" style="display: flex">
             <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click="siguiente1">Siguiente</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="siguiente1">Siguiente</b-button>
           </div>
         </b-form>
       </div>
 
       <div id="paso2">
         <h2>Información de venta</h2>
-        <b-form>
+        <b-form id="form2">
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Precio de venta</label>
-            <b-form-input class="campoForm" id="precioVenta" v-model="informacionVenta.precioVenta"></b-form-input>*
+            <b-form-input class="campoForm" id="precioVenta" v-model.lazy="form2.precioVenta" :state="!$v.form2.precioVenta.$invalid"></b-form-input>*
+            
+             <b-form-invalid-feedback>
+                <br />Este campo es obligatorio.
+                <br />Recuerde ingresar sólo números mayores a 0.
+              </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" id="lineaDescripcion" style="display:flex">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
               class="campoForm"
-              v-model="informacionVenta.descripcion"
+              v-model.lazy="form2.lineaDescripcion" 
+              :state="!$v.form2.lineaDescripcion.$invalid"
               placeholder="Enter something..."
               rows="3"
               max-rows="6"
             ></b-form-textarea>*
+            <b-form-invalid-feedback>
+                <br />Este campo es obligatorio.
+                
+              </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Imagen</label>
-            <b-form-file class="campoForm" id="imagen"></b-form-file>
+            <b-form-file class="campoForm" id="imagen" v-model.lazy="form2.imagen" 
+              :state="!$v.form2.imagen.$invalid"></b-form-file>*
+               <b-form-invalid-feedback>
+                <br />Este campo es obligatorio.
+                
+              </b-form-invalid-feedback>
           </div>
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-if="esNuevo">
             <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click="agregarInsumo">Guardar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="agregarInsumo">Guardar</b-button>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-else>
             <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click="updateInsumo">Guardar</b-button>
+            <b-button pill class="boton" size="md" @click.prevent="updateInsumo()">Guardar</b-button>
           </div>
         </b-form>
       </div>
@@ -247,16 +277,16 @@
           </div>
           
           <div class="lineaFormDerecha" style="float:right" v-if="esInsumoVenta">
-            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock()">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click="siguiente2()">Siguiente</b-button>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-else-if="esNuevo">
-            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click="agregarInsumo">Guardar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock()">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click="agregarInsumo()">Guardar</b-button>
           </div>
           <div class="lineaFormDerecha" style="float:right" v-else>
-            <b-button pill class="boton2" size="md" @click="retornaAlStock">Cancelar</b-button>
-            <b-button pill class="boton" size="md" @click="updateInsumo">Guardar</b-button>
+            <b-button pill class="boton2" size="md" @click="retornaAlStock()">Cancelar</b-button>
+            <b-button pill class="boton" size="md" @click="updateInsumo()">Guardar</b-button>
           </div>
         </b-form>
       </div>
@@ -275,6 +305,10 @@
 </template>
 
 <script>
+import Vue from "vue";
+Vue.use(Vuelidate);
+import Vuelidate from "vuelidate";
+import { helpers,requiredIf,required,numeric, integer} from "vuelidate/lib/validators";
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
@@ -293,6 +327,16 @@ export default {
 
   data() {
     return {
+       form1: {
+        denominacion: "",
+        stockMin: "",
+        stockMax:"",
+      },
+      form2:{
+        precioVenta:"",
+        lineaDescripcion:"",
+        imagen:"",
+      },
       insumoEncontrado: {
         baja: false,
         denominacion: "",
@@ -314,7 +358,7 @@ export default {
       informacionVenta:{
         type: "InformacionInsumoVenta",
         descripcion:"",
-        precioVenta:0.0,
+        precioVenta:"",
         imagen:"",
         insumo: {},
       },
@@ -323,11 +367,20 @@ export default {
       unidad: "",
       categoriasData: [],
       esNuevo: true,
+      guardaImagen:""
     };
   },
 
   methods: {
     siguiente1() {
+      this.$v.$touch();
+       if (this.$v.form1.$anyError) {
+        return;
+      }
+      this.insumoEncontrado.denominacion = this.form1.denominacion;
+      this.insumoEncontrado.stock.maximo = this.form1.stockMax;
+      this.insumoEncontrado.stock.minimo = this.form1.stockMin;
+
       document.getElementById("paso1").style.display = "none";
       if (document.getElementById("checkbox-2").checked) {
         this.insumoEncontrado.esExtra = true;
@@ -336,6 +389,8 @@ export default {
       document.getElementById("paso3").style.display = "block";
     },
     siguiente2() {
+      
+      this.completarCamposForm2();
       document.getElementById("paso3").style.display = "none";
       document.getElementById("paso2").style.display = "block";
     },
@@ -356,8 +411,36 @@ export default {
           this.insumoEncontrado = data;
         });
         this.esNuevo = false;
+        this.completarCamposForm1();
+        if(!this.insumoEncontrado.esInsumo){
+          this.getInsumoVentaxId();
+        }
       }
+
     },
+    completarCamposForm1(){
+    this.form1.denominacion = this.insumoEncontrado.denominacion;
+    this.form1.stockMax = this.insumoEncontrado.stock.maximo;
+    this.form1.stockMin = this.insumoEncontrado.stock.minimo;
+    },
+
+    completarCamposForm2(){
+      this.form2.lineaDescripcion = this.informacionVenta.descripcion;
+      this.form2.precioVenta = this.informacionVenta.precioVenta;
+      this.form2.imagen = this.informacionVenta.imagen;
+      this.guardaImagen = this.informacionVenta.imagen;
+      
+    },
+
+     async getInsumoVentaxId() {
+      var parametroId = parseInt(this.$route.params.id);
+      this.esInsumoVenta = true;
+      await this.service
+        .getOne("insumoVenta/insumo", parametroId)
+        .then((data) => (this.informacionVenta = data[0]))
+        console.log(this.informacionVenta);
+       
+    }, 
 
     async guardaStock() {
       if (this.esNuevo) {
@@ -379,6 +462,13 @@ export default {
     },
 
     async updateInsumo() {
+      
+       if(this.esInsumoVenta){
+         this.$v.$touch();
+      if (this.$v.form2.$anyError) {
+        return;
+      }
+      }
       console.log(this.insumoEncontrado.unidadMedida);
       await this.guardaStock();
       await this.service
@@ -386,31 +476,62 @@ export default {
         .then((response) => {
           this.$refs["modal"].show();
           console.log(response);
-        })
+        });
 
-        .catch((error) => console.log(error));
+      console.log(this.informacionVenta.id);
+        if(!this.insumoEncontrado.esInsumo){
+          console.log(this.informacionVenta.id);
+        this.informacionVenta.descripcion = this.form2.lineaDescripcion;
+        this.informacionVenta.precioVenta = this.form2.precioVenta;
+        this.informacionVenta.insumo = this.insumoEncontrado;
+        
+        let img = document.getElementById("imagen").files[0];
+        if(img!==undefined){
+        this.informacionVenta.imagen = img.name;
+        await this.guardarImagen(img);
+        }else{
+          this.informacionVenta.imagen= this.guardaImagen;
+        }
+       
+    await this.service.update("insumoVenta", this.informacionVenta,this.informacionVenta.id).then((data) => {
+        this.informacionVenta = data;
+        this.$refs["modal"].show();        
+      });
+      }
     },
     async agregarInsumo() {
+      if(this.esInsumoVenta){
+         this.$v.$touch();
+      if (this.$v.form2.$anyError) {
+        return;
+      }
+      }
       console.log("Guarda INSUMO");
       await this.guardaStock();
       console.log(this.insumoEncontrado)
       
         await this.service.save("insumo", this.insumoEncontrado).then((data) => {
         this.insumoEncontrado = data;
-        this.$refs["modal"].show();        
+             
       });
       if(!this.insumoEncontrado.esInsumo){
+        this.informacionVenta.descripcion = this.form2.lineaDescripcion;
+        this.informacionVenta.precioVenta = this.form2.precioVenta;
         this.informacionVenta.insumo = this.insumoEncontrado;
         let img = document.getElementById("imagen").files[0];
+        console.log(img);
         this.informacionVenta.imagen = img.name;
         await this.guardarImagen(img);
         await this.service.save("insumoVenta", this.informacionVenta).then((data) => {
         this.informacionVenta = data;
-        this.$refs["modal"].show();        
+            
       });
+
+       
       }
-      
+      this.$refs["modal"].show();  
     },
+    
     async guardarImagen(imagen) {
       const formData = new FormData();
       formData.append("file", imagen);
@@ -457,7 +578,51 @@ export default {
     retornaAlStock() {
       window.location.href = "/stockInsumos/";
     },
+
+    
   },
+  
+computed: {
+  isNuevo() {
+      return this.esNuevo; // some conditional logic here...
+    }
+  },
+   validations: {
+    form1: {
+      denominacion: {
+        required,
+        alpha: helpers.regex("alpha", /^[a-zA-ZÀ-ž\s]*$/),
+      },
+      stockMin:{
+        required,
+        numeric,
+        integer,
+      },
+      stockMax:{
+        required,
+        numeric,
+        integer,
+      }
+    },
+     form2: {
+       
+       precioVenta:{
+        required,
+        numeric,
+        integer,
+       },
+       lineaDescripcion:{
+        required, 
+       },
+       imagen:{
+          required:requiredIf((esNuevo)=>{
+            return esNuevo;
+          })
+            
+          }
+       }
+     }
+   
 };
 </script>
 <style>
