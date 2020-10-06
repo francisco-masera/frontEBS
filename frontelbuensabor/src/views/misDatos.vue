@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="lineaFormDerecha" style="float:right">
-                <b-button pill class="boton" size="md" >Guardar cambios</b-button>
+                <b-button pill class="boton" size="md" @click="guardar" >Guardar cambios</b-button>
                  
             </div>
             
@@ -50,7 +50,7 @@
       Eliminar cuenta
     </b-button> 
     <br>
-    <b-button class="buttonText" @click="cambiarContra" >
+    <b-button class="buttonText" @click="cambiarImagen" >
       <img src="http://localhost:9001/images/sistema/camera.png" style="width:25px"/>
       Cambiar foto de perfil
     </b-button>   
@@ -99,7 +99,7 @@
                 </b-button>
             </p>
 
-      <!-- Toast que muestra la confirmación de eliminado con éxito-->
+      <!-- Toast que muestra la confirmación de cambio de contraseña con exito-->
       <b-toast id="toast-eliminar-exito" variant="success" solid>
         <template v-slot:toast-title>
           <div class="d-flex flex-grow-1 align-items-baseline">
@@ -112,10 +112,10 @@
             ></b-img>
           </div>
         </template>
-        ¡Insumo modificado con éxito!
+        Contraseña actualizada
       </b-toast>
 
-      <!-- Toast que muestra el error en la eliminación del insumo por error en contraseña-->
+      <!-- Toast que muestra el cambio de contraseña por error en contraseña-->
       <b-toast id="toast-eliminar-error" variant="warning" solid>
         <template v-slot:toast-title>
           <div class="d-flex flex-grow-1 align-items-baseline">
@@ -147,7 +147,8 @@
         ¡Las contraseñas no coinciden!
       </b-toast>
 
-       <!-- Toast error servidor-->
+    </b-modal>
+ <!-- Toast error servidor-->
       <b-toast id="toast-error-sistema" variant="danger" solid>
         <template v-slot:toast-title>
           <div class="d-flex flex-grow-1 align-items-baseline">
@@ -162,8 +163,6 @@
         </template>
         Error al cambiar la contraseña
       </b-toast>
-    </b-modal>
-
     <b-modal
             ref="modalEliminarCuenta"
             title="¿Esta seguro de eliminar su cuenta?"
@@ -206,7 +205,110 @@
         </template>
         ¡La contraseña no es correcta!
       </b-toast>
+
+     <!-- Toast que muestra la confirmación de eliminado con éxito-->
+      <b-toast id="toast-eliminar-exito" variant="success" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+        Baja exitosa
+      </b-toast>
+
     </b-modal>
+
+
+     <b-modal
+            ref="modalCambioImagen"
+            title="Cambiar imagen de perfil"
+            class="modalEliminar"           
+            no-close-on-esc
+            hide-footer
+            no-close-on-backdrop
+            modal-header-close
+        >
+            <form class="estiloForm">
+                <b-form-file class="campoForm" id="imagen"></b-form-file>
+               
+            </form>
+            <p class="posicion">
+                <b-button
+                    pill
+                    class="boton botonEliminar"
+                    size="sm"
+                     @click="updateImagen"
+                >Guardar imagen
+                </b-button>
+            </p>
+
+    </b-modal>
+
+     <b-toast id="toast-imagen-error" variant="danger" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+        Error al modificar imagen
+      </b-toast>
+
+      <b-toast id="toast-imagen-exito" variant="success" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+        Imagen de perfil modificada
+      </b-toast>
+
+      <b-toast id="toast-datos-exito" variant="success" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+       Datos actualizados
+      </b-toast>
+      
+      <b-toast id="toast-datos-error" variant="danger" solid>
+        <template v-slot:toast-title>
+          <div class="d-flex flex-grow-1 align-items-baseline">
+            <b-img
+              blank
+              blank-color="#ff5555"
+              class="mr-2"
+              width="12"
+              height="12"
+            ></b-img>
+          </div>
+        </template>
+       Error al actualizar datos
+      </b-toast>
   </div>
 </template>
 
@@ -231,6 +333,7 @@ export default {
         nuevaContraseniaUsuario:"",
         nuevaContraseniaUsuario2:"",
         contraseniaVerificada: false,
+        imagen:"",
     }
   },
 
@@ -240,6 +343,10 @@ export default {
       await this.service.getOne("persona",parametroId).then((data) => {
         this.user = data;
       }); 
+    },
+
+    cambiarImagen(){
+      this.$refs.modalCambioImagen.show();
     },
     cambiarContra(){
         this.$refs.modalCambioPass.show();
@@ -261,16 +368,111 @@ export default {
       contraseniaVerificada
         ? this.eliminarCuenta()
         : (this.$bvToast.show("toast-eliminar-error"));
+
+      },
+
+    async guardar(){
+      var parametroId = parseInt(this.$route.params.id);
+      this.verificaUsuario();
+      if(this.user.type==="Empleado"){
+        await this.service.update("empleado",this.user,parametroId).then((data)=>{
+        this.user=data;
+        this.$bvToast.show("toast-datos-exito")   
+      }).catch(()=>{
+        this.$bvToast.show("toast-datos-error") 
+      })
+      }else{
+        await this.service.update("cliente",this.user,parametroId).then((data)=>{
+        this.user=data; 
+          this.$bvToast.show("toast-datos-exito")
+      }).catch(()=>{
+        this.$bvToast.show("toast-datos-error") 
+      })
       }
     },
-    eliminarCuenta(){
-      console.log("eliminar")
+
+    async updateImagen(){
+        let img = document.getElementById("imagen").files[0];
+        this.user.foto = img.name;
+        await this.guardarImagen(img)
+        this.$refs.modalCambioImagen.hide();
     },
+      async guardarImagen(imagen) {
+      this.verificaUsuario();
+      const formData = new FormData();
+      formData.append("file", imagen);
+      if(this.user.type==="Cliente"){
+        await axios
+        .post(
+          "http://localhost:9001/buensabor/cliente/uploadImg",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origins": "*",
+              "cache-control": "no-cache",
+            },
+          }
+        )
+        .catch((error) => {
+          (this.$bvToast.show("toast-imagen-error"));
+          return error;
+        });
+        this.$bvToast.show("toast-imagen-exito");
+      return true;
+      } else if(this.user.type==="Empleado"){
+        await axios
+        .post(
+          "http://localhost:9001/buensabor/empleado/uploadImg",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origins": "*",
+              "cache-control": "no-cache",
+            },
+          }
+        )
+        .catch((error) => {
+          (this.$bvToast.show("toast-imagen-error"));
+          return error;
+        });
+        this.$bvToast.show("toast-imagen-exito");
+      return true;
+      }
+      
+    },
+    async eliminarCuenta(){
+      this.verificaUsuario();
+      var parametroId = parseInt(this.$route.params.id);
+      console.log("antes",this.user)
+      this.user.baja=true;
+      if(this.user.type==="Empleado"){
+        await this.service.update("empleado",this.user,parametroId).then((data)=>{
+        this.user=data; 
+        this.$refs.modalCambioPass.hide();       
+        this.$bvToast.show("toast-eliminar-exito");
+      }).catch(()=>{
+        this.$bvToast.show("toast-error-sistema")
+      })
+      }else{
+        await this.service.update("cliente",this.user,parametroId).then((data)=>{
+        this.user=data; 
+        this.$refs.modalCambioPass.hide();       
+        this.$bvToast.show("toast-eliminar-exito");
+      }).catch(()=>{
+        this.$bvToast.show("toast-error-sistema")
+      })
+      }
+      this.contraseniaUsuario="";
+      this.$refs.modalEliminarCuenta.hide();
+      this.$router.push({ path: "/ingreso" })
+    },
+
      async verificarContrasenia() {
+       console.log("verificar contraseña")
       await this.verificaUsuario();
-      if(this.nuevaContraseniaUsuario === this.nuevaContraseniaUsuario2){
-        
-        
+      if(this.nuevaContraseniaUsuario === this.nuevaContraseniaUsuario2){       
         let contraseniaVerificada = await axios
         .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
           params: {
@@ -285,7 +487,9 @@ export default {
       }else{
         this.$bvToast.show("toast-contra-dif")
       }
-      
+      this.contraseniaUsuario= "";
+      this.nuevaContraseniaUsuario="";
+      this.nuevaContraseniaUsuario2="";
     },
 
     verificaUsuario(){
@@ -321,7 +525,7 @@ export default {
       }
     }
 
-  
+}
 
 
 </script>
