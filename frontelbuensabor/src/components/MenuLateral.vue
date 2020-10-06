@@ -1,7 +1,10 @@
 <template>
  <div>
   <b-card id="MenuLateral" border-variant="dark" >
-        <img src="http://localhost:9001/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
+        <div class="imagenContenedor">
+        <img v-if="this.user.foto!=undefined"  :src=" 'http://localhost:9001/images/personas/' + this.user.foto" id="imagenusuario"/>
+        <img v-else src="http://localhost:9001/images/sistema/userDefaultGrande.png" id="imagenusuario"/>
+        </div>
         <b-card-text> 
           <p id="nombre">{{this.user.nombre}} {{this.user.apellido}}</p>
           <p id="rol">{{rol}}</p>
@@ -32,15 +35,13 @@ export default {
     return {
      botones: [],
       rol:"",
-      user:{}
+      user:{},
     };
   },
 
   methods: {
       cargaBotones(){
-        this.user=JSON.parse(sessionStorage.getItem('user'));
-        
-
+        this.user=JSON.parse(sessionStorage.getItem('user'));   
         var boton;
         if(this.user.rol==="admin"){
           boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
@@ -129,12 +130,19 @@ export default {
   z-index: 1;
 }
 #imagenusuario{
-  width: 60%;
+  height: 100%;
   z-index: 2;
+}
+.imagenContenedor{
+  width: 170px;
+  height: 170px;
+  border-radius: 170px;
+  overflow: hidden;
+  background-color: red;  
   margin-top:20px;
   margin-bottom: 25px;
+  display: inline-block;
 }
-
 .botonesMenu{
   list-style: none;  
   color:#151515;

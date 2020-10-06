@@ -396,6 +396,7 @@ export default {
         this.user.foto = img.name;
         await this.guardarImagen(img)
         this.$refs.modalCambioImagen.hide();
+        this.traeUsuario();
     },
       async guardarImagen(imagen) {
       this.verificaUsuario();
@@ -419,6 +420,8 @@ export default {
           return error;
         });
         this.$bvToast.show("toast-imagen-exito");
+      console.log(this.user)
+      this.guardar();
       return true;
       } else if(this.user.type==="Empleado"){
         await axios
@@ -438,14 +441,15 @@ export default {
           return error;
         });
         this.$bvToast.show("toast-imagen-exito");
+      console.log(this.user)
+      this.guardar();
       return true;
       }
-      
+     
     },
     async eliminarCuenta(){
       this.verificaUsuario();
       var parametroId = parseInt(this.$route.params.id);
-      console.log("antes",this.user)
       this.user.baja=true;
       if(this.user.type==="Empleado"){
         await this.service.update("empleado",this.user,parametroId).then((data)=>{
@@ -470,7 +474,6 @@ export default {
     },
 
      async verificarContrasenia() {
-       console.log("verificar contraseña")
       await this.verificaUsuario();
       if(this.nuevaContraseniaUsuario === this.nuevaContraseniaUsuario2){       
         let contraseniaVerificada = await axios
