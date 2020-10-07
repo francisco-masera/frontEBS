@@ -33,7 +33,7 @@ export default class Service {
     await axios
       .post(serverUrl + "/" + subPath + "/", entity, config)
       .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
+      .catch(() => (responseEntity = undefined));
     return responseEntity;
   }
 
@@ -42,10 +42,9 @@ export default class Service {
       console.log("entity",entity)
     await axios
       .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
-      .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
-      
-    return this.getOne(subPath, id);
+      .then(() => (responseEntity = this.getOne(subPath, id)))
+      .catch(() => (responseEntity = undefined));
+    return responseEntity;
   }
 
   async delete(subPath, id) {
@@ -54,5 +53,15 @@ export default class Service {
       .then((response) => (responseEntity = response.data))
       .catch((error) => console.log(error));
     return responseEntity;
+  }
+
+  async deleteRecetas(subPath, id) {
+    await axios
+      .delete(serverUrl + "/" + subPath + "/" + parseInt(id), config)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => console.log(error));
+    return;
   }
 }
