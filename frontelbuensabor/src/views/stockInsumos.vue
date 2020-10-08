@@ -35,19 +35,6 @@
         :filter="busqueda"
         :tbody-tr-class="filaBaja"
       >
-        <template v-slot:cell(accion)="row">
-          <b-button
-            size="sm"
-            @click="agregarInsumoCompra(row.item)"
-            class="botonImagen"
-          >
-            <img
-              src="http://localhost:9001/images/sistema/botonAgregar.png"
-              id="imagenAgregar"
-            />
-          </b-button>
-        </template>
-
         <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{
             row.item.rubroInsumo.denominacion
@@ -81,87 +68,7 @@
         >Nuevo</b-button
       >
     </b-container>
-    <div style="display:flex">
-      <b-modal ref="modal" hide-footer hide-header centered title>
-        <h2>Añadir existencia</h2>
-        <h4>{{ insumoEncontrado.denominacion }}</h4>
-        <form class="estiloForm">
-          <table>
-            <tr>
-              <td>
-                <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                  >Fecha</label
-                >
-              </td>
-              <td>
-                <b-form-datepicker
-                  for="inline-form-custom-select-pref"
-                  id="example-datepicker"
-                  size="sm"
-                  v-model="compra.fechaCompra"
-                  class="campoForm"
-                ></b-form-datepicker>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label for="inline-form-custom-select-pref"
-                  >Unidad de medida</label
-                >
-              </td>
-              <td>
-                <label id="medida">{{ insumoEncontrado.unidadMedida }}</label>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                  >Cantidad</label
-                >
-              </td>
-              <td>
-                <b-form-input
-                  type="number"
-                  step="0.5"
-                  id="cantidadModal"
-                  v-model="compra.cantidad"
-                  class="campoForm"
-                  @input="verificarStockMaximo"
-                ></b-form-input>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                  >Precio por unidad</label
-                >
-              </td>
-              <td>
-                <b-form-input
-                  v-model="compra.precioUnitario"
-                  class="campoForm"
-                  type="number"
-                  step="0.5"
-                ></b-form-input>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <b-button
-                  pill
-                  class="boton"
-                  id="botonModal"
-                  size="md"
-                  @click="añadirCompra;"
-                >
-                  Añadir
-                </b-button>
-              </td>
-            </tr>
-          </table>
-        </form>
-      </b-modal>
-    </div>
+
     <router-view />
   </div>
 </template>
@@ -196,7 +103,6 @@ export default {
         { key: "stockActual", label: "Stock" },
         { key: "precio", label: "Precio" },
         { key: "detalle", label: "Detalle" },
-        { key: "accion", label: "Acción" },
       ],
       toastCantidadVisible: false,
       insumosData: [],

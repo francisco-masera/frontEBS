@@ -14,7 +14,7 @@
         <img
           :src="
             'http://localhost:9001/images/productos/sugeridos/' +
-              sugerenciaEncontrada.imagen
+            sugerenciaEncontrada.imagen
           "
           class="imagenProducto"
           id="imgInsumo"
@@ -86,15 +86,10 @@
               ></b-form-input>
             </div>
             <div>
-              <p style="text-align: left; font-weight: 600; margin-top:5%">
+              <p style="text-align: left; font-weight: 600; margin-top: 5%">
                 Seleccione una categoría para el producto
               </p>
-              <b-form-select
-                v-model="informacionVenta.rubro"
-                size="sm"
-                class="mt-3"
-                id="rubrosSelect"
-              >
+              <b-form-select size="sm" id="rubrosSelect" v-model="selected">
                 <b-form-select-option
                   v-for="rubro in rubros"
                   :key="rubro.id"
@@ -113,9 +108,7 @@
         </b-modal>
 
         <b-modal ref="modalConfirmacion" hide-footer hide-header centered title>
-          <p class="modalTitulo">
-            Sugerencia Aceptada
-          </p>
+          <p class="modalTitulo">Sugerencia Aceptada</p>
           <p class="modalTitulo">Sugerencia Rechazada</p>
           <p class="posicion">
             <b-button
@@ -154,6 +147,7 @@ export default {
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
+      selected: "",
       costo: 0.0,
       precioSugerido: 0.0,
       informacionVenta: {
@@ -171,6 +165,7 @@ export default {
         rubro: { id: 0 },
       },
       rubros: [],
+      sugerenciaAprobada: false,
     };
   },
 
@@ -233,6 +228,8 @@ export default {
       await this.service.getAll("rubroManufacturado").then((data) => {
         this.rubros = data;
       });
+      console.log(this.rubros[0].denominacion);
+      this.selected = this.rubros[0].denominacion;
     },
     calcularPrecioSugerido() {
       let precioSugerido = this.costo + this.costo * 0.2;
@@ -254,13 +251,17 @@ export default {
           this.eliminarSugerencia();
         })
         .then(() => this.deleteImg())
+
         .then(() => {
-          this.toastInfo(
-            "Sugerencia eliminada.\nCompletando la transacción.",
-            "Información"
-          );
+          !this.sugerenciaAprobada
+            ? this.toastInfo(
+                "Sugerencia eliminada.\nCompletando la transacción.",
+                "Información"
+              )
+            : "";
           this.$refs["modalDeniega"].hide();
         })
+
         .catch(() =>
           this.toastInfo("Error al eliminar los registros.", "Error")
         )
@@ -292,13 +293,14 @@ export default {
       let rubroId =
         rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
       this.informacionVenta.rubro = parseInt(rubroId);
+      this.sugerenciaAprobada = true;
       await this.guardarSugerencia()
         .then((data) => this.guardarRecetas(data))
         .then(() => this.denegarSugerencia())
         .then(this.moveImg())
         .then(() => {
           this.toastInfo(
-            "Artículo guardado con éxito.\nCompletando la transacción,",
+            "Artículo guardado con éxito.\nCompletando la transacción.",
             "Información"
           );
           this.$refs["modal"].hide();
@@ -315,7 +317,8 @@ export default {
       let sugerencia = await this.service
         .save("manufacturado", this.informacionVenta)
         .then((data) => (this.informacionVenta = data))
-        .catch(() => {
+        .catch((error) => {
+          console.log(error);
           return false;
         });
 
@@ -360,6 +363,7 @@ export default {
           }
         )
         .catch((error) => {
+          console.log(error);
           return error;
         });
       return true;
@@ -508,5 +512,9 @@ export default {
 .modalMedida {
   height: 20%;
   width: 20%;
+}
+
+#rubrosSelect option {
+  font-family: "Baloo Bhaina 2";
 }
 </style>

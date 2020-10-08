@@ -252,6 +252,7 @@ export default {
       formatter: new Formatter(),
       esProducto: true,
       estadoEliminado: false,
+      categoriaModificada:false,
       categoriaNueva: {
         denominacion: "",
         baja: false,
@@ -360,6 +361,7 @@ export default {
         this.categoriasData.forEach((categoria) => {
           if (categoria.id == id) {
             this.categoriaNueva = categoria;
+            this.categoriaModificada = true;
           }
         });
       }
@@ -395,7 +397,7 @@ export default {
     },
 
     async agregarCategoria() {
-      if (this.categoriaNueva != "") {
+      if (this.categoriaNueva != "" && this.categoriaModificada ==false) {
         await this.service
           .save("rubroManufacturado", this.categoriaNueva)
           .then((data) => {
@@ -409,7 +411,11 @@ export default {
             this.$refs["modalAgregarCategoria"].hide();
             this.getCategorias();
           });
-      } else {
+      } else
+      if(this.categoriaNueva != "" && this.categoriaModificada == true){
+            this.modificarCategoria(this.categoriaNueva);
+      } else{
+      
         this.$bvToast.toast(`El campo de categoría no puede estar vacio`, {
           autoHideDelay: 5000,
           toaster: "b-toaster-top-center",
@@ -417,6 +423,23 @@ export default {
         });
       }
     },
+
+    async modificarCategoria(){
+     await this.service
+          .update("rubroManufacturado", this.categoriaNueva, this.categoriaNueva.id)
+          .then((data) => {
+            this.categoriaNueva = data;
+            this.$bvToast.toast(`Categoría Modificada con éxito`, {
+              autoHideDelay: 5000,
+              toaster: "b-toaster-top-center",
+              solid: true,
+            });
+            this.categoriaNueva = {};
+            this.$refs["modalAgregarCategoria"].hide();
+            this.getCategorias();
+          });
+  
+    }
   },
   computed: {
     rows() {
