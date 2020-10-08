@@ -464,7 +464,6 @@ export default {
 
     agregarIngrediente(id) {
       let ingrediente = this.insumosData.find((i) => i.idInsumo == id);
-      console.log(ingrediente);
       this.ingredientes.push(ingrediente);
     },
 
@@ -474,7 +473,7 @@ export default {
     },
 
     cambiarEstadoIngrediente(valor, id) {
-      console.log(valor, id);
+      
       let existe = this.ingredientes.some((i) => {
         return i.idInsumo == id ? true : false;
       });
@@ -641,7 +640,6 @@ export default {
           }
         )
         .catch((error) => {
-          console.log(error);
           return error;
         });
       return true;
@@ -652,7 +650,7 @@ export default {
         .save("sugerencia", sugerencia)
         .then((data) => (sugerencia = data))
         .catch((error) => {
-          console.log(error);
+
           return error;
         });
       return sugerencia;

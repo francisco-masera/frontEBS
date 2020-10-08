@@ -1,11 +1,20 @@
 <template>
   <div class="ingreso">
     <div class="logo">
-      <b-img src="http://localhost:9001/images/sistema/logo-01.png" class="imagen"></b-img>
+      <b-img
+        src="http://localhost:9001/images/sistema/logo-01.png"
+        class="imagen"
+      ></b-img>
     </div>
-    <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
-    <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
-    <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
+    <b-alert v-model="alertDatosNull"
+      >Debe ingresar usuario y contraseña</b-alert
+    >
+    <b-alert v-model="alertDatosErroneos"
+      >Usuario o contraseña incorrecta</b-alert
+    >
+    <b-alert v-model="esCliente"
+      >No tiene permisos para acceder a esta sección</b-alert
+    >
     <div class="ingresoForm">
       <form>
         <div class="tituloIngreso">Ingresar</div>
@@ -28,7 +37,14 @@
           class="contraseñaForm"
         ></b-form-input>
         <div class="olvido">Olvidé mi contraseña</div>
-        <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md">¡Ingresar!</b-button>
+        <b-button
+          pill
+          class="botonIngreso"
+          :user="user"
+          @click="ingresar"
+          size="md"
+          >¡Ingresar!</b-button
+        >
       </form>
     </div>
     <div class="abajoIngreso"></div>
@@ -100,20 +116,6 @@ export default {
       await this.service.getAll("empleado").then((data) => {
         this.user = data.find((empleado) => empleado.usuario === this.email);
       });
-
-      /*await this.axios.get('http://localhost:9001/buensabor/empleado/')
-          .then(res =>{
-            const resJson = res.data;
-            this.user = resJson.find(
-              (empleado) => empleado.usuario === this.email
-            );
-          
-          })
-          .catch(e =>{
-            this.alertDatosErroneos=true;  
-            console.log(e);
-           
-          })*/
     },
   },
 };
@@ -135,19 +137,16 @@ export default {
     margin-top: 5%;
   }
   .ingresoForm {
-
     height: 40%;
 
     width: 70%;
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
-
   }
   .imagen {
     width: 160px;
     height: 60px;
-
   }
 
   .emailForm {
@@ -191,7 +190,6 @@ export default {
     font-size: 9px;
     text-align: center;
     padding: 0%;
-
   }
   .olvido {
     text-align: right;
@@ -205,7 +203,6 @@ export default {
 
 @media screen and (min-width: 640px) {
   .ingresoForm {
-
     height: 45%;
 
     width: 35%;
@@ -215,7 +212,6 @@ export default {
     margin-top: 15px;
   }
   .imagen {
-
     width: 150px;
     height: 70px;
   }
@@ -245,7 +241,6 @@ export default {
   }
 
   .logo {
-
     height: 15%;
     width: 25%;
 
@@ -255,7 +250,6 @@ export default {
     margin-left: 25%;
   }
   .ingresoForm {
-
     height: 30%;
 
     width: 60%;
@@ -278,7 +272,6 @@ export default {
 
     width: 70%;
 
-
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -293,7 +286,6 @@ export default {
     background-color: transparent;
 
     width: 70%;
-
 
     font-size: 12pt;
     margin-left: 35px;
@@ -332,7 +324,6 @@ export default {
     margin: 0px auto;
     text-align: center;
     margin-top: 5%;
-    
   }
   .ingresoForm {
     height: 40%;
@@ -340,7 +331,6 @@ export default {
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
-   
   }
   .imagen {
     width: 240px;
@@ -355,7 +345,6 @@ export default {
     background-color: transparent;
 
     width: 70%;
-
 
     font-size: 9pt;
     margin-left: 35px;
@@ -388,8 +377,6 @@ export default {
     font-size: 13px;
   }
 
-
-
   .olvido {
     text-align: right;
     margin-top: 5%;
@@ -400,7 +387,6 @@ export default {
 
 @media screen and (min-width: 1440px) {
   .logo {
-
     height: 25%;
     width: 25%;
 
@@ -420,8 +406,6 @@ export default {
     margin: 0px auto;
     background-color: white;
     border: 1px solid gray;
-
-
   }
 
   .emailForm {
@@ -466,7 +450,6 @@ export default {
 }
 
 .ingreso {
-
   background-color: #f2e6d1;
   font-family: "Baloo Bhaina 2";
   position: absolute;
@@ -487,6 +470,5 @@ export default {
   background-size: contain;
   bottom: 0;
   position: absolute;
-
 }
 </style>

@@ -260,7 +260,9 @@ export default {
           );
           this.$refs["modalDeniega"].hide();
         })
-        .catch(() => this.toastInfo("Error al eliminar los registros.", "Error"))
+        .catch(() =>
+          this.toastInfo("Error al eliminar los registros.", "Error")
+        )
         .then(() =>
           setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
         );
@@ -303,15 +305,16 @@ export default {
         .then(() =>
           setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
         )
-        .catch(() => this.toastInfo("Error al aceptar la sugerencia.", "Error"));
+        .catch(() =>
+          this.toastInfo("Error al aceptar la sugerencia.", "Error")
+        );
     },
 
     async guardarSugerencia() {
       let sugerencia = await this.service
         .save("manufacturado", this.informacionVenta)
         .then((data) => (this.informacionVenta = data))
-        .catch((error) => {
-          console.log(error);
+        .catch(() => {
           return false;
         });
 
@@ -356,7 +359,6 @@ export default {
           }
         )
         .catch((error) => {
-          console.log(error);
           return error;
         });
       return true;
