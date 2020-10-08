@@ -100,6 +100,7 @@
                   :key="rubro.id"
                   :value="rubro.id"
                   v-model="rubro.id"
+                  class="rubroOption"
                 >
                   {{ rubro.denominacion }}
                 </b-form-select-option>
@@ -433,6 +434,10 @@ export default {
   font-size: 11pt;
   color: #151515;
   line-height: 17px;
+}
+
+.rubroOption {
+  font-family: "Baloo Bhaina 2";
 }
 
 .tarjetaInfo {
