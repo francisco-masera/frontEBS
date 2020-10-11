@@ -379,7 +379,7 @@ export default {
         await this.service.update("empleado",this.user,parametroId).then((data)=>{
         this.user=data;
         this.$bvToast.show("toast-datos-exito") 
-        sessionStorage.setItem("user", JSON.stringify(this.user));
+        sessionStorage.setItem("userChange",true );
       }).catch(()=>{
         this.$bvToast.show("toast-datos-error") 
       })

@@ -44,7 +44,8 @@ export default {
   },
   updated: function () {
   this.$nextTick(function () {
-    this.traeUser()
+     console.log("cambia")
+      
   })
 },
 
