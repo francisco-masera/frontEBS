@@ -28,8 +28,7 @@
 <script>
 import Service from "@/service/Service.js";
 export default {
-  mounted() {    
-    
+  mounted() {        
     this.cargaBotones();
     
   },
@@ -43,21 +42,22 @@ export default {
     };
   },
   updated: function () {
-  this.$nextTick(function () {
-     console.log("cambia")
-      
-  })
-},
+    this.traeUser();
+  },
 
   methods: {
       async traeUser() {
           this.userSession=JSON.parse(sessionStorage.getItem('user'));   
            await this.service.getOne("persona",this.userSession.id).then((data) => {
             this.user = data;
-          }); 
-          
+            sessionStorage.setItem("userChange",0 );
+          });  
+        
+                   
       },
+    
      async cargaBotones(){
+       console.log(this.user)
        await this.traeUser();
         var boton;
         if(this.user.rol==="admin"){

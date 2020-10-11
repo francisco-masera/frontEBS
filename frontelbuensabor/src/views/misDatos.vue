@@ -379,7 +379,8 @@ export default {
         await this.service.update("empleado",this.user,parametroId).then((data)=>{
         this.user=data;
         this.$bvToast.show("toast-datos-exito") 
-        sessionStorage.setItem("userChange",true );
+        sessionStorage.setItem('userChange',1 );
+        
       }).catch(()=>{
         this.$bvToast.show("toast-datos-error") 
       })
@@ -391,7 +392,7 @@ export default {
         this.$bvToast.show("toast-datos-error") 
       })
       }
-
+    
     },
 
     async updateImagen(){
