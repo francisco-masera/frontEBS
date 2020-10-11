@@ -345,6 +345,7 @@ export default {
       }); 
     },
 
+
     cambiarImagen(){
       this.$refs.modalCambioImagen.show();
     },
@@ -377,7 +378,8 @@ export default {
       if(this.user.type==="Empleado"){
         await this.service.update("empleado",this.user,parametroId).then((data)=>{
         this.user=data;
-        this.$bvToast.show("toast-datos-exito")   
+        this.$bvToast.show("toast-datos-exito") 
+        sessionStorage.setItem("user", JSON.stringify(this.user));
       }).catch(()=>{
         this.$bvToast.show("toast-datos-error") 
       })
@@ -389,6 +391,7 @@ export default {
         this.$bvToast.show("toast-datos-error") 
       })
       }
+
     },
 
     async updateImagen(){

@@ -26,22 +26,38 @@
 </template>
 
 <script>
+import Service from "@/service/Service.js";
 export default {
-
-  mounted() {
+  mounted() {    
+    
     this.cargaBotones();
+    
   },
   data() {
     return {
      botones: [],
       rol:"",
       user:{},
+      service: new Service(),
+      userSession:{},
     };
   },
+  updated: function () {
+  this.$nextTick(function () {
+    this.traeUser()
+  })
+},
 
   methods: {
-      cargaBotones(){
-        this.user=JSON.parse(sessionStorage.getItem('user'));   
+      async traeUser() {
+          this.userSession=JSON.parse(sessionStorage.getItem('user'));   
+           await this.service.getOne("persona",this.userSession.id).then((data) => {
+            this.user = data;
+          }); 
+          
+      },
+     async cargaBotones(){
+       await this.traeUser();
         var boton;
         if(this.user.rol==="admin"){
           boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
