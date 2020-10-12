@@ -342,26 +342,6 @@ export default {
       });
     },
 
-    async guardarImagen(formData) {
-      await axios
-        .post(
-          "http://localhost:9001/buensabor/manufacturado/uploadImg",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origins": "*",
-              "cache-control": "no-cache",
-            },
-          }
-        )
-        .catch((error) => {
-          console.log(error);
-          return error;
-        });
-      return true;
-    },
-
     guardarRecetas(manufacturado) {
       let error = false;
       this.recetas.forEach(

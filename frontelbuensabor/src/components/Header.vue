@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import Service from "@/service/Service.js";
 export default {
   data() {
     return {    
@@ -81,6 +82,7 @@ export default {
       user:{},      
       esCliente:false,
       es_Home:false,
+      service: new Service(),
     };
   },
  
@@ -90,10 +92,9 @@ export default {
   props: ["imagen", "id",  "screenLength","esHome"],
 
   methods: {
-    verificaUsuario(){
+    async verificaUsuario(){
       this.es_Home = this.$props.esHome;
-      this.user=JSON.parse(sessionStorage.getItem('user'));
-      
+      await this.traeUser()
       var boton;
       if(this.user!=null){
         if(this.user === "cliente"){      
@@ -142,6 +143,12 @@ export default {
         }
       } 
     },
+     async traeUser() {
+         this.userSession=JSON.parse(sessionStorage.getItem('user'));   
+           await this.service.getOne("persona",this.userSession.id).then((data) => {
+            this.user = data;
+          }); 
+      },
   },
 };
 </script>
