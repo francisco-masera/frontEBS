@@ -1,7 +1,7 @@
 <template>
   <div>
-    <cabecera></cabecera>
-    <div id="nav"><menuLateral></menuLateral></div>
+    <cabecera :key="componentKey"></cabecera>
+    <div id="nav"><menuLateral :key="componentKey"></menuLateral></div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -334,6 +334,7 @@ export default {
         nuevaContraseniaUsuario2:"",
         contraseniaVerificada: false,
         imagen:"",
+        componentKey: 0,
     }
   },
 
@@ -372,6 +373,9 @@ export default {
 
       },
 
+    forceRerender() {
+      this.componentKey += 1;
+    },
     async guardar(){
       var parametroId = parseInt(this.$route.params.id);
       this.verificaUsuario();
@@ -379,8 +383,7 @@ export default {
         await this.service.update("empleado",this.user,parametroId).then((data)=>{
         this.user=data;
         this.$bvToast.show("toast-datos-exito") 
-        sessionStorage.setItem('userChange',1 );
-        
+        this.forceRerender();
       }).catch(()=>{
         this.$bvToast.show("toast-datos-error") 
       })

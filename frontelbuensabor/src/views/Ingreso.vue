@@ -68,7 +68,7 @@ export default {
         ) {
           if (!this.user.baja) {
             sessionStorage.setItem("user", JSON.stringify(this.user));
-            sessionStorage.setItem("userChange",1 );
+            sessionStorage.setItem("userChange",0 );
             sessionStorage.setItem("active", true);
             if (this.user.rol == "admin") {
               //this.$router.push({ name: 'StockInsumos', params: {user: this.user }})

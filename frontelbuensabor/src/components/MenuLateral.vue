@@ -36,28 +36,22 @@ export default {
     return {
      botones: [],
       rol:"",
-      user:{},
+     user: this.usuario,
       service: new Service(),
       userSession:{},
     };
   },
-  updated: function () {
-    this.traeUser();
-  },
-
+ 
   methods: {
       async traeUser() {
-          this.userSession=JSON.parse(sessionStorage.getItem('user'));   
+         this.userSession=JSON.parse(sessionStorage.getItem('user'));   
            await this.service.getOne("persona",this.userSession.id).then((data) => {
             this.user = data;
-            sessionStorage.setItem("userChange",0 );
-          });  
-        
-                   
+          }); 
       },
+      
     
      async cargaBotones(){
-       console.log(this.user)
        await this.traeUser();
         var boton;
         if(this.user.rol==="admin"){
