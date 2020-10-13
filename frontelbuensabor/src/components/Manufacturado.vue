@@ -32,6 +32,9 @@ export default {
   background-color: transparent;
   border: none;
 }
+.tarjeta .imagen{
+  margin-bottom: 15px;
+}
 .precio {
   font-size: 16pt;
   font-weight: 600;

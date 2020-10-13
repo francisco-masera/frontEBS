@@ -5,10 +5,9 @@
       <div id="buscador">
         <h1>Lo pedís, lo llevamos...</h1>
         <b-form-input id="inputBuscador"></b-form-input>
-        <b-button size="sm" class="botonImagen">
+        <b-button size="sm" class="botonImagenBuscador">
           <img
             src="http://localhost:9001/images/sistema/buscar.png"
-            id="imagenBuscar"
           />
         </b-button>
       </div>
@@ -49,9 +48,10 @@
       </div>
     </div>
     <div id="home2">
-      <h2>Los que todos amamos</h2>
+      
 
-      <b-card-group deck>
+      <b-card-group class="contenedorCard">
+        <h2>Los que todos amamos</h2>
         <div
           class="contenedorTarjeta"
           v-for="manufacturado in manufacturadosData"
@@ -59,14 +59,14 @@
         >
           <plato-item
             :manufacturadoParam="manufacturado"
-            class="tarjetaPlato"
           ></plato-item>
         </div>
+      
       </b-card-group>
     </div>
-    <b-row>
-      <b-col class="abajo" xs="12" sm="12" md="12" lg="12" xl="12"></b-col>
-    </b-row>
+  
+      <div class="abajo"></div>
+   
   </div>
 </template>
 <script>
@@ -124,19 +124,19 @@ h2 {
 }
 
 #home2 {
-  min-height: 50px;
-  padding-left: 150px;
-  padding-right: 150px;
-  padding-top: 80px;
+  text-align: center;
+  padding-top: 65px;
+  width: 100%;
 }
 #inputBuscador {
   background-color: rgba(255, 255, 255, 0.5);
   border-color: black;
   border: 2;
-  width: 90%;
+  width: 100%;
+  color:black;
 }
 #buscador {
-  width: 40%;
+  width: 35%;
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
@@ -144,17 +144,22 @@ h2 {
 #pasosCuadro {
   margin-top: 220px;
   min-height: 50px;
-  margin-left: 100px;
-  margin-right: 100px;
+  text-align: center;
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 .pasos {
   color: white;
   font-family: "Baloo Bhaina 2";
   font-weight: 400;
   font-size: 14pt;
-  float: left;
-  margin-left: 40px;
-  margin-right: 40px;
+  padding-left: 1%;
+  padding-right: 1%;
+  display: inline-block;
+  text-align: left;
 }
 .pasosTexto {
   display: block;
@@ -165,22 +170,115 @@ h2 {
   float: left;
 }
 
-.botonImagen {
-  float: left;
+.botonImagenBuscador {
+  background-color: transparent;
+  border: none;
+  padding: 0px;
+  outline: none;
+  position: relative;
+    float: right;
+    z-index: 98;
+    min-width: 0px;
+    margin-top: -30px;
+    margin-right: 10px;
+}
+.botonImagenBuscador img{
+  width: 60%;
 }
 
-.tarjetaPlato {
-  width: 100%;
-  float: left;
+.botonImagenBuscador:hover {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none;
 }
+
+.botonImagenBuscador:active {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none;
+}
+.botonImagenBuscador:visited {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none;
+}
+
+.botonImagenBuscador:focus {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none;
+}
+.contenedorCard{
+  width: 70%;
+  display: inline-block;
+  text-align: center;
+}
+
 .contenedorTarjeta {
-  margin: 20px;
-  width: 25%;
+  width: 33.3%;
   background-color: transparent;
-  display: grid;
+  display: inline-block;
+  min-width: 200px;
+  margin-bottom: 50px;
 }
-.imagenBuscar {
-  float: left;
-  width: 10px;
+.card-body{
+  padding:0px;
+  text-align: left;
 }
+
+
+@media (max-width: 900px) {
+  #buscador {
+  width: 45%;
+  }
+  .contenedorCard{
+  width: 80%;
+}
+}
+@media (max-width: 769px) {
+  .contenedorCard{
+  width: 90%;
+}
+  }
+  
+@media (max-width: 640px) {
+   #buscador {
+    width: 70%;
+  }
+  #pasosCuadro {
+  margin-top: 150px;
+}
+
+}
+
+@media (max-width: 426px) {
+  #pasosCuadro {
+  display:block;
+  text-align: left;
+  margin-left: 5%;
+  margin-right: 5%;
+  }
+  #buscador {
+    width: 80%;
+  }
+}
+@media (max-width: 375px) {
+ #buscador h1{
+    font-size: 20pt;
+  }
+   #pasosCuadro {
+  margin-top: 80px;
+}
+}
+@media (max-width: 320px) {
+   #pasosCuadro img{
+     width: 20%;
+     margin-right: 80%;
+  }
+  #buscador h1{
+    font-size: 18pt;
+  }
+
+}
+
 </style>
