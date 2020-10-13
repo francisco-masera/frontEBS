@@ -53,8 +53,10 @@
       <div v-else>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="itemsEmpleado">
-            <b-nav-item :to="{ name: 'perfil' }">
-              <b-img src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
+            <b-nav-item :to="'/misdatos/'+this.user.id">
+              <b-img v-if="this.user.foto!=undefined" :src=" 'http://localhost:9001/images/personas/' + this.user.foto" id="foto" fluid class="botonImagenHeader">
+              </b-img>
+              <b-img v-else src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
               </b-img>
               <label id="usuario">{{this.user.nombre}}
               </label>
@@ -202,6 +204,7 @@ export default {
 .botonImagenHeader{
   width: 30px;
   margin-right: 5px;
+  height: 30px;
 }
 
 #brandImg {
