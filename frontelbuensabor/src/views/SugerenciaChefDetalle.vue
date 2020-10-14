@@ -14,7 +14,7 @@
         <img
           :src="
             'http://localhost:9001/images/productos/sugeridos/' +
-            sugerenciaEncontrada.imagen
+              sugerenciaEncontrada.imagen
           "
           class="imagenProducto"
           id="imgInsumo"
@@ -90,9 +90,11 @@
                 Seleccione una categoría para el producto
               </p>
               <b-form-select size="sm" id="rubrosSelect">
-                  <template v-slot:first>
-        <b-form-select-option disabled selected>-- Categorías --</b-form-select-option>
-      </template>
+                <template v-slot:first>
+                  <b-form-select-option disabled selected
+                    >-- Categorías --</b-form-select-option
+                  >
+                </template>
                 <b-form-select-option
                   v-for="rubro in rubros"
                   :key="rubro.id"
@@ -281,17 +283,15 @@ export default {
     },
 
     async aceptarSugerencia() {
-      
       let rubroSeleccionado = document.getElementById("rubrosSelect");
       let rubroId =
         rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
-      
 
       this.informacionVenta.precioVenta = document.getElementById(
         "precio"
       ).value;
 
-      if(rubroId == ''){
+      if (rubroId == "") {
         this.$bvToast.toast(`La categoría no puede estar vacía`, {
           title: `¡Atención!`,
           toaster: "b-toaster-top-center",
@@ -299,15 +299,20 @@ export default {
         });
         return;
       }
-if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.precioVenta)>0.0){
- this.$bvToast.toast(`El precio no puede estar vacío y debe ser mayor a 0`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
+      if (
+        this.informacionVenta.precioVenta == "" ||
+        !parseFloat(this.informacionVenta.precioVenta) > 0.0
+      ) {
+        this.$bvToast.toast(
+          `El precio no puede estar vacío y debe ser mayor a 0`,
+          {
+            title: `¡Atención!`,
+            toaster: "b-toaster-top-center",
+            solid: true,
+          }
+        );
         return;
-}
-
+      }
 
       this.informacionVenta.descripcion = this.sugerenciaEncontrada.descripcion;
       this.informacionVenta.imagen = this.sugerenciaEncontrada.imagen;
@@ -318,7 +323,6 @@ if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.
       this.informacionVenta.vegetariano = this.sugerenciaEncontrada.vegetariano;
       this.informacionVenta.rubro = parseInt(rubroId);
 
-      
       this.sugerenciaAprobada = true;
       await this.guardarSugerencia()
         .then((data) => this.guardarRecetas(data))

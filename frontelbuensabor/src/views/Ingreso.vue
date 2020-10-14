@@ -48,15 +48,20 @@
       </form>
     </div>
     <div class="abajoIngreso"></div>
+    <div class="modalMedida">
+      <b-modal ref="modal" hide-footer hide-header centered title>
+        <p class="modalTitulo">
+          ¡Ingreso exitoso! Redirección en proceso...
+        </p>
+        <p class="posicion"></p>
+      </b-modal>
+    </div>
   </div>
 </template>
 <script>
 import Service from "@/service/Service.js";
+import firebase from "firebase";
 export default {
-  mounted() {
-    this.limpiaSesion();
-  },
-
   data() {
     return {
       email: "",
@@ -70,8 +75,25 @@ export default {
   },
 
   methods: {
-    limpiaSesion() {
-      sessionStorage.clear();
+    logIn() {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.email, this.contrasenia)
+        .then(() => {
+          this.$refs["modal"].show();
+          this.redirect();
+        })
+        .catch(() => {});
+    },
+    signUp() {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.contrasenia)
+        .then(() => {
+          this.$refs["modal"].show();
+          this.redirect();
+        })
+        .catch(() => {});
     },
 
     async ingresar() {
@@ -82,26 +104,7 @@ export default {
           this.user != undefined &&
           this.user.contrasenia == this.contrasenia
         ) {
-          if (!this.user.baja) {
-            sessionStorage.setItem("user", JSON.stringify(this.user));
-            sessionStorage.setItem("userChange",0 );
-            sessionStorage.setItem("active", true);
-            if (this.user.rol == "admin") {
-              //this.$router.push({ name: 'StockInsumos', params: {user: this.user }})
-              this.$router.push({ name: "StockInsumos" });
-            } else if (this.user.rol == "delivery") {
-              window.location = "/";
-            } else if (this.user.rol == "cocina") {
-              this.$router.push({
-                name: "CatalogoManu",
-                params: { user: this.user },
-              });
-            } else if (this.user.rol == "cajero") {
-              window.location = "/";
-            } else {
-              this.esCliente = true;
-            }
-          }
+          this.redirect();
         } else {
           this.alertDatosErroneos = true;
           this.email = "";
@@ -110,6 +113,28 @@ export default {
         }
       } else {
         this.alertDatosNull = true;
+      }
+    },
+
+    redirect() {
+      if (!this.user.baja) {
+        sessionStorage.setItem("user", JSON.stringify(this.user));
+        sessionStorage.setItem("userChange", 0);
+        sessionStorage.setItem("active", true);
+        if (this.user.rol == "admin") {
+          this.$router.push({ name: "StockInsumos" });
+        } else if (this.user.rol == "delivery") {
+          window.location = "/";
+        } else if (this.user.rol == "cocina") {
+          this.$router.push({
+            name: "CatalogoManu",
+            params: { user: this.user },
+          });
+        } else if (this.user.rol == "cajero") {
+          window.location = "/";
+        } else {
+          this.esCliente = true;
+        }
       }
     },
 

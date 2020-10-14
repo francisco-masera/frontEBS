@@ -466,7 +466,6 @@ export default {
     },
 
     cambiarEstadoIngrediente(valor, id) {
-      
       let existe = this.ingredientes.some((i) => {
         return i.idInsumo == id ? true : false;
       });
@@ -644,7 +643,6 @@ export default {
 
         .catch((error) => {
           return error;
-
         });
       return true;
     },
@@ -654,7 +652,6 @@ export default {
         .save("sugerencia", sugerencia)
         .then((data) => (sugerencia = data))
         .catch((error) => {
-
           return error;
         });
       return sugerencia;
