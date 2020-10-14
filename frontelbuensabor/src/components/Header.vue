@@ -53,8 +53,10 @@
       <div v-else>
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="itemsEmpleado">
-            <b-nav-item :to="{ name: 'perfil' }">
-              <b-img src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
+            <b-nav-item :to="'/misdatos/'+this.user.id">
+              <b-img v-if="this.user.foto!=undefined" :src=" 'http://localhost:9001/images/personas/' + this.user.foto" id="foto" fluid class="botonImagenHeader">
+              </b-img>
+              <b-img v-else src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
               </b-img>
               <label id="usuario">{{this.user.nombre}}
               </label>
@@ -74,6 +76,7 @@
 </template>
 
 <script>
+import Service from "@/service/Service.js";
 export default {
   data() {
     return {    
@@ -81,6 +84,7 @@ export default {
       user:{},      
       esCliente:false,
       es_Home:false,
+      service: new Service(),
     };
   },
  
@@ -90,10 +94,9 @@ export default {
   props: ["imagen", "id",  "screenLength","esHome"],
 
   methods: {
-    verificaUsuario(){
+    async verificaUsuario(){
       this.es_Home = this.$props.esHome;
-      this.user=JSON.parse(sessionStorage.getItem('user'));
-      
+      await this.traeUser()
       var boton;
       if(this.user!=null){
         if(this.user === "cliente"){      
@@ -142,6 +145,12 @@ export default {
         }
       } 
     },
+     async traeUser() {
+         this.userSession=JSON.parse(sessionStorage.getItem('user'));   
+           await this.service.getOne("persona",this.userSession.id).then((data) => {
+            this.user = data;
+          }); 
+      },
   },
 };
 </script>
@@ -195,6 +204,7 @@ export default {
 .botonImagenHeader{
   width: 30px;
   margin-right: 5px;
+  height: 30px;
 }
 
 #brandImg {

@@ -289,16 +289,10 @@
             </b-toast>
             <div class="modalMedida">
               <b-modal ref="modal" hide-footer hide-header centered title>
-                <p class="modalTitulo">¡Sugerencia agregada con éxito!</p>
-                <p class="posicion">
-                  <b-button
-                    pill
-                    size="md"
-                    class="botonModal"
-                    @click="retornaAlCatalogo()"
-                    >Aceptar</b-button
-                  >
+                <p class="modalTitulo">
+                  ¡Sugerencia agregada con éxito! Aguarde...
                 </p>
+                <p class="posicion"></p>
               </b-modal>
             </div>
           </div>
@@ -322,7 +316,6 @@ import Vue from "vue";
 Vue.use(Vuelidate);
 import { required, numeric, integer } from "vuelidate/lib/validators";
 import { validationMixin } from "vuelidate";
-//import { helpers } from "vuelidate/lib/validators";
 import Vuelidate from "vuelidate";
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
@@ -592,6 +585,14 @@ export default {
         return;
       }
       let img = document.getElementById("imagen").files[0];
+      if (img != undefined && img.size / 1024 > 1024) {
+        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return;
+      }
       let sugerencia = Object.assign({}, this.manufacturado);
 
       delete sugerencia.id;
@@ -607,6 +608,7 @@ export default {
       if (typeof estadoSugerencia === "object") {
         this.guardarRecetas(estadoSugerencia);
         this.$refs["modal"].show();
+        setTimeout(() => this.retornaAlCatalogo(), 3000);
       } else {
         this.toastError();
       }
@@ -639,8 +641,10 @@ export default {
             },
           }
         )
+
         .catch((error) => {
           return error;
+
         });
       return true;
     },

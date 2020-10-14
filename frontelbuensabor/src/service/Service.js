@@ -38,8 +38,7 @@ export default class Service {
   }
 
   async update(subPath, entity, id) {
-      console.log(serverUrl + "/" + subPath + "/" + parseInt(id))
-      console.log("entity",entity)
+      
     await axios
       .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
       .then(() => (responseEntity = this.getOne(subPath, id)))

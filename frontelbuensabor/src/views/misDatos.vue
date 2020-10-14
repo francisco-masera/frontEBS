@@ -1,7 +1,7 @@
 <template>
   <div>
-    <cabecera></cabecera>
-    <div id="nav"><menuLateral></menuLateral></div>
+    <cabecera :key="componentKey"></cabecera>
+    <div id="nav"><menuLateral :key="componentKey"></menuLateral></div>
 
     <div class="costado"></div>
     <b-container class="informacion">
@@ -75,6 +75,7 @@
           class="contraseñaForm"
           placeholder="Nueva contraseña"
           type="password"
+
         >
         </b-form-input>
         <b-form-input
@@ -84,6 +85,7 @@
           type="password"
         >
         </b-form-input>
+
       </form>
       <p class="posicion">
         <b-button
@@ -318,14 +320,17 @@ export default {
   },
   data() {
     return {
-      user: {},
-      service: new Service(),
-      contraseniaUsuario: "",
-      nuevaContraseniaUsuario: "",
-      nuevaContraseniaUsuario2: "",
-      contraseniaVerificada: false,
-      imagen: "",
-    };
+
+        user:{},
+        service: new Service(),
+        contraseniaUsuario: "",
+        nuevaContraseniaUsuario:"",
+        nuevaContraseniaUsuario2:"",
+        contraseniaVerificada: false,
+        imagen:"",
+        componentKey: 0,
+    }
+
   },
 
   methods: {
@@ -361,40 +366,54 @@ export default {
         : this.$bvToast.show("toast-eliminar-error");
     },
 
-    async guardar() {
+
+    forceRerender() {
+      this.componentKey += 1;
+    },
+    async guardar(){
       var parametroId = parseInt(this.$route.params.id);
       this.verificaUsuario();
-      if (this.user.type === "Empleado") {
-        await this.service
-          .update("empleado", this.user, parametroId)
-          .then((data) => {
-            this.user = data;
-            this.$bvToast.show("toast-datos-exito");
-          })
-          .catch(() => {
-            this.$bvToast.show("toast-datos-error");
-          });
-      } else {
-        await this.service
-          .update("cliente", this.user, parametroId)
-          .then((data) => {
-            this.user = data;
-            this.$bvToast.show("toast-datos-exito");
-          })
-          .catch(() => {
-            this.$bvToast.show("toast-datos-error");
-          });
+      if(this.user.type==="Empleado"){
+        await this.service.update("empleado",this.user,parametroId).then((data)=>{
+        this.user=data;
+        this.$bvToast.show("toast-datos-exito") 
+        this.forceRerender();
+      }).catch(()=>{
+        this.$bvToast.show("toast-datos-error") 
+      })
+      }else{
+        await this.service.update("cliente",this.user,parametroId).then((data)=>{
+        this.user=data; 
+          this.$bvToast.show("toast-datos-exito")
+      }).catch(()=>{
+        this.$bvToast.show("toast-datos-error") 
+      })
+
       }
     },
 
     async updateImagen() {
       let img = document.getElementById("imagen").files[0];
       this.user.foto = img.name;
-      await this.guardarImagen(img);
-      this.$refs.modalCambioImagen.hide();
-      this.traeUsuario();
+
+      let noError = await this.guardarImagen(img);
+      if (noError) {
+        this.$refs.modalCambioImagen.hide();
+        this.traeUsuario();
+      }
     },
+
     async guardarImagen(imagen) {
+      if (imagen !=undefined && imagen.size / 1024 > 1024) {
+        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return false;
+      }
+
+
       this.verificaUsuario();
       const formData = new FormData();
       formData.append("file", imagen);
@@ -412,6 +431,9 @@ export default {
             return error;
           });
         this.$bvToast.show("toast-imagen-exito");
+
+        console.log(this.user);
+
         this.guardar();
         return true;
       } else if (this.user.type === "Empleado") {
@@ -427,11 +449,13 @@ export default {
               },
             }
           )
-          .catch((error) => {
+
+          .catch(() => {
             this.$bvToast.show("toast-imagen-error");
-            return error;
+            return false;
           });
         this.$bvToast.show("toast-imagen-exito");
+        console.log(this.user);
 
         this.guardar();
         return true;

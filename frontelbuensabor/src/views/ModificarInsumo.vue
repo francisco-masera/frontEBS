@@ -386,13 +386,13 @@
     </b-container>
     <div class="modalMedida">
       <b-modal ref="modal" hide-footer hide-header centered title>
-        <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito!</p>
-        <p class="modalTitulo" v-else>¡Insumo modificado con éxito!</p>
-        <p class="posicion">
-          <b-button pill size="md" class="botonModal" @click="retornaAlStock()"
-            >Aceptar</b-button
-          >
+
+        <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito! Aguarde...</p>
+        <p class="modalTitulo" v-else>
+          ¡Insumo modificado con éxito! Aguarde...
+
         </p>
+        <p class="posicion"></p>
       </b-modal>
     </div>
     <router-view />
@@ -404,7 +404,8 @@ import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
 import {
-  helpers,
+
+
   requiredIf,
   required,
   numeric,
@@ -536,6 +537,9 @@ export default {
       await this.service
         .getOne("insumoVenta/insumo", parametroId)
         .then((data) => (this.informacionVenta = data[0]));
+
+      console.log(this.informacionVenta);
+
     },
 
     async guardaStock() {
@@ -555,17 +559,33 @@ export default {
     },
 
     async updateInsumo() {
+
+      let img = document.getElementById("imagen").files[0];
+
+      if (img != undefined && img.size / 1024 > 1024) {
+        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return;
+      }
+
       if (this.esInsumoVenta) {
         this.$v.$touch();
         if (this.$v.form2.$anyError) {
           return;
         }
       }
+
       await this.guardaStock();
       await this.service
         .update("insumo", this.insumoEncontrado, this.insumoEncontrado.idInsumo)
         .then(() => {
           this.$refs["modal"].show();
+
+          setTimeout(() => this.retornaAlStock(), 3000);
+
         });
 
       if (!this.insumoEncontrado.esInsumo) {
@@ -573,7 +593,8 @@ export default {
         this.informacionVenta.precioVenta = this.form2.precioVenta;
         this.informacionVenta.insumo = this.insumoEncontrado;
 
-        let img = document.getElementById("imagen").files[0];
+
+
         if (img !== undefined) {
           this.informacionVenta.imagen = img.name;
           await this.guardarImagen(img);
@@ -590,16 +611,32 @@ export default {
           .then((data) => {
             this.informacionVenta = data;
             this.$refs["modal"].show();
+
+            setTimeout(() => this.retornaAlStock(), 5300);
+
           });
       }
     },
     async agregarInsumo() {
+
+      let img = document.getElementById("imagen").files[0];
+
+      if (img != undefined && img.size / 1024 > 1024) {
+        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return;
+      }
+
       if (this.esInsumoVenta) {
         this.$v.$touch();
         if (this.$v.form2.$anyError) {
           return;
         }
       }
+
 
       await this.guardaStock();
 
@@ -610,17 +647,21 @@ export default {
         this.informacionVenta.descripcion = this.form2.lineaDescripcion;
         this.informacionVenta.precioVenta = this.form2.precioVenta;
         this.informacionVenta.insumo = this.insumoEncontrado;
-        let img = document.getElementById("imagen").files[0];
 
         this.informacionVenta.imagen = img.name;
         await this.guardarImagen(img);
+
+
         await this.service
           .save("insumoVenta", this.informacionVenta)
           .then((data) => {
             this.informacionVenta = data;
           });
+
+        this.$refs["modal"].show();
+        setTimeout(() => this.retornaAlStock(), 3000);
       }
-      this.$refs["modal"].show();
+
     },
 
     async guardarImagen(imagen) {
@@ -675,7 +716,6 @@ export default {
     form1: {
       denominacion: {
         required,
-        alpha: helpers.regex("alpha", /^[a-zA-ZÀ-ž\s]*$/),
       },
       stockMin: {
         required,
