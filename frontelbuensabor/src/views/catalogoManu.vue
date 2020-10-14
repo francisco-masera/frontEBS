@@ -47,9 +47,7 @@
           <template v-slot:cell(tiempo)="row">{{
             row.item.tiempoCocina + " min"
           }}</template>
-        <!--   <template v-slot:cell(stock)>
-            <div id="stockColor" style="background-color:#ED3247"></div>
-          </template> -->
+
           <template v-slot:cell(detalle)="row">
             <b-button pill class="boton" @click="verDetalle(row.item)"
               >Detalles</b-button
@@ -119,9 +117,6 @@
                 row.item.rubro.denominacion
               }}</b-badge>
             </template>
-           <!--  <template v-slot:cell(stock)>
-              <div id="stockColor" style="background-color:#ED3247"></div>
-            </template> -->
             <template v-for="(costo, i) in costos">
               <div :key="i">{{ costo }}</div>
             </template>
@@ -252,7 +247,6 @@ export default {
       categoriasData: {},
       manufacturados: {},
       userCocina: true,
-      //stock: true,
       service: new Service(),
       costos: [],
       busqueda: "",
@@ -275,9 +269,9 @@ export default {
       this.$router.push({ path: "/modificarManufacturado/" + undefined });
     },
     filaBaja(item, type) {
-        if (!item || type !== 'row') return
-        if (item.baja === true) return 'table-danger'
-      },
+      if (!item || type !== "row") return;
+      if (item.baja === true) return "table-danger";
+    },
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
 
@@ -361,18 +355,6 @@ export default {
       this.esProducto = false;
     },
 
-  /*   verificaStock() {
-      var clase;
-      if (this.stock === false) {
-        clase = document.getElementById("stockColor");
-
-        clase.style.backgroundColor = "#ED3247";
-      } else {
-        clase = document.getElementById("stockColor");
-        clase.style.backgroundColor = "#8BC34A";
-      }
-    },
- */
     agregarCategoriaModal(id) {
       if (id == undefined) {
         this.categoriaNueva.denominacion = "";
@@ -462,13 +444,6 @@ export default {
   height: 32px;
 }
 
-/* #stockColor {
-  width: 20px;
-  height: 20px;
-  border-radius: 300px;
-  float: left;
-  margin-right: 10px;
-} */
 .Badgecategoria {
   width: 105px;
   margin-left: 0px;
