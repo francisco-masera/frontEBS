@@ -386,9 +386,11 @@
     </b-container>
     <div class="modalMedida">
       <b-modal ref="modal" hide-footer hide-header centered title>
+
         <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito! Aguarde...</p>
         <p class="modalTitulo" v-else>
           ¡Insumo modificado con éxito! Aguarde...
+
         </p>
         <p class="posicion"></p>
       </b-modal>
@@ -402,6 +404,8 @@ import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
 import {
+
+
   requiredIf,
   required,
   numeric,
@@ -533,7 +537,9 @@ export default {
       await this.service
         .getOne("insumoVenta/insumo", parametroId)
         .then((data) => (this.informacionVenta = data[0]));
+
       console.log(this.informacionVenta);
+
     },
 
     async guardaStock() {
@@ -544,18 +550,16 @@ export default {
             this.insumoEncontrado.stock = data;
           });
       } else {
-        await this.service
-          .update(
-            "stock",
-            this.insumoEncontrado.stock,
-            this.insumoEncontrado.stock.id
-          )
-          .then((response) => console.log(response))
-          .catch((error) => console.log(error));
+        await this.service.update(
+          "stock",
+          this.insumoEncontrado.stock,
+          this.insumoEncontrado.stock.id
+        );
       }
     },
 
     async updateInsumo() {
+
       let img = document.getElementById("imagen").files[0];
 
       if (img != undefined && img.size / 1024 > 1024) {
@@ -566,6 +570,7 @@ export default {
         });
         return;
       }
+
       if (this.esInsumoVenta) {
         this.$v.$touch();
         if (this.$v.form2.$anyError) {
@@ -578,13 +583,17 @@ export default {
         .update("insumo", this.insumoEncontrado, this.insumoEncontrado.idInsumo)
         .then(() => {
           this.$refs["modal"].show();
+
           setTimeout(() => this.retornaAlStock(), 3000);
+
         });
 
       if (!this.insumoEncontrado.esInsumo) {
         this.informacionVenta.descripcion = this.form2.lineaDescripcion;
         this.informacionVenta.precioVenta = this.form2.precioVenta;
         this.informacionVenta.insumo = this.insumoEncontrado;
+
+
 
         if (img !== undefined) {
           this.informacionVenta.imagen = img.name;
@@ -602,11 +611,14 @@ export default {
           .then((data) => {
             this.informacionVenta = data;
             this.$refs["modal"].show();
+
             setTimeout(() => this.retornaAlStock(), 5300);
+
           });
       }
     },
     async agregarInsumo() {
+
       let img = document.getElementById("imagen").files[0];
 
       if (img != undefined && img.size / 1024 > 1024) {
@@ -617,12 +629,15 @@ export default {
         });
         return;
       }
+
       if (this.esInsumoVenta) {
         this.$v.$touch();
         if (this.$v.form2.$anyError) {
           return;
         }
       }
+
+
       await this.guardaStock();
 
       await this.service.save("insumo", this.insumoEncontrado).then((data) => {
@@ -636,14 +651,17 @@ export default {
         this.informacionVenta.imagen = img.name;
         await this.guardarImagen(img);
 
+
         await this.service
           .save("insumoVenta", this.informacionVenta)
           .then((data) => {
             this.informacionVenta = data;
           });
+
         this.$refs["modal"].show();
         setTimeout(() => this.retornaAlStock(), 3000);
       }
+
     },
 
     async guardarImagen(imagen) {
@@ -662,7 +680,6 @@ export default {
           }
         )
         .catch((error) => {
-          console.log(error);
           return error;
         });
       return true;
@@ -671,11 +688,9 @@ export default {
       if (document.getElementById("checkbox-1").checked) {
         this.esInsumoVenta = true;
         this.insumoEncontrado.esInsumo = false;
-        console.log("venta");
       } else {
         this.esInsumoVenta = false;
         this.insumoEncontrado.esInsumo = true;
-        console.log("no venta");
       }
     },
 
@@ -683,11 +698,9 @@ export default {
       await this.service.getAll("rubroInsumo").then((data) => {
         this.categoriasData = data;
       });
-      console.log(this.categoriasData);
     },
     guardaCategoria(id) {
       this.insumoEncontrado.rubroInsumo.id = id;
-      console.log(this.insumoEncontrado.rubroInsumo.id);
     },
     retornaAlStock() {
       window.location.href = "/stockInsumos/";

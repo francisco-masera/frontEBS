@@ -35,19 +35,6 @@
         :filter="busqueda"
         :tbody-tr-class="filaBaja"
       >
-        <template v-slot:cell(accion)="row">
-          <b-button
-            size="sm"
-            @click="agregarInsumoCompra(row.item)"
-            class="botonImagen"
-          >
-            <img
-              src="http://localhost:9001/images/sistema/botonAgregar.png"
-              id="imagenAgregar"
-            />
-          </b-button>
-        </template>
-
         <template v-slot:cell(categoria)="row">
           <b-badge class="Badgecategoria">{{
             row.item.rubroInsumo.denominacion
@@ -81,63 +68,7 @@
         >Nuevo</b-button
       >
     </b-container>
-    <div style="display:flex">
-    <b-modal ref="modal" hide-footer hide-header centered title>
-      <h2>Añadir existencia</h2>
-      <h4>{{ insumoEncontrado.denominacion }}</h4>
-      <form class="estiloForm">
-        <table>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Fecha</label
-              >
-            </td>
-            <td>
-              <b-form-datepicker
-                for="inline-form-custom-select-pref"
-                id="example-datepicker"
-                size="sm"
-                v-model="compra.fechaCompra"
-                class="campoForm"
-              ></b-form-datepicker>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label for="inline-form-custom-select-pref"
-              >Unidad de medida</label
-              >
-            </td>
-            <td><label id="medida">{{insumoEncontrado.unidadMedida}}</label></td>
-          </tr>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Cantidad</label
-              >
-            </td>
-            <td><b-form-input  v-model="compra.cantidad" class="campoForm"></b-form-input></td>
-          </tr>
-          <tr>
-            <td>
-              <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                >Precio por unidad</label
-              >
-            </td>
-            <td><b-form-input  v-model="compra.precioUnitario" class="campoForm"></b-form-input></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <b-button pill class="boton" id="botonModal" size="md" @click="añadirCompra()">
-                Añadir
-              </b-button>
-            </td>
-          </tr>
-        </table>
-      </form>
-    </b-modal>
-    </div>
+
     <router-view />
   </div>
 </template>
@@ -172,9 +103,8 @@ export default {
         { key: "stockActual", label: "Stock" },
         { key: "precio", label: "Precio" },
         { key: "detalle", label: "Detalle" },
-        { key: "accion", label: "Acción" },
       ],
-
+      toastCantidadVisible: false,
       insumosData: [],
       costos: [],
       insumo: {
@@ -204,14 +134,13 @@ export default {
       preciosUnitarios: [],
       formatter: new Formatter(),
       busqueda: "",
-      
+
       compra: {
-        insumo:{},
-        fechaCompra:"",
-        cantidad:0,
-        precioUnitario:0,
-      }
-      
+        insumo: {},
+        fechaCompra: "",
+        cantidad: 0,
+        precioUnitario: 0,
+      },
     };
   },
   methods: {
@@ -223,9 +152,9 @@ export default {
     },
 
     filaBaja(item, type) {
-        if (!item || type !== 'row') return
-        if (item.baja === true) return 'table-danger'
-      },
+      if (!item || type !== "row") return;
+      if (item.baja === true) return "table-danger";
+    },
 
     agregarInsumo() {
       this.$router.push({ path: "/modificarInsumo/" + undefined });
@@ -292,50 +221,63 @@ export default {
 
     agregarInsumoCompra(insumo) {
       this.getInsumoxId(insumo.idInsumo);
-      console.log(insumo.idInsumo);
-      console.log(insumo.denominacion);
       this.$refs["modal"].show();
-      
     },
 
-   
-     async getInsumoxId(id) {
-      
-      await this.service.getOne("insumo", id).then((data)=>{
-        this.insumoEncontrado=data;
+    async getInsumoxId(id) {
+      await this.service.getOne("insumo", id).then((data) => {
+        this.insumoEncontrado = data;
       });
-      
     },
 
-
-    
-     
-     toast(data, append = false) {
-        this.$bvToast.toast(`Se incorporaron ${data.cantidad} existencias al producto`, {
+    toast(data, append = false) {
+      this.$bvToast.toast(
+        `Se incorporaron ${data.cantidad} existencias al producto`,
+        {
           title: `Alta de producto`,
-          toaster: 'b-toaster-top-center',
+          toaster: "b-toaster-top-center",
           solid: true,
-          appendToast: append
-        })
-      },
+          appendToast: append,
+        }
+      );
+    },
 
-    async añadirCompra(){
+    verificarStockMaximo(e) {
+      if (
+        parseInt(e) + parseInt(this.insumoEncontrado.stock.actual) >
+          parseInt(this.insumoEncontrado.stock.maximo) &&
+        !this.toastCantidadVisible
+      ) {
+        this.toastCantidadVisible = true;
+        this.$bvToast.toast(
+          "Con esta compra sobrepasa el stock máximo\r\
+        Stock Máximo Actual: " +
+            this.insumoEncontrado.stock.maximo,
+          {
+            title: "¡Atención!",
+            toaster: "b-toaster-top-center",
+            solid: true,
+            autoHideDelay: 1500,
+          }
+        );
+        setTimeout(() => (this.toastCantidadVisible = false), 2000);
+      }
+    },
+
+    async añadirCompra() {
       this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
-      this.compra.insumo.idInsumo = this.insumoEncontrado.id;      
-      await this.service.save("compras",this.compra)
-      .then((data) => {
+      this.compra.insumo.idInsumo = this.insumoEncontrado.id;
+
+      await this.service.save("compras", this.compra).then((data) => {
         this.toast(data);
         this.$refs["modal"].hide();
-        this.compra.fechaCompra='';
-        this.compra.cantidad=0;
-        this.compra.precioUnitario=0;
-        this.compra.insumo={};    
+        this.compra.fechaCompra = "";
+        this.compra.cantidad = 0;
+        this.compra.precioUnitario = 0;
+        this.compra.insumo = {};
         this.getPreciosUnitariosActuales();
-      })
+      });
     },
-
-    
-
   },
   computed: {
     rows() {
@@ -381,16 +323,13 @@ export default {
 .boton {
   margin: auto;
 }
-#botonModal{
+#botonModal {
   margin-top: 10%;
   margin-left: 20%;
 }
 
-#medida{
+#medida {
   margin-left: 10%;
   margin-top: 5%;
 }
-
-
-
 </style>

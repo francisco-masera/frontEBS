@@ -14,7 +14,7 @@
         <img
           :src="
             'http://localhost:9001/images/productos/sugeridos/' +
-              sugerenciaEncontrada.imagen
+            sugerenciaEncontrada.imagen
           "
           class="imagenProducto"
           id="imgInsumo"
@@ -86,20 +86,19 @@
               ></b-form-input>
             </div>
             <div>
-              <p style="text-align: left; font-weight: 600; margin-top:5%">
+              <p style="text-align: left; font-weight: 600; margin-top: 5%">
                 Seleccione una categoría para el producto
               </p>
-              <b-form-select
-                v-model="informacionVenta.rubro"
-                size="sm"
-                class="mt-3"
-                id="rubrosSelect"
-              >
+              <b-form-select size="sm" id="rubrosSelect">
+                  <template v-slot:first>
+        <b-form-select-option disabled selected>-- Categorías --</b-form-select-option>
+      </template>
                 <b-form-select-option
                   v-for="rubro in rubros"
                   :key="rubro.id"
                   :value="rubro.id"
                   v-model="rubro.id"
+                  class="rubroOption"
                 >
                   {{ rubro.denominacion }}
                 </b-form-select-option>
@@ -112,9 +111,7 @@
         </b-modal>
 
         <b-modal ref="modalConfirmacion" hide-footer hide-header centered title>
-          <p class="modalTitulo">
-            Sugerencia Aceptada
-          </p>
+          <p class="modalTitulo">Sugerencia Aceptada</p>
           <p class="modalTitulo">Sugerencia Rechazada</p>
           <p class="posicion">
             <b-button
@@ -153,6 +150,7 @@ export default {
       service: new Service(),
       formatter: new Formatter(),
       recetas: [],
+      selected: "",
       costo: 0.0,
       precioSugerido: 0.0,
       informacionVenta: {
@@ -170,6 +168,7 @@ export default {
         rubro: { id: 0 },
       },
       rubros: [],
+      sugerenciaAprobada: false,
     };
   },
 
@@ -232,6 +231,8 @@ export default {
       await this.service.getAll("rubroManufacturado").then((data) => {
         this.rubros = data;
       });
+      console.log(this.rubros[0].denominacion);
+      this.selected = this.rubros[0].denominacion;
     },
     calcularPrecioSugerido() {
       let precioSugerido = this.costo + this.costo * 0.2;
@@ -253,14 +254,20 @@ export default {
           this.eliminarSugerencia();
         })
         .then(() => this.deleteImg())
+
         .then(() => {
-          this.toastInfo(
-            "Sugerencia eliminada.\nCompletando la transacción.",
-            "Información"
-          );
+          !this.sugerenciaAprobada
+            ? this.toastInfo(
+                "Sugerencia eliminada.\nCompletando la transacción.",
+                "Información"
+              )
+            : "";
           this.$refs["modalDeniega"].hide();
         })
-        .catch(() => this.toastInfo("Error al eliminar los registros.", "Error"))
+
+        .catch(() =>
+          this.toastInfo("Error al eliminar los registros.", "Error")
+        )
         .then(() =>
           setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
         );
@@ -274,6 +281,34 @@ export default {
     },
 
     async aceptarSugerencia() {
+      
+      let rubroSeleccionado = document.getElementById("rubrosSelect");
+      let rubroId =
+        rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
+      
+
+      this.informacionVenta.precioVenta = document.getElementById(
+        "precio"
+      ).value;
+
+      if(rubroId == ''){
+        this.$bvToast.toast(`La categoría no puede estar vacía`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return;
+      }
+if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.precioVenta)>0.0){
+ this.$bvToast.toast(`El precio no puede estar vacío y debe ser mayor a 0`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return;
+}
+
+
       this.informacionVenta.descripcion = this.sugerenciaEncontrada.descripcion;
       this.informacionVenta.imagen = this.sugerenciaEncontrada.imagen;
       this.informacionVenta.denominacion = this.sugerenciaEncontrada.denominacion;
@@ -281,21 +316,17 @@ export default {
       this.informacionVenta.tiempoCocina = this.sugerenciaEncontrada.tiempoCocina;
       this.informacionVenta.vegano = this.sugerenciaEncontrada.vegano;
       this.informacionVenta.vegetariano = this.sugerenciaEncontrada.vegetariano;
-      this.informacionVenta.precioVenta = document.getElementById(
-        "precio"
-      ).value;
-
-      let rubroSeleccionado = document.getElementById("rubrosSelect");
-      let rubroId =
-        rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
       this.informacionVenta.rubro = parseInt(rubroId);
+
+      
+      this.sugerenciaAprobada = true;
       await this.guardarSugerencia()
         .then((data) => this.guardarRecetas(data))
         .then(() => this.denegarSugerencia())
         .then(this.moveImg())
         .then(() => {
           this.toastInfo(
-            "Artículo guardado con éxito.\nCompletando la transacción,",
+            "Artículo guardado con éxito.\nCompletando la transacción.",
             "Información"
           );
           this.$refs["modal"].hide();
@@ -303,7 +334,9 @@ export default {
         .then(() =>
           setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
         )
-        .catch(() => this.toastInfo("Error al aceptar la sugerencia.", "Error"));
+        .catch(() =>
+          this.toastInfo("Error al aceptar la sugerencia.", "Error")
+        );
     },
 
     async guardarSugerencia() {
@@ -413,6 +446,10 @@ export default {
   line-height: 17px;
 }
 
+.rubroOption {
+  font-family: "Baloo Bhaina 2";
+}
+
 .tarjetaInfo {
   text-align: center;
   width: 116px;
@@ -481,5 +518,9 @@ export default {
 .modalMedida {
   height: 20%;
   width: 20%;
+}
+
+#rubrosSelect option {
+  font-family: "Baloo Bhaina 2";
 }
 </style>
