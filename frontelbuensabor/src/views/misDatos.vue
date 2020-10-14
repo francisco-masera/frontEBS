@@ -75,6 +75,7 @@
           class="contraseñaForm"
           placeholder="Nueva contraseña"
           type="password"
+
         >
         </b-form-input>
         <b-form-input
@@ -84,6 +85,7 @@
           type="password"
         >
         </b-form-input>
+
       </form>
       <p class="posicion">
         <b-button
@@ -318,6 +320,7 @@ export default {
   },
   data() {
     return {
+
         user:{},
         service: new Service(),
         contraseniaUsuario: "",
@@ -327,6 +330,7 @@ export default {
         imagen:"",
         componentKey: 0,
     }
+
   },
 
   methods: {
@@ -362,6 +366,7 @@ export default {
         : this.$bvToast.show("toast-eliminar-error");
     },
 
+
     forceRerender() {
       this.componentKey += 1;
     },
@@ -383,12 +388,14 @@ export default {
       }).catch(()=>{
         this.$bvToast.show("toast-datos-error") 
       })
+
       }
     },
 
     async updateImagen() {
       let img = document.getElementById("imagen").files[0];
       this.user.foto = img.name;
+
       let noError = await this.guardarImagen(img);
       if (noError) {
         this.$refs.modalCambioImagen.hide();
@@ -405,6 +412,7 @@ export default {
         });
         return false;
       }
+
 
       this.verificaUsuario();
       const formData = new FormData();
@@ -423,7 +431,9 @@ export default {
             return error;
           });
         this.$bvToast.show("toast-imagen-exito");
+
         console.log(this.user);
+
         this.guardar();
         return true;
       } else if (this.user.type === "Empleado") {
@@ -439,12 +449,14 @@ export default {
               },
             }
           )
+
           .catch(() => {
             this.$bvToast.show("toast-imagen-error");
             return false;
           });
         this.$bvToast.show("toast-imagen-exito");
         console.log(this.user);
+
         this.guardar();
         return true;
       }
