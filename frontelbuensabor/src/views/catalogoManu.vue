@@ -334,6 +334,7 @@ export default {
         })
         .then((response) => {
           this.costos = response.data;
+          console.log(this.costos);
           this.agregarCostos();
         });
     },
