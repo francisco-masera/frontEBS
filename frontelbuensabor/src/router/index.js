@@ -76,6 +76,12 @@ const routes = [
     name: "MisDatos",
     component: () => import("../views/misDatos.vue"),
   },
+
+  {
+    path: "/formEmpleado/",
+    name: "FormularioEmplado",
+    component: () => import("../views/FormularioEmpleado.vue"),
+  },
 ];
 
 const router = new VueRouter({
