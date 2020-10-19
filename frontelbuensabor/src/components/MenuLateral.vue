@@ -63,7 +63,9 @@ export default {
           this.botones.push(boton);  
           boton = [3,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
           this.botones.push(boton);  
-          boton = [4,"Cerrar sesión","cerrarSesion.png","/ingreso"];
+          boton = [4,"Agregar empleado","misDatos.png","/formEmpleado/"];
+          this.botones.push(boton);  
+          boton = [5,"Cerrar sesión","cerrarSesion.png","/ingreso"];
           this.botones.push(boton);  
           this.rol="Administrador";
                 

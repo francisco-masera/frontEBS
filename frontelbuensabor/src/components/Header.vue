@@ -117,7 +117,9 @@ export default {
             this.botones.push(boton);    
             boton = [2,"Sugerencias del chef","sugerenciasChef.png","/sugerenciaChef"];
             this.botones.push(boton);
-            boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
+            boton = [3,"Agregar empleado","misDatos.png","/formEmpleado/"];
+            this.botones.push(boton);
+            boton = [4,"Cerrar sesión","cerrarSesion.png","/ingreso"];
             this.botones.push(boton);   
                   
           }else if(this.user.rol==="cocina"){
