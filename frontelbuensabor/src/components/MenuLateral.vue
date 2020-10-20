@@ -3,8 +3,8 @@
     <b-card id="MenuLateral" border-variant="dark">
       <div class="imagenContenedor">
         <img
-          v-if="user.foto != undefined"
-          :src="'http://localhost:9001/images/personas/' + user.foto"
+          v-if="this.user.foto != undefined"
+          :src="'http://localhost:9001/images/personas/' + this.user.foto"
           id="imagenusuario"
         />
         <img
@@ -15,25 +15,22 @@
       </div>
       <b-card-text>
         <p id="nombre">{{ this.user.nombre }} {{ this.user.apellido }}</p>
-        <p id="rol">{{ user.rol.toUpperCase() }}</p>
-        <insumos v-if="user.rol == 'admin'" />
-        <catalogo v-if="user.rol == 'admin' || user.rol === 'cocina'" />
-        <sugerencia v-if="user.rol == 'admin'" />
-        <direcciones v-if="user.rol == 'cliente'" />
-        <pedidos
-          :rol="user.rol"
-          v-if="user.rol != 'cocina' || userl.rol != 'admin'"
-        />
-        <facturados
-          :rol="user.rol"
-          v-if="
-            user.rol == 'cocina' ||
-              user.rol == 'delivery' ||
-              user.rol == 'admin'
-          "
-        />
-        <datos />
-        <out />
+        <p id="rol">{{ rol.toUpperCase() }}</p>
+
+        <b-nav-item
+          class="botonesMenu"
+          v-for="boton in botones"
+          :key="boton[0]"
+          v-bind:href="boton[3]"
+        >
+          <b-img
+            v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]"
+            fluid
+            class="iconosMenu"
+          ></b-img>
+          {{ boton[1] }}
+        </b-nav-item>
+        <logut />
       </b-card-text>
     </b-card>
   </div>
@@ -41,33 +38,21 @@
 
 <script>
 import Service from "@/service/Service.js";
-import btnLatInsumos from "./botonesLateral/btnLatInsumos";
-import btnLatCatalogo from "./botonesLateral/btnLatCatalogo";
-import btnLatSugerencias from "./botonesLateral/btnLatSugerencias";
-import btnLatMisDatos from "./botonesLateral/btnLatMisDatos";
-import btnLatLogOut from "./botonesLateral/btnLatLogOut";
-import btnLatDirecciones from "./botonesLateral/btnLatDirecciones";
-import btnLatPedidos from "./botonesLateral/btnLatPedidos";
-import btnLatFacturados from "./botonesLateral/btnLatFacturados";
+import btnLatLogOut from "./btnLatLogOut";
 
 export default {
   components: {
-    insumos: btnLatInsumos,
-    catalogo: btnLatCatalogo,
-    sugerencia: btnLatSugerencias,
-    datos: btnLatMisDatos,
-    out: btnLatLogOut,
-    direcciones: btnLatDirecciones,
-    pedidos: btnLatPedidos,
-    facturados: btnLatFacturados,
+    logout: btnLatLogOut,
   },
 
   mounted() {
-    this.traeUser();
+    this.cargaBotones();
   },
+
   data() {
     return {
       botones: [],
+      rol: "",
       user: this.usuario,
       service: new Service(),
       userSession: {},
@@ -80,6 +65,57 @@ export default {
       await this.service.getOne("persona", this.userSession.id).then((data) => {
         this.user = data;
       });
+    },
+
+    async cargaBotones() {
+      await this.traeUser();
+      var boton;
+      if (this.user.rol === "admin") {
+        boton = [0, "Stock de insumos", "stock.png", "/stockInsumos"];
+        this.botones.push(boton);
+        boton = [1, "Catálogo", "manufacturados.png", "/catalogoManu"];
+        this.botones.push(boton);
+        boton = [
+          2,
+          "Sugerencias del chef",
+          "sugerenciasChef.png",
+          "/sugerenciaChef",
+        ];
+        this.botones.push(boton);
+        boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        this.rol = "Administrador";
+      } else if (this.user.rol === "cocina") {
+        boton = [0, "Manufacturados", "manufacturados.png", "/catalogoManu"];
+        this.botones.push(boton);
+        boton = [1, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        this.rol = "Cocinero";
+      } else if (this.user.rol === "cliente") {
+        boton = [0, "Mis direcciones", "misDirecciones.png", ""];
+        this.botones.push(boton);
+        boton = [1, "Mis pedidos", "Pedidos.png", ""];
+        this.botones.push(boton);
+        boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        this.rol = "Cliente";
+      } else if (this.user.rol === "delivery") {
+        boton = [0, "Pedidos", "Pedidos.png", ""];
+        this.botones.push(boton);
+        boton = [1, "Pedidos facturados", "pedidosFacturados.png", ""];
+        this.botones.push(boton);
+        boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        this.rol = "Delivery";
+      } else if (this.user.rol === "cajero") {
+        boton = [0, "Pedidos", "Pedidos.png", ""];
+        this.botones.push(boton);
+        boton = [1, "Pedidos anteriores", "pedidosFacturados.png", ""];
+        this.botones.push(boton);
+        boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        this.rol = "Cajero";
+      }
     },
   },
 };
