@@ -80,20 +80,11 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.email, this.contrasenia)
         .then(() => {
-          this.$refs["modal"].show();
-          this.redirect();
+          this.$router.replace("/ingreso");
         })
-        .catch(() => {});
-    },
-    signUp() {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.email, this.contrasenia)
-        .then(() => {
-          this.$refs["modal"].show();
-          this.redirect();
-        })
-        .catch(() => {});
+        .catch((error)=> {
+          console.log(error.message);
+        });
     },
 
     async ingresar() {

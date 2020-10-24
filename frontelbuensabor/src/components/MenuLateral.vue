@@ -13,7 +13,7 @@
                 <b-img v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]" fluid class="iconosMenu"></b-img>
                 {{ boton[1] }}
             </b-nav-item>
-            <logut />
+            <logout />
         </b-card-text>
     </b-card>
 </div>
@@ -44,7 +44,7 @@ export default {
 
     methods: {
         async traeUser() {
-            this.userSession = JSON.parse(sessionStorage.getItem('user'));
+            this.userSession = JSON.parse(sessionStorage.getItem("user"));
             await this.service.getOne("persona", this.userSession.id).then((data) => {
                 this.user = data;
             });
@@ -58,21 +58,24 @@ export default {
                 this.botones.push(boton);
                 boton = [1, "Catálogo", "manufacturados.png", "/catalogoManu"];
                 this.botones.push(boton);
-                boton = [2, "Sugerencias del chef", "sugerenciasChef.png", "/sugerenciaChef"];
+                boton = [
+                    2,
+                    "Sugerencias del chef",
+                    "sugerenciasChef.png",
+                    "/sugerenciaChef",
+                ];
                 this.botones.push(boton);
                 boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
                 this.botones.push(boton);
                 boton = [4, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
                 this.botones.push(boton);
                 this.rol = "Administrador";
-
             } else if (this.user.rol === "cocina") {
                 boton = [0, "Manufacturados", "manufacturados.png", "/catalogoManu"];
                 this.botones.push(boton);
                 boton = [1, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
                 this.botones.push(boton);
                 this.rol = "Cocinero";
-
             } else if (this.user.rol === "cliente") {
                 boton = [0, "Mis direcciones", "misDirecciones.png", ""];
                 this.botones.push(boton);
@@ -81,66 +84,6 @@ export default {
                 boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
                 this.botones.push(boton);
             }
-
-            methods: {
-                async traeUser() {
-                    this.userSession = JSON.parse(sessionStorage.getItem("user"));
-                    await this.service.getOne("persona", this.userSession.id).then((data) => {
-                        this.user = data;
-                    });
-                },
-
-                async cargaBotones() {
-                    await this.traeUser();
-                    var boton;
-                    if (this.user.rol === "admin") {
-                        boton = [0, "Stock de insumos", "stock.png", "/stockInsumos"];
-                        this.botones.push(boton);
-                        boton = [1, "Catálogo", "manufacturados.png", "/catalogoManu"];
-                        this.botones.push(boton);
-                        boton = [
-                            2,
-                            "Sugerencias del chef",
-                            "sugerenciasChef.png",
-                            "/sugerenciaChef",
-                        ];
-                        this.botones.push(boton);
-                        boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
-                        this.botones.push(boton);
-                        this.rol = "Administrador";
-                    } else if (this.user.rol === "cocina") {
-                        boton = [0, "Manufacturados", "manufacturados.png", "/catalogoManu"];
-                        this.botones.push(boton);
-                        boton = [1, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
-                        this.botones.push(boton);
-                        this.rol = "Cocinero";
-                    } else if (this.user.rol === "cliente") {
-                        boton = [0, "Mis direcciones", "misDirecciones.png", ""];
-                        this.botones.push(boton);
-                        boton = [1, "Mis pedidos", "Pedidos.png", ""];
-                        this.botones.push(boton);
-                        boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
-                        this.botones.push(boton);
-                        this.rol = "Cliente";
-                    } else if (this.user.rol === "delivery") {
-                        boton = [0, "Pedidos", "Pedidos.png", ""];
-                        this.botones.push(boton);
-                        boton = [1, "Pedidos facturados", "pedidosFacturados.png", ""];
-                        this.botones.push(boton);
-                        boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
-                        this.botones.push(boton);
-                        this.rol = "Delivery";
-                    } else if (this.user.rol === "cajero") {
-                        boton = [0, "Pedidos", "Pedidos.png", ""];
-                        this.botones.push(boton);
-                        boton = [1, "Pedidos anteriores", "pedidosFacturados.png", ""];
-                        this.botones.push(boton);
-                        boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
-                        this.botones.push(boton);
-                        this.rol = "Cajero";
-                    }
-                }
-            },
         },
     },
 };

@@ -1,209 +1,268 @@
 <template>
-  <b-navbar id="headerHome" toggleable="md" type="dark" v-if="esHome"> 
-    <b-container> 
+  <b-navbar id="headerHome" toggleable="md" type="dark" v-if="esHome">
+    <b-container>
       <div id="logoContainer">
-      <b-img id="brandImg" alt="" src="http://localhost:9001/images/sistema/logo.png" ></b-img>
-    </div>
-    <div class="centrarHome">
+        <b-img
+          id="brandImg"
+          alt=""
+          src="http://localhost:9001/images/sistema/logo.png"
+        ></b-img>
+      </div>
+      <div class="centrarHome">
         <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="items">          
-            <b-nav-item :to="{ name: 'carta' }" >CARTA</b-nav-item>
+          <b-navbar-nav class="items">
+            <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
             <b-button pill class="boton">Registrarme</b-button>
-            <b-button pill class="boton2" >Ingresar</b-button>
-            
+            <b-button pill class="boton2">Ingresar</b-button>
           </b-navbar-nav>
         </b-collapse>
       </div>
     </b-container>
   </b-navbar>
   <b-navbar id="header" toggleable="md" type="dark" v-else>
-    <b-container>      
-    <div id="logoContainer">
-      <b-img id="brandImg" alt="" src="http://localhost:9001/images/sistema/logo.png" ></b-img>
-    </div>
-    <b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
-    <div class="hamburguer">
-      <div v-if="esCliente">
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="items">          
-            <b-nav-item :to="{ name: 'carta' }" >CARTA</b-nav-item>
-            <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
-            <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
-            <b-nav-item :to="{ name: 'perfil' }">
-              <b-img src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
-              </b-img>
-              <label id="usuario">Pepito</label>
-            </b-nav-item>
-            <b-nav-item :to="{ name: 'carrito' }">
-              <b-img id="carrito" fluid src="http://localhost:9001/images/sistema/carrito.png" class="botonImagenHeader">
-              </b-img>
-              <label id="usuario">Mi carrito
-              </label>
-            </b-nav-item>
-             <b-nav-item class="menuLateral" v-for="boton in botones" :key="boton[0]" v-bind:href="boton[3]">
-              <b-img v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]" fluid class="iconosMenu"></b-img>
-                {{boton[1]}}
-            </b-nav-item>
-          </b-navbar-nav>
-        </b-collapse>
+    <b-container>
+      <div id="logoContainer">
+        <b-img
+          id="brandImg"
+          alt=""
+          src="http://localhost:9001/images/sistema/logo.png"
+        ></b-img>
       </div>
-      
-      <div v-else>
-        <b-collapse id="nav-collapse" is-nav>
-          <b-navbar-nav class="itemsEmpleado">
-            <b-nav-item :to="'/misdatos/'+this.user.id">
-              <b-img v-if="this.user.foto!=undefined" :src=" 'http://localhost:9001/images/personas/' + this.user.foto" id="foto" fluid class="botonImagenHeader">
-              </b-img>
-              <b-img v-else src="http://localhost:9001/images/sistema/userDefaultChico.png" alt="" id="foto" fluid class="botonImagenHeader">
-              </b-img>
-              <label id="usuario">{{this.user.nombre}}
-              </label>
-            </b-nav-item>
-            <b-nav-item class="menuLateral" v-for="boton in botones" :key="boton[0]" v-bind:href="boton[3]">
-              <b-img v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]" fluid class="iconosMenu"></b-img>
-                {{boton[1]}}
-            </b-nav-item>
-          </b-navbar-nav>
-        </b-collapse>
-      </div>
-      
+      <b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
+      <div class="hamburguer">
+        <div v-if="esCliente">
+          <b-collapse id="nav-collapse" is-nav>
+            <b-navbar-nav class="items">
+              <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
+              <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
+              <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
+              <b-nav-item :to="{ name: 'perfil' }">
+                <b-img
+                  src="http://localhost:9001/images/sistema/userDefaultChico.png"
+                  alt=""
+                  id="foto"
+                  fluid
+                  class="botonImagenHeader"
+                >
+                </b-img>
+                <label id="usuario">Pepito</label>
+              </b-nav-item>
+              <b-nav-item :to="{ name: 'carrito' }">
+                <b-img
+                  id="carrito"
+                  fluid
+                  src="http://localhost:9001/images/sistema/carrito.png"
+                  class="botonImagenHeader"
+                >
+                </b-img>
+                <label id="usuario">Mi carrito </label>
+              </b-nav-item>
+              <b-nav-item
+                class="menuLateral"
+                v-for="boton in botones"
+                :key="boton[0]"
+                v-bind:href="boton[3]"
+              >
+                <b-img
+                  v-bind:src="
+                    'http://localhost:9001/images/sistema/' + boton[2]
+                  "
+                  fluid
+                  class="iconosMenu"
+                ></b-img>
+                {{ boton[1] }}
+              </b-nav-item>
+              <b-nav-item class="menuLateral">
+                <logout id="logout" />
+              </b-nav-item>
+            </b-navbar-nav>
+          </b-collapse>
+        </div>
 
-    </div>
+        <div v-else>
+          <b-collapse id="nav-collapse" is-nav>
+            <b-navbar-nav class="itemsEmpleado">
+              <b-nav-item :to="'/misdatos/' + this.user.id">
+                <b-img
+                  v-if="this.user.foto != undefined"
+                  :src="
+                    'http://localhost:9001/images/personas/' + this.user.foto
+                  "
+                  id="foto"
+                  fluid
+                  class="botonImagenHeader"
+                >
+                </b-img>
+                <b-img
+                  v-else
+                  src="http://localhost:9001/images/sistema/userDefaultChico.png"
+                  alt=""
+                  id="foto"
+                  fluid
+                  class="botonImagenHeader"
+                >
+                </b-img>
+                <label id="usuario">{{ this.user.nombre }} </label>
+              </b-nav-item>
+              <b-nav-item
+                class="menuLateral"
+                v-for="boton in botones"
+                :key="boton[0]"
+                v-bind:href="boton[3]"
+              >
+                <b-img
+                  v-bind:src="
+                    'http://localhost:9001/images/sistema/' + boton[2]
+                  "
+                  fluid
+                  class="iconosMenu"
+                ></b-img>
+                {{ boton[1] }}
+              </b-nav-item>
+              <logout id="logout" style="margin-left: -10px" />
+            </b-navbar-nav>
+          </b-collapse>
+        </div>
+      </div>
     </b-container>
   </b-navbar>
 </template>
 
 <script>
 import Service from "@/service/Service.js";
+import btnLatLogOut from "./btnLatLogOut";
+
 export default {
+  components: {
+    logout: btnLatLogOut,
+  },
   data() {
-    return {    
+    return {
       botones: [],
-      user:{},      
-      esCliente:false,
-      es_Home:false,
+      user: {},
+      esCliente: false,
+      es_Home: false,
       service: new Service(),
+      screenWidth: window.screen.width < 769,
     };
   },
- 
+
   mounted() {
     this.verificaUsuario();
   },
-  props: ["imagen", "id",  "screenLength","esHome"],
+  props: ["imagen", "id", "screenLength", "esHome"],
 
   methods: {
-    async verificaUsuario(){
+    async verificaUsuario() {
       this.es_Home = this.$props.esHome;
-      await this.traeUser()
+      await this.traeUser();
       var boton;
-      if(this.user!=null){
-        if(this.user === "cliente"){      
-          this.esCliente=true;
-          boton = [0,"Mis direcciones","misDirecciones.png",""];
+      if (this.user != null) {
+        if (this.user === "cliente") {
+          this.esCliente = true;
+          boton = [0, "Mis direcciones", "misDirecciones.png", ""];
           this.botones.push(boton);
-          boton = [1,"Mis pedidos","Pedidos.png",""];
-          this.botones.push(boton); 
-          boton = [2,"Cerrar sesión","cerrarSesion.png",""];
-          this.botones.push(boton);  
-        
-        }else{
+          boton = [1, "Mis pedidos", "Pedidos.png", ""];
+          this.botones.push(boton);
+        } else {
           this.esCliente = false;
-          if(this.user.rol==="admin"){
-            boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
+          if (this.user.rol === "admin") {
+            boton = [0, "Stock de insumos", "stock.png", "/stockInsumos"];
             this.botones.push(boton);
-            boton = [1,"Catálogo","manufacturados.png","/catalogoManu"];
-            this.botones.push(boton);    
-            boton = [2,"Sugerencias del chef","sugerenciasChef.png","/sugerenciaChef"];
+            boton = [1, "Catálogo", "manufacturados.png", "/catalogoManu"];
             this.botones.push(boton);
-            boton = [3,"Agregar empleado","misDatos.png","/formEmpleado/"];
+            boton = [
+              2,
+              "Sugerencias del chef",
+              "sugerenciasChef.png",
+              "/sugerenciaChef",
+            ];
             this.botones.push(boton);
-            boton = [4,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-            this.botones.push(boton);   
-                  
-          }else if(this.user.rol==="cocina"){
-            boton = [0,"Manufacturados","manufacturados.png","/catalogoManu"];
+            boton = [3, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
             this.botones.push(boton);
-            boton = [1,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-            this.botones.push(boton);  
-
-          }else if(this.user.rol==="delivery"){
-            boton = [0,"Pedidos","Pedidos.png",""];
+          } else if (this.user.rol === "cocina") {
+            boton = [
+              0,
+              "Manufacturados",
+              "manufacturados.png",
+              "/catalogoManu",
+            ];
             this.botones.push(boton);
-            boton = [1,"Pedidos facturados","pedidosFacturados.png",""];
-            this.botones.push(boton);  
-            boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-            this.botones.push(boton);  
-
-          }else if(this.user.rol==="cajero"){
-            boton = [0,"Pedidos","Pedidos.png",""];
+          } else if (this.user.rol === "delivery") {
+            boton = [0, "Pedidos", "Pedidos.png", ""];
             this.botones.push(boton);
-            boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
-            this.botones.push(boton);  
-            boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-            this.botones.push(boton);  
+            boton = [1, "Pedidos facturados", "pedidosFacturados.png", ""];
+            this.botones.push(boton);
+          } else if (this.user.rol === "cajero") {
+            boton = [0, "Pedidos", "Pedidos.png", ""];
+            this.botones.push(boton);
+            boton = [1, "Pedidos anteriores", "pedidosFacturados.png", ""];
+            this.botones.push(boton);
           }
         }
-      } 
+      }
     },
-     async traeUser() {
-         this.userSession=JSON.parse(sessionStorage.getItem('user'));   
-           await this.service.getOne("persona",this.userSession.id).then((data) => {
-            this.user = data;
-          }); 
-      },
+    async traeUser() {
+      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+      await this.service.getOne("persona", this.userSession.id).then((data) => {
+        this.user = data;
+      });
+    },
   },
 };
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
+
 #header {
   background-color: #1f91b6;
   min-height: 200px;
-  max-height: 200px; 
+  max-height: 200px;
 }
 
 #headerHome {
-  background-color:transparent;
+  background-color: transparent;
   min-height: 200px;
-  max-height: 200px; 
+  max-height: 200px;
   z-index: 2;
 }
 
 #foto {
   border-radius: 50%;
 }
+#logout {
+  display: none;
+}
 
 .items {
   display: flex;
   align-items: center;
   color: #ffffff;
-  
-}  
-
-.items>*{
-  margin:15px;  
-  color: #ffffff;
-  
 }
 
-.menuLateral{
+.items > * {
+  margin: 15px;
+  color: #ffffff;
+}
+
+.menuLateral {
   display: none;
 }
 
-.itemsEmpleado{
+.itemsEmpleado {
   margin-right: 150px;
 }
 
-.navbar-dark .navbar-nav .nav-link{
-  color:rgba(255,255, 255, 1);
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 1);
   font-size: 12pt;
   font-weight: 700;
 }
 
-.botonImagenHeader{
+.botonImagenHeader {
   width: 30px;
   margin-right: 5px;
   height: 30px;
@@ -221,9 +280,7 @@ export default {
   float: left;
 }
 
-
 .hamburguer > * {
-  
   font-family: "Baloo Bhaina 2";
   font-weight: 700;
   font-size: 13pt;
@@ -233,65 +290,59 @@ export default {
   width: 30%;
   padding-inline: 2px;
   height: 30px;
-  
 }
 
-.centrarHome{
+.centrarHome {
   text-align: center;
 }
 
-
-
-@media (max-width: 1025px){
+@media (max-width: 1025px) {
 }
-
-
-@media screen and (max-width: 769px){
-
+@media screen and (max-width: 769px) {
+  #logout {
+    display: block;
+  }
   #navToggle {
-  float: right;
-  margin-right: 10px;
-  
-}
+    float: right;
+    margin-right: 10px;
+  }
 
-.menuLateral{
-  display: block;
-}
+  .menuLateral {
+    display: block;
+  }
 
-#brandImg {
-  margin-top: 0px;
-}
+  #brandImg {
+    margin-top: 0px;
+  }
 
-
-  .hamburguer {    
+  .hamburguer {
     background-color: #ffffff;
     position: absolute;
-    margin-top:290px;
-    width: 250px;     
+    margin-top: 290px;
+    width: 250px;
     margin-left: 290px;
-    float:right; 
+    float: right;
     border-radius: 15px;
-    -webkit-box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.33);
-    -moz-box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.33);
-    box-shadow: 9px 10px 19px -5px rgba(0,0,0,0.33);
-    text-align: left;    
-    display:block;
-    }
+    -webkit-box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
+    -moz-box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
+    box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
+    text-align: left;
+    display: block;
+  }
 
-    .nav-item{
-      width: 100%;           
-      position: relative;
-      float: right;
-      text-align: left;
-      padding-left: 10px;
-       
-    }
+  .nav-item {
+    width: 100%;
+    position: relative;
+    float: right;
+    text-align: left;
+    padding-left: 10px;
+  }
 
-.navbar-nav{
-display: inline;
-} 
+  .navbar-nav {
+    display: inline;
+  }
 
-  .navbar-dark .navbar-nav .nav-link{
+  .navbar-dark .navbar-nav .nav-link {
     color: #151515;
     font-size: 12pt;
     font-weight: 400;
@@ -299,58 +350,61 @@ display: inline;
     padding-left: 20px;
   }
 
-.navbar-dark .navbar-nav .nav-link:focus,
-.navbar-dark .navbar-nav .nav-link:hover {
-  color:#E7511E;
-  
-}
-
-
-.navbar-dark .navbar-nav .active>.nav-link,
-.navbar-dark .navbar-nav .nav-link.active,
-.navbar-dark .navbar-nav .nav-link.show,
-.navbar-dark .navbar-nav .show>.nav-link {
-  color:#E7511E;
-}
-
-  .items>*{
-    margin:5px;   
-    
-  
+  .navbar-dark .navbar-nav .nav-link:focus,
+  .navbar-dark .navbar-nav .nav-link:hover {
+    color: #e7511e;
   }
 
-  .col-sm-9{
+  .navbar-dark .navbar-nav .active > .nav-link,
+  .navbar-dark .navbar-nav .nav-link.active,
+  .navbar-dark .navbar-nav .nav-link.show,
+  .navbar-dark .navbar-nav .show > .nav-link {
+    color: #e7511e;
+  }
+
+  .items > * {
+    margin: 5px;
+  }
+
+  .col-sm-9 {
     flex: 0 0 50%;
-    float:right;
+    float: right;
     right: 0;
   }
 
-  .itemsEmpleado{
-  margin-right: 0px;
+  .itemsEmpleado {
+    margin-right: 0px;
+  }
 }
 
-
-}
-@media (max-width: 560px){
-   .hamburguer {   
+@media (max-width: 560px) {
+  #logout {
+    display: block;
+  }
+  .hamburguer {
     margin-left: 150px;
-    }
-   
+  }
 }
 
-@media (max-width: 426px){
-   .hamburguer {   
+@media (max-width: 426px) {
+  #logout {
+    display: block;
+  }
+  .hamburguer {
     margin-left: 100px;
-    }
-   
+  }
 }
-@media (max-width: 375px){
-   .hamburguer {   
+
+@media (max-width: 375px) {
+  #logout {
+    display: block;
+  }
+
+  .hamburguer {
     margin-left: 50px;
-    }
-   
+  }
 }
-@media (max-width: 320px){
-  
+
+@media (max-width: 320px) {
 }
 </style>
