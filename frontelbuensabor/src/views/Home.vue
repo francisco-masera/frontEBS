@@ -61,12 +61,43 @@
             :manufacturadoParam="manufacturado"
           ></plato-item>
         </div>
+        
       
       </b-card-group>
+      <br>
+      <b-button class="botonPlatos">¡Todos nuestros platos!</b-button>
     </div>
-  
+
       <div class="abajo"></div>
-   
+      <div id="home3">
+        <div class="cuadro">
+          <img
+            src="http://localhost:9001/images/sistema/nosotros.png"
+          />
+        </div>
+        <div class="cuadro" style="background-color:#1f91b6">
+            <div class="cuadroText">
+              <h1 style="color:white">Un poco sobre nosotros</h1>
+              Comenzamos este emprendimiento en el año 2017, con la esperanza de poder crecer como profesionales y generar una gran amistad entre nosotros. Nos enfocamos en un producto de calidad, intentando brindar lo mejor de nosotros para que nuestros clientes queden satisfechos. 
+              ¡Esperamos verte nuevamente por aquí!
+            </div>
+        </div>
+        
+        <div class="cuadro" style="background-color:#e7511e">
+            <div class="cuadroText">
+              <h1 style="color:white">¡Contáctanos!</h1>
+              
+            </div>
+        </div>
+        
+
+      </div>
+      <div class="footer">
+        <img
+            src="http://localhost:9001/images/sistema/logo-01.png"
+          />
+      </div>
+      <div class="abajo"></div>
   </div>
 </template>
 <script>
@@ -226,7 +257,78 @@ h2 {
   text-align: left;
 }
 
+.botonPlatos{
+  background-color: #e7511e;
+  color: #ffffff;
+  font-weight: 600;
+  margin-bottom: 90px;
+}
+.botonPlatos:hover{
+  border: #e7511e;
+  background-color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  color: #e7511e;
+}
 
+.botonPlatos:visited{
+   background-color: #e7511e;
+  color: #ffffff;
+}
+.botonPlatos:focus{
+   background-color: #e7511e;
+  color: #ffffff;
+}
+.botonPlatos:visited{
+   background-color: #e7511e;
+  color: #ffffff;
+}
+
+.botonPlatos:active{
+   border: #e7511e!important;
+  background-color: #ffffff !important;
+  border-style: solid!important;
+  border-width: 1px!important;
+  color: #e7511e!important;
+}
+
+#home3{
+  width: 100%;
+  
+}
+.cuadro{
+  width: 50%;
+  display: inline-block;
+  height: 428px;
+}
+.cuadro img{
+  width: 100%;
+  height: auto;
+}
+
+.cuadroText{
+  width: 80%;
+  margin: 10%;
+  text-align: left;
+  color: white;
+}
+
+.footer{
+  background-color: #1f91b6;
+  text-align: center;
+  width: 100%;
+  padding: 30px;
+}
+.footer img{
+  width: 20%;
+}
+@supports(object-fit: cover){
+    .cuadro img{
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+}
 @media (max-width: 900px) {
   #buscador {
   width: 45%;
