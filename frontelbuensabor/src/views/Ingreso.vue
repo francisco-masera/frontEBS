@@ -15,37 +15,45 @@
     <b-alert v-model="esCliente"
       >No tiene permisos para acceder a esta sección</b-alert
     >
-    <div class="ingresoForm">
-      <form>
-        <div class="tituloIngreso">Ingresar</div>
+    <div id="ingreso">
+      <div class="ingresoForm">
+        <form>
+          <div class="tituloIngreso">Ingresar</div>
 
-        <b-form-input
-          id="email-input"
-          v-model="email"
-          required
-          type="email"
-          placeholder="Usuario"
-          class="emailForm"
-        ></b-form-input>
+          <b-form-input
+            id="email-input"
+            v-model="email"
+            required
+            type="email"
+            placeholder="Usuario"
+            class="emailForm"
+          ></b-form-input>
 
-        <b-form-input
-          id="contraseña-input"
-          v-model="contrasenia"
-          required
-          type="password"
-          placeholder="Contraseña"
-          class="contraseñaForm"
-        ></b-form-input>
-        <div class="olvido">Olvidé mi contraseña</div>
-        <b-button
-          pill
-          class="botonIngreso"
-          :user="user"
-          @click="ingresar"
-          size="md"
-          >¡Ingresar!</b-button
-        >
-      </form>
+          <b-form-input
+            id="contraseña-input"
+            v-model="contrasenia"
+            required
+            type="password"
+            placeholder="Contraseña"
+            class="contraseñaForm"
+          ></b-form-input>
+          <div class="olvido">Olvidé mi contraseña</div>
+          <b-button
+            pill
+            class="botonIngreso"
+            :user="user"
+            @click="ingresar"
+            size="md"
+            >¡Ingresar!</b-button
+          >
+        </form>
+      </div>
+      <button
+        v-google-signin-button="clientId"
+        class="google-signin-button loginBtn loginBtn--google"
+      >
+        Continuar con Google
+      </button>
     </div>
     <div class="abajoIngreso"></div>
     <div class="modalMedida">
@@ -60,10 +68,15 @@
 </template>
 <script>
 import Service from "@/service/Service.js";
-import firebase from "firebase";
+import GoogleSignInButton from "vue-google-signin-button-directive";
 export default {
+  directives: {
+    GoogleSignInButton,
+  },
   data() {
     return {
+      clientId:
+        "50977179607-f34qvh8nvpt6f18nlsrupplc9vmi777s.apps.googleusercontent.com",
       email: "",
       contrasenia: "",
       user: {},
@@ -75,16 +88,11 @@ export default {
   },
 
   methods: {
-    logIn() {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.email, this.contrasenia)
-        .then(() => {
-          this.$router.replace("/ingreso");
-        })
-        .catch((error)=> {
-          console.log(error.message);
-        });
+    OnGoogleAuthSuccess(idToken) {
+      console.log(idToken);
+    },
+    OnGoogleAuthFail(error) {
+      console.log(error);
     },
 
     async ingresar() {
@@ -138,6 +146,53 @@ export default {
 };
 </script>
 <style>
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);
+.loginBtn {
+  box-sizing: border-box;
+  position: relative;
+  /* width: 13em;  - apply for fixed size */
+  margin: 0.2em;
+  padding: 0 15px 0 46px;
+  border: none;
+  text-align: left;
+  line-height: 34px;
+  white-space: nowrap;
+  border-radius: 0.2em;
+  font-size: 16px;
+  color: #fff;
+  margin-top: 20px;
+  margin-left: 42%;
+}
+.loginBtn:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+}
+.loginBtn:focus {
+  outline: none;
+}
+.loginBtn:active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+}
+
+.loginBtn--google {
+  /*font-family: "Roboto", Roboto, arial, sans-serif;*/
+  background: #e7511e;
+}
+.loginBtn--google:before {
+  border-right: #bb3f30 1px solid;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+    6px 6px no-repeat;
+}
+.loginBtn--google:hover,
+.loginBtn--google:focus {
+  background: #e74b37;
+}
+
 @media screen and (min-width: 320px) {
   .tituloIngreso {
     text-align: center;

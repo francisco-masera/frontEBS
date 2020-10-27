@@ -24,98 +24,65 @@ const routes = [
     path: "/stockInsumos",
     name: "StockInsumos",
     component: () => import("../views/stockInsumos.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/catalogoManu",
     name: "CatalogoManu",
     component: () => import("../views/catalogoManu.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/insumoDetalle/:id",
     name: "Insumo",
     component: () => import("../views/insumo.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/categoriaManufacturados",
     name: "CategoriaManufacturados",
     component: () => import("../views/CategoriaManufacturados.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/modificarInsumo/:id",
     name: "ModificarInsumo",
     component: () => import("../views/ModificarInsumo.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/sugerenciaChef",
     name: "SugerenciaChef",
     component: () => import("../views/SugerenciaChef.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/manufacturadoDetalle/:id",
     name: "manufacturado",
     component: () => import("../views/Manufacturado.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/sugerencia/:id",
     name: "SugerenciaChefDetalle",
     component: () => import("../views/SugerenciaChefDetalle.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/modificarManufacturado/:id",
     name: "ModificarManufacturado",
     component: () => import("../views/AñadirManufacturado.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
   {
     path: "/misDatos/:id",
     name: "MisDatos",
     component: () => import("../views/misDatos.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 
   {
     path: "/formEmpleado/",
     name: "FormularioEmplado",
     component: () => import("../views/FormularioEmpleado.vue"),
-    meta: {
-      requiresAuth: true,
-    },
   },
 ];
 
