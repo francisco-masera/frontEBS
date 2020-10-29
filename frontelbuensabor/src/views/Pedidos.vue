@@ -132,6 +132,9 @@ export default {
 #imagenBuscar {
   width: 25px;
 }
+.form-inline{
+  flex-wrap: nowrap;
+}
 .hrefPedido {
   float: left;
   color: black;
@@ -139,7 +142,6 @@ export default {
   background-color: transparent;
   border: none;
 }
-
 .hrefPedido:hover {
   text-decoration: underline;
   color: #e7541e;
@@ -162,18 +164,24 @@ export default {
 }
 .divCard {
   min-height: 50px;
-
-  padding-top: 80px;
+  display: inline-block;
 }
 #contenedorTarjeta {
   margin-top: 10px;
   width: 800px;
 }
 
-@media screen and (min-width: 320px) and (max-width: 450px) {
-  #contenedorTarjeta {
-    width: 300px;
+@media screen and (max-width: 550px){
+  .divCard {
+  width: 95%;
+}
+#contenedorTarjeta {
+    width: 100%;
   }
+}
+
+@media screen and (min-width: 320px) and (max-width: 450px) {
+  
   #busqueda {
     width: 100%;
     margin-top: 20px;

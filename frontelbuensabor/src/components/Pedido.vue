@@ -31,6 +31,7 @@
               <label>{{ detalle.cantidad }} {{ detalle.text }}</label>
             </div>
           </div>
+          <br>
           <div class="contenedorCard">
             <b-button
               pill
@@ -141,7 +142,17 @@ export default {
 .filasPedido {
   position: relative;
 }
+@media screen and (max-width: 550px){
+  .contenedorDetalle {
+  width: 100%;
+}
 
+.contenedorCard {
+    float: right;
+   margin-top: 10px;
+   position: relative;
+  }
+}
 @media screen and (min-width: 320px) and (max-width: 450px) {
   #orden {
     width: 100%;
@@ -170,12 +181,6 @@ export default {
   #fila3 {
     width: 100%;
   }
-  .contenedorCard {
-    right: 0px;
-    bottom: 10px;
-    position: absolute;
-    display: block;
-    float: left;
-  }
+ 
 }
 </style>
