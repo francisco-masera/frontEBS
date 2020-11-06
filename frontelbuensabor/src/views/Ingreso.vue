@@ -47,13 +47,15 @@
             >¡Ingresar!</b-button
           >
         </form>
+        <b-button
+          pill
+          size="md"
+          v-google-signin-button="clientId"
+          class="google-signin-button loginBtn loginBtn--google"
+        >
+          Continuar con Google
+        </b-button>
       </div>
-      <button
-        v-google-signin-button="clientId"
-        class="google-signin-button loginBtn loginBtn--google"
-      >
-        Continuar con Google
-      </button>
     </div>
     <div class="abajoIngreso"></div>
     <div class="modalMedida">
@@ -68,6 +70,7 @@
 </template>
 <script>
 import Service from "@/service/Service.js";
+import axios from "axios";
 import GoogleSignInButton from "vue-google-signin-button-directive";
 export default {
   directives: {
@@ -88,8 +91,16 @@ export default {
   },
 
   methods: {
-    OnGoogleAuthSuccess(idToken) {
-      console.log(idToken);
+    async OnGoogleAuthSuccess(token) {
+      await axios
+        .post("http://localhost:9001/buensabor/cliente/login/", token, {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
+          },
+        })
+        .then((r) => {
+          console.log(r);
+        });
     },
     OnGoogleAuthFail(error) {
       console.log(error);
@@ -146,22 +157,22 @@ export default {
 };
 </script>
 <style>
-@import url(https://fonts.googleapis.com/css?family=Roboto:500);
-.loginBtn {
+/* .loginBtn {
   box-sizing: border-box;
   position: relative;
-  /* width: 13em;  - apply for fixed size */
-  margin: 0.2em;
   padding: 0 15px 0 46px;
-  border: none;
   text-align: left;
   line-height: 34px;
+  width: 50%;
   white-space: nowrap;
-  border-radius: 0.2em;
-  font-size: 16px;
+  font-size: 15px;
   color: #fff;
-  margin-top: 20px;
-  margin-left: 42%;
+  border-color: #6c757d;
+  border: 1px solid transparent;
+  background-color: #e7511e;
+  margin-top: 5%;
+  margin-left: 25%;
+  margin-bottom: 5%;
 }
 .loginBtn:before {
   content: "";
@@ -178,22 +189,21 @@ export default {
 .loginBtn:active {
   box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
 }
-
 .loginBtn--google {
-  /*font-family: "Roboto", Roboto, arial, sans-serif;*/
   background: #e7511e;
 }
+.loginBtn--google:hover,
+.loginBtn--google:focus {
+  background-color: #6c757d;
+}
+
 .loginBtn--google:before {
   border-right: #bb3f30 1px solid;
   background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
     6px 6px no-repeat;
-}
-.loginBtn--google:hover,
-.loginBtn--google:focus {
-  background: #e74b37;
-}
+} */
 
-@media screen and (min-width: 320px) {
+@media screen and (min-width: 320px) and (max-width: 630px) {
   .tituloIngreso {
     text-align: center;
     margin-top: 30px;
@@ -210,7 +220,6 @@ export default {
   }
   .ingresoForm {
     height: 40%;
-
     width: 70%;
     margin: 0px auto;
     background-color: white;
@@ -253,7 +262,6 @@ export default {
 
   .botonIngreso {
     background-color: #e7511e;
-
     width: 60px;
     height: 17px;
     margin-top: 5%;
@@ -266,10 +274,57 @@ export default {
   .olvido {
     text-align: right;
     margin-top: 5%;
-
     font-size: 7pt;
-
     margin-right: 30px;
+  }
+
+  .loginBtn {
+    box-sizing: border-box;
+    position: relative;
+    padding: 0 15px 0 46px;
+    text-align: left;
+    width: 160px;
+    line-height: 20px;
+    white-space: nowrap;
+    font-size: 7pt;
+    color: #fff;
+    border-color: #6c757d;
+    border: 1px solid transparent;
+    background-color: #e7511e;
+    margin-top: 5%;
+    margin-left: 15%;
+    margin-bottom: 5%;
+  }
+  .loginBtn:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 100%;
+  }
+  .loginBtn:focus {
+    outline: none;
+  }
+  .loginBtn:active {
+    box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .loginBtn--google {
+    background: #e7511e;
+  }
+
+  .loginBtn--google:hover,
+  .loginBtn--google:focus {
+    background-color: #6c757d;
+  }
+
+  .loginBtn--google:before {
+    border-right: #bb3f30 1px solid;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+      8px 4px no-repeat;
+    background-size: 42%;
   }
 }
 
@@ -303,8 +358,56 @@ export default {
     font-weight: bold;
     font-size: 12pt;
   }
+  .loginBtn {
+    box-sizing: border-box;
+    position: relative;
+    padding: 0 15px 0 46px;
+    text-align: left;
+    width: 10%;
+    line-height: 34px;
+    white-space: nowrap;
+    font-size: 9px;
+    color: #fff;
+    border-color: #6c757d;
+    border: 1px solid transparent;
+    background-color: #e7511e;
+    margin-top: 5%;
+    margin-left: 20%;
+    margin-bottom: 5%;
+  }
+  .loginBtn:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 100%;
+  }
+  .loginBtn:focus {
+    outline: none;
+  }
+  .loginBtn:active {
+    box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .loginBtn--google {
+    background: #e7511e;
+  }
+
+  .loginBtn--google:hover,
+  .loginBtn--google:focus {
+    background-color: #6c757d;
+  }
+
+  .loginBtn--google:before {
+    border-right: #bb3f30 1px solid;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+      9px 9px no-repeat;
+    background-size: 50%;
+  }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) and (max-width: 1279px) {
   .tituloIngreso {
     text-align: center;
     margin-top: 30px;
@@ -356,9 +459,7 @@ export default {
     border-top: 0px;
     border-bottom: 1;
     background-color: transparent;
-
     width: 70%;
-
     font-size: 12pt;
     margin-left: 35px;
     margin-right: 5px;
@@ -380,9 +481,57 @@ export default {
     font-size: 12pt;
     margin-right: 30px;
   }
+  .loginBtn {
+    box-sizing: border-box;
+    position: relative;
+    padding: 0 15px 0 46px;
+    text-align: left;
+    width: 40%;
+    line-height: 30px;
+    white-space: nowrap;
+    font-size: 9pt;
+    color: #fff;
+    border-color: #6c757d;
+    border: 1px solid transparent;
+    background-color: #e7511e;
+    margin-top: 0.5%;
+    margin-left: 24%;
+    margin-bottom: 5%;
+  }
+  .loginBtn:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 100%;
+  }
+  .loginBtn:focus {
+    outline: none;
+  }
+  .loginBtn:active {
+    box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .loginBtn--google {
+    background: #e7511e;
+  }
+
+  .loginBtn--google:hover,
+  .loginBtn--google:focus {
+    background-color: #6c757d;
+  }
+
+  .loginBtn--google:before {
+    border-right: #bb3f30 1px solid;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+      9px 7px no-repeat;
+    background-size: 50%;
+  }
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1280px) and (max-width: 1439px) {
   .tituloIngreso {
     text-align: center;
     margin-top: 25px;
@@ -455,9 +604,71 @@ export default {
     font-size: 9pt;
     margin-right: 30px;
   }
+  .loginBtn {
+    box-sizing: content-box;
+    position: relative;
+    padding: 0 15px 0 46px;
+    text-align: left;
+    width: 120px;
+    line-height: 30px;
+    white-space: nowrap;
+    font-size: 9pt;
+    color: #fff;
+    border-color: #6c757d;
+    border: 1px solid transparent;
+    background-color: #e7511e;
+    margin-top: 0.5%;
+    margin-left: 28%;
+    margin-bottom: 5%;
+  }
+  .loginBtn:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 100%;
+  }
+  .loginBtn:focus {
+    outline: none;
+  }
+  .loginBtn:active {
+    box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .loginBtn--google {
+    background: #e7511e;
+  }
+
+  .loginBtn--google:hover,
+  .loginBtn--google:focus {
+    background-color: #6c757d;
+  }
+
+  .loginBtn--google:before {
+    border-right: #bb3f30 1px solid;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+      9px 9px no-repeat;
+    background-size: 50%;
+  }
 }
 
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1440px) and (max-width: 2048px) {
+  .ingreso {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+  }
+  .olvido {
+    text-align: right;
+    margin-top: 5%;
+    font-size: 13pt;
+    margin-right: 30px;
+  }
   .logo {
     height: 25%;
     width: 25%;
@@ -519,6 +730,54 @@ export default {
     margin-bottom: 5%;
     font-size: 17px;
   }
+
+  .loginBtn {
+    box-sizing: content-box;
+    position: relative;
+    text-align: left;
+    width: 170px;
+    line-height: 34px;
+    white-space: nowrap;
+    font-size: 17px;
+    color: #fff;
+    border-color: #6c757d;
+    border: 1px solid transparent;
+    background-color: #e7511e;
+    margin-top: 0.5%;
+    margin-left: 23%;
+    margin-bottom: 5%;
+  }
+  .loginBtn:before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 34px;
+    height: 100%;
+  }
+  .loginBtn:focus {
+    outline: none;
+  }
+  .loginBtn:active {
+    box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .loginBtn--google {
+    background: #e7511e;
+  }
+
+  .loginBtn--google:hover,
+  .loginBtn--google:focus {
+    background-color: #6c757d;
+  }
+
+  .loginBtn--google:before {
+    border-right: #bb3f30 1px solid;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+      9px 9px no-repeat;
+    background-size: 50%;
+  }
 }
 
 .ingreso {
@@ -540,7 +799,58 @@ export default {
   background-color: #f2e6d1;
   min-height: 60px;
   background-size: contain;
-  bottom: 0;
   position: absolute;
+  bottom: 0;
 }
+/* 
+.loginBtn {
+  width: 120px;
+  box-sizing: content-box;
+} */
+/* 
+.loginBtn {
+  box-sizing: border-box;
+  position: relative;
+  padding: 0 15px 0 46px;
+  text-align: left;
+  line-height: 34px;
+  width: 55%;
+  white-space: nowrap;
+  font-size: 15px;
+  color: #fff;
+  border-color: #6c757d;
+  border: 1px solid transparent;
+  background-color: #e7511e;
+  margin-top: 0.5%;
+  margin-left: 24%;
+  margin-bottom: 5%;
+}
+.loginBtn:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+}
+.loginBtn:focus {
+  outline: none;
+}
+.loginBtn:active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+}
+.loginBtn--google {
+  background: #e7511e;
+}
+.loginBtn--google:hover,
+.loginBtn--google:focus {
+  background-color: #6c757d;
+}
+
+.loginBtn--google:before {
+  border-right: #bb3f30 1px solid;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
+    6px 6px no-repeat;
+} */
 </style>
