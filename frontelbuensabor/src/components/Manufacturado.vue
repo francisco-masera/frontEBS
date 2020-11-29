@@ -8,22 +8,29 @@
           'http://localhost:9001/images/productos/' + manufacturadoParam.imagen
         "
       />
-      <strong>{{ manufacturadoParam.denominacion }}</strong>
+      <strong v-if="manufacturadoParam.type != 'InformacionInsumoVenta'">
+        {{ manufacturadoParam.denominacion }}</strong
+      >
+      <strong v-else>{{ manufacturadoParam.insumo.denominacion }}</strong>
     </b-container>
     <b-container style="text-align: left">
       <b-card-text>
         {{ manufacturadoParam.descripcion }}
       </b-card-text>
       <b-card-text class="precio" style="float:right;">
-        ${{ manufacturadoParam.precioVenta }}
+        {{ this.formatter.formatMoney(manufacturadoParam.precioVenta) }}
       </b-card-text>
     </b-container>
   </b-card>
 </template>
 
 <script>
+import Formatter from "@/utilidades/Formatters.js";
 export default {
   props: ["manufacturadoParam"],
+  data() {
+    return { formatter: new Formatter() };
+  },
 };
 </script>
 

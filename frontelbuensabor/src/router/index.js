@@ -41,7 +41,6 @@ const routes = [
     component: () => import("../views/CategoriaManufacturados.vue"),
   },
 
-  
   {
     path: "/modificarInsumo/:id",
     name: "ModificarInsumo",
@@ -81,6 +80,12 @@ const routes = [
     path: "/formEmpleado/",
     name: "FormularioEmplado",
     component: () => import("../views/FormularioEmpleado.vue"),
+  },
+
+  {
+    path: "/menu/",
+    name: "Menu",
+    component: () => import("../views/Menu.vue"),
   },
 ];
 

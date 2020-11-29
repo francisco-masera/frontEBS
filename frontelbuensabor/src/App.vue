@@ -88,7 +88,6 @@ p {
   height: 35px;
   margin: 5px;
   margin-bottom: 90px;
-
 }
 
 .boton:hover {
@@ -100,7 +99,7 @@ p {
 }
 
 .boton:active {
- border: #e7511e;
+  border: #e7511e;
   background-color: #ffffff;
   border-style: solid;
   border-width: 1px;
@@ -160,36 +159,36 @@ p {
   color: #e7511e;
 }
 
-.buttonText{
+.buttonText {
   color: #e7511e;
   background-color: transparent;
-  border:none;
+  border: none;
 }
-.buttonText:focus{
+.buttonText:focus {
   color: #e7511e;
   background-color: transparent;
-  border:none;
+  border: none;
 }
-.buttonText:active{
+.buttonText:active {
   color: #e7511e !important;
   background-color: transparent !important;
-  border:none;
+  border: none;
 }
-.buttonText:hover{
+.buttonText:hover {
   color: #e7511e;
   background-color: transparent;
   text-decoration: underline;
-  border:none;
+  border: none;
 }
-.buttonText:visited{
+.buttonText:visited {
   color: #e7511e;
   background-color: transparent;
-  border:none;
+  border: none;
 }
-.buttonText:link{
+.buttonText:link {
   color: #e7511e;
   background-color: transparent;
-  border:none;
+  border: none;
 }
 
 .buscador {
@@ -239,7 +238,7 @@ p {
   float: right;
 }
 
-.slideAB{
+.slideAB {
   margin-top: 15px;
   margin-left: 5px;
 }
@@ -259,6 +258,7 @@ p {
   min-width: 200px;
   background-size: contain;
 }
+
 .imagenProducto {
   width: 100%;
   border-top-left-radius: 15px;
