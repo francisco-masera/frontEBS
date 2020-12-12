@@ -84,6 +84,17 @@ const routes = [
     name: "FormularioEmplado",
     component: () => import("../views/FormularioEmpleado.vue"),
   },
+
+  {
+    path: "/menu/",
+    name: "Menu",
+    component: () => import("../views/Menu.vue"),
+  },
+  {
+    path: "/ingresoCli/",
+    name: "IngresoCli",
+    component: () => import("../views/IngresoClientes.vue"),
+  },
 ];
 
 const router = new VueRouter({

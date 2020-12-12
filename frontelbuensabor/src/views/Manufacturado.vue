@@ -411,7 +411,7 @@ export default {
   justify-content: center;
 }
 
-.modal-dialog .boton {
+.modal-dialog .#1f91b6 {
   margin-top: 20px;
   margin-left: auto;
   margin-right: 40%;

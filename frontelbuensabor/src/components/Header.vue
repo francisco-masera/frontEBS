@@ -2,16 +2,19 @@
   <b-navbar id="headerHome" toggleable="md" type="dark" v-if="esHome">
     <b-container>
       <div id="logoContainer">
-        <b-img
-          id="brandImg"
-          alt=""
-          src="http://localhost:9001/images/sistema/logo.png"
-        ></b-img>
+        <a href="\"
+          ><b-img
+            id="brandImg"
+            alt=""
+            src="http://localhost:9001/images/sistema/logo.png"
+          ></b-img>
+        </a>
       </div>
       <div class="centrarHome">
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="items">
             <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
+            <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
             <b-button pill class="boton">Registrarme</b-button>
@@ -24,11 +27,13 @@
   <b-navbar id="header" toggleable="md" type="dark" v-else>
     <b-container>
       <div id="logoContainer">
-        <b-img
-          id="brandImg"
-          alt=""
-          src="http://localhost:9001/images/sistema/logo.png"
-        ></b-img>
+        <a href="\"
+          ><b-img
+            id="brandImg"
+            alt=""
+            src="http://localhost:9001/images/sistema/logo.png"
+          ></b-img
+        ></a>
       </div>
       <b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
       <div class="hamburguer">
@@ -36,6 +41,7 @@
           <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav class="items">
               <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
+              <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
               <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
               <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
               <b-nav-item :to="{ name: 'perfil' }">
@@ -57,7 +63,7 @@
                   class="botonImagenHeader"
                 >
                 </b-img>
-                <label id="usuario">Mi carrito </label>
+                <label id="usuario">Mi carrito</label>
               </b-nav-item>
               <b-nav-item
                 class="menuLateral"
@@ -166,6 +172,8 @@ export default {
           this.botones.push(boton);
           boton = [1, "Mis pedidos", "Pedidos.png", ""];
           this.botones.push(boton);
+          boton = [2, "Cerrar sesión", "cerrarSesion.png", ""];
+          this.botones.push(boton);
         } else {
           this.esCliente = false;
           if (this.user.rol === "admin") {
@@ -182,6 +190,8 @@ export default {
             this.botones.push(boton);
             boton = [3, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
             this.botones.push(boton);
+            boton = [4, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+            this.botones.push(boton);
           } else if (this.user.rol === "cocina") {
             boton = [
               0,
@@ -190,15 +200,21 @@ export default {
               "/catalogoManu",
             ];
             this.botones.push(boton);
+            boton = [1, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+            this.botones.push(boton);
           } else if (this.user.rol === "delivery") {
             boton = [0, "Pedidos", "Pedidos.png", ""];
             this.botones.push(boton);
             boton = [1, "Pedidos facturados", "pedidosFacturados.png", ""];
             this.botones.push(boton);
+            boton = [2, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+            this.botones.push(boton);
           } else if (this.user.rol === "cajero") {
             boton = [0, "Pedidos", "Pedidos.png", ""];
             this.botones.push(boton);
             boton = [1, "Pedidos anteriores", "pedidosFacturados.png", ""];
+            this.botones.push(boton);
+            boton = [2, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
             this.botones.push(boton);
           }
         }
@@ -206,9 +222,13 @@ export default {
     },
     async traeUser() {
       this.userSession = JSON.parse(sessionStorage.getItem("user"));
-      await this.service.getOne("persona", this.userSession.id).then((data) => {
-        this.user = data;
-      });
+      if (this.userSession != null)
+        await this.service
+          .getOne("persona", this.userSession.id)
+          .then((data) => {
+            this.user = data;
+          });
+      else this.user == null;
     },
   },
 };
@@ -298,10 +318,8 @@ export default {
 
 @media (max-width: 1025px) {
 }
+
 @media screen and (max-width: 769px) {
-  #logout {
-    display: block;
-  }
   #navToggle {
     float: right;
     margin-right: 10px;
@@ -404,7 +422,6 @@ export default {
     margin-left: 50px;
   }
 }
-
 @media (max-width: 320px) {
 }
 </style>

@@ -47,14 +47,6 @@
             >¡Ingresar!</b-button
           >
         </form>
-        <b-button
-          pill
-          size="md"
-          v-google-signin-button="clientId"
-          class="google-signin-button loginBtn loginBtn--google"
-        >
-          Continuar con Google
-        </b-button>
       </div>
     </div>
     <div class="abajoIngreso"></div>
@@ -70,12 +62,7 @@
 </template>
 <script>
 import Service from "@/service/Service.js";
-import axios from "axios";
-import GoogleSignInButton from "vue-google-signin-button-directive";
 export default {
-  directives: {
-    GoogleSignInButton,
-  },
   data() {
     return {
       clientId:
@@ -91,21 +78,6 @@ export default {
   },
 
   methods: {
-    async OnGoogleAuthSuccess(token) {
-      await axios
-        .post("http://localhost:9001/buensabor/cliente/login/", token, {
-          headers: {
-            "Content-type": "application/x-www-form-urlencoded; charset=utf-8",
-          },
-        })
-        .then((r) => {
-          console.log(r);
-        });
-    },
-    OnGoogleAuthFail(error) {
-      console.log(error);
-    },
-
     async ingresar() {
       if (this.email != "" && this.contrasenia != "") {
         await this.buscaEmpleados();
