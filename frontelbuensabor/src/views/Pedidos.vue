@@ -7,31 +7,46 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Pedidos</h1>
-      <b-button class="hrefPedido">PENDIENTES</b-button>
-      <b-button class="hrefPedido">ENTREGADOS</b-button>
+      <b-button class="hrefPedido" @click="cambiarAPendientes"
+        >PENDIENTES</b-button
+      >
+      <b-button class="hrefPedido" @click="cambiarAEntregados"
+        >ENTREGADOS</b-button
+      >
       <b-nav-form class="buscador" id="busqueda">
         <b-form-input
           size="sm"
           class="mr-sm-2"
-          v-model="busqueda"
+          v-model="busquedaOrden"
           placeholder="Buscar orden"
           id="inputBusqueda"
         ></b-form-input>
-        <b-button size="sm" class="botonImagen" type="submit" id="lupita">
+        <b-button size="sm" class="botonImagen" type="button" id="lupita" @click="this.busquedaPedidos()">
           <img
             src="http://localhost:9001/images/sistema/buscar.png"
             id="imagenBuscar"
           />
         </b-button>
       </b-nav-form>
-      <div class="divCard">
+      <div v-if="pedidosPendientes" class="divCard">
         <b-card-group>
           <div
-            v-for="pedido in pedidos"
-            :key="pedido.numero"
+            v-for="pedido in filtroPendientes"
+            :key="pedido.id"
             id="contenedorTarjeta"
           >
             <pedido :pedidoParam="pedido"></pedido>
+          </div>
+        </b-card-group>
+      </div>
+      <div v-else class="divCard">
+        <b-card-group>
+          <div
+            v-for="pedido in filtroEntregados"
+            :key="pedido.id"
+            id="contenedorTarjeta"
+          >
+            <pedido :pedidoParam="pedido" ></pedido>
           </div>
         </b-card-group>
       </div>
@@ -42,7 +57,13 @@
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Pedido from "@/components/Pedido.vue";
+import Service from "@/service/Service.js";
+
 export default {
+  mounted() {
+    this.getDomicilios();
+    this.getPedidos();
+  },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
@@ -53,63 +74,13 @@ export default {
     return {
       user: {},
       userDelivery: true,
-      pedidos: [
-        {
-          estado: "pendiente",
-          hora: "20:30",
-          numero: 1234,
-          total: 300,
-          persona: {
-            nombre: "Marcos Fuentes",
-            domicilio: "Malandras 234 - Maipu",
-            telefono: "2342345",
-          },
-
-          detalle: [
-            { cantidad: 1, text: "Pizza muzzarella" },
-            { cantidad: 2, text: "Cerveza Andes Origen" },
-            { cantidad: 2, text: "Flan casero" },
-          ],
-        },
-
-        {
-          estado: "pendiente",
-          hora: "20:30",
-          numero: 3456,
-          total: 300,
-          persona: {
-            nombre: "Mario Pereyra",
-            domicilio: "Milagros 234 - GodoyCruz",
-            telefono: "23400098",
-          },
-
-          detalle: [
-            { cantidad: 1, text: "Pizza muzzarella" },
-            { cantidad: 2, text: "Cerveza Andes Origen" },
-            { cantidad: 2, text: "Flan casero" },
-          ],
-        },
-
-        {
-          estado: "pendiente",
-          hora: "20:30",
-          numero: 1234,
-          total: 300,
-          persona: {
-            nombre: "Carlos Milo",
-            domicilio: "Magallanes 1234 - Ciudad",
-            telefono: "2612345345",
-          },
-
-          detalle: [
-            { cantidad: 1, text: "Pizza muzzarella" },
-            { cantidad: 2, text: "Cerveza Andes Origen" },
-            { cantidad: 2, text: "Flan casero" },
-            { cantidad: 2, text: "Flan casero" },
-            { cantidad: 2, text: "Flan casero" },
-          ],
-        },
-      ],
+      pedidosDelivery: {},
+      service: new Service(),
+      domicilios: {},
+      pedidosPendientes: true,
+      filtroPendientes: {},
+      filtroEntregados:{},
+      busquedaOrden:""
     };
   },
 
@@ -125,14 +96,88 @@ export default {
         this.$router.push({ name: "Home" });
       }
     },
+
+    async getDomicilios() {
+      await this.service.getAll("domicilio").then((data) => {
+        this.domicilios = data;
+      });
+    },
+
+    async getPedidos() {
+      await this.service.getAll("pedido").then((data) => {
+        this.pedidosDelivery = data;
+        this.agregaDomicilioPedido();
+        this.cargaPendientes();
+      });
+    },
+
+    agregaDomicilioPedido() {
+      this.pedidosDelivery.forEach((pedido) => {
+        this.domicilios.forEach((domicilio) => {
+          if (pedido.cliente.id == domicilio.persona.id) {
+            pedido.cliente.domicilio = domicilio;
+          }
+        });
+      });
+
+      console.log(this.pedidosDelivery);
+    },
+    cambiarAPendientes() {
+      this.pedidosPendientes = true;
+      this.cargaPendientes();
+    },
+
+    cargaPendientes() {
+      if (this.pedidosPendientes) {
+        this.filtroPendientes = this.pedidosDelivery.filter(
+          (pedido) => pedido.estado == "Pendiente"
+        );
+      }
+      console.log(this.filtroPendientes);
+    },
+
+     cargaEntregados() {
+      if (!this.pedidosPendientes) {
+        this.filtroEntregados = this.pedidosDelivery.filter(
+          (pedido) => pedido.estado == "Entregado"
+        );
+      }
+      console.log(this.filtroEntregados);
+    },
+
+    cambiarAEntregados() {
+      this.pedidosPendientes = false;
+      this.cargaEntregados();
+    },
+
+    locatorButtonPressed() {
+     navigator.geolocation.getCurrentPosition(
+     position => {
+       console.log(position.coords.latitude);
+       console.log(position.coords.longitude);
+     },
+     error => {
+       console.log(error.message);
+     },
+  )   
+}
+
+    
   },
+  computed:{
+    busquedaPedidos(){
+      return this.filtroPendientes.prototype.filter((pedido)=>{
+        return pedido.numero == this.busquedaOrden;
+      })
+    }
+  }
 };
 </script>
 <style>
 #imagenBuscar {
   width: 25px;
 }
-.form-inline{
+.form-inline {
   flex-wrap: nowrap;
 }
 .hrefPedido {
@@ -171,17 +216,16 @@ export default {
   width: 800px;
 }
 
-@media screen and (max-width: 550px){
+@media screen and (max-width: 550px) {
   .divCard {
-  width: 95%;
-}
-#contenedorTarjeta {
+    width: 95%;
+  }
+  #contenedorTarjeta {
     width: 100%;
   }
 }
 
 @media screen and (min-width: 320px) and (max-width: 450px) {
-  
   #busqueda {
     width: 100%;
     margin-top: 20px;

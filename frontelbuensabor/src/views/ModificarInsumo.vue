@@ -612,7 +612,7 @@ export default {
             this.informacionVenta = data;
             this.$refs["modal"].show();
 
-            setTimeout(() => this.retornaAlStock(), 5300);
+            setTimeout(() => this.retornaAlStock(), 300);
 
           });
       }

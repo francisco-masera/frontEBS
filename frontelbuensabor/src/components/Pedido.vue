@@ -1,72 +1,210 @@
 <template>
-  <b-card no-body border-variant="dark" style="max-width: 600px">
-    <b-container style="padding: 0">
-      <div class="filasPedido">
-        <div id="fila1">
-          <div id="orden">
-            <strong>#Orden {{ pedidoParam.numero }} </strong>
-          </div>
-          <div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
-          <div id="total"><strong>Total: </strong>${{ pedidoParam.total }}</div>
-        </div>
-        <div id="fila2">
-          <div id="cliente">
-            <strong>Cliente: </strong>{{ pedidoParam.persona.nombre }}
-          </div>
-          <div id="telefono">
-            <strong>Teléfono:</strong> {{ pedidoParam.persona.telefono }}
-          </div>
-        </div>
-        <div id="fila3">
-          <strong>Dirección:</strong> {{ pedidoParam.persona.domicilio }}
-        </div>
-        <div style="" id="fila4">
-          <div class="contenedorDetalle">
-            <strong>Detalle:</strong>
-            <div
-              v-for="detalle in pedidoParam.detalle"
-              v-bind:key="detalle.cantidad"
-              class=""
-            >
-              <label>{{ detalle.cantidad }} {{ detalle.text }}</label>
+  <div v-if="pedidoParam.estado == 'Pendiente'">
+    <b-card no-body border-variant="dark" style="max-width: 600px">
+      <b-container style="padding: 0">
+        <div class="filasPedido">
+          <div id="fila1">
+            <div id="orden">
+              <strong>#Orden {{ pedidoParam.numero }} </strong>
+            </div>
+            <div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+            <div id="total">
+              <strong>Total: </strong>${{ pedidoParam.factura.total }}
             </div>
           </div>
-          <br>
-          <div class="contenedorCard">
-            <b-button
-              pill
-              class="boton"
-              id="botonEntrega"
-              size="md"
-              @click="retornaAlStock"
-              >Entregar</b-button
+          <div id="fila2">
+            <div id="cliente">
+              <strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
+              {{ pedidoParam.cliente.apellido }}
+            </div>
+            <div id="telefono">
+              <strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
+            </div>
+          </div>
+          <div id="fila3">
+            <p
+              v-if="
+                pedidoParam.cliente.domicilio.departamento == 0 &&
+                pedidoParam.cliente.domicilio.piso == 0"
             >
-            <b-button
-              pill
-              class="boton2"
-              size="md"
-              id="botonProblema"
-              @click.prevent="siguiente1"
-              >Reportar problema</b-button
+              <strong>Dirección:</strong>
+              {{ pedidoParam.cliente.domicilio.calle }}
+              {{ pedidoParam.cliente.domicilio.numero }} -
+              {{ pedidoParam.cliente.domicilio.localidad }}
+            </p>
+            <p
+              v-else-if="
+                pedidoParam.cliente.domicilio.departamento > 0 &&
+                pedidoParam.cliente.domicilio.piso == 0
+"
             >
+              <strong>Dirección:</strong>
+              {{ pedidoParam.cliente.domicilio.calle }}
+              {{ pedidoParam.cliente.domicilio.numero }} - Departamento:
+              {{ pedidoParam.cliente.domicilio.departamento }} Piso: PB -
+              {{ pedidoParam.cliente.domicilio.localidad }}
+            </p>
+            <p v-else>
+              <strong>Dirección:</strong>
+              {{ pedidoParam.cliente.domicilio.calle }}
+              {{ pedidoParam.cliente.domicilio.numero }} - Departamento:
+              {{ pedidoParam.cliente.domicilio.departamento }} Piso:
+              {{ pedidoParam.cliente.domicilio.piso }} -
+              {{ pedidoParam.cliente.domicilio.localidad }}
+            </p>
+          </div>
+          <div style="" id="fila4">
+            <div class="contenedorDetalle">
+              <strong>Detalle:</strong>
+              <div
+                v-for="detalle in pedidoParam.detalles"
+                v-bind:key="detalle.cantidad"
+                class=""
+              >
+                <label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.denominacion }}</label
+                >
+                <label v-else
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.insumo.denominacion }}</label
+                >
+              </div>
+            </div>
+            <br />
+            <div class="contenedorCard">
+              <b-button pill class="boton" id="botonEntrega" size="md"
+                @click="cambiaAEntregado()">Entregar</b-button>
+          </div>
           </div>
         </div>
-      </div>
-      <div class="fila5">
-        <b-card-img
-          src="https://placekitten.com/480/210"
-          alt="Image"
-          bottom
-        ></b-card-img>
-      </div>
-    </b-container>
-  </b-card>
+        <b-card-footer>
+       <iframe :src="'https://maps.google.com/maps?q='+pedidoParam.cliente.domicilio.latitud+','+pedidoParam.cliente.domicilio.longitud+'&z=15&output=embed'" width="100%" height="100%" frameborder="0" style="border:0"></iframe>
+        </b-card-footer>
+      </b-container>
+    </b-card>
+  </div>
+  <div v-else>
+    <b-card no-body border-variant="dark" style="max-width: 600px">
+      <b-container style="padding: 0">
+        <div class="filasPedido">
+          <div id="fila1">
+            <div id="orden">
+              <strong>#Orden {{ pedidoParam.numero }} </strong>
+            </div>
+            <div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+            <div id="total">
+              <strong>Total: </strong>${{ pedidoParam.factura.total }}
+            </div>
+          </div>
+          <div id="fila2">
+            <div id="cliente">
+              <strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
+              {{ pedidoParam.cliente.apellido }}
+            </div>
+            <div id="telefono">
+              <strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
+            </div>
+          </div>
+          <div id="fila3">
+            <p
+              v-if="
+                pedidoParam.cliente.domicilio.departamento == 0 &&
+                pedidoParam.cliente.domicilio.piso == 0
+"
+          >
+              <strong>Dirección:</strong>
+              {{ pedidoParam.cliente.domicilio.calle }}
+              {{ pedidoParam.cliente.domicilio.numero }} -
+              {{ pedidoParam.cliente.domicilio.localidad }}
+            </p>
+            <p
+              v-else-if="
+                pedidoParam.cliente.domicilio.departamento > 0 &&
+                pedidoParam.cliente.domicilio.piso == 0"
+            >
+              <strong>Dirección:</strong>
+              {{ pedidoParam.cliente.domicilio.calle }}
+              {{ pedidoParam.cliente.domicilio.numero }} - Departamento:
+              {{ pedidoParam.cliente.domicilio.departamento }} Piso: PB -
+              {{ pedidoParam.cliente.domicilio.localidad }}
+            </p>
+            <p v-else>
+              <strong>Dirección:</strong>
+              {{ pedidoParam.cliente.domicilio.calle }}
+              {{ pedidoParam.cliente.domicilio.numero }} - Departamento:
+              {{ pedidoParam.cliente.domicilio.departamento }} Piso:
+              {{ pedidoParam.cliente.domicilio.piso }} -
+              {{ pedidoParam.cliente.domicilio.localidad }}
+            </p>
+          </div>
+          <div style="" id="fila4">
+            <div class="contenedorDetalle">
+              <strong>Detalle:</strong>
+              <div
+                v-for="detalle in pedidoParam.detalles"
+                v-bind:key="detalle.cantidad"
+                class=""
+              >
+                <label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.denominacion }}</label
+                >
+                <label v-else
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.insumo.denominacion }}</label
+                >
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
+      </b-container>
+           <div>
+      <b-modal ref="modal" hide-footer hide-header centered title>
+
+        <p class="modalTitulo">¡Pedido entregado!</p>
+       
+       
+      </b-modal>
+    </div>
+    </b-card>
+
+ 
+  </div>
 </template>
 <script>
+import Service from "@/service/Service.js";
 export default {
-  props: ["pedidoParam"],
+  props: ["pedidoParam", "domicilioParam"],
+  mounted() {},
   data() {
-    return {};
+    return {
+      service: new Service(),
+    };
+  },
+  methods: {
+
+    async cambiaAEntregado(){
+      this.pedidoParam.estado = "Entregado";
+            await this.service
+          .update(
+            "pedido",
+            this.pedidoParam,
+            this.pedidoParam.id
+          )
+          .then((data) => {
+            this.pedidoParam = data;
+            this.$refs["modal"].show();
+
+            setTimeout(() => this.refrescaPantalla(), 300);
+
+          });
+    },
+
+    refrescaPantalla(){
+       window.location.href = "/pedidos/";
+    }
   },
 };
 </script>
@@ -122,42 +260,51 @@ export default {
 }
 .contenedorCard {
   right: 0px;
-  bottom: 10px;
+  bottom: 15px;
   position: absolute;
   display: block;
 }
 
-#botonProblema {
-  width: auto;
-  height: 28px;
-  margin: 0;
-  margin-right: 5px;
-}
+
 #botonEntrega {
   width: auto;
-  height: 28px;
+  height: 30px;
   margin: 0;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 .filasPedido {
   position: relative;
 }
-@media screen and (max-width: 550px){
-  .contenedorDetalle {
-  width: 100%;
+.modalTitulo {
+  margin-top: 7%;
+  text-align: center;
+  font-size: 25px;
 }
 
-.contenedorCard {
-    float: right;
-   margin-top: 10px;
-   position: relative;
+
+@media screen and (max-width: 550px) {
+  .contenedorDetalle {
+    width: 100%;
   }
+
+  .contenedorCard {
+    float: right;
+    margin-top: 10px;
+    position: relative;
+  }
+
+  .modalTitulo {
+  margin-top: 7%;
+  text-align: center;
+  font-size: 25px;
+}
 }
 @media screen and (min-width: 320px) and (max-width: 450px) {
   #orden {
     width: 100%;
     text-align: left;
     border-bottom: 1px solid;
+    border-right: 0;
   }
   #hora {
     width: 100%;
@@ -181,6 +328,25 @@ export default {
   #fila3 {
     width: 100%;
   }
- 
+
+
+  #botonEntrega {
+    width: 100%;
+    height: 28px;
+  }
+
+  .contenedorCard {
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-left: 5px;
+    position: relative;
+    width: 100%;
+  }
+
+.modalTitulo {
+  margin-top: 7%;
+  text-align: center;
+  font-size: 25px;
+}
 }
 </style>
