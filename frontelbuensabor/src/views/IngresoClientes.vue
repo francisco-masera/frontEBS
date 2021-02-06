@@ -46,7 +46,7 @@
                 Debe ingresar su contraseña.
               </span>
               <span class="error" v-if="submitted && !$v.contrasenia.alphaNum">
-                La contraseña debe ser alfanumérica.
+                La contraseña debe ser alfanumérica y no poseer espacios.
               </span>
               <span class="error" v-if="submitted && !$v.contrasenia.minLength">
                 La contraseña debe tener mínimo 8 caracteres.
@@ -147,7 +147,7 @@ export default {
       if (this.$v.$anyError) {
         setTimeout(() => {
           this.submitted = false;
-        }, 10000);
+        }, 5500);
         return;
       }
       var email = this.$v.mail.$model;

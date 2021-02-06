@@ -16,31 +16,42 @@
             <label class="labelForm">Nombre </label>
             <b-form-input
               class="campoForm"
-              v-model.lazy="form1.denominacion"
+              v-model.trim="form1.denominacion"
               id="nombreInsumo"
-              :state="!$v.form1.denominacion.$invalid"
             ></b-form-input
             >*
             <br />
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              letras.
-            </b-form-invalid-feedback>
+            <span
+              class="error"
+              v-if="submitted && !$v.form1.denominacion.required"
+            >
+              <br />Este campo es obligatorio
+            </span>
+            <span
+              class="error"
+              v-if="submitted && !$v.form1.denominacion.alphaNumSpc"
+            >
+              <br />Recuerde ingresar sólo letras y/o números.
+            </span>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Stock mínimo</label>
             <b-form-input
               class="campoForm"
               id="stockMin"
-              v-model.lazy="form1.stockMin"
-              :state="!$v.form1.stockMin.$invalid"
+              v-model.trim="form1.stockMin"
             ></b-form-input
             >*
             <br />
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              números.
-            </b-form-invalid-feedback>
+            <span class="error" v-if="submitted && !$v.form1.stockMin.required">
+              <br />Este campo es obligatorio. Recuerde ingresar sólo números.
+            </span>
+            <span class="error" v-if="submitted && !$v.form1.stockMin.integer">
+              <br />Recuerde ingresar sólo números enteros.
+            </span>
+            <span class="error" v-if="submitted && !$v.form1.stockMin.minValue">
+              <br />El valor debe ser cero (0) o mayor.
+            </span>
             <label class="labelForm" style="margin-left:10px"
               >Stock máximo</label
             >
@@ -48,15 +59,19 @@
             <b-form-input
               class="campoForm"
               id="stockMax"
-              v-model.lazy="form1.stockMax"
-              :state="!$v.form1.stockMax.$invalid"
+              v-model.trim="form1.stockMax"
             ></b-form-input
             >*
             <br />
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              números.
-            </b-form-invalid-feedback>
+            <span class="error" v-if="submitted && !$v.form1.stockMax.required">
+              <br />Este campo es obligatorio.
+            </span>
+            <span class="error" v-if="submitted && !$v.form1.stockMax.integer">
+              <br />Recuerde ingresar sólo números enteros.
+            </span>
+            <span class="error" v-if="submitted && !$v.form1.stockMax.minValue">
+              <br />El valor debe ser cero (0) o mayor.
+            </span>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Unidad de medida</label>
@@ -116,10 +131,10 @@
             ></b-form-input
             >*
 
-            <b-form-invalid-feedback>
+            <span class="error">
               <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
               números mayores a 0.
-            </b-form-invalid-feedback>
+            </span>
           </div>
           <div class="lineaForm" id="lineaDescripcion" style="display:flex">
             <label class="labelForm">Descripción</label>
@@ -133,9 +148,7 @@
               max-rows="6"
             ></b-form-textarea
             >*
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio.
-            </b-form-invalid-feedback>
+            <span class="error"> <br />Este campo es obligatorio. </span>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Imagen</label>
@@ -146,9 +159,7 @@
               :state="!$v.form2.imagen.$invalid"
             ></b-form-file
             >*
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio.
-            </b-form-invalid-feedback>
+            <span class="error"> <br />Este campo es obligatorio. </span>
           </div>
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
@@ -386,11 +397,11 @@
     </b-container>
     <div class="modalMedida">
       <b-modal ref="modal" hide-footer hide-header centered title>
-
-        <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito! Aguarde...</p>
+        <p class="modalTitulo" v-if="esNuevo">
+          ¡Insumo agregado con éxito! Aguarde...
+        </p>
         <p class="modalTitulo" v-else>
           ¡Insumo modificado con éxito! Aguarde...
-
         </p>
         <p class="posicion"></p>
       </b-modal>
@@ -404,12 +415,12 @@ import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
 import {
-
-
   requiredIf,
   required,
-  numeric,
   integer,
+  minValue,
+  decimal,
+  helpers
 } from "vuelidate/lib/validators";
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
@@ -429,6 +440,7 @@ export default {
 
   data() {
     return {
+      submitted: false,
       form1: {
         denominacion: "",
         stockMin: "",
@@ -475,8 +487,12 @@ export default {
 
   methods: {
     siguiente1() {
+      this.submitted = true;
       this.$v.$touch();
       if (this.$v.form1.$anyError) {
+        setTimeout(() => {
+          this.submitted = false;
+        }, 5500);
         return;
       }
       this.insumoEncontrado.denominacion = this.form1.denominacion;
@@ -491,6 +507,7 @@ export default {
       document.getElementById("paso3").style.display = "block";
     },
     siguiente2() {
+      this.submitted = false;
       this.completarCamposForm2();
       document.getElementById("paso3").style.display = "none";
       document.getElementById("paso2").style.display = "block";
@@ -539,7 +556,6 @@ export default {
         .then((data) => (this.informacionVenta = data[0]));
 
       console.log(this.informacionVenta);
-
     },
 
     async guardaStock() {
@@ -559,7 +575,6 @@ export default {
     },
 
     async updateInsumo() {
-
       let img = document.getElementById("imagen").files[0];
 
       if (img != undefined && img.size / 1024 > 1024) {
@@ -585,15 +600,12 @@ export default {
           this.$refs["modal"].show();
 
           setTimeout(() => this.retornaAlStock(), 3000);
-
         });
 
       if (!this.insumoEncontrado.esInsumo) {
         this.informacionVenta.descripcion = this.form2.lineaDescripcion;
         this.informacionVenta.precioVenta = this.form2.precioVenta;
         this.informacionVenta.insumo = this.insumoEncontrado;
-
-
 
         if (img !== undefined) {
           this.informacionVenta.imagen = img.name;
@@ -613,12 +625,10 @@ export default {
             this.$refs["modal"].show();
 
             setTimeout(() => this.retornaAlStock(), 5300);
-
           });
       }
     },
     async agregarInsumo() {
-
       let img = document.getElementById("imagen").files[0];
 
       if (img != undefined && img.size / 1024 > 1024) {
@@ -637,7 +647,6 @@ export default {
         }
       }
 
-
       await this.guardaStock();
 
       await this.service.save("insumo", this.insumoEncontrado).then((data) => {
@@ -651,7 +660,6 @@ export default {
         this.informacionVenta.imagen = img.name;
         await this.guardarImagen(img);
 
-
         await this.service
           .save("insumoVenta", this.informacionVenta)
           .then((data) => {
@@ -661,7 +669,6 @@ export default {
         this.$refs["modal"].show();
         setTimeout(() => this.retornaAlStock(), 3000);
       }
-
     },
 
     async guardarImagen(imagen) {
@@ -716,23 +723,23 @@ export default {
     form1: {
       denominacion: {
         required,
+        alphaNumSpc: helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i),
       },
       stockMin: {
         required,
-        numeric,
+        minValue: minValue(0),
         integer,
       },
       stockMax: {
         required,
-        numeric,
         integer,
+        minValue: minValue(0),
       },
     },
     form2: {
       precioVenta: {
         required,
-        numeric,
-        integer,
+        decimal,
       },
       lineaDescripcion: {
         required,
@@ -747,6 +754,9 @@ export default {
 };
 </script>
 <style>
+.error {
+  color: #dc3545;
+}
 #titulo {
   line-height: 1.2rem;
 }

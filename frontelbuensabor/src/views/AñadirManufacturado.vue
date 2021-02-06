@@ -17,16 +17,23 @@
               <label class="labelForm">Nombre *</label>
               <b-form-input
                 class="campoForm"
-                v-model.lazy="form1.denominacion"
+                v-model.trim="form1.denominacion"
                 id="denominacionManufacturado"
-                :state="!$v.form1.denominacion.$invalid"
                 placeholder="Ingrese un nombre"
               />
               <br />
-              <b-form-invalid-feedback>
-                <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-                letras.
-              </b-form-invalid-feedback>
+              <span
+                class="error"
+                v-if="submitted && !$v.form1.denominacion.required"
+              >
+                Este campo es obligatorio.
+              </span>
+              <span
+                class="error"
+                v-if="submitted && !$v.form1.denominacion.alphaNumSpc"
+              >
+                Recuerde ingresar sólo letras.
+              </span>
             </b-form-group>
           </div>
           <div class="lineaForm" id="lineaDescripcion">
@@ -41,10 +48,10 @@
                 rows="3"
                 max-rows="6"
               />*
-              <b-form-invalid-feedback>
+              <span>
                 <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
                 letras.
-              </b-form-invalid-feedback>
+              </span>
             </b-form-group>
           </div>
           <br />
@@ -152,10 +159,10 @@
                 v-model.lazy="form2.tiempoCocina"
                 :state="!$v.form2.tiempoCocina.$invalid"
               ></b-form-input>
-              <b-form-invalid-feedback>
+              <span>
                 <br />Este campo es obligatorio <br />y sólo admite números
                 mayores a cero <br />sin coma ni punto.
-              </b-form-invalid-feedback>
+              </span>
             </b-form-group>
           </div>
           <div class="lineaFormDerecha" style="float:right">
@@ -255,9 +262,7 @@
                   v-model.lazy="formRevision.imagen"
                   :state="!$v.formRevision.imagen.$invalid"
                 />
-                <b-form-invalid-feedback>
-                  <br />Este campo es obligatorio.
-                </b-form-invalid-feedback>
+                <span> <br />Este campo es obligatorio. </span>
               </b-form-group>
             </div>
             <div class="infoIngredientes">
@@ -314,7 +319,7 @@
 <script>
 import Vue from "vue";
 Vue.use(Vuelidate);
-import { required, numeric, integer } from "vuelidate/lib/validators";
+import { required, integer, helpers } from "vuelidate/lib/validators";
 import { validationMixin } from "vuelidate";
 import Vuelidate from "vuelidate";
 import MenuLateral from "@/components/MenuLateral.vue";
@@ -342,6 +347,7 @@ export default {
 
   data() {
     return {
+      submitted: false,
       service: new Service(),
       formatter: new Formatter(),
       form1: {
@@ -699,16 +705,17 @@ export default {
     form1: {
       denominacion: {
         required,
+        alphaNumSpc: helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i),
       },
       descripcion: {
         required,
+        alphaNumSpc: helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i),
       },
     },
 
     form2: {
       tiempoCocina: {
         required,
-        numeric,
         integer,
       },
     },
@@ -722,6 +729,9 @@ export default {
 };
 </script>
 <style>
+.error {
+  color: #dc3545;
+}
 #titulo {
   line-height: 1.2rem;
   color: #151515;
