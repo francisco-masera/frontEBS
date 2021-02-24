@@ -4,9 +4,7 @@
       <b-card-img
         style="height: auto; max-height: 180px"
         class="imagen img-fluid"
-        :src="
-          'http://localhost:9001/images/productos/' + manufacturadoParam.imagen
-        "
+        :src="'http://localhost:9001/images/productos/' + manufacturadoParam.imagen"
       />
       <strong v-if="manufacturadoParam.type != 'InformacionInsumoVenta'">
         {{ manufacturadoParam.denominacion }}</strong
@@ -17,7 +15,7 @@
       <b-card-text>
         {{ manufacturadoParam.descripcion }}
       </b-card-text>
-      <b-card-text class="precio" style="float:right;">
+      <b-card-text class="precio" style="float: right">
         {{ this.formatter.formatMoney(manufacturadoParam.precioVenta) }}
       </b-card-text>
     </b-container>

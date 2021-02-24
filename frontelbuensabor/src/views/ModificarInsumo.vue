@@ -13,72 +13,123 @@
         <h2>Información básica</h2>
         <b-form id="form1">
           <div class="lineaForm">
-            <label class="labelForm">Nombre </label>
+            <label class="labelForm">Nombre</label>
             <b-form-input
               class="campoForm"
-              v-model.lazy="form1.denominacion"
+              v-model.trim="form1.denominacion"
               id="nombreInsumo"
-              :state="!$v.form1.denominacion.$invalid"
+              @input="$v.form1.denominacion.$touch()"
+              :state="
+                !$v.form1.denominacion.$dirty
+                  ? !$v.form1.denominacion.$anyError
+                  : !$v.form1.denominacion.$error
+              "
             ></b-form-input
             >*
-            <br />
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              letras.
-            </b-form-invalid-feedback>
-          </div>
-          <div class="lineaForm" style="display:flex">
-            <label class="labelForm">Stock mínimo</label>
-            <b-form-input
-              class="campoForm"
-              id="stockMin"
-              v-model.lazy="form1.stockMin"
-              :state="!$v.form1.stockMin.$invalid"
-            ></b-form-input
-            >*
-            <br />
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              números.
-            </b-form-invalid-feedback>
-            <label class="labelForm" style="margin-left:10px"
-              >Stock máximo</label
+            <b-form-invalid-feedback
+              class="error"
+              v-if="$v.form1.denominacion.$dirty && $v.form1.denominacion.$model == ''"
             >
-
-            <b-form-input
-              class="campoForm"
-              id="stockMax"
-              v-model.lazy="form1.stockMax"
-              :state="!$v.form1.stockMax.$invalid"
-            ></b-form-input
-            >*
-            <br />
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              números.
+              El nombre es obligatorio
+            </b-form-invalid-feedback>
+            <b-form-invalid-feedback
+              class="error"
+              v-if="
+                $v.form1.denominacion.$params.alpha && $v.form1.denominacion.$model != ''
+              "
+            >
+              Sólo se admiten letras en este campo.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" style="display:flex">
+          <div class="lineaForm">
+            <div class="form-group" style="width: 100%">
+              <label class="labelForm">Stock mínimo</label>
+              <b-form-input
+                form-control
+                class="campoForm"
+                id="stockMin"
+                @input="$v.form1.stockMin.$touch()"
+                :state="
+                  !$v.form1.stockMin.$dirty
+                    ? !$v.form1.stockMin.$anyError
+                    : !$v.form1.stockMin.$error
+                "
+                v-model.trim="form1.stockMin"
+              ></b-form-input
+              >*
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.stockMin.$dirty && $v.form1.stockMin.$model == ''"
+              >
+                Stock mínimo es obligatorio.
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                class="error"
+                v-show="
+                  $v.form1.stockMin.$params.positivos && $v.form1.stockMin.$model != ''
+                "
+              >
+                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
+                stock
+              </b-form-invalid-feedback>
+            </div>
+          </div>
+          <div class="lineaForm">
+            <div class="form-group" style="width: 100%">
+              <label class="labelForm">Stock máximo</label>
+              <b-form-input
+                class="campoForm"
+                id="stockMax"
+                v-model.trim="form1.stockMax"
+                @input="$v.form1.stockMax.$touch()"
+                :state="
+                  !$v.form1.stockMax.$dirty
+                    ? !$v.form1.stockMax.$anyError
+                    : !$v.form1.stockMax.$error
+                "
+              ></b-form-input
+              >*
+
+              <br />
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.stockMax.$dirty && $v.form1.stockMax.$model == ''"
+              >
+                Stock máximo es obligatorio.
+              </b-form-invalid-feedback>
+
+              <b-form-invalid-feedback
+                class="error"
+                v-show="
+                  $v.form1.stockMax.$params.positivos && $v.form1.stockMax.$model != ''
+                "
+              >
+                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
+                stock.
+              </b-form-invalid-feedback>
+            </div>
+          </div>
+          <div class="lineaForm" style="display: flex">
             <label class="labelForm">Unidad de medida</label>
-            <b-form-select
-              id="unidadMedida"
-              class="campoForm"
-              v-model="insumoEncontrado.unidadMedida"
-              :options="[
-                { text: 'Seleccione...', value: null },
-                'u',
-                'kg',
-                'lt',
-                'gr',
-              ]"
-              :value="null"
-            ></b-form-select
-            >*
+            <select id="unidadMedida" class="custom-select campoForm">
+              <option
+                v-for="(option, index) in [
+                  { text: 'Unidad de medida...', value: 0 },
+                  { text: 'u', value: 1 },
+                  { text: 'kg', value: 2 },
+                  { text: 'lt', value: 3 },
+                  { text: 'gr', value: 4 },
+                ]"
+                :key="index"
+                :value="option.value"
+                :selected="option.value == form1.unidad ? 'selected' : ''"
+              >
+                {{ option.text }}
+              </option>
+              *
+            </select>
             <b-form-group id="contenedorCheck">
-              <b-form-checkbox
-                id="checkbox-1"
-                name="checkbox-1"
-                v-model="esInsumoVenta"
+              <b-form-checkbox id="checkbox-1" name="checkbox-1" v-model="esInsumoVenta"
                 >Directo a venta</b-form-checkbox
               >
               <b-form-checkbox
@@ -96,7 +147,7 @@
             <b-button pill class="boton2" size="md" @click="retornaAlStock"
               >Cancelar</b-button
             >
-            <b-button pill class="boton" size="md" @click.prevent="siguiente1"
+            <b-button pill class="boton" size="md" @click.prevent="siguiente1()"
               >Siguiente</b-button
             >
           </div>
@@ -106,22 +157,35 @@
       <div id="paso2">
         <h2>Información de venta</h2>
         <b-form id="form2">
-          <div class="lineaForm" style="display:flex">
+          <div class="lineaForm" style="display: flex">
             <label class="labelForm">Precio de venta</label>
             <b-form-input
               class="campoForm"
+              form-control
               id="precioVenta"
-              v-model.lazy="form2.precioVenta"
-              :state="!$v.form2.precioVenta.$invalid"
+              v-model="form2.precioVenta"
+              :state="
+                !$v.form2.precioVenta.$dirty
+                  ? !$v.form2.precioVenta.$anyError
+                  : !$v.form2.precioVenta.nombre.$error
+              "
+              @input="$v.form2.precioVenta.$touch()"
             ></b-form-input
-            >*
-
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              números mayores a 0.
+            >*<b-form-invalid-feedback
+              class="error"
+              v-if="$v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''"
+              >Este campo es obligatorio.
+            </b-form-invalid-feedback>
+            <b-form-invalid-feedback
+              class="error"
+              v-show="
+                $v.form2.precioVenta.$params.positivos &&
+                $v.form2.precioVenta.$model != ''
+              "
+              >Recuerde ingresar sólo números mayores a 0.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" id="lineaDescripcion" style="display:flex">
+          <div class="lineaForm" id="lineaDescripcion" style="display: flex">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
@@ -137,7 +201,7 @@
               <br />Este campo es obligatorio.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" style="display:flex">
+          <div class="lineaForm" style="display: flex">
             <label class="labelForm">Imagen</label>
             <b-form-file
               class="campoForm"
@@ -153,27 +217,19 @@
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-if="esNuevo">
+          <div class="lineaFormDerecha" style="float: right" v-if="esNuevo">
             <b-button pill class="boton2" size="md" @click="retornaAlStock"
               >Cancelar</b-button
             >
-            <b-button
-              pill
-              class="boton"
-              size="md"
-              @click.prevent="agregarInsumo"
+            <b-button pill class="boton" size="md" @click.prevent="agregarInsumo"
               >Guardar</b-button
             >
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-else>
+          <div class="lineaFormDerecha" style="float: right" v-else>
             <b-button pill class="boton2" size="md" @click="retornaAlStock"
               >Cancelar</b-button
             >
-            <b-button
-              pill
-              class="boton"
-              size="md"
-              @click.prevent="updateInsumo()"
+            <b-button pill class="boton" size="md" @click.prevent="updateInsumo()"
               >Guardar</b-button
             >
           </div>
@@ -353,11 +409,7 @@
             </b-collapse>
           </div>
 
-          <div
-            class="lineaFormDerecha"
-            style="float:right"
-            v-if="esInsumoVenta"
-          >
+          <div class="lineaFormDerecha" style="float: right" v-if="esInsumoVenta">
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
@@ -365,7 +417,7 @@
               >Siguiente</b-button
             >
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-else-if="esNuevo">
+          <div class="lineaFormDerecha" style="float: right" v-else-if="esNuevo">
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
@@ -373,7 +425,7 @@
               >Guardar</b-button
             >
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-else>
+          <div class="lineaFormDerecha" style="float: right" v-else>
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
@@ -386,12 +438,8 @@
     </b-container>
     <div class="modalMedida">
       <b-modal ref="modal" hide-footer hide-header centered title>
-
         <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito! Aguarde...</p>
-        <p class="modalTitulo" v-else>
-          ¡Insumo modificado con éxito! Aguarde...
-
-        </p>
+        <p class="modalTitulo" v-else>¡Insumo modificado con éxito! Aguarde...</p>
         <p class="posicion"></p>
       </b-modal>
     </div>
@@ -403,24 +451,18 @@
 import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
-import {
-
-
-  requiredIf,
-  required,
-  numeric,
-  integer,
-} from "vuelidate/lib/validators";
+import { requiredIf, required, helpers } from "vuelidate/lib/validators";
 import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
+const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
+const positivos = helpers.regex("positivos", /^(?:[1-9]\d*|0)?(?:[\\.\\,]\d+)?$/);
 export default {
   mounted() {
     this.userVerifica();
     this.getCategorias();
-    this.esNuevo =
-      this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
+    this.esNuevo = this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
   },
   components: {
     menuLateral: MenuLateral,
@@ -433,6 +475,7 @@ export default {
         denominacion: "",
         stockMin: "",
         stockMax: "",
+        unidad: 0,
       },
       form2: {
         precioVenta: "",
@@ -479,10 +522,20 @@ export default {
       if (this.$v.form1.$anyError) {
         return;
       }
+      var unidades = document.getElementById("unidadMedida");
+      var unidadVal = unidades.selectedIndex;
+      if (unidadVal == 0) {
+        this.$bvToast.toast(`Debe elegir una unidad de medida`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
+        return;
+      }
       this.insumoEncontrado.denominacion = this.form1.denominacion;
       this.insumoEncontrado.stock.maximo = this.form1.stockMax;
       this.insumoEncontrado.stock.minimo = this.form1.stockMin;
-
+      this.insumoEncontrado.unidadMedida = unidades[unidadVal].text;
       document.getElementById("paso1").style.display = "none";
       if (document.getElementById("checkbox-2").checked) {
         this.insumoEncontrado.esExtra = true;
@@ -490,6 +543,7 @@ export default {
       this.verificaInsumo();
       document.getElementById("paso3").style.display = "block";
     },
+
     siguiente2() {
       this.completarCamposForm2();
       document.getElementById("paso3").style.display = "none";
@@ -522,6 +576,23 @@ export default {
       this.form1.denominacion = this.insumoEncontrado.denominacion;
       this.form1.stockMax = this.insumoEncontrado.stock.maximo;
       this.form1.stockMin = this.insumoEncontrado.stock.minimo;
+      switch (this.insumoEncontrado.unidadMedida) {
+        case "u":
+          this.form1.unidad = 1;
+          break;
+        case "kg":
+          this.form1.unidad = 2;
+          break;
+        case "lt":
+          this.form1.unidad = 3;
+          break;
+        case "gr":
+          this.form1.unidad = 4;
+          break;
+        default:
+          this.form1.unidad = 0;
+          break;
+      }
     },
 
     completarCamposForm2() {
@@ -539,16 +610,13 @@ export default {
         .then((data) => (this.informacionVenta = data[0]));
 
       console.log(this.informacionVenta);
-
     },
 
     async guardaStock() {
       if (this.esNuevo) {
-        await this.service
-          .save("stock", this.insumoEncontrado.stock)
-          .then((data) => {
-            this.insumoEncontrado.stock = data;
-          });
+        await this.service.save("stock", this.insumoEncontrado.stock).then((data) => {
+          this.insumoEncontrado.stock = data;
+        });
       } else {
         await this.service.update(
           "stock",
@@ -559,11 +627,10 @@ export default {
     },
 
     async updateInsumo() {
-
       let img = document.getElementById("imagen").files[0];
 
-      if (img != undefined && img.size / 1024 > 1024) {
-        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
+      if (img != undefined && img.size / 1024 > 512) {
+        this.$bvToast.toast(`La imagen no debe superar los 512KB`, {
           title: `¡Atención!`,
           toaster: "b-toaster-top-center",
           solid: true,
@@ -584,16 +651,13 @@ export default {
         .then(() => {
           this.$refs["modal"].show();
 
-          setTimeout(() => this.retornaAlStock(), 3000);
-
+          setTimeout(() => this.retornaAlStock(), 2000);
         });
 
       if (!this.insumoEncontrado.esInsumo) {
         this.informacionVenta.descripcion = this.form2.lineaDescripcion;
         this.informacionVenta.precioVenta = this.form2.precioVenta;
         this.informacionVenta.insumo = this.insumoEncontrado;
-
-
 
         if (img !== undefined) {
           this.informacionVenta.imagen = img.name;
@@ -603,82 +667,81 @@ export default {
         }
 
         await this.service
-          .update(
-            "insumoVenta",
-            this.informacionVenta,
-            this.informacionVenta.id
-          )
+          .update("insumoVenta", this.informacionVenta, this.informacionVenta.id)
           .then((data) => {
             this.informacionVenta = data;
             this.$refs["modal"].show();
 
-            setTimeout(() => this.retornaAlStock(), 5300);
-
+            setTimeout(() => this.retornaAlStock(), 2000);
           });
       }
     },
     async agregarInsumo() {
+      try {
+        let img = document.getElementById("imagen").files[0];
 
-      let img = document.getElementById("imagen").files[0];
-
-      if (img != undefined && img.size / 1024 > 1024) {
-        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
-        return;
-      }
-
-      if (this.esInsumoVenta) {
-        this.$v.$touch();
-        if (this.$v.form2.$anyError) {
+        if (img != undefined && img.size / 1024 > 512) {
+          this.$bvToast.toast(`La imagen no debe superar los 512KB`, {
+            title: `¡Atención!`,
+            toaster: "b-toaster-top-center",
+            solid: true,
+          });
           return;
         }
-      }
 
+        if (this.esInsumoVenta) {
+          this.$v.$touch();
+          if (this.$v.form2.$anyError) {
+            return;
+          }
+        }
 
-      await this.guardaStock();
-
-      await this.service.save("insumo", this.insumoEncontrado).then((data) => {
-        this.insumoEncontrado = data;
-      });
-      if (!this.insumoEncontrado.esInsumo) {
-        this.informacionVenta.descripcion = this.form2.lineaDescripcion;
-        this.informacionVenta.precioVenta = this.form2.precioVenta;
-        this.informacionVenta.insumo = this.insumoEncontrado;
-
-        this.informacionVenta.imagen = img.name;
-        await this.guardarImagen(img);
-
-
+        await this.guardaStock();
+        var res = false;
         await this.service
-          .save("insumoVenta", this.informacionVenta)
+          .save("insumo", this.insumoEncontrado)
           .then((data) => {
-            this.informacionVenta = data;
-          });
+            this.insumoEncontrado = data;
+          })
+          .then(async () => {
+            if (!this.insumoEncontrado.esInsumo) this.setInsumoVenta(img);
+          })
+          .then(() => {
+            if (!this.insumoEncontrado.esInsumo) this.guardarImagen(img);
+          })
+          .then(() => {
+            if (!this.insumoEncontrado.esInsumo)
+              this.service.save("insumoVenta", this.informacionVenta);
+          })
 
-        this.$refs["modal"].show();
-        setTimeout(() => this.retornaAlStock(), 3000);
+          .then((data) => (res = data));
+        if (res != false) {
+          this.$refs["modal"].show();
+          setTimeout(() => this.retornaAlStock(), 3000);
+        }
+      } catch (e) {
+        console.error(e);
       }
+    },
 
+    async setInsumoVenta(img) {
+      this.informacionVenta.descripcion = this.form2.lineaDescripcion;
+      this.informacionVenta.precioVenta = this.form2.precioVenta;
+      this.informacionVenta.insumo = this.insumoEncontrado;
+      this.informacionVenta.imagen = img.name;
     },
 
     async guardarImagen(imagen) {
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
-        .post(
-          "http://localhost:9001/buensabor/informacionArticulo/uploadImg",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origins": "*",
-              "cache-control": "no-cache",
-            },
-          }
-        )
+        .post("http://localhost:9001/buensabor/informacionArticulo/uploadImg", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origins": "*",
+            "cache-control": "no-cache",
+          },
+        })
         .catch((error) => {
           return error;
         });
@@ -716,23 +779,21 @@ export default {
     form1: {
       denominacion: {
         required,
+        alpha,
       },
       stockMin: {
         required,
-        numeric,
-        integer,
+        positivos,
       },
       stockMax: {
         required,
-        numeric,
-        integer,
+        positivos,
       },
     },
     form2: {
       precioVenta: {
         required,
-        numeric,
-        integer,
+        positivos,
       },
       lineaDescripcion: {
         required,
@@ -756,8 +817,7 @@ export default {
 }
 #stockMin {
   margin-top: -5px;
-  width: 10%;
-  padding: 0%;
+  width: 20%;
 }
 
 #stockMax {
@@ -772,7 +832,7 @@ export default {
 
 .lineaForm {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 4vh;
   min-height: 40px;
 }
 
@@ -837,5 +897,9 @@ export default {
 }
 #paso3 {
   display: none;
+}
+.error {
+  color: #e43561;
+  font-size: 1em;
 }
 </style>

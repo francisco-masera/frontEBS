@@ -87,6 +87,11 @@ const routes = [
     name: "Menu",
     component: () => import("../views/Menu.vue"),
   },
+  {
+    path: "/registro/",
+    name: "Registro",
+    component: () => import("../views/Registro.vue"),
+  },
 ];
 
 const router = new VueRouter({
