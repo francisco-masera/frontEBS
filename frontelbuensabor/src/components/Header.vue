@@ -17,7 +17,9 @@
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
             <b-button @click="registro" pill class="boton">Registrarme</b-button>
-            <b-button pill class="boton2">Ingresar</b-button>
+            <b-button @click="$router.push({ name: 'Ingreso' })" pill class="boton2"
+              >Ingresar</b-button
+            >
           </b-navbar-nav>
         </b-collapse>
       </div>

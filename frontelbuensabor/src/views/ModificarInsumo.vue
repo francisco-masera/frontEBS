@@ -15,7 +15,7 @@
           <div class="lineaForm">
             <label class="labelForm">Nombre</label>
             <b-form-input
-              class="campoForm"
+              class="campoForm form-control"
               v-model.trim="form1.denominacion"
               id="nombreInsumo"
               @input="$v.form1.denominacion.$touch()"
@@ -46,7 +46,7 @@
               <label class="labelForm">Stock mínimo</label>
               <b-form-input
                 form-control
-                class="campoForm"
+                class="campoForm form-control"
                 id="stockMin"
                 @input="$v.form1.stockMin.$touch()"
                 :state="
@@ -78,7 +78,7 @@
             <div class="form-group" style="width: 100%">
               <label class="labelForm">Stock máximo</label>
               <b-form-input
-                class="campoForm"
+                class="campoForm form-control"
                 id="stockMax"
                 v-model.trim="form1.stockMax"
                 @input="$v.form1.stockMax.$touch()"
@@ -160,25 +160,24 @@
           <div class="lineaForm" style="display: flex">
             <label class="labelForm">Precio de venta</label>
             <b-form-input
-              class="campoForm"
-              form-control
+              class="campoForm form-control"
               id="precioVenta"
               v-model="form2.precioVenta"
               :state="
                 !$v.form2.precioVenta.$dirty
                   ? !$v.form2.precioVenta.$anyError
-                  : !$v.form2.precioVenta.nombre.$error
+                  : !$v.form2.precioVenta.$error
               "
               @input="$v.form2.precioVenta.$touch()"
             ></b-form-input
-            >*<b-form-invalid-feedback
+            ><br />*<b-form-invalid-feedback
               class="error"
               v-if="$v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''"
-              >Este campo es obligatorio.
-            </b-form-invalid-feedback>
+              >El precio de venta es obligatorio. </b-form-invalid-feedback
+            ><br />
             <b-form-invalid-feedback
               class="error"
-              v-show="
+              v-if="
                 $v.form2.precioVenta.$params.positivos &&
                 $v.form2.precioVenta.$model != ''
               "
@@ -189,29 +188,45 @@
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
-              class="campoForm"
+              class="campoFor form-control"
               v-model.lazy="form2.lineaDescripcion"
-              :state="!$v.form2.lineaDescripcion.$invalid"
+              :state="
+                !$v.form2.lineaDescripcion.$dirty
+                  ? !$v.form2.lineaDescripcion.$anyError
+                  : !$v.form2.lineaDescripcion.$error
+              "
+              @input="$v.form2.lineaDescripcion.$touch()"
               placeholder="Enter something..."
               rows="3"
-              max-rows="6"
+              max-rows="3"
             ></b-form-textarea
-            >*
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio.
+            ><br />*
+            <b-form-invalid-feedback
+              class="error"
+              v-if="
+                $v.form2.lineaDescripcion.$dirty && $v.form2.lineaDescripcion.$model == ''
+              "
+              >La descripción es obligatoria.
             </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display: flex">
             <label class="labelForm">Imagen</label>
             <b-form-file
-              class="campoForm"
+              class="campoForm form-control"
               id="imagen"
               v-model.lazy="form2.imagen"
-              :state="!$v.form2.imagen.$invalid"
+              :state="
+                !$v.form2.imagen.$dirty
+                  ? !$v.form2.imagen.$anyError
+                  : !$v.form2.imagen.$error
+              "
+              @input="$v.form2.imagen.$touch()"
             ></b-form-file
-            >*
-            <b-form-invalid-feedback>
-              <br />Este campo es obligatorio.
+            ><br />*
+            <b-form-invalid-feedback
+              class="error"
+              v-if="$v.form2.imagen.$dirty && $v.form2.imagen.$params.required"
+              >La foto es obligatoria.
             </b-form-invalid-feedback>
           </div>
           <div class="lineaForm">
@@ -457,7 +472,7 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
 const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
-const positivos = helpers.regex("positivos", /^(?:[1-9]\d*|0)?(?:[\\.\\,]\d+)?$/);
+const positivos = helpers.regex("positivos", /^(?:[1-9]\d*|0)?(?:[\\.\\,]\d+)?$/g);
 export default {
   mounted() {
     this.userVerifica();
