@@ -17,8 +17,10 @@
             <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
-            <b-button pill class="boton">Registrarme</b-button>
-            <b-button pill class="boton2">Ingresar</b-button>
+            <b-button @click="registro" pill class="boton">Registrarme</b-button>
+            <b-button @click="$router.push({ name: 'Ingreso' })" pill class="boton2"
+              >Ingresar</b-button
+            >
           </b-navbar-nav>
         </b-collapse>
       </div>
@@ -72,9 +74,7 @@
                 v-bind:href="boton[3]"
               >
                 <b-img
-                  v-bind:src="
-                    'http://localhost:9001/images/sistema/' + boton[2]
-                  "
+                  v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]"
                   fluid
                   class="iconosMenu"
                 ></b-img>
@@ -93,9 +93,7 @@
               <b-nav-item :to="'/misdatos/' + this.user.id">
                 <b-img
                   v-if="this.user.foto != undefined"
-                  :src="
-                    'http://localhost:9001/images/personas/' + this.user.foto
-                  "
+                  :src="'http://localhost:9001/images/personas/' + this.user.foto"
                   id="foto"
                   fluid
                   class="botonImagenHeader"
@@ -119,9 +117,7 @@
                 v-bind:href="boton[3]"
               >
                 <b-img
-                  v-bind:src="
-                    'http://localhost:9001/images/sistema/' + boton[2]
-                  "
+                  v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]"
                   fluid
                   class="iconosMenu"
                 ></b-img>
@@ -181,24 +177,14 @@ export default {
             this.botones.push(boton);
             boton = [1, "Catálogo", "manufacturados.png", "/catalogoManu"];
             this.botones.push(boton);
-            boton = [
-              2,
-              "Sugerencias del chef",
-              "sugerenciasChef.png",
-              "/sugerenciaChef",
-            ];
+            boton = [2, "Sugerencias del chef", "sugerenciasChef.png", "/sugerenciaChef"];
             this.botones.push(boton);
             boton = [3, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
             this.botones.push(boton);
             boton = [4, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
             this.botones.push(boton);
           } else if (this.user.rol === "cocina") {
-            boton = [
-              0,
-              "Manufacturados",
-              "manufacturados.png",
-              "/catalogoManu",
-            ];
+            boton = [0, "Manufacturados", "manufacturados.png", "/catalogoManu"];
             this.botones.push(boton);
             boton = [1, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
             this.botones.push(boton);
@@ -223,12 +209,14 @@ export default {
     async traeUser() {
       this.userSession = JSON.parse(sessionStorage.getItem("user"));
       if (this.userSession != null)
-        await this.service
-          .getOne("persona", this.userSession.id)
-          .then((data) => {
-            this.user = data;
-          });
+        await this.service.getOne("persona", this.userSession.id).then((data) => {
+          this.user = data;
+        });
       else this.user == null;
+    },
+
+    registro() {
+      this.$router.push({ name: "Registro" });
     },
   },
 };

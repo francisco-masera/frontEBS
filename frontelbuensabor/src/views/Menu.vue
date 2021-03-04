@@ -6,20 +6,14 @@
     </div>
     <div class="costado" v-if="!esHome"></div>
     <div class="menuDiv">
-      <h3 style="margin-left:20%">Nuestros Platos</h3>
+      <h3 style="margin-left: 20%">Nuestros Platos</h3>
       <div id="filtros">
-        <div style="float:right">
+        <div style="float: right">
           <b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
-            <b-img
-              width="50px"
-              src="http://localhost:9001/images/sistema/pizza.svg"
-            />
+            <b-img width="50px" src="http://localhost:9001/images/sistema/pizza.svg" />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
-            <b-img
-              width="50px"
-              src="http://localhost:9001/images/sistema/lomo.svg"
-            />
+            <b-img width="50px" src="http://localhost:9001/images/sistema/lomo.svg" />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
             <b-img
@@ -35,27 +29,19 @@
           </b-button>
 
           <b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
-            <b-img
-              width="50px"
-              src="http://localhost:9001/images/sistema/sandwich.svg"
-            />
+            <b-img width="50px" src="http://localhost:9001/images/sistema/sandwich.svg" />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
-            <b-img
-              width="50px"
-              src="http://localhost:9001/images/sistema/botella.svg"
+            <b-img width="50px" src="http://localhost:9001/images/sistema/botella.svg"
           /></b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
-            <b-img
-              width="50px"
-              src="http://localhost:9001/images/sistema/cupcake.svg"
-            />
+            <b-img width="50px" src="http://localhost:9001/images/sistema/cupcake.svg" />
           </b-button>
         </div>
         <b-nav-form class="buscador">
           <b-form-input
             @keyup="filtrarPorTexto"
-            style="width:300px"
+            style="width: 300px"
             size="sm"
             id="buscadorInput"
             class="mr-sm-2"
@@ -65,28 +51,28 @@
           >
         </b-nav-form>
 
-        <div id="especiales" style="padding-top:5px">
-          <div id="celiaco" style="float: left; width:130px">
+        <div id="especiales" style="padding-top: 5px">
+          <div id="celiaco" style="float: left; width: 130px">
             <b-button class="botonImagen" @click="filtrarCategoria(2, 1)">
               <img
                 width="30px"
                 src="http://localhost:9001/images/sistema/sinTacc.png"
-                style="float:left;margin-right: 8px;"
+                style="float: left; margin-right: 8px"
               />
             </b-button>
-            <span style="font-size: 14px;font-family: 'Baloo Bhaina 2'">
+            <span style="font-size: 14px; font-family: 'Baloo Bhaina 2'">
               SIN T.A.C.C.
             </span>
           </div>
-          <div id="vegano" style="display:inline-block;width:150px">
+          <div id="vegano" style="display: inline-block; width: 150px">
             <b-button class="botonImagen" @click="filtrarCategoria(2, 2)">
               <img
                 width="30px"
                 src="http://localhost:9001/images/sistema/vegetariano.png"
-                style="float:left;margin-right: 8px;"
+                style="float: left; margin-right: 8px"
               />
             </b-button>
-            <span style="font-size: 14px;font-family: 'Baloo Bhaina 2'"
+            <span style="font-size: 14px; font-family: 'Baloo Bhaina 2'"
               >VEGETARIANO</span
             >
           </div>
@@ -170,7 +156,7 @@ export default {
             )
             .then((r) => (this.productos = r.data));
         else this.getAllProductos();
-      }, 500);
+      }, 800);
     },
   },
 };

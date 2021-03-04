@@ -95,6 +95,11 @@ const routes = [
     name: "IngresoCli",
     component: () => import("../views/IngresoClientes.vue"),
   },
+  {
+    path: "/registro/",
+    name: "Registro",
+    component: () => import("../views/Registro.vue"),
+  },
 ];
 
 const router = new VueRouter({
