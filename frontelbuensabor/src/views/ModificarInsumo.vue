@@ -15,7 +15,7 @@
           <div class="lineaForm">
             <label class="labelForm">Nombre </label>
             <b-form-input
-              class="campoForm"
+              class="campoForm form-control"
               v-model.trim="form1.denominacion"
               id="nombreInsumo"
             ></b-form-input
@@ -34,44 +34,73 @@
               <br />Recuerde ingresar sólo letras y/o números.
             </span>
           </div>
-          <div class="lineaForm" style="display:flex">
-            <label class="labelForm">Stock mínimo</label>
-            <b-form-input
-              class="campoForm"
-              id="stockMin"
-              v-model.trim="form1.stockMin"
-            ></b-form-input
-            >*
-            <br />
-            <span class="error" v-if="submitted && !$v.form1.stockMin.required">
-              <br />Este campo es obligatorio. Recuerde ingresar sólo números.
-            </span>
-            <span class="error" v-if="submitted && !$v.form1.stockMin.integer">
-              <br />Recuerde ingresar sólo números enteros.
-            </span>
-            <span class="error" v-if="submitted && !$v.form1.stockMin.minValue">
-              <br />El valor debe ser cero (0) o mayor.
-            </span>
-            <label class="labelForm" style="margin-left:10px"
-              >Stock máximo</label
-            >
+          <div class="lineaForm">
+            <div class="form-group" style="width: 100%">
+              <label class="labelForm">Stock mínimo</label>
+              <b-form-input
+                form-control
+                class="campoForm form-control"
+                id="stockMin"
+                @input="$v.form1.stockMin.$touch()"
+                :state="
+                  !$v.form1.stockMin.$dirty
+                    ? !$v.form1.stockMin.$anyError
+                    : !$v.form1.stockMin.$error
+                "
+                v-model.trim="form1.stockMin"
+              ></b-form-input
+              >*
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.stockMin.$dirty && $v.form1.stockMin.$model == ''"
+              >
+                Stock mínimo es obligatorio.
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                class="error"
+                v-show="
+                  $v.form1.stockMin.$params.integer && $v.form1.stockMin.$model != ''
+                "
+              >
+                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
+                stock
+              </b-form-invalid-feedback>
+            </div>
+          </div>
+          <div class="lineaForm">
+            <div class="form-group" style="width: 100%">
+              <label class="labelForm">Stock máximo</label>
+              <b-form-input
+                class="campoForm form-control"
+                id="stockMax"
+                v-model.trim="form1.stockMax"
+                @input="$v.form1.stockMax.$touch()"
+                :state="
+                  !$v.form1.stockMax.$dirty
+                    ? !$v.form1.stockMax.$anyError
+                    : !$v.form1.stockMax.$error
+                "
+              ></b-form-input
+              >*
 
-            <b-form-input
-              class="campoForm"
-              id="stockMax"
-              v-model.trim="form1.stockMax"
-            ></b-form-input
-            >*
-            <br />
-            <span class="error" v-if="submitted && !$v.form1.stockMax.required">
-              <br />Este campo es obligatorio.
-            </span>
-            <span class="error" v-if="submitted && !$v.form1.stockMax.integer">
-              <br />Recuerde ingresar sólo números enteros.
-            </span>
-            <span class="error" v-if="submitted && !$v.form1.stockMax.minValue">
-              <br />El valor debe ser cero (0) o mayor.
-            </span>
+              <br />
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.stockMax.$dirty && $v.form1.stockMax.$model == ''"
+              >
+                Stock máximo es obligatorio.
+              </b-form-invalid-feedback>
+
+              <b-form-invalid-feedback
+                class="error"
+                v-show="
+                  $v.form1.stockMax.$params.integer && $v.form1.stockMax.$model != ''
+                "
+              >
+                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
+                stock.
+              </b-form-invalid-feedback>
+            </div>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Unidad de medida</label>
@@ -124,42 +153,74 @@
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Precio de venta</label>
             <b-form-input
-              class="campoForm"
+              class="campoForm form-control"
               id="precioVenta"
-              v-model.lazy="form2.precioVenta"
-              :state="!$v.form2.precioVenta.$invalid"
+              v-model="form2.precioVenta"
+              :state="
+                !$v.form2.precioVenta.$dirty
+                  ? !$v.form2.precioVenta.$anyError
+                  : !$v.form2.precioVenta.$error
+              "
+              @input="$v.form2.precioVenta.$touch()"
             ></b-form-input
-            >*
-
-            <span class="error">
-              <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-              números mayores a 0.
-            </span>
+            ><br />*<b-form-invalid-feedback
+              class="error"
+              v-if="$v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''"
+              >El precio de venta es obligatorio. </b-form-invalid-feedback
+            ><br />
+            <b-form-invalid-feedback
+              class="error"
+              v-if="
+                $v.form2.precioVenta.$params.integer &&
+                $v.form2.precioVenta.$model != ''
+              "
+              >Recuerde ingresar sólo números mayores a 0.
+            </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" id="lineaDescripcion" style="display:flex">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
-              class="campoForm"
+              class="campoFor form-control"
               v-model.lazy="form2.lineaDescripcion"
-              :state="!$v.form2.lineaDescripcion.$invalid"
+              :state="
+                !$v.form2.lineaDescripcion.$dirty
+                  ? !$v.form2.lineaDescripcion.$anyError
+                  : !$v.form2.lineaDescripcion.$error
+              "
+              @input="$v.form2.lineaDescripcion.$touch()"
               placeholder="Enter something..."
               rows="3"
-              max-rows="6"
+              max-rows="3"
             ></b-form-textarea
-            >*
-            <span class="error"> <br />Este campo es obligatorio. </span>
+            ><br />*
+            <b-form-invalid-feedback
+              class="error"
+              v-if="
+                $v.form2.lineaDescripcion.$dirty && $v.form2.lineaDescripcion.$model == ''
+              "
+              >La descripción es obligatoria.
+            </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display:flex">
             <label class="labelForm">Imagen</label>
             <b-form-file
-              class="campoForm"
+              class="campoForm form-control"
               id="imagen"
               v-model.lazy="form2.imagen"
-              :state="!$v.form2.imagen.$invalid"
+              :state="
+                !$v.form2.imagen.$dirty
+                  ? !$v.form2.imagen.$anyError
+                  : !$v.form2.imagen.$error
+              "
+              @input="$v.form2.imagen.$touch()"
             ></b-form-file
-            >*
-            <span class="error"> <br />Este campo es obligatorio. </span>
+            ><br />*
+            <b-form-invalid-feedback
+              class="error"
+              v-if="$v.form2.imagen.$dirty && $v.form2.imagen.$params.required"
+              >La foto es obligatoria.
+            </b-form-invalid-feedback>
           </div>
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
@@ -426,6 +487,7 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
+const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
 export default {
   mounted() {
     this.userVerifica();
@@ -493,6 +555,16 @@ export default {
         setTimeout(() => {
           this.submitted = false;
         }, 5500);
+        return;
+      }
+      var unidades = document.getElementById("unidadMedida");
+      var unidadVal = unidades.selectedIndex;
+      if (unidadVal == 0) {
+        this.$bvToast.toast(`Debe elegir una unidad de medida`, {
+          title: `¡Atención!`,
+          toaster: "b-toaster-top-center",
+          solid: true,
+        });
         return;
       }
       this.insumoEncontrado.denominacion = this.form1.denominacion;
@@ -723,7 +795,7 @@ export default {
     form1: {
       denominacion: {
         required,
-        alphaNumSpc: helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i),
+        alpha
       },
       stockMin: {
         required,

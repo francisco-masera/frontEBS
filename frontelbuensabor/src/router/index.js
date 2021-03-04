@@ -1,6 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import firebase from "firebase/app";
+import "firebase/app";
+import "firebase/auth";
 
 Vue.use(VueRouter);
 
@@ -88,6 +91,11 @@ const routes = [
     component: () => import("../views/Menu.vue"),
   },
   {
+    path: "/ingresoCli/",
+    name: "IngresoCli",
+    component: () => import("../views/IngresoClientes.vue"),
+  },
+  {
     path: "/registro/",
     name: "Registro",
     component: () => import("../views/Registro.vue"),
@@ -98,6 +106,16 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some((x) => x.meta.requiresAuth);
+  if (requiresAuth) {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) next("/");
+      else next();
+    });
+  } else next();
 });
 
 export default router;

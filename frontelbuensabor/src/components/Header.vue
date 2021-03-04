@@ -13,11 +13,14 @@
       <div class="centrarHome">
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="items">
+            <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
             <b-button @click="registro" pill class="boton">Registrarme</b-button>
-            <b-button pill class="boton2">Ingresar</b-button>
+            <b-button @click="$router.push({ name: 'Ingreso' })" pill class="boton2"
+              >Ingresar</b-button
+            >
           </b-navbar-nav>
         </b-collapse>
       </div>
@@ -39,6 +42,7 @@
         <div v-if="esCliente">
           <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav class="items">
+              <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
               <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
               <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
               <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
@@ -75,6 +79,9 @@
                   class="iconosMenu"
                 ></b-img>
                 {{ boton[1] }}
+              </b-nav-item>
+              <b-nav-item class="menuLateral">
+                <logout id="logout" />
               </b-nav-item>
             </b-navbar-nav>
           </b-collapse>
@@ -116,6 +123,7 @@
                 ></b-img>
                 {{ boton[1] }}
               </b-nav-item>
+              <logout id="logout" style="margin-left: -10px" />
             </b-navbar-nav>
           </b-collapse>
         </div>
@@ -126,7 +134,12 @@
 
 <script>
 import Service from "@/service/Service.js";
+import btnLatLogOut from "./btnLatLogOut";
+
 export default {
+  components: {
+    logout: btnLatLogOut,
+  },
   data() {
     return {
       botones: [],
@@ -134,6 +147,7 @@ export default {
       esCliente: false,
       es_Home: false,
       service: new Service(),
+      screenWidth: window.screen.width < 769,
     };
   },
 
@@ -210,6 +224,7 @@ export default {
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
+
 #header {
   background-color: #1f91b6;
   min-height: 200px;
@@ -225,6 +240,9 @@ export default {
 
 #foto {
   border-radius: 50%;
+}
+#logout {
+  display: none;
 }
 
 .items {
@@ -364,18 +382,30 @@ export default {
     margin-right: 0px;
   }
 }
+
 @media (max-width: 560px) {
+  #logout {
+    display: block;
+  }
   .hamburguer {
     margin-left: 150px;
   }
 }
 
 @media (max-width: 426px) {
+  #logout {
+    display: block;
+  }
   .hamburguer {
     margin-left: 100px;
   }
 }
+
 @media (max-width: 375px) {
+  #logout {
+    display: block;
+  }
+
   .hamburguer {
     margin-left: 50px;
   }

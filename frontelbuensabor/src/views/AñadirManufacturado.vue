@@ -1,4 +1,4 @@
-template>
+<template>
   <div>
     <cabecera></cabecera>
     <div id="nav">
