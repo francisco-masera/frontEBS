@@ -486,6 +486,7 @@ export default {
 
   data() {
     return {
+      submitted: false,
       form1: {
         denominacion: "",
         stockMin: "",
@@ -533,8 +534,12 @@ export default {
 
   methods: {
     siguiente1() {
+      this.submitted = true;
       this.$v.$touch();
       if (this.$v.form1.$anyError) {
+        setTimeout(() => {
+          this.submitted = false;
+        }, 5500);
         return;
       }
       var unidades = document.getElementById("unidadMedida");
@@ -560,6 +565,7 @@ export default {
     },
 
     siguiente2() {
+      this.submitted = false;
       this.completarCamposForm2();
       document.getElementById("paso3").style.display = "none";
       document.getElementById("paso2").style.display = "block";
@@ -823,6 +829,9 @@ export default {
 };
 </script>
 <style>
+.error {
+  color: #dc3545;
+}
 #titulo {
   line-height: 1.2rem;
 }
