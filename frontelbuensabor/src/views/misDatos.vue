@@ -13,10 +13,7 @@
         </div>
         <div class="lineaForm">
           <label class="tituloForm"> Apellido: </label>
-          <b-form-input
-            class="inputForm"
-            v-model="user.apellido"
-          ></b-form-input>
+          <b-form-input class="inputForm" v-model="user.apellido"></b-form-input>
         </div>
         <div class="lineaForm">
           <label class="tituloForm"> Email: </label>
@@ -30,7 +27,7 @@
             >
           </div>
         </div>
-        <div class="lineaFormDerecha" style="float:right">
+        <div class="lineaFormDerecha" style="float: right">
           <b-button pill class="boton" size="md" @click="guardar"
             >Guardar cambios</b-button
           >
@@ -39,16 +36,13 @@
       <b-button class="buttonText" @click="abreModalEliminar">
         <img
           src="http://localhost:9001/images/sistema/eliminar.png"
-          style="width:25px"
+          style="width: 25px"
         />
         Eliminar cuenta
       </b-button>
       <br />
       <b-button class="buttonText" @click="cambiarImagen">
-        <img
-          src="http://localhost:9001/images/sistema/camera.png"
-          style="width:25px"
-        />
+        <img src="http://localhost:9001/images/sistema/camera.png" style="width: 25px" />
         Cambiar foto de perfil
       </b-button>
     </b-container>
@@ -86,11 +80,7 @@
         </b-form-input>
       </form>
       <p class="posicion">
-        <b-button
-          pill
-          class="boton botonEliminar"
-          size="sm"
-          @click="verificarContrasenia"
+        <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia"
           >Cambiar contraseña
         </b-button>
       </p>
@@ -147,13 +137,7 @@
     <b-toast id="toast-error-sistema" variant="danger" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
+          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
         </div>
       </template>
       Error al cambiar la contraseña
@@ -231,11 +215,7 @@
         <b-form-file class="campoForm" id="imagen"></b-form-file>
       </form>
       <p class="posicion">
-        <b-button
-          pill
-          class="boton botonEliminar"
-          size="sm"
-          @click="updateImagen"
+        <b-button pill class="boton botonEliminar" size="sm" @click="updateImagen"
           >Guardar imagen
         </b-button>
       </p>
@@ -244,13 +224,7 @@
     <b-toast id="toast-imagen-error" variant="danger" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
+          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
         </div>
       </template>
       Error al modificar imagen
@@ -259,13 +233,7 @@
     <b-toast id="toast-imagen-exito" variant="success" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
+          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
         </div>
       </template>
       Imagen de perfil modificada
@@ -274,13 +242,7 @@
     <b-toast id="toast-datos-exito" variant="success" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
+          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
         </div>
       </template>
       Datos actualizados
@@ -289,13 +251,7 @@
     <b-toast id="toast-datos-error" variant="danger" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img
-            blank
-            blank-color="#ff5555"
-            class="mr-2"
-            width="12"
-            height="12"
-          ></b-img>
+          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
         </div>
       </template>
       Error al actualizar datos
@@ -318,15 +274,15 @@ export default {
   },
   data() {
     return {
-        user:{},
-        service: new Service(),
-        contraseniaUsuario: "",
-        nuevaContraseniaUsuario:"",
-        nuevaContraseniaUsuario2:"",
-        contraseniaVerificada: false,
-        imagen:"",
-        componentKey: 0,
-    }
+      user: {},
+      service: new Service(),
+      contraseniaUsuario: "",
+      nuevaContraseniaUsuario: "",
+      nuevaContraseniaUsuario2: "",
+      contraseniaVerificada: false,
+      imagen: "",
+      componentKey: 0,
+    };
   },
 
   methods: {
@@ -365,30 +321,37 @@ export default {
     forceRerender() {
       this.componentKey += 1;
     },
-    async guardar(){
+    async guardar() {
       var parametroId = parseInt(this.$route.params.id);
       this.verificaUsuario();
-      if(this.user.type==="Empleado"){
-        await this.service.update("empleado",this.user,parametroId).then((data)=>{
-        this.user=data;
-        this.$bvToast.show("toast-datos-exito") 
-        this.forceRerender();
-      }).catch(()=>{
-        this.$bvToast.show("toast-datos-error") 
-      })
-      }else{
-        await this.service.update("cliente",this.user,parametroId).then((data)=>{
-        this.user=data; 
-          this.$bvToast.show("toast-datos-exito")
-      }).catch(()=>{
-        this.$bvToast.show("toast-datos-error") 
-      })
+      if (this.user.type === "Empleado") {
+        await this.service
+          .update("empleado", this.user, parametroId)
+          .then((data) => {
+            this.user = data;
+            this.$bvToast.show("toast-datos-exito");
+            this.forceRerender();
+          })
+          .catch(() => {
+            this.$bvToast.show("toast-datos-error");
+          });
+      } else {
+        await this.service
+          .update("cliente", this.user, parametroId)
+          .then((data) => {
+            this.user = data;
+            this.$bvToast.show("toast-datos-exito");
+          })
+          .catch(() => {
+            this.$bvToast.show("toast-datos-error");
+          });
       }
     },
 
     async updateImagen() {
       let img = document.getElementById("imagen").files[0];
       this.user.foto = img.name;
+
       let noError = await this.guardarImagen(img);
       if (noError) {
         this.$refs.modalCambioImagen.hide();
@@ -397,8 +360,8 @@ export default {
     },
 
     async guardarImagen(imagen) {
-      if (imagen !=undefined && imagen.size / 1024 > 1024) {
-        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
+      if (imagen != undefined && imagen.size / 1024 > 512) {
+        this.$bvToast.toast(`La imagen no debe superar los 512KB`, {
           title: `¡Atención!`,
           toaster: "b-toaster-top-center",
           solid: true,
@@ -423,28 +386,28 @@ export default {
             return error;
           });
         this.$bvToast.show("toast-imagen-exito");
+
         console.log(this.user);
+
         this.guardar();
         return true;
       } else if (this.user.type === "Empleado") {
         await axios
-          .post(
-            "http://localhost:9001/buensabor/empleado/uploadImg",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-                "Access-Control-Allow-Origins": "*",
-                "cache-control": "no-cache",
-              },
-            }
-          )
+          .post("http://localhost:9001/buensabor/empleado/uploadImg", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "Access-Control-Allow-Origins": "*",
+              "cache-control": "no-cache",
+            },
+          })
+
           .catch(() => {
             this.$bvToast.show("toast-imagen-error");
             return false;
           });
         this.$bvToast.show("toast-imagen-exito");
         console.log(this.user);
+
         this.guardar();
         return true;
       }

@@ -41,7 +41,6 @@ const routes = [
     component: () => import("../views/CategoriaManufacturados.vue"),
   },
 
-  
   {
     path: "/modificarInsumo/:id",
     name: "ModificarInsumo",
@@ -75,6 +74,23 @@ const routes = [
     path: "/misDatos/:id",
     name: "MisDatos",
     component: () => import("../views/misDatos.vue"),
+  },
+
+  {
+    path: "/formEmpleado/",
+    name: "FormularioEmplado",
+    component: () => import("../views/FormularioEmpleado.vue"),
+  },
+
+  {
+    path: "/menu/",
+    name: "Menu",
+    component: () => import("../views/Menu.vue"),
+  },
+  {
+    path: "/registro/",
+    name: "Registro",
+    component: () => import("../views/Registro.vue"),
   },
 ];
 

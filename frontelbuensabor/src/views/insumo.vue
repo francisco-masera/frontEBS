@@ -527,7 +527,6 @@ export default {
     },
 
     async verificarContrasenia() {
-      console.log("verifica contraseña");
       let contraseniaVerificada = await axios
         .get("http://localhost:9001/buensabor/persona/validarContrasenia", {
           params: {
@@ -558,7 +557,6 @@ export default {
 
     //Abre modal para cargar nuevo stock de insumos
     agregarInsumoCompra() {
-      console.log(this.insumoEncontrado);
       this.$refs["modalAñadir"].show();
       if (this.insumoEncontrado.esInsumo) {
         this.compra.insumo = this.insumoEncontrado;
