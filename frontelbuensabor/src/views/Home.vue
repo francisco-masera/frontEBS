@@ -358,7 +358,9 @@ h2 {
 
 #home3{
   width: 100%;
-  
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;  
 }
 .cuadro{
   width: 50%;
@@ -398,11 +400,6 @@ h2 {
       width: 80%;
     }
 }
-@media (max-width: 1600px) { 
-    .platos{
-      width: 80%;
-    }
-}
 @media (max-width: 1280px) {
   .platos{
   width: 90%;
@@ -413,6 +410,9 @@ h2 {
     width: 300px;
     min-width: inherit;
   }
+ .cuadro{
+   width: 100%;
+ }
   }
   
 @media (max-width: 640px) {
