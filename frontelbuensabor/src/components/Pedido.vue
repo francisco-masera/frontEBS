@@ -25,7 +25,8 @@
             <p
               v-if="
                 pedidoParam.cliente.domicilio.departamento == 0 &&
-                pedidoParam.cliente.domicilio.piso == 0"
+                pedidoParam.cliente.domicilio.piso == 0
+              "
             >
               <strong>Dirección:</strong>
               {{ pedidoParam.cliente.domicilio.calle }}
@@ -36,7 +37,7 @@
               v-else-if="
                 pedidoParam.cliente.domicilio.departamento > 0 &&
                 pedidoParam.cliente.domicilio.piso == 0
-"
+              "
             >
               <strong>Dirección:</strong>
               {{ pedidoParam.cliente.domicilio.calle }}
@@ -73,13 +74,31 @@
             </div>
             <br />
             <div class="contenedorCard">
-              <b-button pill class="boton" id="botonEntrega" size="md"
-                @click="cambiaAEntregado()">Entregar</b-button>
-          </div>
+              <b-button
+                pill
+                class="boton"
+                id="botonEntrega"
+                size="md"
+                @click="cambiaAEntregado()"
+                >Entregar</b-button
+              >
+            </div>
           </div>
         </div>
         <b-card-footer>
-       <iframe :src="'https://maps.google.com/maps?q='+pedidoParam.cliente.domicilio.latitud+','+pedidoParam.cliente.domicilio.longitud+'&z=15&output=embed'" width="100%" height="100%" frameborder="0" style="border:0"></iframe>
+          <iframe
+            :src="
+              'https://maps.google.com/maps?q=' +
+              pedidoParam.cliente.domicilio.latitud +
+              ',' +
+              pedidoParam.cliente.domicilio.longitud +
+              '&z=15&output=embed'
+            "
+            width="100%"
+            height="100%"
+            frameborder="0"
+            style="border: 0"
+          ></iframe>
         </b-card-footer>
       </b-container>
     </b-card>
@@ -110,9 +129,8 @@
             <p
               v-if="
                 pedidoParam.cliente.domicilio.departamento == 0 &&
-                pedidoParam.cliente.domicilio.piso == 0
-"
-          >
+                pedidoParam.cliente.domicilio.piso == 0"
+            >
               <strong>Dirección:</strong>
               {{ pedidoParam.cliente.domicilio.calle }}
               {{ pedidoParam.cliente.domicilio.numero }} -
@@ -160,51 +178,58 @@
           </div>
         </div>
       </b-container>
-           <div>
-      <b-modal ref="modal" hide-footer hide-header centered title>
-
-        <p class="modalTitulo">¡Pedido entregado!</p>
-       
-       
-      </b-modal>
-    </div>
+      <div>
+        <b-modal ref="modalEntrega" hide-footer hide-header centered title>
+          <p class="modalTitulo">¡Pedido entregado!</p>
+        </b-modal>
+      </div>
     </b-card>
-
- 
   </div>
 </template>
 <script>
 import Service from "@/service/Service.js";
+import axios from "axios";
 export default {
   props: ["pedidoParam", "domicilioParam"],
   mounted() {},
   data() {
     return {
       service: new Service(),
+      resultEstado : 0
     };
   },
   methods: {
-
-    async cambiaAEntregado(){
-      this.pedidoParam.estado = "Entregado";
-            await this.service
-          .update(
-            "pedido",
-            this.pedidoParam,
-            this.pedidoParam.id
-          )
+    async cambiaAEntregado() {
+        var estado = "Entregado";
+        var id = this.pedidoParam.id;
+         await axios
+        .put(
+          "http://localhost:9001/buensabor/pedido/pedidoEntregado/" +
+            parseInt(id) +
+            "/" +
+            estado
+        )
           .then((data) => {
-            this.pedidoParam = data;
-            this.$refs["modal"].show();
+            this.resultEstado = data.data;
+            if(this.resultEstado == 1){
+               this.$refs.modalEntrega.show();
+              setTimeout(() => this.refrescaPantalla(), 800);
 
-            setTimeout(() => this.refrescaPantalla(), 300);
-
+            }else{
+              console.log("Error para entregar")
+            }
           });
+         
+          
+           
     },
 
-    refrescaPantalla(){
-       window.location.href = "/pedidos/";
-    }
+
+    refrescaPantalla() {
+     
+        
+      window.location.href = "/pedidos/";
+    },
   },
 };
 </script>
@@ -265,7 +290,6 @@ export default {
   display: block;
 }
 
-
 #botonEntrega {
   width: auto;
   height: 30px;
@@ -281,7 +305,6 @@ export default {
   font-size: 25px;
 }
 
-
 @media screen and (max-width: 550px) {
   .contenedorDetalle {
     width: 100%;
@@ -294,10 +317,10 @@ export default {
   }
 
   .modalTitulo {
-  margin-top: 7%;
-  text-align: center;
-  font-size: 25px;
-}
+    margin-top: 7%;
+    text-align: center;
+    font-size: 25px;
+  }
 }
 @media screen and (min-width: 320px) and (max-width: 450px) {
   #orden {
@@ -329,7 +352,6 @@ export default {
     width: 100%;
   }
 
-
   #botonEntrega {
     width: 100%;
     height: 28px;
@@ -343,10 +365,10 @@ export default {
     width: 100%;
   }
 
-.modalTitulo {
-  margin-top: 7%;
-  text-align: center;
-  font-size: 25px;
-}
+  .modalTitulo {
+    margin-top: 7%;
+    text-align: center;
+    font-size: 25px;
+  }
 }
 </style>

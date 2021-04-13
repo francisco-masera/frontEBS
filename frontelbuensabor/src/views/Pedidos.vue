@@ -18,10 +18,17 @@
           size="sm"
           class="mr-sm-2"
           v-model="busquedaOrden"
-          placeholder="Buscar orden"
+          placeholder="Buscar orden o cliente"
           id="inputBusqueda"
+          @input="verificaEstadoInput()"
         ></b-form-input>
-        <b-button size="sm" class="botonImagen" type="button" id="lupita" @click="this.busquedaPedidos()">
+        <b-button
+          size="sm"
+          class="botonImagen"
+          type="button"
+          id="lupita"
+          @click="busquedaPedidos()"
+        >
           <img
             src="http://localhost:9001/images/sistema/buscar.png"
             id="imagenBuscar"
@@ -39,14 +46,25 @@
           </div>
         </b-card-group>
       </div>
-      <div v-else class="divCard">
+      <div v-if="pedidosEntregados" class="divCard">
         <b-card-group>
           <div
             v-for="pedido in filtroEntregados"
             :key="pedido.id"
             id="contenedorTarjeta"
           >
-            <pedido :pedidoParam="pedido" ></pedido>
+            <pedido :pedidoParam="pedido"></pedido>
+          </div>
+        </b-card-group>
+      </div>
+      <div v-if="!pedidosEntregados && !pedidosPendientes" class="divCard">
+        <b-card-group>
+          <div
+            v-for="pedido in filtroBuscados"
+            :key="pedido.id"
+            id="contenedorTarjeta"
+          >
+            <pedido :pedidoParam="pedido"></pedido>
           </div>
         </b-card-group>
       </div>
@@ -58,6 +76,7 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Pedido from "@/components/Pedido.vue";
 import Service from "@/service/Service.js";
+import Formatters from "@/utilidades/Formatters.js";
 
 export default {
   mounted() {
@@ -78,9 +97,13 @@ export default {
       service: new Service(),
       domicilios: {},
       pedidosPendientes: true,
+      pedidosEntregados: false,
       filtroPendientes: {},
-      filtroEntregados:{},
-      busquedaOrden:""
+      filtroEntregados: {},
+      filtroBuscados: {},
+      busquedaOrden: "",
+      formatter: new Formatters(),
+      timeout:null
     };
   },
 
@@ -107,7 +130,13 @@ export default {
       await this.service.getAll("pedido").then((data) => {
         this.pedidosDelivery = data;
         this.agregaDomicilioPedido();
+        this.adjustmentHour();
         this.cargaPendientes();
+      });
+    },
+    adjustmentHour() {
+      this.pedidosDelivery.forEach((pedido) => {
+        pedido.hora = this.formatter.formatHour(pedido.hora);
       });
     },
 
@@ -124,6 +153,7 @@ export default {
     },
     cambiarAPendientes() {
       this.pedidosPendientes = true;
+      this.pedidosEntregados = false;
       this.cargaPendientes();
     },
 
@@ -136,7 +166,7 @@ export default {
       console.log(this.filtroPendientes);
     },
 
-     cargaEntregados() {
+    cargaEntregados() {
       if (!this.pedidosPendientes) {
         this.filtroEntregados = this.pedidosDelivery.filter(
           (pedido) => pedido.estado == "Entregado"
@@ -146,31 +176,66 @@ export default {
     },
 
     cambiarAEntregados() {
+      this.pedidosEntregados = true;
       this.pedidosPendientes = false;
       this.cargaEntregados();
     },
 
+    cargaBuscados(filtrados) {
+      this.pedidosPendientes = false;
+      this.pedidosEntregados = false;
+      if (!filtrados == undefined && !filtrados == null) {
+        this.filtroBuscados = filtrados;
+      }
+      console.log(this.filtroBuscados);
+    },
     locatorButtonPressed() {
-     navigator.geolocation.getCurrentPosition(
-     position => {
-       console.log(position.coords.latitude);
-       console.log(position.coords.longitude);
-     },
-     error => {
-       console.log(error.message);
-     },
-  )   
-}
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          console.log(position.coords.latitude);
+          console.log(position.coords.longitude);
+        },
+        (error) => {
+          console.log(error.message);
+        }
+      );
+    },
+    busquedaPedidos() {
+      if(this.busquedaOrden != ""){
+      this.filtroBuscados = this.pedidosDelivery.filter((pedido) => {
+        return (
+          pedido.numero == this.busquedaOrden ||
+          pedido.cliente.nombre == this.busquedaOrden ||
+          pedido.cliente.apellido == this.busquedaOrden ||
+          pedido.cliente.nombre + " " + pedido.cliente.apellido ==
+            this.busquedaOrden
+        );
+      });
 
+      if (this.filtroBuscados != undefined && this.filtroBuscados != null) {
+        this.pedidosPendientes = false;
+        this.pedidosEntregados = false;
+      }
+      }
+
+
+      console.log(this.filtroBuscados);
+    },
+
+    verificaEstadoInput(){
+      var inputBusqueda = document.getElementById("inputBusqueda").value;
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(() => {
+        this.productos = [];
+        if (inputBusqueda == ""){
+            this.getPedidos();
+            this.pedidosPendientes = true;
+        this.pedidosEntregados = false;
+        }
+      }, 800);
     
-  },
-  computed:{
-    busquedaPedidos(){
-      return this.filtroPendientes.prototype.filter((pedido)=>{
-        return pedido.numero == this.busquedaOrden;
-      })
     }
-  }
+  },
 };
 </script>
 <style>
