@@ -50,16 +50,29 @@
     <div id="home2">
       
 
-      <b-card-group class="contenedorCard">
+      <b-card-group class="platos">
         <h2>Los que todos amamos</h2>
-        <div
-          class="contenedorTarjeta"
-          v-for="manufacturado in manufacturadosData"
-          :key="manufacturado.id"
-        >
-          <plato-item
-            :manufacturadoParam="manufacturado"
-          ></plato-item>
+        <div v-if="windowMobile" class="contenedorCard--mobile">
+          <div
+            class="contenedorTarjeta"
+            v-for="manufacturado in manufacturadosData"
+            :key="manufacturado.id"
+          >
+            <plato-item
+              :manufacturadoParam="manufacturado"
+            ></plato-item>
+        </div>
+        </div>
+        <div v-else class="contenedorCard">
+          <div
+            class="contenedorTarjeta"
+            v-for="manufacturado in manufacturadosData"
+            :key="manufacturado.id"
+          >
+            <plato-item
+              :manufacturadoParam="manufacturado"
+            ></plato-item>
+        </div>
         </div>
         
       
@@ -112,9 +125,15 @@ export default {
   },
   mounted() {
     this.getManufacturados();
+      if(window.innerWidth<=426){
+        this.windowMobile = true
+      }else{
+        this.windowMobile = false
+      }
   },
   data() {
     return {
+      windowHeight:false,
       manufacturadosData: [],
       service: new Service(),
     };
@@ -143,7 +162,7 @@ h2 {
   font-size: 22pt;
 }
 #home {
-  background-color: #f2e6d1;
+  background-color: #ededed;
 }
 #home1 {
   background-image: url("http://localhost:9001/images/sistema/fondo.png");
@@ -239,18 +258,26 @@ h2 {
   border: none !important;
   outline: none;
 }
-.contenedorCard{
+.platos{
   width: 70%;
   display: inline-block;
   text-align: center;
 }
-
+.contenedorCard{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
 .contenedorTarjeta {
-  width: 33.3%;
-  background-color: transparent;
+  max-width: 350px;
+  margin: 10px;
   display: inline-block;
   min-width: 200px;
   margin-bottom: 50px;
+}
+.contenedorCard--mobile{
+  display: none;
 }
 .card-body{
   padding:0px;
@@ -329,18 +356,26 @@ h2 {
       object-position: center center;
     }
 }
-@media (max-width: 900px) {
-  #buscador {
-  width: 45%;
-  }
-  .contenedorCard{
-  width: 80%;
+@media (max-width: 1600px) { 
+    .platos{
+      width: 80%;
+    }
+}
+@media (max-width: 1600px) { 
+    .platos{
+      width: 80%;
+    }
+}
+@media (max-width: 1280px) {
+  .platos{
+  width: 90%;
 }
 }
 @media (max-width: 769px) {
-  .contenedorCard{
-  width: 90%;
-}
+  .contenedorTarjeta {
+    width: 300px;
+    min-width: inherit;
+  }
   }
   
 @media (max-width: 640px) {
@@ -350,6 +385,10 @@ h2 {
   #pasosCuadro {
   margin-top: 150px;
 }
+ .contenedorTarjeta {
+    width: 250px;
+    min-width: inherit;
+  }
 
 }
 
@@ -362,6 +401,19 @@ h2 {
   }
   #buscador {
     width: 80%;
+  }
+  .contenedorCard--mobile{
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    overflow-x: scroll;
+    padding-top: 30px;
+    margin-bottom: 20px;
+    margin-right: 30px;
+    padding-right: 40px;
+  }
+  .contenedorTarjeta{
+    min-width: 300px;
   }
 }
 @media (max-width: 375px) {

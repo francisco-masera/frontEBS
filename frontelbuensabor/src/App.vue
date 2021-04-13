@@ -71,7 +71,7 @@ p {
   background-image: url("http://localhost:9001/images/sistema/reticula.png");
   background-repeat: repeat-x;
   width: 100%;
-  background-color: #f2e6d1;
+  background-color: #ededed;
   min-height: 60px;
   background-size: contain;
   bottom: 0;
