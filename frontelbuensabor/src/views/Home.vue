@@ -11,7 +11,42 @@
           />
         </b-button>
       </div>
-      <div id="pasosCuadro">
+      <div v-if="windowMobile" id="pasosCuadro--mobile">
+        <div class="pasos">
+          <img
+            src="http://localhost:9001/images/sistema/icono pasos-01.png"
+            width="70px"
+            class="imgPasos"
+          />
+          <div class="pasosTexto">
+            <strong>Seleccioná</strong> los productos<br />
+            que quieras.
+          </div>
+        </div>
+        <div class="pasos">
+          <img
+            src="http://localhost:9001/images/sistema/icono pasos-02.png"
+            width="90px"
+            class="imgPasos"
+          />
+          <div class="pasosTexto">
+            <strong>Elegí</strong> el método de<br />
+            pago que prefieras.
+          </div>
+        </div>
+        <div class="pasos">
+          <img
+            src="http://localhost:9001/images/sistema/icono pasos-03.png"
+            width="90px"
+            class="imgPasos"
+          />
+          <div class="pasosTexto">
+            <strong>Seleccioná</strong> la forma<br />
+            de entrega.
+          </div>
+        </div>
+      </div>
+      <div v-else  id="pasosCuadro">
         <div class="pasos">
           <img
             src="http://localhost:9001/images/sistema/icono pasos-01.png"
@@ -48,7 +83,6 @@
       </div>
     </div>
     <div id="home2">
-      
 
       <b-card-group class="platos">
         <h2>Los que todos amamos</h2>
@@ -200,6 +234,9 @@ h2 {
   justify-content: center;
   margin-left: 5px;
   margin-right: 5px;
+}
+#pasosCuadro--mobile{
+  display: none;
 }
 .pasos {
   color: white;
@@ -393,11 +430,20 @@ h2 {
 }
 
 @media (max-width: 426px) {
-  #pasosCuadro {
-  display:block;
+  #pasosCuadro--mobile {
+    margin-top: 220px;
+    min-height: 50px;
+      height: 100%;
+    width: 100vw;
+    display: flex;
+    overflow-x: scroll;
   text-align: left;
   margin-left: 5%;
   margin-right: 5%;
+  }
+  .pasos{
+    min-width: 340px;
+    margin: 10px;
   }
   #buscador {
     width: 80%;
@@ -420,15 +466,9 @@ h2 {
  #buscador h1{
     font-size: 20pt;
   }
-   #pasosCuadro {
-  margin-top: 80px;
-}
 }
 @media (max-width: 320px) {
-   #pasosCuadro img{
-     width: 20%;
-     margin-right: 80%;
-  }
+   
   #buscador h1{
     font-size: 18pt;
   }
