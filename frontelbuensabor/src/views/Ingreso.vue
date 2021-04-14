@@ -90,7 +90,7 @@ export default {
               //this.$router.push({ name: 'StockInsumos', params: {user: this.user }})
               this.$router.push({ name: "StockInsumos" });
             } else if (this.user.rol == "delivery") {
-              window.location = "/";
+              window.location = "/pedidos";
             } else if (this.user.rol == "cocina") {
               this.$router.push({
                 name: "CatalogoManu",
