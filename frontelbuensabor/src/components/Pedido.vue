@@ -83,6 +83,9 @@
                 >Entregar</b-button
               >
             </div>
+             <b-modal ref="modalEntrega" hide-footer hide-header centered title>
+                <p class="modalTitulo">¡Pedido entregado!</p>
+            </b-modal>
           </div>
         </div>
         <b-card-footer>
@@ -178,11 +181,6 @@
           </div>
         </div>
       </b-container>
-      <div>
-        <b-modal ref="modalEntrega" hide-footer hide-header centered title>
-          <p class="modalTitulo">¡Pedido entregado!</p>
-        </b-modal>
-      </div>
     </b-card>
   </div>
 </template>
@@ -211,9 +209,9 @@ export default {
         )
           .then((data) => {
             this.resultEstado = data.data;
-            if(this.resultEstado == 1){
+            if(this.resultEstado === 1){
                this.$refs.modalEntrega.show();
-              setTimeout(() => this.refrescaPantalla(), 800);
+              setTimeout(() => this.refrescaPantalla(), 1000);
 
             }else{
               console.log("Error para entregar")
