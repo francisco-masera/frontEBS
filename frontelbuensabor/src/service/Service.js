@@ -38,13 +38,14 @@ export default class Service {
   }
 
   async update(subPath, entity, id) {
-      
+
     await axios
       .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
       .then(() => (responseEntity = this.getOne(subPath, id)))
       .catch(() => (responseEntity = undefined));
     return responseEntity;
   }
+
 
   async delete(subPath, id) {
     await axios
