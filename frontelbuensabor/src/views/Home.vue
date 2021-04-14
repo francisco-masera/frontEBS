@@ -133,10 +133,30 @@
         <div class="cuadro" style="background-color:#e7511e">
             <div class="cuadroText">
               <h1 style="color:white">¡Contáctanos!</h1>
-              
+              <div class="enlaces">
+              <a :href="'//www.facebook.com/elbuensabor'" target="_blank"><img src='images/facebook.svg'>ElBuenSabor</a>
+              <br/>
+              <a :href="'//www.instagram.com/elbuensabor'" target="_blank"><img src='images/instagram.svg'>elbuensabor</a>
+               <br/>
+              <a :href="'mailto:info@elbuensabor.com'" target="_blank"><img src='images/correo.svg'>info@elbuensabor.com</a>
+               <br/>
+              <a :href="'tel:+54 261 156789873'" ><img src='images/telefono.svg'>+54 261 156789873</a>
+              <br/>
+              <a :href="'https://maps.google.com/?q=-32.890848,-68.839388'" ><img src='images/direccion.svg'>San Martín 1087, Mendoza</a>
+            </div>
             </div>
         </div>
-        
+        <div class="cuadro">
+          <iframe
+            :src="
+              'https://maps.google.com/maps?q=-32.890848,-68.839388&z=15&output=embed'
+            "
+            width="100%"
+            height="100%"
+            frameborder="0"
+            style="border: 0"
+            ></iframe>
+          </div>
 
       </div>
       <div class="footer">
@@ -367,11 +387,25 @@ h2 {
   display: inline-block;
   height: 428px;
 }
+.enlaces{
+  padding-left: 20px;
+}
+.enlaces a{
+  font-family: "Baloo Bhaina 2";
+    color: white;
+    font-size: 16pt;
+  }
+
 .cuadro img{
   width: 100%;
   height: auto;
 }
-
+.enlaces a img{
+  display: inline-block;
+  margin-top: -4px;
+  margin-right: 5px;
+  width:22px;
+}
 .cuadroText{
   width: 80%;
   margin: 10%;
@@ -413,6 +447,9 @@ h2 {
  .cuadro{
    width: 100%;
  }
+ .enlaces a{
+    font-size: 14pt;
+  }
   }
   
 @media (max-width: 640px) {
@@ -461,6 +498,9 @@ h2 {
   .contenedorTarjeta{
     min-width: 300px;
   }
+  .footer img{
+  width: 40%;
+}
 }
 @media (max-width: 375px) {
  #buscador h1{
@@ -472,7 +512,12 @@ h2 {
   #buscador h1{
     font-size: 18pt;
   }
-
+.enlaces{
+  padding-left: 10px;
+}
+ .footer img{
+  width: 60%;
+}
 }
 
 </style>
