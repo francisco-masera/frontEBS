@@ -8,7 +8,6 @@ export default class Formatter {
 		return formatter.format(parseFloat(money));
 	};
 
-<<<<<<< HEAD
 	formatNumber = (n) => {
 		let numberStrArray = String(n).split('');
 		numberStrArray = numberStrArray.map((e) => (e == ',' ? (e = '.') : e));
@@ -25,23 +24,4 @@ export default class Formatter {
 
 		return new String(hh + ':' + mm + ':' + ss);
 	};
-=======
-  formatNumber = (n) => {
-    let numberStrArray = String(n).split("");
-    numberStrArray = numberStrArray.map((e) => (e == "," ? (e = ".") : e));
-    return Math.round(parseFloat(numberStrArray.join("")) * 10) / 10;
-  };
-
-  formatHour = (hour) => {
-    if (hour == null)
-      return "";
-    let timeArr = hour.split(':');
-    let hh = parseInt(timeArr[0]) + 3;
-    hh = hh.toString();
-    let mm = timeArr[1];
-    let ss = timeArr[2];
-
-    return new String(hh + ":" + mm + ":" + ss);
-  }
->>>>>>> 80fd221d0c6c745c775b912b2d384e7a38d48fea
 }
