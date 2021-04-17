@@ -124,7 +124,7 @@ import {
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
-import firebase from "firebase";
+/* import firebase from "firebase"; */
 export default {
   components: {
     cabecera: Header,
@@ -182,7 +182,7 @@ export default {
       });
     },
 
-    gLogin() {
+   /*  gLogin() {
       const proveedor = new firebase.auth.GoogleAuthProvider();
       firebase
         .auth()
@@ -193,7 +193,7 @@ export default {
         .catch(() => {
           this.toast();
         });
-    },
+    }, */
   },
   validations: {
     mail: {
