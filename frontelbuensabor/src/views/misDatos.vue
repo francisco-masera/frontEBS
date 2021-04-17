@@ -13,7 +13,10 @@
         </div>
         <div class="lineaForm">
           <label class="tituloForm"> Apellido: </label>
-          <b-form-input class="inputForm" v-model="user.apellido"></b-form-input>
+          <b-form-input
+            class="inputForm"
+            v-model="user.apellido"
+          ></b-form-input>
         </div>
         <div class="lineaForm">
           <label class="tituloForm"> Email: </label>
@@ -42,7 +45,10 @@
       </b-button>
       <br />
       <b-button class="buttonText" @click="cambiarImagen">
-        <img src="http://localhost:9001/images/sistema/camera.png" style="width: 25px" />
+        <img
+          src="http://localhost:9001/images/sistema/camera.png"
+          style="width: 25px"
+        />
         Cambiar foto de perfil
       </b-button>
     </b-container>
@@ -80,7 +86,11 @@
         </b-form-input>
       </form>
       <p class="posicion">
-        <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia"
+        <b-button
+          pill
+          class="boton botonEliminar"
+          size="sm"
+          @click="verificarContrasenia"
           >Cambiar contraseña
         </b-button>
       </p>
@@ -137,7 +147,13 @@
     <b-toast id="toast-error-sistema" variant="danger" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+          <b-img
+            blank
+            blank-color="#ff5555"
+            class="mr-2"
+            width="12"
+            height="12"
+          ></b-img>
         </div>
       </template>
       Error al cambiar la contraseña
@@ -215,7 +231,11 @@
         <b-form-file class="campoForm" id="imagen"></b-form-file>
       </form>
       <p class="posicion">
-        <b-button pill class="boton botonEliminar" size="sm" @click="updateImagen"
+        <b-button
+          pill
+          class="boton botonEliminar"
+          size="sm"
+          @click="updateImagen"
           >Guardar imagen
         </b-button>
       </p>
@@ -224,7 +244,13 @@
     <b-toast id="toast-imagen-error" variant="danger" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+          <b-img
+            blank
+            blank-color="#ff5555"
+            class="mr-2"
+            width="12"
+            height="12"
+          ></b-img>
         </div>
       </template>
       Error al modificar imagen
@@ -233,7 +259,13 @@
     <b-toast id="toast-imagen-exito" variant="success" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+          <b-img
+            blank
+            blank-color="#ff5555"
+            class="mr-2"
+            width="12"
+            height="12"
+          ></b-img>
         </div>
       </template>
       Imagen de perfil modificada
@@ -242,7 +274,13 @@
     <b-toast id="toast-datos-exito" variant="success" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+          <b-img
+            blank
+            blank-color="#ff5555"
+            class="mr-2"
+            width="12"
+            height="12"
+          ></b-img>
         </div>
       </template>
       Datos actualizados
@@ -251,7 +289,13 @@
     <b-toast id="toast-datos-error" variant="danger" solid>
       <template v-slot:toast-title>
         <div class="d-flex flex-grow-1 align-items-baseline">
-          <b-img blank blank-color="#ff5555" class="mr-2" width="12" height="12"></b-img>
+          <b-img
+            blank
+            blank-color="#ff5555"
+            class="mr-2"
+            width="12"
+            height="12"
+          ></b-img>
         </div>
       </template>
       Error al actualizar datos
@@ -370,6 +414,7 @@ export default {
       }
 
       this.verificaUsuario();
+      imagen.name = imagen.name.replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
       if (this.user.type === "Cliente") {
@@ -393,13 +438,17 @@ export default {
         return true;
       } else if (this.user.type === "Empleado") {
         await axios
-          .post("http://localhost:9001/buensabor/empleado/uploadImg", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origins": "*",
-              "cache-control": "no-cache",
-            },
-          })
+          .post(
+            "http://localhost:9001/buensabor/empleado/uploadImg",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+                "Access-Control-Allow-Origins": "*",
+                "cache-control": "no-cache",
+              },
+            }
+          )
 
           .catch(() => {
             this.$bvToast.show("toast-imagen-error");

@@ -22,7 +22,6 @@
             />
           </b-button>
         </b-nav-form>
-
         <b-table
           hover
           responsive="sm"

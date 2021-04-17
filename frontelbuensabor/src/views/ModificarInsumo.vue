@@ -52,18 +52,21 @@
               >*
               <b-form-invalid-feedback
                 class="error"
-                v-if="$v.form1.stockMin.$dirty && $v.form1.stockMin.$model == ''"
+                v-if="
+                  $v.form1.stockMin.$dirty && $v.form1.stockMin.$model == ''
+                "
               >
                 Stock mínimo es obligatorio.
               </b-form-invalid-feedback>
               <b-form-invalid-feedback
                 class="error"
                 v-show="
-                  $v.form1.stockMin.$params.integer && $v.form1.stockMin.$model != ''
+                  $v.form1.stockMin.$params.integer &&
+                    $v.form1.stockMin.$model != ''
                 "
               >
-                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
-                stock
+                Sólo se admiten números mayores o iguales a 0 (cero) en los
+                campos de stock
               </b-form-invalid-feedback>
             </div>
           </div>
@@ -86,7 +89,9 @@
               <br />
               <b-form-invalid-feedback
                 class="error"
-                v-if="$v.form1.stockMax.$dirty && $v.form1.stockMax.$model == ''"
+                v-if="
+                  $v.form1.stockMax.$dirty && $v.form1.stockMax.$model == ''
+                "
               >
                 Stock máximo es obligatorio.
               </b-form-invalid-feedback>
@@ -94,11 +99,12 @@
               <b-form-invalid-feedback
                 class="error"
                 v-show="
-                  $v.form1.stockMax.$params.integer && $v.form1.stockMax.$model != ''
+                  $v.form1.stockMax.$params.integer &&
+                    $v.form1.stockMax.$model != ''
                 "
               >
-                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
-                stock.
+                Sólo se admiten números mayores o iguales a 0 (cero) en los
+                campos de stock.
               </b-form-invalid-feedback>
             </div>
           </div>
@@ -165,14 +171,16 @@
             ></b-form-input
             ><br />*<b-form-invalid-feedback
               class="error"
-              v-if="$v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''"
+              v-if="
+                $v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''
+              "
               >El precio de venta es obligatorio. </b-form-invalid-feedback
             ><br />
             <b-form-invalid-feedback
               class="error"
               v-if="
                 $v.form2.precioVenta.$params.integer &&
-                $v.form2.precioVenta.$model != ''
+                  $v.form2.precioVenta.$model != ''
               "
               >Recuerde ingresar sólo números mayores a 0.
             </b-form-invalid-feedback>
@@ -197,7 +205,8 @@
             <b-form-invalid-feedback
               class="error"
               v-if="
-                $v.form2.lineaDescripcion.$dirty && $v.form2.lineaDescripcion.$model == ''
+                $v.form2.lineaDescripcion.$dirty &&
+                  $v.form2.lineaDescripcion.$model == ''
               "
               >La descripción es obligatoria.
             </b-form-invalid-feedback>
@@ -744,6 +753,7 @@ export default {
     },
 
     async guardarImagen(imagen) {
+      imagen.name = imagen.name.replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
@@ -795,7 +805,7 @@ export default {
     form1: {
       denominacion: {
         required,
-        alpha
+        alpha,
       },
       stockMin: {
         required,

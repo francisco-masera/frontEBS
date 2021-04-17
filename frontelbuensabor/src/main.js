@@ -7,6 +7,7 @@ import router from "./router";
 import store from "./store";
 import axios from "axios";
 import firebase from "firebase";
+import * as GmapVue from "gmap-vue";
 
 Vue.use(axios);
 Vue.config.productionTip = false;
@@ -20,6 +21,15 @@ const config = {
   appId: "1:50977179607:web:b99a0bcafaa3279fe36d92",
   measurementId: "G-JR98SN1CXN",
 };
+Vue.use(GmapVue, {
+  load: {
+    key: "AIzaSyDrpiLhduxVbTHFGFqvHaPXTTnkwgIVA4A",
+    libraries: "places",
+    region: 'AR',
+    language: 'es',
+  },
+  installComponents: true,
+});
 firebase.initializeApp(config);
 firebase.analytics();
 new Vue({
