@@ -6,15 +6,9 @@
         class="imagen"
       ></b-img>
     </div>
-    <b-alert v-model="alertDatosNull"
-      >Debe ingresar usuario y contraseña</b-alert
-    >
-    <b-alert v-model="alertDatosErroneos"
-      >Usuario o contraseña incorrecta</b-alert
-    >
-    <b-alert v-model="esCliente"
-      >No tiene permisos para acceder a esta sección</b-alert
-    >
+    <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
+    <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
+    <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
     <div id="ingreso">
       <div class="ingresoForm">
         <form>
@@ -38,12 +32,7 @@
             class="contraseñaForm"
           ></b-form-input>
           <div class="olvido">Olvidé mi contraseña</div>
-          <b-button
-            pill
-            class="botonIngreso"
-            :user="user"
-            @click="ingresar"
-            size="md"
+          <b-button pill class="botonIngreso" :user="user" @click="ingresar" size="md"
             >¡Ingresar!</b-button
           >
         </form>
@@ -52,9 +41,7 @@
     <div class="abajoIngreso"></div>
     <div class="modalMedida">
       <b-modal ref="modal" hide-footer hide-header centered title>
-        <p class="modalTitulo">
-          ¡Ingreso exitoso! Redirección en proceso...
-        </p>
+        <p class="modalTitulo">¡Ingreso exitoso! Redirección en proceso...</p>
         <p class="posicion"></p>
       </b-modal>
     </div>
@@ -65,8 +52,7 @@ import Service from "@/service/Service.js";
 export default {
   data() {
     return {
-      clientId:
-        "50977179607-f34qvh8nvpt6f18nlsrupplc9vmi777s.apps.googleusercontent.com",
+      clientId: "50977179607-f34qvh8nvpt6f18nlsrupplc9vmi777s.apps.googleusercontent.com",
       email: "",
       contrasenia: "",
       user: {},
@@ -82,34 +68,8 @@ export default {
       if (this.email != "" && this.contrasenia != "") {
         await this.buscaEmpleados();
 
-        if (
-          this.user != undefined &&
-          this.user.contrasenia == this.contrasenia
-        ) {
-<<<<<<< HEAD
+        if (this.user != undefined && this.user.contrasenia == this.contrasenia) {
           this.redirect();
-=======
-          if (!this.user.baja) {
-            sessionStorage.setItem("user", JSON.stringify(this.user));
-            sessionStorage.setItem("userChange",0 );
-            sessionStorage.setItem("active", true);
-            if (this.user.rol == "admin") {
-              //this.$router.push({ name: 'StockInsumos', params: {user: this.user }})
-              this.$router.push({ name: "StockInsumos" });
-            } else if (this.user.rol == "delivery") {
-              window.location = "/pedidos";
-            } else if (this.user.rol == "cocina") {
-              this.$router.push({
-                name: "CatalogoManu",
-                params: { user: this.user },
-              });
-            } else if (this.user.rol == "cajero") {
-              window.location = "/";
-            } else {
-              this.esCliente = true;
-            }
-          }
->>>>>>> 80fd221d0c6c745c775b912b2d384e7a38d48fea
         } else {
           this.alertDatosErroneos = true;
           this.email = "";
