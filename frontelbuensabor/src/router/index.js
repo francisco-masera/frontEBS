@@ -100,6 +100,13 @@ const routes = [
     name: "Registro",
     component: () => import("../views/Registro.vue"),
   },
+  {
+    path: "/pedidos/",
+    name: "Pedidos",
+    component: () => import("../views/Pedidos.vue"),
+  },
+
+
 ];
 
 const router = new VueRouter({

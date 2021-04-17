@@ -86,7 +86,30 @@ export default {
           this.user != undefined &&
           this.user.contrasenia == this.contrasenia
         ) {
+<<<<<<< HEAD
           this.redirect();
+=======
+          if (!this.user.baja) {
+            sessionStorage.setItem("user", JSON.stringify(this.user));
+            sessionStorage.setItem("userChange",0 );
+            sessionStorage.setItem("active", true);
+            if (this.user.rol == "admin") {
+              //this.$router.push({ name: 'StockInsumos', params: {user: this.user }})
+              this.$router.push({ name: "StockInsumos" });
+            } else if (this.user.rol == "delivery") {
+              window.location = "/pedidos";
+            } else if (this.user.rol == "cocina") {
+              this.$router.push({
+                name: "CatalogoManu",
+                params: { user: this.user },
+              });
+            } else if (this.user.rol == "cajero") {
+              window.location = "/";
+            } else {
+              this.esCliente = true;
+            }
+          }
+>>>>>>> 80fd221d0c6c745c775b912b2d384e7a38d48fea
         } else {
           this.alertDatosErroneos = true;
           this.email = "";
