@@ -21,16 +21,10 @@
             ></b-form-input
             >*
             <br />
-            <span
-              class="error"
-              v-if="submitted && !$v.form1.denominacion.required"
-            >
+            <span class="error" v-if="submitted && !$v.form1.denominacion.required">
               <br />Este campo es obligatorio
             </span>
-            <span
-              class="error"
-              v-if="submitted && !$v.form1.denominacion.alphaNumSpc"
-            >
+            <span class="error" v-if="submitted && !$v.form1.denominacion.alphaNumSpc">
               <br />Recuerde ingresar sólo letras y/o números.
             </span>
           </div>
@@ -52,21 +46,18 @@
               >*
               <b-form-invalid-feedback
                 class="error"
-                v-if="
-                  $v.form1.stockMin.$dirty && $v.form1.stockMin.$model == ''
-                "
+                v-if="$v.form1.stockMin.$dirty && $v.form1.stockMin.$model == ''"
               >
                 Stock mínimo es obligatorio.
               </b-form-invalid-feedback>
               <b-form-invalid-feedback
                 class="error"
                 v-show="
-                  $v.form1.stockMin.$params.integer &&
-                    $v.form1.stockMin.$model != ''
+                  $v.form1.stockMin.$params.integer && $v.form1.stockMin.$model != ''
                 "
               >
-                Sólo se admiten números mayores o iguales a 0 (cero) en los
-                campos de stock
+                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
+                stock
               </b-form-invalid-feedback>
             </div>
           </div>
@@ -89,9 +80,7 @@
               <br />
               <b-form-invalid-feedback
                 class="error"
-                v-if="
-                  $v.form1.stockMax.$dirty && $v.form1.stockMax.$model == ''
-                "
+                v-if="$v.form1.stockMax.$dirty && $v.form1.stockMax.$model == ''"
               >
                 Stock máximo es obligatorio.
               </b-form-invalid-feedback>
@@ -99,36 +88,26 @@
               <b-form-invalid-feedback
                 class="error"
                 v-show="
-                  $v.form1.stockMax.$params.integer &&
-                    $v.form1.stockMax.$model != ''
+                  $v.form1.stockMax.$params.integer && $v.form1.stockMax.$model != ''
                 "
               >
-                Sólo se admiten números mayores o iguales a 0 (cero) en los
-                campos de stock.
+                Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
+                stock.
               </b-form-invalid-feedback>
             </div>
           </div>
-          <div class="lineaForm" style="display:flex">
+          <div class="lineaForm" style="display: flex">
             <label class="labelForm">Unidad de medida</label>
             <b-form-select
               id="unidadMedida"
               class="campoForm"
               v-model="insumoEncontrado.unidadMedida"
-              :options="[
-                { text: 'Seleccione...', value: null },
-                'u',
-                'kg',
-                'lt',
-                'gr',
-              ]"
+              :options="[{ text: 'Seleccione...', value: null }, 'u', 'kg', 'lt', 'gr']"
               :value="null"
             ></b-form-select
             >*
             <b-form-group id="contenedorCheck">
-              <b-form-checkbox
-                id="checkbox-1"
-                name="checkbox-1"
-                v-model="esInsumoVenta"
+              <b-form-checkbox id="checkbox-1" name="checkbox-1" v-model="esInsumoVenta"
                 >Directo a venta</b-form-checkbox
               >
               <b-form-checkbox
@@ -156,7 +135,7 @@
       <div id="paso2">
         <h2>Información de venta</h2>
         <b-form id="form2">
-          <div class="lineaForm" style="display:flex">
+          <div class="lineaForm" style="display: flex">
             <label class="labelForm">Precio de venta</label>
             <b-form-input
               class="campoForm form-control"
@@ -171,21 +150,18 @@
             ></b-form-input
             ><br />*<b-form-invalid-feedback
               class="error"
-              v-if="
-                $v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''
-              "
+              v-if="$v.form2.precioVenta.$dirty && $v.form2.precioVenta.$model == ''"
               >El precio de venta es obligatorio. </b-form-invalid-feedback
             ><br />
             <b-form-invalid-feedback
               class="error"
               v-if="
-                $v.form2.precioVenta.$params.integer &&
-                  $v.form2.precioVenta.$model != ''
+                $v.form2.precioVenta.$params.integer && $v.form2.precioVenta.$model != ''
               "
               >Recuerde ingresar sólo números mayores a 0.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" id="lineaDescripcion" style="display:flex">
+          <div class="lineaForm" id="lineaDescripcion" style="display: flex">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
@@ -205,13 +181,12 @@
             <b-form-invalid-feedback
               class="error"
               v-if="
-                $v.form2.lineaDescripcion.$dirty &&
-                  $v.form2.lineaDescripcion.$model == ''
+                $v.form2.lineaDescripcion.$dirty && $v.form2.lineaDescripcion.$model == ''
               "
               >La descripción es obligatoria.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" style="display:flex">
+          <div class="lineaForm" style="display: flex">
             <label class="labelForm">Imagen</label>
             <b-form-file
               class="campoForm form-control"
@@ -234,27 +209,19 @@
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-if="esNuevo">
+          <div class="lineaFormDerecha" style="float: right" v-if="esNuevo">
             <b-button pill class="boton2" size="md" @click="retornaAlStock"
               >Cancelar</b-button
             >
-            <b-button
-              pill
-              class="boton"
-              size="md"
-              @click.prevent="agregarInsumo"
+            <b-button pill class="boton" size="md" @click.prevent="agregarInsumo"
               >Guardar</b-button
             >
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-else>
+          <div class="lineaFormDerecha" style="float: right" v-else>
             <b-button pill class="boton2" size="md" @click="retornaAlStock"
               >Cancelar</b-button
             >
-            <b-button
-              pill
-              class="boton"
-              size="md"
-              @click.prevent="updateInsumo()"
+            <b-button pill class="boton" size="md" @click.prevent="updateInsumo()"
               >Guardar</b-button
             >
           </div>
@@ -434,11 +401,7 @@
             </b-collapse>
           </div>
 
-          <div
-            class="lineaFormDerecha"
-            style="float:right"
-            v-if="esInsumoVenta"
-          >
+          <div class="lineaFormDerecha" style="float: right" v-if="esInsumoVenta">
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
@@ -446,7 +409,7 @@
               >Siguiente</b-button
             >
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-else-if="esNuevo">
+          <div class="lineaFormDerecha" style="float: right" v-else-if="esNuevo">
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
@@ -454,7 +417,7 @@
               >Guardar</b-button
             >
           </div>
-          <div class="lineaFormDerecha" style="float:right" v-else>
+          <div class="lineaFormDerecha" style="float: right" v-else>
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
@@ -467,12 +430,8 @@
     </b-container>
     <div class="modalMedida">
       <b-modal ref="modal" hide-footer hide-header centered title>
-        <p class="modalTitulo" v-if="esNuevo">
-          ¡Insumo agregado con éxito! Aguarde...
-        </p>
-        <p class="modalTitulo" v-else>
-          ¡Insumo modificado con éxito! Aguarde...
-        </p>
+        <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito! Aguarde...</p>
+        <p class="modalTitulo" v-else>¡Insumo modificado con éxito! Aguarde...</p>
         <p class="posicion"></p>
       </b-modal>
     </div>
@@ -501,8 +460,7 @@ export default {
   mounted() {
     this.userVerifica();
     this.getCategorias();
-    this.esNuevo =
-      this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
+    this.esNuevo = this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
   },
   components: {
     menuLateral: MenuLateral,
@@ -641,11 +599,9 @@ export default {
 
     async guardaStock() {
       if (this.esNuevo) {
-        await this.service
-          .save("stock", this.insumoEncontrado.stock)
-          .then((data) => {
-            this.insumoEncontrado.stock = data;
-          });
+        await this.service.save("stock", this.insumoEncontrado.stock).then((data) => {
+          this.insumoEncontrado.stock = data;
+        });
       } else {
         await this.service.update(
           "stock",
@@ -696,16 +652,12 @@ export default {
         }
 
         await this.service
-          .update(
-            "insumoVenta",
-            this.informacionVenta,
-            this.informacionVenta.id
-          )
+          .update("insumoVenta", this.informacionVenta, this.informacionVenta.id)
           .then((data) => {
             this.informacionVenta = data;
             this.$refs["modal"].show();
 
-            setTimeout(() => this.retornaAlStock(), 5300);
+            setTimeout(() => this.retornaAlStock(), 3000);
           });
       }
     },
@@ -730,26 +682,22 @@ export default {
 
       await this.guardaStock();
 
-      await this.service.save("insumo", this.insumoEncontrado).then((data) => {
-        this.insumoEncontrado = data;
-      });
-      if (!this.insumoEncontrado.esInsumo) {
-        this.informacionVenta.descripcion = this.form2.lineaDescripcion;
-        this.informacionVenta.precioVenta = this.form2.precioVenta;
-        this.informacionVenta.insumo = this.insumoEncontrado;
+      await this.service.save("insumo", this.insumoEncontrado).then(async (data) => {
+        if (!data.esInsumo) {
+          this.informacionVenta.descripcion = this.form2.lineaDescripcion;
+          this.informacionVenta.precioVenta = this.form2.precioVenta;
+          this.informacionVenta.insumo = this.data;
 
-        this.informacionVenta.imagen = img.name;
-        await this.guardarImagen(img);
+          this.informacionVenta.imagen = img.name;
+          await this.guardarImagen(img);
 
-        await this.service
-          .save("insumoVenta", this.informacionVenta)
-          .then((data) => {
+          await this.service.save("insumoVenta", this.informacionVenta).then((data) => {
             this.informacionVenta = data;
           });
-
+        }
         this.$refs["modal"].show();
-        setTimeout(() => this.retornaAlStock(), 3000);
-      }
+        setTimeout(() => this.retornaAlStock(), 2500);
+      });
     },
 
     async guardarImagen(imagen) {
@@ -757,17 +705,13 @@ export default {
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
-        .post(
-          "http://localhost:9001/buensabor/informacionArticulo/uploadImg",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origins": "*",
-              "cache-control": "no-cache",
-            },
-          }
-        )
+        .post("http://localhost:9001/buensabor/informacionArticulo/uploadImg", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origins": "*",
+            "cache-control": "no-cache",
+          },
+        })
         .catch((error) => {
           return error;
         });

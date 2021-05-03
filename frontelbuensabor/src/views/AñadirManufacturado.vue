@@ -20,20 +20,25 @@
                 v-model.trim="form1.denominacion"
                 id="denominacionManufacturado"
                 placeholder="Ingrese un nombre"
+                :state="
+                  !$v.form1.denominacion.$dirty
+                    ? !$v.form1.denominacion.$anyError
+                    : !$v.form1.denominacion.$error
+                "
+                @input="$v.form1.denominacion.$touch()"
               />
-              <br />
-              <span
+              <b-form-invalid-feedback
                 class="error"
-                v-if="submitted && !$v.form1.denominacion.required"
+                v-if="$v.form1.denominacion.$dirty && $v.form1.denominacion.$model == ''"
               >
-                Este campo es obligatorio.
-              </span>
-              <span
+                El nombre es obligatorio.</b-form-invalid-feedback
+              >
+              <b-form-invalid-feedback
                 class="error"
-                v-if="submitted && !$v.form1.denominacion.alphaNumSpc"
+                v-if="$v.form1.denominacion.$dirty && !$v.form1.denominacion.alphaNumSpc"
               >
-                Recuerde ingresar sólo letras.
-              </span>
+                Recuerde ingresar sólo letras y números.</b-form-invalid-feedback
+              >
             </b-form-group>
           </div>
           <div class="lineaForm" id="lineaDescripcion">
@@ -42,16 +47,29 @@
               <b-form-textarea
                 id="descripcionManufacturado"
                 class="campoForm"
-                v-model.lazy="form1.descripcion"
-                :state="!$v.form1.descripcion.$invalid"
+                v-model.trim="form1.descripcion"
+                :state="
+                  !$v.form1.descripcion.$dirty
+                    ? !$v.form1.descripcion.$anyError
+                    : !$v.form1.descripcion.$error
+                "
+                @input="$v.form1.descripcion.$touch()"
                 placeholder="Ingrese una descripción"
                 rows="3"
                 max-rows="6"
               />*
-              <span>
-                <br />Este campo es obligatorio. <br />Recuerde ingresar sólo
-                letras.
-              </span>
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.descripcion.$dirty && $v.form1.descripcion.$model == ''"
+              >
+                La descripción es obligatoria.</b-form-invalid-feedback
+              >
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.descripcion.$dirty && !$v.form1.descripcion.alphaNumSpc"
+              >
+                Recuerde ingresar sólo letras y números.</b-form-invalid-feedback
+              >
             </b-form-group>
           </div>
           <br />
@@ -80,10 +98,8 @@
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
-          <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
+          <div class="lineaFormDerecha" style="float: right">
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click.prevent="onSubmit1"
               >Siguiente</b-button
             >
@@ -91,7 +107,7 @@
         </b-form>
       </div>
 
-      <div id="paso2" style="display:none">
+      <div id="paso2" style="display: none">
         <h2>Composición</h2>
         <b-form id="form2">
           <div class="lineaForm">
@@ -113,9 +129,7 @@
                   <b-form-checkbox
                     :key="row.item.idInsumo"
                     v-model="row.item.clicked"
-                    @change="
-                      cambiarEstadoIngrediente($event, row.item.idInsumo)
-                    "
+                    @change="cambiarEstadoIngrediente($event, row.item.idInsumo)"
                   ></b-form-checkbox>
                 </b-form-group>
               </template>
@@ -154,21 +168,36 @@
               <label class="labelForm">Tiempo en cocina</label>
               <b-form-input
                 type="number"
-                class="campoForm"
+                class="campoForm form-control"
                 id="tiempoCocina"
-                v-model.lazy="form2.tiempoCocina"
-                :state="!$v.form2.tiempoCocina.$invalid"
+                v-model.trim="form2.tiempoCocina"
+                :state="
+                  !$v.form2.tiempoCocina.$dirty
+                    ? !$v.form2.tiempoCocina.$anyError
+                    : !$v.form2.tiempoCocina.$error
+                "
+                @input="$v.form2.tiempoCocina.$touch()"
               ></b-form-input>
-              <span>
-                <br />Este campo es obligatorio <br />y sólo admite números
-                mayores a cero <br />sin coma ni punto.
-              </span>
+              <br />
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form2.tiempoCocina.$dirty && $v.form2.tiempoCocina.$model == ''"
+              >
+                El tiempo en cocina es obligatorio.
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                class="error"
+                v-if="
+                  $v.form2.tiempoCocina.$params.integer &&
+                  $v.form2.tiempoCocina.$model != ''
+                "
+              >
+                El tiempo en cocina sólo admite números enteros (sin coma ni punto)
+              </b-form-invalid-feedback>
             </b-form-group>
           </div>
-          <div class="lineaFormDerecha" style="float:right">
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
+          <div class="lineaFormDerecha" style="float: right">
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click.prevent="onSubmit2"
               >Siguiente</b-button
             >
@@ -202,9 +231,7 @@
                 ></cantidad>
               </template>
             </b-table>
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click.prevent="onSubmit3"
               >Siguiente</b-button
             >
@@ -223,14 +250,14 @@
               </div>
             </template>
             Todos los datos de esta página son
-            <br />obligatorios para continuar. <br />Recuerde: Las cantidades
-            deben ser sólo números. <br />Verifique los datos.
+            <br />obligatorios para continuar. <br />Recuerde: Las cantidades deben ser
+            sólo números. <br />Verifique los datos.
           </b-toast>
         </b-form>
       </div>
 
       <br />
-      <div id="revision" style="display:none">
+      <div id="revision" style="display: none">
         <h2>Revisión</h2>
         <br />
         <b-form id="formRevision">
@@ -294,17 +321,13 @@
             </b-toast>
             <div class="modalMedida">
               <b-modal ref="modal" hide-footer hide-header centered title>
-                <p class="modalTitulo">
-                  ¡Sugerencia agregada con éxito! Aguarde...
-                </p>
+                <p class="modalTitulo">¡Sugerencia agregada con éxito! Aguarde...</p>
                 <p class="posicion"></p>
               </b-modal>
             </div>
           </div>
           <div class="lineaFormDerecha">
-            <b-button pill class="boton2" size="md" @click="volver"
-              >Cancelar</b-button
-            >
+            <b-button pill class="boton2" size="md" @click="volver">Cancelar</b-button>
             <b-button pill class="boton" size="md" @click.prevent="guardar"
               >Guardar</b-button
             >
@@ -328,13 +351,12 @@ import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
-
+const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i);
 export default {
   mixins: [validationMixin],
   mounted() {
     this.verificarUsuario();
-    this.esNuevo =
-      this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
+    this.esNuevo = this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
   },
   props: {
     user: {},
@@ -410,9 +432,7 @@ export default {
         .getOne("manufacturado", this.$route.params.id)
         .then((data) => (this.manufacturado = data))
         .then(() =>
-          this.$route.params.id != "undefined"
-            ? this.completarCamposForm1()
-            : ""
+          this.$route.params.id != "undefined" ? this.completarCamposForm1() : ""
         );
     },
 
@@ -432,13 +452,9 @@ export default {
       this.manufacturado.descripcion = document.getElementById(
         "descripcionManufacturado"
       ).value;
-      this.manufacturado.aptoCeliaco = document.getElementById(
-        "checkbox-1"
-      ).checked;
+      this.manufacturado.aptoCeliaco = document.getElementById("checkbox-1").checked;
       const vegano = document.getElementById("checkbox-2").checked;
-      const vegetariano = vegano
-        ? true
-        : document.getElementById("checkbox-3").checked;
+      const vegetariano = vegano ? true : document.getElementById("checkbox-3").checked;
       this.manufacturado.vegano = vegano;
       this.manufacturado.vegetariano = vegetariano;
       this.siguiente1();
@@ -475,8 +491,7 @@ export default {
       let existe = this.ingredientes.some((i) => {
         return i.idInsumo == id ? true : false;
       });
-      if (existe)
-        valor ? this.agregarIngrediente(id) : this.eliminarIngrediente(id);
+      if (existe) valor ? this.agregarIngrediente(id) : this.eliminarIngrediente(id);
       else if (valor) this.agregarIngrediente(id);
     },
 
@@ -518,9 +533,7 @@ export default {
 
     buscarItem(id, target) {
       if (target == "unidad") {
-        return this.ingredientes.find(
-          (ingrediente) => ingrediente.idInsumo == id
-        );
+        return this.ingredientes.find((ingrediente) => ingrediente.idInsumo == id);
       } else {
         return this.cantidades.find((item) => item.id == id);
       }
@@ -573,9 +586,7 @@ export default {
 
     verificarDatosForm3() {
       let cantidadesLen = document.getElementsByName("cantidadesInput").length;
-      let rExp = new RegExp(
-        "(^|[ \\t])([-+]?(\\d+|\\.\\d+|\\d+\\.\\d*))($|[^+-.])"
-      );
+      let rExp = new RegExp("(^|[ \\t])([-+]?(\\d+|\\.\\d+|\\d+\\.\\d*))($|[^+-.])");
       let soloNumeros = this.cantidades.every((c) => rExp.test(c.cantidad));
       return (
         soloNumeros &&
@@ -632,21 +643,16 @@ export default {
     },
 
     async guardarImagen(imagen) {
-      imagen.name = imagen.name.replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
-        .post(
-          "http://localhost:9001/buensabor/sugerencia/uploadImg",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origins": "*",
-              "cache-control": "no-cache",
-            },
-          }
-        )
+        .post("http://localhost:9001/buensabor/sugerencia/uploadImg", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origins": "*",
+            "cache-control": "no-cache",
+          },
+        })
 
         .catch((error) => {
           return error;
@@ -706,11 +712,11 @@ export default {
     form1: {
       denominacion: {
         required,
-        alphaNumSpc: helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i),
+        alphaNumSpc,
       },
       descripcion: {
         required,
-        alphaNumSpc: helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i),
+        alphaNumSpc,
       },
     },
 

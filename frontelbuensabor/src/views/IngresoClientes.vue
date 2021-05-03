@@ -5,21 +5,14 @@
       <div class="container-login100">
         <div class="wrap-login100">
           <b-form id="formRegistro" class="login100-form validate-form">
-            <span class="login100-form-title p-b-26">
-              Bienvenido
-            </span>
+            <span class="login100-form-title p-b-26"> Bienvenido </span>
             <span class="login100-form-title p-b-48">
               <i class="zmdi zmdi-font"></i>
             </span>
 
             <div class="wrap-input100 validate-input">
               <label class="labelForm">Email</label>
-              <b-form-input
-                v-model.trim="mail"
-                class="input100"
-                type="text"
-                name="email"
-              >
+              <b-form-input v-model.trim="mail" class="input100" type="text" name="email">
               </b-form-input>
 
               <span class="error" v-if="submitted && !$v.mail.required">
@@ -64,10 +57,7 @@
                 name="pass"
                 v-model.trim="$v.confContrasenia.$model"
               ></b-form-input>
-              <span
-                class="error"
-                v-if="submitted && !$v.confContrasenia.sameAsPassword"
-              >
+              <span class="error" v-if="submitted && !$v.confContrasenia.sameAsPassword">
                 Las contraseñas no coinciden.
               </span>
               <span class="focus-input100"></span>
@@ -75,32 +65,26 @@
             <div class="container-login100-form-btn">
               <div class="wrap-login100-form-btn">
                 <div class="login100-form-bgbtn"></div>
-                <b-button @click="ingresar()" class="login100-form-btn">
+                <b-button @click="onClick()" class="login100-form-btn">
                   Ingreso
                 </b-button>
               </div>
             </div>
 
             <div class="text-center p-t-115">
-              <span class="txt1">
-                ¿No tienes cuenta?
-              </span>
+              <span class="txt1"> ¿No tienes cuenta? </span>
 
-              <a class="txt2" href="#">
-                ¡Regístrate!
-              </a>
+              <a class="txt2" href="./registro"> ¡Regístrate! </a>
               <br />
             </div>
           </b-form>
           <br />
           <div class="text-center p-t-115">
-            <p class="txt2" style="font-size:13pt">
-              O ingresa con Google
-            </p>
+            <p class="txt2" style="font-size: 13pt">O ingresa con Google</p>
             <b-button class="social" @click="gLogin()">
               <img
                 class="img-fluid"
-                src="http://localhost:9001/images/sistema/googleIcon.png"
+                src="http://localhost:9001/images/sistema/google.png"
               />
             </b-button>
           </div>
@@ -114,17 +98,11 @@
 import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
-import {
-  required,
-  sameAs,
-  email,
-  alphaNum,
-  minLength,
-} from "vuelidate/lib/validators";
+import { required, sameAs, email, alphaNum, minLength } from "vuelidate/lib/validators";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
-/* import firebase from "firebase"; */
+import firebase from "firebase";
 export default {
   components: {
     cabecera: Header,
@@ -141,9 +119,10 @@ export default {
     };
   },
   methods: {
-    async ingresar() {
+    onClick() {
       this.submitted = true;
       this.$v.$touch();
+
       if (this.$v.$anyError) {
         setTimeout(() => {
           this.submitted = false;
@@ -151,17 +130,9 @@ export default {
         return;
       }
       var email = this.$v.mail.$model;
-      var contrasenia = this.$v.contrasenia.$model;
-      await axios
-        .post("http://localhost:9001/buensabor/cliente/login", null, {
-          params: {
-            email,
-            contrasenia,
-          },
-        })
-        .then((data) => {
-          if (data != null) this.redirect(data);
-        });
+      var pass = this.$v.contrasenia.$model;
+
+      this.login(email, pass);
     },
     redirect(user) {
       if (!user.baja) {
@@ -173,27 +144,49 @@ export default {
       }
     },
 
-    toast() {
-      this.$bvToast.toast("Error al ingresar con Google", {
-        title: `Error al ingresar con Google`,
+    toast(title, error) {
+      this.$bvToast.toast(error, {
+        title: title,
         toaster: "b-toaster-top-center",
         solid: false,
         appendToast: true,
       });
     },
 
-   /*  gLogin() {
-      const proveedor = new firebase.auth.GoogleAuthProvider();
-      firebase
+    async login(email, pass) {
+      pass = pass.toString();
+      await axios
+        .post("http://localhost:9001/buensabor/cliente/login", null, {
+          params: {
+            email,
+            pass,
+          },
+        })
+        .then((data) => {
+          if (data != null) this.redirect(data);
+          else {
+            this.toast("Lo sentimos", "Ocurrió un errro al intentar el ingreso.");
+          }
+        });
+    },
+
+    async gLogin() {
+      var email = this.$v.mail.$model;
+      var pass = this.$v.contrasenia.$model;
+
+      await firebase
         .auth()
-        .signInWithPopup(proveedor)
+        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .signInWithEmailAndPassword(email, pass)
         .then((res) => {
-          console.log(res);
+          res.additionalUserInfo.isNewUser
+            ? true /* this.register() */
+            : this.login(email, pass);
         })
         .catch(() => {
-          this.toast();
+          this.toast("Lo sentimos", "Algo ha fallado al ingresar con Google.");
         });
-    }, */
+    },
   },
   validations: {
     mail: {
@@ -552,13 +545,7 @@ iframe {
   width: 300%;
   height: 100%;
   background: #a64bf4;
-  background: -webkit-linear-gradient(
-    right,
-    #21d4fd,
-    #b721ff,
-    #21d4fd,
-    #b721ff
-  );
+  background: -webkit-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
   background: -o-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
   background: -moz-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
   background: linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);

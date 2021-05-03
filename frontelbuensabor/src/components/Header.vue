@@ -13,11 +13,15 @@
       <div class="centrarHome">
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="items">
-            <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
-            <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
+            <b-nav-item :to="{ name: 'menu' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
-            <b-button @click="registro" pill class="boton">Registrarme</b-button>
+            <b-button
+              @click="$router.push({ path: `/registro/${null}/${null}` })"
+              pill
+              class="boton"
+              >Registrarme</b-button
+            >
             <b-button @click="$router.push({ name: 'Ingreso' })" pill class="boton2"
               >Ingresar</b-button
             >
@@ -80,9 +84,6 @@
                 ></b-img>
                 {{ boton[1] }}
               </b-nav-item>
-              <b-nav-item class="menuLateral">
-                <logout id="logout" />
-              </b-nav-item>
             </b-navbar-nav>
           </b-collapse>
         </div>
@@ -123,7 +124,6 @@
                 ></b-img>
                 {{ boton[1] }}
               </b-nav-item>
-              <logout id="logout" style="margin-left: -10px" />
             </b-navbar-nav>
           </b-collapse>
         </div>
@@ -134,12 +134,8 @@
 
 <script>
 import Service from "@/service/Service.js";
-import btnLatLogOut from "./btnLatLogOut";
 
 export default {
-  components: {
-    logout: btnLatLogOut,
-  },
   data() {
     return {
       botones: [],
@@ -213,10 +209,6 @@ export default {
           this.user = data;
         });
       else this.user == null;
-    },
-
-    registro() {
-      this.$router.push({ name: "Registro" });
     },
   },
 };

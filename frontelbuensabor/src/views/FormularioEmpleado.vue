@@ -206,7 +206,9 @@
             </b-form-invalid-feedback>
           </div>
           <div class="lineaFormIzquierda" style="display: flex">
-            <b-button pill class="boton2" size="md">Cancelar</b-button>
+            <b-button pill class="boton2" size="md" @click="vuelveStock()"
+              >Cancelar</b-button
+            >
             <b-button pill class="boton" size="md" @click.prevent="siguiente1"
               >Siguiente</b-button
             >
@@ -515,7 +517,6 @@ export default {
     },
 
     async guardarImagen(imagen) {
-      imagen.name = imagen.name.replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
