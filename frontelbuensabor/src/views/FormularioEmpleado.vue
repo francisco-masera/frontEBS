@@ -154,7 +154,7 @@
             <b-form-input
               class="campoForm form-control"
               id="piso"
-              v-model="form1.piso"
+              v-model.trim="form1.piso"
               :state="
                 !$v.form1.piso.$dirty ? !$v.form1.piso.$anyError : !$v.form1.piso.$error
               "
@@ -244,7 +244,7 @@
               class="campoForm form-control"
               id="contraseniaEmpleado"
               type="password"
-              v-model="form2.contrasenia"
+              v-model.trim="form2.contrasenia"
               :state="
                 !$v.form2.contrasenia.$dirty
                   ? !$v.form2.contrasenia.$anyError
@@ -364,6 +364,7 @@
         </p>
       </b-modal>
     </b-container>
+    <Loader v-if="loading" :loading="loading" />
     <router-view />
   </div>
 </template>
@@ -376,13 +377,15 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
-
+import Utils from "@/utilidades/Utils.js";
+import Loader from "@/components/Loader.vue";
 const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
 
 export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    Loader: Loader,
   },
 
   data() {
@@ -430,8 +433,9 @@ export default {
         email: "",
         foto: "",
       },
+      loading: false,
       service: new Service(),
-
+      utils: new Utils(),
       roles: [
         { value: "", text: "Rol del empleado" },
         { value: "admin", text: "Administrador" },
@@ -446,12 +450,8 @@ export default {
     siguiente1() {
       this.$v.form1.$touch();
       if (this.$v.form1.$anyError) {
-        return;
+        return false;
       }
-      console.log(typeof this.domicilio.departamento);
-      console.log(typeof this.domicilio.piso);
-      console.log(this.domicilio.departamento);
-      console.log(this.domicilio.piso);
       this.asignaCamposForm1();
 
       document.getElementById("paso1").style.display = "none";
@@ -461,7 +461,7 @@ export default {
     async guardarEmpleado() {
       this.$v.$touch();
       if (this.$v.form2.$anyError) {
-        return;
+        return false;
       }
 
       this.asignaCamposForm2();
@@ -471,7 +471,7 @@ export default {
           toaster: "b-toaster-top-center",
           solid: true,
         });
-        return;
+        return false;
       }
       let img = document.getElementById("imagen").files[0];
 
@@ -491,7 +491,7 @@ export default {
           toaster: "b-toaster-top-center",
           solid: true,
         });
-        return;
+        return false;
       }
 
       if (img != undefined && img.size / 1024 > 512) {
@@ -500,33 +500,73 @@ export default {
           toaster: "b-toaster-top-center",
           solid: true,
         });
-        return;
+        return false;
       }
+      this.persona.foto = img.name.toString().replaceAll(" ", "_");
+      this.loading = !this.loading;
+      this.utils.preventScroll();
 
-      this.persona.foto = img.name;
-      await this.service.save("persona", this.persona).then((data) => {
-        this.persona = data;
-      });
-      await this.guardarImagen(img);
+      await axios
+        .post("http://localhost:9001/buensabor/empleado/registro", this.persona)
+        .then((d) => {
+          this.persona = d.data;
+          console.log(typeof d.data);
+          this.guardarImagen(img)
+            .then((d) => {
+              console.log(d);
+              this.loading = !this.loading;
+            })
+            .catch((e) => {
+              this.loading = !this.loading;
+              this.utils.enableScroll();
+              this.$bvToast.toast(e.response.data.message, {
+                title: `¡Atención!`,
+                toaster: "b-toaster-top-center",
+                solid: true,
+              });
+              return false;
+            });
+        });
+    },
+
+    async guardarDomicilio() {
       this.domicilio.persona.id = this.persona.id;
       console.log(this.domicilio.persona.id);
-      await this.service.save("domicilio", this.domicilio).then((data) => {
-        this.domicilio = data;
-      });
-      this.$refs["modal"].show();
+      await this.service
+        .save("domicilio", this.domicilio)
+        .then((data) => {
+          this.domicilio = data;
+          this.loading = !this.loading;
+          if (data) this.$refs["modal"].show();
+          else {
+            this.loading = !this.loading;
+            return false;
+          }
+        })
+        .catch((e) => {
+          this.loading = !this.loading;
+          this.utils.enableScroll();
+          this.$bvToast.toast(e.response.data.message, {
+            title: `¡Atención!`,
+            toaster: "b-toaster-top-center",
+            solid: true,
+          });
+          return false;
+        });
     },
 
     async guardarImagen(imagen) {
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
-        .post("http://localhost:9001/buensabor/persona/uploadImg", formData, {
+        .post("http://localhost:9001/buensabor/empleado/uploadImg", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origins": "*",
             "cache-control": "no-cache",
           },
         })
+        .then(this.guardarDomicilio())
         .catch((error) => {
           return error;
         });
@@ -594,9 +634,7 @@ export default {
       piso: {
         integer,
       },
-      departamento: {
-        alpha,
-      },
+      departamento: {},
     },
     form2: {
       usuario: {

@@ -189,6 +189,18 @@
           >
             La contraseña es obligatoria.
           </b-form-invalid-feedback>
+          <b-form-invalid-feedback
+            class="error"
+            v-if="!$v.form1.pass.$dirty && !$v.form1.pass.alphaNum"
+          >
+            La contraseña debe ser alfanumérica y no poseer espacios.
+          </b-form-invalid-feedback>
+          <b-form-invalid-feedback
+            class="error"
+            v-if="!$v.form1.pass.$dirty && !$v.form1.pass.minLength"
+          >
+            La contraseña debe tener mínimo 8 caracteres.
+          </b-form-invalid-feedback>
         </div>
         <div class="form-group col-md-6">
           <b-form-input
@@ -249,7 +261,15 @@ import Service from "@/service/Service.js";
 import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
-import { required, email, sameAs, numeric, helpers } from "vuelidate/lib/validators";
+import {
+  required,
+  email,
+  sameAs,
+  numeric,
+  helpers,
+  alphaNum,
+  minLength,
+} from "vuelidate/lib/validators";
 const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
 import axios from "axios";
 
@@ -318,8 +338,8 @@ export default {
 
       try {
         this.domicilios = this.setDomicilio();
-      } catch (error) {
-        this.$bvToast.toast(error, {
+      } catch (e) {
+        this.$bvToast.toast(e.response.data.message, {
           title: `¡Atención!`,
           toaster: "b-toaster-top-center",
           solid: true,
@@ -335,7 +355,7 @@ export default {
         email: this.form1.email,
         contrasenia: this.form1.pass,
         usuario: this.form1.usuario,
-        foto: nombreFoto.replaceAll(" ", ","),
+        foto: nombreFoto.toString().replaceAll(" ", ","),
         //domicilios: [this.domicilios],
       };
       if (ph != null && ph != undefined) {
@@ -368,7 +388,7 @@ export default {
                 this.guardarDomicilio(id);
                 this.mostrarResultado(true);
               } catch (e) {
-                this.$bvToast.toast(e, {
+                this.$bvToast.toast(e.response.data.message, {
                   title: `¡Atención!`,
                   toaster: "b-toaster-top-center",
                   solid: true,
@@ -378,14 +398,26 @@ export default {
               this.mostrarResultado(false);
             }
           })
-          .catch((e) => console.log(e));
+          .catch((e) =>
+            this.$bvToast.toast(e.response.data.message, {
+              title: `¡Atención!`,
+              toaster: "b-toaster-top-center",
+              solid: true,
+            })
+          );
 
-        this.guardarImagen(ph).catch((e) => console.log(e));
+        this.guardarImagen(ph).catch((e) =>
+          this.$bvToast.toast(e.response.data.message, {
+            title: `¡Atención!`,
+            toaster: "b-toaster-top-center",
+            solid: true,
+          })
+        );
       }
     },
 
     async guardarImagen(ph) {
-      ph.name = ph.name.replaceAll(" ", "_");
+      ph.name = ph.name.toString().replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", ph);
       await axios
@@ -517,6 +549,8 @@ export default {
       },
       pass: {
         required,
+        minLength: minLength(8),
+        alphaNum,
       },
       pass2: {
         required,

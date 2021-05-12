@@ -22,7 +22,7 @@ const routes = [
 		component : () => import('../views/StockInsumos.vue')
 	},
 	{
-		path      : '/catalogoManu',
+		path      : '/catalogo',
 		name      : 'CatalogoManu',
 		component : () => import('../views/catalogoManu.vue')
 	},
@@ -77,12 +77,12 @@ const routes = [
 		component : () => import('../views/Menu.vue')
 	},
 	{
-		path      : '/ingresoCli/',
-		name      : 'IngresoCli',
+		path      : '/ingresoClientes/',
+		name      : 'IngresoClientes',
 		component : () => import('../views/IngresoClientes.vue')
 	},
 	{
-		path      : '/registro/:user/:pass',
+		path      : '/registro',
 		name      : 'Registro',
 		component : () => import('../views/Registro.vue')
 	},

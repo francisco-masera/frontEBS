@@ -11,8 +11,7 @@
         <div>
           <img
             :src="
-              'http://localhost:9001/images/productos/' +
-                manufacturadoEncontrado.imagen
+              'http://localhost:9001/images/productos/' + manufacturadoEncontrado.imagen
             "
             class="imagenProducto"
           />
@@ -31,7 +30,7 @@
             </b-button>
           </h3>
           <div class="stock">
-            <div id="stockColor" style="background-color:#ED3247"></div>
+            <div id="stockColor" style="background-color: #ed3247"></div>
             <b-badge class="categoria">{{
               manufacturadoEncontrado.rubro.denominacion
             }}</b-badge>
@@ -62,8 +61,7 @@
         <div>
           <img
             :src="
-              'http://localhost:9001/images/productos/' +
-                manufacturadoEncontrado.imagen
+              'http://localhost:9001/images/productos/' + manufacturadoEncontrado.imagen
             "
             class="imagenProducto"
           />
@@ -98,17 +96,11 @@
             </b-card>
             <b-card header="Precio venta" class="tarjetaInfo">
               <b-card-text
-                >{{
-                  this.formatter.formatMoney(
-                    manufacturadoEncontrado.precioVenta
-                  )
-                }}
+                >{{ this.formatter.formatMoney(manufacturadoEncontrado.precioVenta) }}
               </b-card-text>
             </b-card>
             <b-card header="Tiempo" class="tarjetaInfo">
-              <b-card-text
-                >{{ manufacturadoEncontrado.tiempoCocina }} min</b-card-text
-              >
+              <b-card-text>{{ manufacturadoEncontrado.tiempoCocina }} min</b-card-text>
             </b-card>
           </div>
           <div class="infoIngredientes">
@@ -125,17 +117,9 @@
     </b-container>
 
     <router-view />
-    <b-modal
-      ref="modal"
-      hide-footer
-      title="Eliminar insumo"
-      class="modalEliminar"
-    >
+    <b-modal ref="modal" hide-footer title="Eliminar insumo" class="modalEliminar">
       <form>
-        <b-form-input
-          class="contraseñaForm"
-          placeholder="Contraseña"
-        ></b-form-input>
+        <b-form-input class="contraseñaForm" placeholder="Contraseña"></b-form-input>
         <b-button pill class="boton" size="md">Eliminar </b-button>
       </form>
     </b-modal>
@@ -151,11 +135,7 @@
       modal-header-close
     >
       ¿Confirma que desea modificar el estado de este manufacturado?
-      <b-button
-        pill
-        class="boton botonEliminar"
-        size="sm"
-        @click="cambiarEstadoBaja"
+      <b-button pill class="boton botonEliminar" size="sm" @click="cambiarEstadoBaja"
         >Aceptar</b-button
       >
 
@@ -211,30 +191,25 @@ export default {
 
     async getManufacturadoXId() {
       let idManufacturado = parseInt(this.$route.params.id);
-      await this.service
-        .getOne("manufacturado", idManufacturado)
-        .then((data) => {
-          this.manufacturadoEncontrado = data;
-          this.switchChecked = !this.manufacturadoEncontrado.baja;
-          this.getRecetas(idManufacturado);
-        });
+      await this.service.getOne("manufacturado", idManufacturado).then((data) => {
+        this.manufacturadoEncontrado = data;
+        this.switchChecked = !this.manufacturadoEncontrado.baja;
+        this.getRecetas(idManufacturado);
+      });
     },
 
     async getRecetas(id) {
       await axios
-        .get(
-          "http://localhost:9001/buensabor/manufacturado/recetasManufacturado/" +
-            id
-        )
+        .get("http://localhost:9001/buensabor/manufacturado/recetasManufacturado/" + id)
         .then((response) => (this.recetas = response.data));
       await this.obtenerCosto();
       await this.verificarStock();
     },
 
     /* verificarStock() {
-      let stockBajo = this.recetas.some(receta => 
+      let stockBajo = this.recetas.some(receta =>
         receta.insumo.stock.actual < receta.cantidadInsumo
-      ); 
+      );
       this.asignarColorStock(stockBajo);
     }, */
 
@@ -257,9 +232,7 @@ export default {
 
     generarStringCantidades() {
       let cantidadesInsumos = [];
-      this.recetas.forEach((receta) =>
-        cantidadesInsumos.push(receta.cantidadInsumo)
-      );
+      this.recetas.forEach((receta) => cantidadesInsumos.push(receta.cantidadInsumo));
       let cantidadesInsumosStr = cantidadesInsumos.join(",");
 
       return cantidadesInsumosStr;
@@ -411,12 +384,12 @@ export default {
   justify-content: center;
 }
 
-.modal-dialog .#1f91b6 {
+/* .modal-dialog .#1f91b6 {
   margin-top: 20px;
   margin-left: auto;
   margin-right: 40%;
   float: right;
-}
+} */
 
 .infoProductoVenta {
   float: right;
@@ -426,8 +399,6 @@ export default {
   width: auto;
   min-width: 105px;
 }
-
-
 
 #admin-btn-grp {
   float: center;

@@ -6,10 +6,7 @@
         <h1>Lo pedís, lo llevamos...</h1>
         <b-form-input id="inputBuscador"></b-form-input>
         <b-button size="sm" class="botonImagen">
-          <img
-            src="http://localhost:9001/images/sistema/buscar.png"
-            id="imagenBuscar"
-          />
+          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </div>
       <div id="pasosCuadro">
@@ -67,31 +64,40 @@
     <b-row>
       <b-col class="abajo" xs="12" sm="12" md="12" lg="12" xl="12"></b-col>
     </b-row>
+    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 <script>
 import Header from "@/components/Header.vue";
 import Plato from "@/components/Manufacturado.vue";
 import Service from "@/service/Service.js";
+import Loader from "@/components/Loader.vue";
+import Utils from "@/utilidades/Utils.js";
 
 export default {
   components: {
     cabecera: Header,
     "plato-item": Plato,
+    Loader: Loader,
   },
   mounted() {
+    this.utils.preventScroll();
     this.getManufacturados();
   },
   data() {
     return {
       manufacturadosData: [],
       service: new Service(),
+      loading: true,
+      utils: new Utils(),
     };
   },
   methods: {
     async getManufacturados() {
       await this.service.getAll("manufacturado").then((data) => {
         this.manufacturadosData = data;
+        this.loading = !this.loading;
+        this.utils.enableScroll();
       });
     },
   },

@@ -5,21 +5,20 @@
       <div class="container-login100">
         <div class="wrap-login100">
           <b-form id="formRegistro" class="login100-form validate-form">
-            <span class="login100-form-title p-b-26"> Bienvenido </span>
-            <span class="login100-form-title p-b-48">
-              <i class="zmdi zmdi-font"></i>
-            </span>
+            <span class="login100-form-title p-b-26 mb-3"> Bienvenido </span>
 
             <div class="wrap-input100 validate-input">
-              <label class="labelForm">Email</label>
-              <b-form-input v-model.trim="mail" class="input100" type="text" name="email">
+              <label class="labelForm">Email o Usuario</label>
+              <b-form-input
+                v-model.trim="cuenta"
+                class="input100"
+                type="text"
+                name="email"
+              >
               </b-form-input>
 
-              <span class="error" v-if="submitted && !$v.mail.required">
-                Debe ingresa su email.
-              </span>
-              <span class="error" v-if="submitted && !$v.mail.email">
-                El formato del email no es correcto.
+              <span class="error" v-if="submitted && !$v.cuenta.required">
+                Debe ingresar su email o usuario.
               </span>
             </div>
             <span class="focus-input100"></span>
@@ -38,59 +37,32 @@
               <span class="error" v-if="submitted && !$v.contrasenia.required">
                 Debe ingresar su contraseña.
               </span>
-              <span class="error" v-if="submitted && !$v.contrasenia.alphaNum">
-                La contraseña debe ser alfanumérica y no poseer espacios.
-              </span>
-              <span class="error" v-if="submitted && !$v.contrasenia.minLength">
-                La contraseña debe tener mínimo 8 caracteres.
-              </span>
-              <span class="focus-input100"></span>
-            </div>
-            <div class="wrap-input100 validate-input">
-              <span class="btn-show-pass">
-                <i class="zmdi zmdi-eye"></i>
-              </span>
-              <label class="labelForm">Confirmar Contraseña</label>
-              <b-form-input
-                class="input100"
-                type="password"
-                name="pass"
-                v-model.trim="$v.confContrasenia.$model"
-              ></b-form-input>
-              <span class="error" v-if="submitted && !$v.confContrasenia.sameAsPassword">
-                Las contraseñas no coinciden.
-              </span>
-              <span class="focus-input100"></span>
             </div>
             <div class="container-login100-form-btn">
               <div class="wrap-login100-form-btn">
                 <div class="login100-form-bgbtn"></div>
-                <b-button @click="onClick()" class="login100-form-btn">
+                <b-button @click="ingreso()" class="login100-form-btn">
                   Ingreso
                 </b-button>
               </div>
             </div>
-
+            <div id="google">
+              <google />
+            </div>
             <div class="text-center p-t-115">
               <span class="txt1"> ¿No tienes cuenta? </span>
-
               <a class="txt2" href="./registro"> ¡Regístrate! </a>
               <br />
             </div>
           </b-form>
           <br />
-          <div class="text-center p-t-115">
-            <p class="txt2" style="font-size: 13pt">O ingresa con Google</p>
-            <b-button class="social" @click="gLogin()">
-              <img
-                class="img-fluid"
-                src="http://localhost:9001/images/sistema/google.png"
-              />
-            </b-button>
-          </div>
         </div>
       </div>
     </div>
+    <b-row>
+      <b-col class="abajo" xs="12" sm="12" md="12" lg="12" xl="12"></b-col>
+    </b-row>
+    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 
@@ -98,28 +70,33 @@
 import Vue from "vue";
 Vue.use(Vuelidate);
 import Vuelidate from "vuelidate";
-import { required, sameAs, email, alphaNum, minLength } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import Header from "@/components/Header.vue";
+import GoogleSigIn from "@/components/GoogleSignIn";
 import Service from "@/service/Service.js";
 import axios from "axios";
-import firebase from "firebase";
+import Loader from "@/components/Loader";
+import Utils from "@/utilidades/Utils.js";
+
 export default {
   components: {
     cabecera: Header,
+    google: GoogleSigIn,
+    Loader: Loader,
   },
+
   data() {
     return {
       submitted: false,
-
-      mail: "",
+      cuenta: "",
       contrasenia: "",
-      confContrasenia: "",
-
       service: new Service(),
+      loading: false,
+      utils: new Utils(),
     };
   },
   methods: {
-    onClick() {
+    ingreso() {
       this.submitted = true;
       this.$v.$touch();
 
@@ -129,18 +106,17 @@ export default {
         }, 5500);
         return;
       }
-      var email = this.$v.mail.$model;
+      var cuenta = this.$v.cuenta.$model;
       var pass = this.$v.contrasenia.$model;
 
-      this.login(email, pass);
+      this.login(cuenta, pass);
     },
     redirect(user) {
       if (!user.baja) {
         sessionStorage.setItem("user", JSON.stringify(user));
-        sessionStorage.setItem("userChange", 0);
-        sessionStorage.setItem("active", true);
-        // this.$router.push({ name: "Home" });
-        console.log("OK");
+        this.$router.push({ name: "Home" });
+      } else {
+        this.toast("Lo sentimos: ", "Su usario no está habilitado.");
       }
     },
 
@@ -148,58 +124,43 @@ export default {
       this.$bvToast.toast(error, {
         title: title,
         toaster: "b-toaster-top-center",
-        solid: false,
+        solid: true,
         appendToast: true,
       });
     },
 
-    async login(email, pass) {
+    async login(cuenta, pass) {
+      this.utils.preventScroll();
+      this.loading = !this.loading;
       pass = pass.toString();
+
       await axios
         .post("http://localhost:9001/buensabor/cliente/login", null, {
           params: {
-            email,
+            cuenta,
             pass,
           },
         })
         .then((data) => {
-          if (data != null) this.redirect(data);
-          else {
-            this.toast("Lo sentimos", "Ocurrió un errro al intentar el ingreso.");
-          }
-        });
-    },
+          console.log(data);
 
-    async gLogin() {
-      var email = this.$v.mail.$model;
-      var pass = this.$v.contrasenia.$model;
-
-      await firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
-        .signInWithEmailAndPassword(email, pass)
-        .then((res) => {
-          res.additionalUserInfo.isNewUser
-            ? true /* this.register() */
-            : this.login(email, pass);
+          this.redirect(data.data);
+          this.loading = !this.loading;
+          this.utils.enableScroll();
         })
-        .catch(() => {
-          this.toast("Lo sentimos", "Algo ha fallado al ingresar con Google.");
+        .catch((e) => {
+          this.toast("Error", e.response.data.message);
+          this.loading = !this.loading;
+          this.utils.enableScroll();
         });
     },
   },
   validations: {
-    mail: {
+    cuenta: {
       required,
-      email,
     },
     contrasenia: {
       required,
-      minLength: minLength(8),
-      alphaNum,
-    },
-    confContrasenia: {
-      sameAsPassword: sameAs("contrasenia"),
     },
   },
 };
@@ -257,10 +218,18 @@ p {
   margin: 0px;
 }
 
+#google {
+  margin-top: 5vh;
+  margin-bottom: 3vh;
+}
+
 ul,
 li {
   margin: 0px;
   list-style-type: none;
+}
+.p-t-115 {
+  margin-bottom: 0vh;
 }
 
 input {
@@ -390,6 +359,7 @@ iframe {
   color: #333333;
   line-height: 1.2;
   text-align: center;
+  margin-top: -7vh;
 }
 .login100-form-title i {
   font-size: 60px;

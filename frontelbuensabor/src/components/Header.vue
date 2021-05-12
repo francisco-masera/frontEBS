@@ -13,18 +13,39 @@
       <div class="centrarHome">
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="items">
-            <b-nav-item :to="{ name: 'menu' }">CARTA</b-nav-item>
+            <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
             <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
             <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
             <b-button
-              @click="$router.push({ path: `/registro/${null}/${null}` })"
+              v-if="!this.user.id"
+              @click="$router.push({ name: 'Registro' })"
               pill
               class="boton"
               >Registrarme</b-button
             >
-            <b-button @click="$router.push({ name: 'Ingreso' })" pill class="boton2"
+            <b-button v-if="!this.user.id" @click="redirectoToLogin()" pill class="boton2"
               >Ingresar</b-button
             >
+            <b-button
+              v-if="!!this.user.id"
+              @click="$router.push({ path: '/misDatos/' + user.id })"
+              class="bg-transparent border-0"
+            >
+              <b-img
+                v-if="this.user.foto != '' && this.user.foto"
+                rounded="circle"
+                :src="this.user.foto"
+                width="60"
+                class="fotoUsuario"
+              ></b-img>
+            </b-button>
+            <b-button
+              v-if="!!this.user.id"
+              @click="logOut()"
+              class="bg-transparent border-0"
+            >
+              <b-img src="http://localhost:9001/images/sistema/cerrarSesion.png"></b-img>
+            </b-button>
           </b-navbar-nav>
         </b-collapse>
       </div>
@@ -46,20 +67,19 @@
         <div v-if="esCliente">
           <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav class="items">
-              <b-nav-item :to="{ name: 'carta' }">CARTA</b-nav-item>
               <b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
               <b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
               <b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
-              <b-nav-item :to="{ name: 'perfil' }">
+              <b-nav-item :to="'/misdatos/' + this.user.id">
                 <b-img
-                  src="http://localhost:9001/images/sistema/userDefaultChico.png"
+                  :src="user.foto"
                   alt=""
                   id="foto"
                   fluid
-                  class="botonImagenHeader"
+                  class="botonImagenHeader fotoUsuario"
                 >
                 </b-img>
-                <label id="usuario">Pepito</label>
+                <label id="usuario">{{ user.nombre + " " + user.apellido }}</label>
               </b-nav-item>
               <b-nav-item :to="{ name: 'carrito' }">
                 <b-img
@@ -93,11 +113,11 @@
             <b-navbar-nav class="itemsEmpleado">
               <b-nav-item :to="'/misdatos/' + this.user.id">
                 <b-img
-                  v-if="this.user.foto != undefined"
-                  :src="'http://localhost:9001/images/personas/' + this.user.foto"
+                  v-if="this.user.foto != '' && this.user.foto"
+                  :src="this.user.foto"
                   id="foto"
                   fluid
-                  class="botonImagenHeader"
+                  class="botonImagenHeader fotoUsuario"
                 >
                 </b-img>
                 <b-img
@@ -109,7 +129,9 @@
                   class="botonImagenHeader"
                 >
                 </b-img>
-                <label id="usuario">{{ this.user.nombre }} </label>
+                <label v-if="this.user.nombre && this.user.apellido" id="usuario"
+                  >{{ this.user.nombre + " " + this.user.apellido }}
+                </label>
               </b-nav-item>
               <b-nav-item
                 class="menuLateral"
@@ -134,7 +156,7 @@
 
 <script>
 import Service from "@/service/Service.js";
-
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -143,7 +165,8 @@ export default {
       esCliente: false,
       es_Home: false,
       service: new Service(),
-      screenWidth: window.screen.width < 769,
+      screenWidth: window.screen.width < 1024,
+      imgFallBack: "http://localhost:9001/images/sistema/userDefaultChico.png",
     };
   },
 
@@ -154,24 +177,26 @@ export default {
 
   methods: {
     async verificaUsuario() {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+      if (this.user == null) this.user = {};
       this.es_Home = this.$props.esHome;
       await this.traeUser();
       var boton;
-      if (this.user != null) {
-        if (this.user === "cliente") {
+      if (this.user) {
+        if (this.user.rol == undefined) {
           this.esCliente = true;
           boton = [0, "Mis direcciones", "misDirecciones.png", ""];
           this.botones.push(boton);
           boton = [1, "Mis pedidos", "Pedidos.png", ""];
           this.botones.push(boton);
-          boton = [2, "Cerrar sesión", "cerrarSesion.png", ""];
+          boton = [2, "Cerrar sesión", "cerrarSesion.png", "/"];
           this.botones.push(boton);
         } else {
           this.esCliente = false;
           if (this.user.rol === "admin") {
             boton = [0, "Stock de insumos", "stock.png", "/stockInsumos"];
             this.botones.push(boton);
-            boton = [1, "Catálogo", "manufacturados.png", "/catalogoManu"];
+            boton = [1, "Catálogo", "manufacturados.png", "/catalogo"];
             this.botones.push(boton);
             boton = [2, "Sugerencias del chef", "sugerenciasChef.png", "/sugerenciaChef"];
             this.botones.push(boton);
@@ -180,7 +205,7 @@ export default {
             boton = [4, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
             this.botones.push(boton);
           } else if (this.user.rol === "cocina") {
-            boton = [0, "Manufacturados", "manufacturados.png", "/catalogoManu"];
+            boton = [0, "Manufacturados", "manufacturados.png", "/catalogo"];
             this.botones.push(boton);
             boton = [1, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
             this.botones.push(boton);
@@ -203,12 +228,88 @@ export default {
       }
     },
     async traeUser() {
-      this.userSession = JSON.parse(sessionStorage.getItem("user"));
-      if (this.userSession != null)
-        await this.service.getOne("persona", this.userSession.id).then((data) => {
+      if (this.user.id && this.user.contrasenia != "") {
+        await this.service.getOne("persona", this.user.id).then((data) => {
           this.user = data;
         });
-      else this.user == null;
+      }
+      if (this.user.foto) this.loadPh();
+      this.setImgFallBack();
+    },
+    redirectoToLogin() {
+      const h = this.$createElement;
+      const messageVNode = h("div", { class: ["flex modal-container"] }, [
+        h(
+          "b-img",
+
+          {
+            props: {
+              src: "http://localhost:9001/images/sistema/hamburguesa-02.svg",
+              thumbnail: true,
+              center: true,
+              fluid: true,
+              rounded: "circle",
+              width: 130,
+            },
+          }
+        ),
+        h("div", { class: ["text-center"] }, [["¿Es usted cliente?"]]),
+        h("p", { class: ["text-center"] }, [
+          "Presione ",
+          h("strong", " Sí"),
+          " para acceder al área de CLIENTES",
+        ]),
+      ]);
+      this.$bvModal
+        .msgBoxConfirm([messageVNode], {
+          title: "",
+          buttonSize: "sm",
+          centered: true,
+          size: "sm",
+          okTitle: "Sí",
+          cancelTitle: "No",
+          noCloseOnBackdrop: false,
+          noCloseOnEsc: false,
+          hideHeaderClose: false,
+          footerClass: "mx-auto",
+        })
+        .then((value) => {
+          if (value) this.$router.push({ name: "IngresoClientes" });
+          else if (value == false) this.$router.push({ name: "Ingreso" });
+        })
+        .catch((err) => {
+          this.$bvToast.toast(err.toString(), {
+            title: "Error",
+            toaster: "b-toaster-top-center",
+            solid: true,
+            appendToast: true,
+          });
+        });
+    },
+
+    logOut() {
+      sessionStorage.setItem("user", null);
+      location.href = "/";
+    },
+    loadPh() {
+      if (!this.user.foto.includes("https"))
+        this.user.foto = "http://localhost:9001/images/personas/" + this.user.foto;
+    },
+    setImgFallBack() {
+      $(".fotoUsuario").each(function () {
+        $(this)
+          .on("load", function () {
+            console.log("image loaded correctly");
+          })
+          .on("error", function () {
+            console.log("error loading image");
+
+            $(this).attr(
+              "src",
+              "http://localhost:9001/images/sistema/userDefaultChico.png"
+            );
+          });
+      });
     },
   },
 };
@@ -294,6 +395,25 @@ export default {
 
 .centrarHome {
   text-align: center;
+}
+
+.modal-footer .btn {
+  font-family: "Baloo Bhaina 2" !important;
+  font-size: 1em;
+  width: 2.2em;
+  height: 2.2em;
+  text-align: center;
+  margin-right: 1em;
+}
+
+.modal-footer .btn-secondary {
+  background-color: rgba(255, 255, 255, 0.75);
+  color: #e7511e;
+}
+
+.modal-footer .btn-primary {
+  background-color: #e7511e;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 @media (max-width: 1025px) {

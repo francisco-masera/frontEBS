@@ -639,7 +639,7 @@ export default {
       });
     },
     retornaAlCatalogo() {
-      window.location.href = "/catalogoManu/";
+      window.location.href = "/catalogo/";
     },
 
     async guardarImagen(imagen) {
@@ -695,7 +695,7 @@ export default {
 
     volver() {
       this.esNuevo
-        ? this.$router.push({ path: "/catalogoManu/" })
+        ? this.$router.push({ path: "/catalogo/" })
         : this.$router.push({
             path: "/manufacturadoDetalle/" + this.manufacturado.id,
           });

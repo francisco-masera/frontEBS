@@ -2,13 +2,15 @@
   <div class="ingreso">
     <div class="logo">
       <b-img
+        style="cursor: pointer"
+        @click="$router.push({ name: 'Home' })"
         src="http://localhost:9001/images/sistema/logo-01.png"
         class="imagen"
       ></b-img>
     </div>
-    <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
+    <!-- <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
     <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
-    <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert>
+    <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert> -->
     <div id="ingreso">
       <div class="ingresoForm">
         <form>
@@ -18,8 +20,8 @@
             id="email-input"
             v-model="email"
             required
-            type="email"
-            placeholder="Usuario"
+            type="text"
+            placeholder="Usuario o e-mail"
             class="emailForm"
           ></b-form-input>
 
@@ -45,39 +47,56 @@
         <p class="posicion"></p>
       </b-modal>
     </div>
+    <Toast ref="toast" />
+    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 <script>
 import Service from "@/service/Service.js";
+import axios from "axios";
+import Toast from "@/components/Toast.vue";
+import Loader from "@/components/Loader.vue";
+import Utils from "@/utilidades/Utils.js";
 export default {
+  components: {
+    Toast: Toast,
+    Loader: Loader,
+  },
   data() {
     return {
-      clientId: "50977179607-f34qvh8nvpt6f18nlsrupplc9vmi777s.apps.googleusercontent.com",
       email: "",
       contrasenia: "",
       user: {},
-      alertDatosNull: false,
-      alertDatosErroneos: false,
+      //alertDatosNull: false,
+      //alertDatosErroneos: false,
       esCliente: false,
       service: new Service(),
+      utils: new Utils(),
+      displayToast: false,
+      toast: {
+        msg: "",
+        title: "",
+      },
+      loading: false,
     };
   },
 
   methods: {
     async ingresar() {
       if (this.email != "" && this.contrasenia != "") {
-        await this.buscaEmpleados();
+        await this.login(this.email, this.contrasenia);
 
         if (this.user != undefined && this.user.contrasenia == this.contrasenia) {
           this.redirect();
         } else {
-          this.alertDatosErroneos = true;
+          //this.alertDatosErroneos = true;
           this.email = "";
-          this.contraseña = "";
+          this.contrasenia = "";
           this.user = null;
         }
-      } else {
+        /* } else {
         this.alertDatosNull = true;
+      } */
       }
     },
 
@@ -89,7 +108,7 @@ export default {
         if (this.user.rol == "admin") {
           this.$router.push({ name: "StockInsumos" });
         } else if (this.user.rol == "delivery") {
-          window.location = "/";
+          window.location = "/pedidos";
         } else if (this.user.rol == "cocina") {
           this.$router.push({
             name: "CatalogoManu",
@@ -100,13 +119,44 @@ export default {
         } else {
           this.esCliente = true;
         }
+      } else {
+        this.toast.msg = "Este usuario no tiene acceso.";
+        this.toast.title = "Error: ";
+        this.$refs.toast.emitToast(this.toast.msg, this.toast.title);
       }
     },
 
-    async buscaEmpleados() {
-      await this.service.getAll("empleado").then((data) => {
-        this.user = data.find((empleado) => empleado.usuario === this.email);
-      });
+    async login(cuenta, pass) {
+      this.loading = !this.loading;
+      await axios
+        .post("http://localhost:9001/buensabor/empleado/login", null, {
+          params: {
+            email: cuenta,
+            usuario: cuenta,
+            pass: pass,
+          },
+        })
+        .then((data) => {
+          console.log(data);
+          if (typeof data.data.id == undefined) {
+            this.toast.msg = data.data.message;
+            this.toast.title = "Error: ";
+            this.$refs.toast.emitToast(this.toast.msg, this.toast.title);
+          } else {
+            this.user = data.data;
+            this.redirect();
+            this.loading = !this.loading;
+            this.utils.enableScroll();
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+          this.toast.msg = e.response.data.message;
+          this.toast.title = "Error: ";
+          this.$refs.toast.emitToast(this.toast.msg, this.toast.title);
+          this.utils.enableScroll();
+          this.loading = !this.loading;
+        });
     },
   },
 };

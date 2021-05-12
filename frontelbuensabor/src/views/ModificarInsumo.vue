@@ -701,7 +701,7 @@ export default {
     },
 
     async guardarImagen(imagen) {
-      imagen.name = imagen.name.replaceAll(" ", "_");
+      imagen.name = imagen.name.toString().replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
       await axios
