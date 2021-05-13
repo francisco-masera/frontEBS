@@ -351,7 +351,7 @@ import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
-const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-z\d\-_\s]+$/i);
+const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-zA-ZÀ-ÿ\d\u00f1\u00d1\s,./]*$/);
 export default {
   mixins: [validationMixin],
   mounted() {

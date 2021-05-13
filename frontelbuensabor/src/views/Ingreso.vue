@@ -72,11 +72,6 @@ export default {
       esCliente: false,
       service: new Service(),
       utils: new Utils(),
-      displayToast: false,
-      toast: {
-        msg: "",
-        title: "",
-      },
       loading: false,
     };
   },
@@ -120,9 +115,8 @@ export default {
           this.esCliente = true;
         }
       } else {
-        this.toast.msg = "Este usuario no tiene acceso.";
-        this.toast.title = "Error: ";
-        this.$refs.toast.emitToast(this.toast.msg, this.toast.title);
+        this.toastr("Este usuario no tiene acceso.", "Error: ");
+        return false;
       }
     },
 
@@ -137,26 +131,20 @@ export default {
           },
         })
         .then((data) => {
-          console.log(data);
-          if (typeof data.data.id == undefined) {
-            this.toast.msg = data.data.message;
-            this.toast.title = "Error: ";
-            this.$refs.toast.emitToast(this.toast.msg, this.toast.title);
-          } else {
-            this.user = data.data;
-            this.redirect();
-            this.loading = !this.loading;
-            this.utils.enableScroll();
-          }
+          this.user = data.data;
+          this.redirect();
+          this.loading = !this.loading;
+          this.utils.enableScroll();
         })
         .catch((e) => {
           console.log(e);
-          this.toast.msg = e.response.data.message;
-          this.toast.title = "Error: ";
-          this.$refs.toast.emitToast(this.toast.msg, this.toast.title);
+          this.toastr(e.response.data.message);
           this.utils.enableScroll();
           this.loading = !this.loading;
         });
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
     },
   },
 };

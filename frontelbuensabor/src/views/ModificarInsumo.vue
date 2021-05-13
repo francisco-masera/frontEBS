@@ -18,15 +18,31 @@
               class="campoForm form-control"
               v-model.trim="form1.denominacion"
               id="nombreInsumo"
+              :state="
+                !$v.form1.denominacion.$dirty
+                  ? !$v.form1.denominacion.$anyError
+                  : !$v.form1.denominacion.$error
+              "
+              @input="$v.form1.denominacion.$touch()"
             ></b-form-input
             >*
-            <br />
-            <span class="error" v-if="submitted && !$v.form1.denominacion.required">
-              <br />Este campo es obligatorio
-            </span>
-            <span class="error" v-if="submitted && !$v.form1.denominacion.alphaNumSpc">
-              <br />Recuerde ingresar sólo letras y/o números.
-            </span>
+
+            <b-form-invalid-feedback
+              class="error"
+              v-if="$v.form1.denominacion.$dirty && $v.form1.denominacion.$model == ''"
+            >
+              La denominacion es obligatoria.
+            </b-form-invalid-feedback>
+            <b-form-invalid-feedback
+              class="error"
+              v-if="
+                $v.form1.denominacion.$dirty &&
+                $v.form1.denominacion.$params.alphaNumSpc &&
+                $v.form1.denominacion.$model != ''
+              "
+            >
+              Sólo se admiten caracteres alfanuméricos y puntos, comas y barras ( / ).
+            </b-form-invalid-feedback>
           </div>
           <div class="lineaForm">
             <div class="form-group" style="width: 100%">
@@ -35,7 +51,8 @@
                 form-control
                 class="campoForm form-control"
                 id="stockMin"
-                @input="$v.form1.stockMin.$touch()"
+                @keyup="$v.form1.stockMin.$touch()"
+                @keydown="formatNumber"
                 :state="
                   !$v.form1.stockMin.$dirty
                     ? !$v.form1.stockMin.$anyError
@@ -53,7 +70,7 @@
               <b-form-invalid-feedback
                 class="error"
                 v-show="
-                  $v.form1.stockMin.$params.integer && $v.form1.stockMin.$model != ''
+                  $v.form1.stockMin.$params.decimal && $v.form1.stockMin.$model != ''
                 "
               >
                 Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
@@ -69,6 +86,7 @@
                 id="stockMax"
                 v-model.trim="form1.stockMax"
                 @input="$v.form1.stockMax.$touch()"
+                @keydown="formatNumber"
                 :state="
                   !$v.form1.stockMax.$dirty
                     ? !$v.form1.stockMax.$anyError
@@ -88,7 +106,7 @@
               <b-form-invalid-feedback
                 class="error"
                 v-show="
-                  $v.form1.stockMax.$params.integer && $v.form1.stockMax.$model != ''
+                  $v.form1.stockMax.$params.decimal && $v.form1.stockMax.$model != ''
                 "
               >
                 Sólo se admiten números mayores o iguales a 0 (cero) en los campos de
@@ -102,8 +120,7 @@
               id="unidadMedida"
               class="campoForm"
               v-model="insumoEncontrado.unidadMedida"
-              :options="[{ text: 'Seleccione...', value: null }, 'u', 'kg', 'lt', 'gr']"
-              :value="null"
+              :options="[{ text: 'Seleccione...', value: '' }, 'u', 'kg', 'lt', 'gr']"
             ></b-form-select
             >*
             <b-form-group id="contenedorCheck">
@@ -135,12 +152,12 @@
       <div id="paso2">
         <h2>Información de venta</h2>
         <b-form id="form2">
-          <div class="lineaForm" style="display: flex">
+          <div class="lineaForm" style="width: 65%">
             <label class="labelForm">Precio de venta</label>
             <b-form-input
               class="campoForm form-control"
               id="precioVenta"
-              v-model="form2.precioVenta"
+              v-model.trim="form2.precioVenta"
               :state="
                 !$v.form2.precioVenta.$dirty
                   ? !$v.form2.precioVenta.$anyError
@@ -161,19 +178,19 @@
               >Recuerde ingresar sólo números mayores a 0.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" id="lineaDescripcion" style="display: flex">
+          <div class="lineaForm" id="lineaDescripcion" style="width: 65%">
             <label class="labelForm">Descripción</label>
             <b-form-textarea
               id="descripcion"
               class="campoFor form-control"
-              v-model.lazy="form2.lineaDescripcion"
+              v-model.trim="form2.lineaDescripcion"
               :state="
                 !$v.form2.lineaDescripcion.$dirty
                   ? !$v.form2.lineaDescripcion.$anyError
                   : !$v.form2.lineaDescripcion.$error
               "
               @input="$v.form2.lineaDescripcion.$touch()"
-              placeholder="Enter something..."
+              placeholder="Ingrese Texto"
               rows="3"
               max-rows="3"
             ></b-form-textarea
@@ -186,7 +203,7 @@
               >La descripción es obligatoria.
             </b-form-invalid-feedback>
           </div>
-          <div class="lineaForm" style="display: flex">
+          <div class="lineaForm" style="width: 65%">
             <label class="labelForm">Imagen</label>
             <b-form-file
               class="campoForm form-control"
@@ -202,28 +219,46 @@
             ><br />*
             <b-form-invalid-feedback
               class="error"
-              v-if="$v.form2.imagen.$dirty && $v.form2.imagen.$params.required"
+              v-if="$v.form2.imagen.$dirty && $v.form2.imagen.$model == ''"
               >La foto es obligatoria.
             </b-form-invalid-feedback>
           </div>
           <div class="lineaForm">
             <h4 id="datos">*Datos necesarios</h4>
           </div>
-          <div class="lineaFormDerecha" style="float: right" v-if="esNuevo">
-            <b-button pill class="boton2" size="md" @click="retornaAlStock"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click.prevent="agregarInsumo"
-              >Guardar</b-button
-            >
+          <div class="container-fluid" v-if="esNuevo">
+            <div class="row lineaFormDerecha">
+              <div class="col-4">
+                <b-button pill class="boton2" size="md" @click="retornaAlStock"
+                  >Cancelar</b-button
+                >
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" size="md" @click="agregarInsumo"
+                  >Siguiente</b-button
+                >
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click.prevent="volverPaso3">Atrás</b-button>
+              </div>
+            </div>
           </div>
-          <div class="lineaFormDerecha" style="float: right" v-else>
-            <b-button pill class="boton2" size="md" @click="retornaAlStock"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click.prevent="updateInsumo()"
-              >Guardar</b-button
-            >
+          <div class="container-fluid" v-else>
+            <div class="row lineaFormDerecha">
+              <div class="col-4">
+                <b-button pill class="boton2" size="md" @click="retornaAlStock"
+                  >Cancelar</b-button
+                >
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" size="md" @click="updateInsumo"
+                  >Siguiente</b-button
+                >
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click.prevent="volverPaso3">Atrás</b-button>
+              </div>
+            </div>
           </div>
         </b-form>
       </div>
@@ -246,6 +281,7 @@
             <b-button
               class="Badgecategoria"
               v-b-toggle.misLacteos
+              style="width: max-content"
               @click="guardaCategoria(categoriasData[2].id)"
               >{{ this.categoriasData[2].denominacion }}</b-button
             >
@@ -401,29 +437,58 @@
             </b-collapse>
           </div>
 
-          <div class="lineaFormDerecha" style="float: right" v-if="esInsumoVenta">
+          <!--    <div class="lineaFormDerecha" style="float: right" v-if="esInsumoVenta">
             <b-button pill class="boton2" size="md" @click="retornaAlStock()"
               >Cancelar</b-button
             >
             <b-button pill class="boton" size="md" @click="siguiente2()"
               >Siguiente</b-button
             >
+          </div> -->
+          <div class="container-fluid" v-if="esInsumoVenta">
+            <div class="row lineaFormDerecha">
+              <div class="col-4">
+                <b-button pill class="boton2" size="md" @click="retornaAlStock"
+                  >Cancelar</b-button
+                >
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" size="md" @click="siguiente2"
+                  >Siguiente</b-button
+                >
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click.prevent="volverPaso1">Atrás</b-button>
+              </div>
+            </div>
           </div>
-          <div class="lineaFormDerecha" style="float: right" v-else-if="esNuevo">
-            <b-button pill class="boton2" size="md" @click="retornaAlStock()"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click="agregarInsumo()"
-              >Guardar</b-button
-            >
+          <div class="container-fluid" v-else-if="esNuevo">
+            <div class="row lineaFormDerecha">
+              <div class="col-4">
+                <b-button pill class="boton2" @click="retornaAlStock">Cancelar</b-button>
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click="agregarInsumo">Guardar</b-button>
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click.prevent="volverPaso1">Atrás</b-button>
+              </div>
+            </div>
           </div>
-          <div class="lineaFormDerecha" style="float: right" v-else>
-            <b-button pill class="boton2" size="md" @click="retornaAlStock()"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click="updateInsumo()"
-              >Guardar</b-button
-            >
+          <div class="container-fluid" v-else>
+            <div class="row lineaFormDerecha">
+              <div class="col-4">
+                <b-button pill class="boton2" @click="retornaAlStock">Cancelar</b-button>
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click="updateInsumo">Guardar</b-button>
+              </div>
+              <div class="col-4">
+                <b-button pill class="boton" @click.prevent="volverPaso1sssss"
+                  >Atrás</b-button
+                >
+              </div>
+            </div>
           </div>
         </b-form>
       </div>
@@ -435,7 +500,7 @@
         <p class="posicion"></p>
       </b-modal>
     </div>
-    <router-view />
+    <Toast ref="toast" /> <router-view />
   </div>
 </template>
 
@@ -446,7 +511,6 @@ import Vuelidate from "vuelidate";
 import {
   requiredIf,
   required,
-  integer,
   minValue,
   decimal,
   helpers,
@@ -455,7 +519,9 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
-const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
+import $ from "jquery";
+import Toast from "@/components/Toast.vue";
+const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-zA-ZÀ-ÿ\d\u00f1\u00d1\s,./]*$/);
 export default {
   mounted() {
     this.userVerifica();
@@ -465,11 +531,11 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    Toast: Toast,
   },
 
   data() {
     return {
-      submitted: false,
       form1: {
         denominacion: "",
         stockMin: "",
@@ -515,25 +581,38 @@ export default {
   },
 
   methods: {
+    formatNumber(e) {
+      console.log(e);
+      var $input = $(e.target);
+      $input.val($input.val().replace(",", "."));
+    },
     siguiente1() {
-      this.submitted = true;
       this.$v.$touch();
       if (this.$v.form1.$anyError) {
-        setTimeout(() => {
-          this.submitted = false;
-        }, 5500);
-        return;
+        return false;
       }
       var unidades = document.getElementById("unidadMedida");
       var unidadVal = unidades.selectedIndex;
       if (unidadVal == 0) {
-        this.$bvToast.toast(`Debe elegir una unidad de medida`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
-        return;
+        this.toastr("Debe elegir una unidad de medida.", "¡Atención!");
+        return false;
       }
+      var stockMin = $("#stockMin").val();
+      var stockMax = $("#stockMax").val();
+      if (parseFloat(stockMax) < parseFloat(stockMin)) {
+        this.toastr("El stock mínimo no puede ser mayor al máximo.", "¡Atención!");
+        return false;
+      }
+      var stockDecimal =
+        $("#stockMin").val().includes(".") || $("#stockMax").val().includes(".");
+      if (unidadVal == "u" && stockDecimal) {
+        this.toastr(
+          "Si eligió la unidad de medida 'u' el stock debe ser un número entero.",
+          "¡Atención!"
+        );
+        return false;
+      }
+
       this.insumoEncontrado.denominacion = this.form1.denominacion;
       this.insumoEncontrado.stock.maximo = this.form1.stockMax;
       this.insumoEncontrado.stock.minimo = this.form1.stockMin;
@@ -545,8 +624,29 @@ export default {
       this.verificaInsumo();
       document.getElementById("paso3").style.display = "block";
     },
+    volverPaso1() {
+      if ($("#paso3").is(":hidden")) {
+        document.getElementById("paso1").style.display = "block";
+        document.getElementById("paso2").style.display = "none";
+      } else {
+        document.getElementById("paso1").style.display = "block";
+        document.getElementById("paso3").style.display = "none";
+      }
+    },
+    volverPaso3() {
+      if (this.esInsumoVenta) {
+        document.getElementById("paso3").style.display = "block";
+        document.getElementById("paso2").style.display = "none";
+      } else {
+        document.getElementById("paso1").style.display = "block";
+        document.getElementById("paso2").style.display = "none";
+      }
+    },
     siguiente2() {
-      this.submitted = false;
+      if (this.insumoEncontrado.rubroInsumo.id == 0) {
+        this.toastr("Debe elegir una categoría", "¡Atención!");
+        return false;
+      }
       this.completarCamposForm2();
       document.getElementById("paso3").style.display = "none";
       document.getElementById("paso2").style.display = "block";
@@ -615,18 +715,14 @@ export default {
       let img = document.getElementById("imagen").files[0];
 
       if (img != undefined && img.size / 1024 > 1024) {
-        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
-        return;
+        this.toastr("La imagen no debe superar 1MB.", "¡Atención!");
+        return false;
       }
 
       if (this.esInsumoVenta) {
         this.$v.$touch();
         if (this.$v.form2.$anyError) {
-          return;
+          return false;
         }
       }
 
@@ -665,18 +761,14 @@ export default {
       let img = document.getElementById("imagen").files[0];
 
       if (img != undefined && img.size / 1024 > 1024) {
-        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
-        return;
+        this.toastr("La imagen no debe superar 1MB.", "¡Atención!");
+        return false;
       }
 
       if (this.esInsumoVenta) {
         this.$v.$touch();
         if (this.$v.form2.$anyError) {
-          return;
+          return false;
         }
       }
 
@@ -738,6 +830,10 @@ export default {
     retornaAlStock() {
       window.location.href = "/stockInsumos/";
     },
+
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
+    },
   },
 
   computed: {
@@ -749,16 +845,16 @@ export default {
     form1: {
       denominacion: {
         required,
-        alpha,
+        alphaNumSpc,
       },
       stockMin: {
         required,
         minValue: minValue(0),
-        integer,
+        decimal,
       },
       stockMax: {
         required,
-        integer,
+        decimal,
         minValue: minValue(0),
       },
     },
