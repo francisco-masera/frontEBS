@@ -33,7 +33,7 @@
           </b-btn-group>
         </h3>
         <div class="stock">
-          <div id="stockColor" style="background-color:#ED3247"></div>
+          <div id="stockColor" style="background-color: #ed3247"></div>
           Stock {{ stock }}
           <b-badge class="Badgecategoria">{{
             insumoEncontrado.rubroInsumo.denominacion
@@ -43,20 +43,17 @@
         <div id="infoProductoVenta">
           <b-card header="Stock actual" class="tarjetaInfo">
             <b-card-text
-              >{{ insumoEncontrado.stock.actual
-              }}{{ insumoEncontrado.unidadMedida }}
+              >{{ insumoEncontrado.stock.actual }}{{ insumoEncontrado.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock min" class="tarjetaInfo">
             <b-card-text
-              >{{ insumoEncontrado.stock.minimo
-              }}{{ insumoEncontrado.unidadMedida }}
+              >{{ insumoEncontrado.stock.minimo }}{{ insumoEncontrado.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Stock max" class="tarjetaInfo">
             <b-card-text
-              >{{ insumoEncontrado.stock.maximo
-              }}{{ insumoEncontrado.unidadMedida }}
+              >{{ insumoEncontrado.stock.maximo }}{{ insumoEncontrado.unidadMedida }}
             </b-card-text>
           </b-card>
           <b-card header="Costo" class="tarjetaInfo">
@@ -98,9 +95,7 @@
       <!-- Renderiza insumo que se vende directamente, como las bebidas-->
       <div v-else id="insumo">
         <img
-          :src="
-            'http://localhost:9001/images/productos/' + insumoEncontrado.imagen
-          "
+          :src="'http://localhost:9001/images/productos/' + insumoEncontrado.imagen"
           class="imagenProducto"
         />
         <h3>
@@ -127,7 +122,7 @@
           </b-btn-group>
         </h3>
         <div class="stock">
-          <div id="stockColor" style="background-color:#ED3247"></div>
+          <div id="stockColor" style="background-color: #ed3247"></div>
           Stock {{ stock }}
           <b-badge class="Badgecategoria">{{
             insumoEncontrado.insumo.rubroInsumo.denominacion
@@ -218,11 +213,7 @@
         </b-form-input>
       </form>
       <p class="posicion">
-        <b-button
-          pill
-          class="boton botonEliminar"
-          size="sm"
-          @click="verificarContrasenia"
+        <b-button pill class="boton botonEliminar" size="sm" @click="verificarContrasenia"
           >Modificar estado</b-button
         >
       </p>
@@ -261,17 +252,15 @@
     </b-modal>
 
     <!-- Modal para para añadir un registro de compra-->
-    <div style="display:flex">
+    <div style="display: flex">
       <b-modal ref="modalAñadir" hide-footer hide-header centered title>
         <h2>Añadir existencia</h2>
-        <h4 style="margin-bottom:5%">{{ compra.insumo.denominacion }}</h4>
+        <h4 style="margin-bottom: 5%">{{ compra.insumo.denominacion }}</h4>
         <form class="estiloForm">
           <table>
             <tr>
               <td>
-                <label class="mr-sm-2" for="inline-form-custom-select-pref"
-                  >Fecha</label
-                >
+                <label class="mr-sm-2" for="inline-form-custom-select-pref">Fecha</label>
               </td>
               <td>
                 <b-form-datepicker
@@ -285,9 +274,7 @@
             </tr>
             <tr>
               <td>
-                <label for="inline-form-custom-select-pref"
-                  >Unidad de medida</label
-                >
+                <label for="inline-form-custom-select-pref">Unidad de medida</label>
               </td>
               <td>
                 <label id="medida">{{ compra.insumo.unidadMedida }}</label>
@@ -300,10 +287,7 @@
                 >
               </td>
               <td>
-                <b-form-input
-                  v-model="compra.cantidad"
-                  class="campoForm"
-                ></b-form-input>
+                <b-form-input v-model="compra.cantidad" class="campoForm"></b-form-input>
               </td>
             </tr>
             <tr>
@@ -336,6 +320,7 @@
         </form>
       </b-modal>
     </div>
+    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 
@@ -345,6 +330,8 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
+import Loader from "@/components/Loader.vue";
+
 export default {
   mounted() {
     this.verificarUsuario();
@@ -352,9 +339,11 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    Loader: Loader,
   },
   data() {
     return {
+      loading: false,
       perPage: 4,
       currentPage: 1,
       titulosTabla: [
@@ -389,40 +378,26 @@ export default {
       this.user = JSON.parse(sessionStorage.getItem("user"));
       this.user === undefined || this.user.rol !== "admin"
         ? this.$router.push({ name: "Home" })
-        : this.getInsumoxId();
+        : this.getDetalleInsumoxId();
     },
 
-    async getInsumoxId() {
+    async getDetalleInsumoxId() {
       var parametroId = parseInt(this.$route.params.id);
-      let insumo = await this.service.getOne("insumo", parametroId);
-      await this.setInsumo(insumo);
-    },
-
-    async setInsumo(insumo) {
-      if (!insumo.esInsumo) {
-        await this.getInsumoVentaxId().then(() => this.getOrdenCompra(insumo));
-      } else {
-        this.insumoEncontrado = insumo;
-        this.getOrdenCompra(insumo);
-        this.switchChecked = !this.insumoEncontrado.baja;
-      }
-    },
-
-    async getInsumoVentaxId() {
-      var parametroId = parseInt(this.$route.params.id);
-      this.esInsumoVenta = true;
-      await this.service
-        .getOne("insumoVenta/insumo", parametroId)
-        .then((data) => (this.insumoEncontrado = data[0]))
-        .then((this.switchChecked = !this.insumoEncontrado.baja));
+      console.log(this.$route.params);
+      await axios
+        .get("http://localhost:9001/buensabor/insumo/getDetalleByID/" + parametroId)
+        .then((insumo) => {
+          this.insumoEncontrado = insumo.data;
+          this.getOrdenCompra();
+          this.switchChecked = !insumo.data.baja;
+        });
     },
 
     async getOrdenCompra() {
       this.ordenCompra = [];
-      let parametroId = parseInt(this.$route.params.id);
       let precio = 0;
       await this.service
-        .getOne("compras/historialCompras", parametroId)
+        .getOne("compras/historialCompras", parseInt(this.insumoEncontrado.idInsumo))
         .then((data) => {
           data.forEach((o, i) => {
             let dateTime = o.fechaCompra;
@@ -431,14 +406,7 @@ export default {
             let time = dateTime.split("T")[1];
             time = time.split(":");
 
-            dateTime = new Date(
-              date[0],
-              date[1] - 1,
-              date[2],
-              time[0],
-              time[1],
-              time[2]
-            )
+            dateTime = new Date(date[0], date[1] - 1, date[2], time[0], time[1], time[2])
               .toLocaleString()
               .replace(",", "")
               .replace(/:.. /, " ");
@@ -456,7 +424,6 @@ export default {
           });
         });
       this.setCosto(precio);
-      //this.verificarStockVenta(insumo);
       await this.verificarStock();
     },
 
@@ -467,32 +434,10 @@ export default {
           : this.formatter.formatMoney(precioUnitario);
     },
 
-    /*  verificarStockVenta(insumo) {
-      let clase;
-      if (parseFloat(insumo.stock.actual) <= parseFloat(insumo.stock.minimo)) {
-        this.stock = "insuficiente";
-        clase = document.getElementById("stockColor");
-        clase.style.backgroundColor = "#ED3247";
-      } else if (
-        parseFloat(insumo.stock.actual) > parseFloat(insumo.stock.minimo) &&
-        parseFloat(insumo.stock.actual) < parseFloat(insumo.stock.maximo)
-      ) {
-        this.stock = "moderado";
-        clase = document.getElementById("stockColor");
-        clase.style.backgroundColor = "#FFEB3B";
-      } else {
-        this.stock = "suficiente";
-        clase = document.getElementById("stockColor");
-
-        clase.style.backgroundColor = "#8BC34A";
-      }
-    },
- */
-
     async verificarStock() {
       let clase = document.getElementById("stockColor");
       await this.service
-        .getOne("stock/estadoStock", this.$route.params.id)
+        .getOne("stock/estadoStock", this.insumoEncontrado.idInsumo)
         .then((estado) => {
           if (estado == 1) {
             this.stock = "alto";
@@ -511,11 +456,7 @@ export default {
     },
 
     async cambiarEstadoBaja() {
-      let id =
-        this.insumoEncontrado.insumo === undefined
-          ? this.insumoEncontrado.idInsumo
-          : this.insumoEncontrado.insumo.idInsumo;
-
+      let id = this.$route.params.id;
       await this.service
         .delete("insumo", id)
         .then((data) => (this.insumoEncontrado = data))
@@ -538,7 +479,7 @@ export default {
       contraseniaVerificada
         ? this.cambiarEstadoBaja()
         : (this.$bvToast.show("toast-eliminar-error"),
-          (this.switchChecked = !!this.switchChecked));
+          (this.switchChecked = !this.switchChecked));
     },
 
     modificarInsumo(id) {
@@ -567,30 +508,36 @@ export default {
 
     //Muestra la confirmación de la carga de insumo
     toast(data, append = false) {
-      this.$bvToast.toast(
-        `Se incorporaron ${data.cantidad} existencias al producto`,
-        {
-          title: `Alta de producto`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-          appendToast: append,
-        }
-      );
+      this.$bvToast.toast(`Se incorporaron ${data.cantidad} existencias al producto`, {
+        title: `Alta de producto`,
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: append,
+      });
     },
 
     //Hace la petición al back para añadir el nuevo registro de compra, el cual en el back hace la logica de aumento de stock
     async añadirCompra() {
+      this.$refs["modalAñadir"].hide();
+      this.loading = !this.loading;
       this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
 
-      await this.service.save("compras", this.compra).then((data) => {
-        this.toast(data);
-        this.$refs["modalAñadir"].hide();
-        this.compra.fechaCompra = "";
-        this.compra.cantidad = 0;
-        this.compra.precioUnitario = 0;
-        this.compra.insumo = {};
-        this.getOrdenCompra(this.compra.insumo);
-      });
+      await this.service
+        .save("compras", this.compra)
+        .then((data) => {
+          this.toast(data);
+
+          this.compra.fechaCompra = "";
+          this.compra.cantidad = 0;
+          this.compra.precioUnitario = 0;
+          this.compra.insumo = {};
+          this.getOrdenCompra(this.compra.insumo);
+          this.loading = !this.loading;
+        })
+        .catch((e) => {
+          console.log(e);
+          this.loading = false;
+        });
     },
   },
   computed: {
@@ -699,7 +646,6 @@ export default {
   display: inline;
   text-align: left;
 }
-
 
 .botonAñadirExistencia {
   margin-bottom: 10px;

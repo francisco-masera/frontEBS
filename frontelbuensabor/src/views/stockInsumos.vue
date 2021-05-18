@@ -14,10 +14,7 @@
           v-model="busqueda"
         ></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
-          <img
-            src="http://localhost:9001/images/sistema/buscar.png"
-            id="imagenBuscar"
-          />
+          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
 
@@ -48,9 +45,7 @@
           <div :key="i"></div>
         </template>
         <template v-slot:cell(detalle)="row">
-          <b-button pill class="boton" @click="verDetalle(row.item)"
-            >Detalles</b-button
-          >
+          <b-button pill class="boton" @click="verDetalle(row.item)">Detalles</b-button>
         </template>
       </b-table>
 
@@ -64,11 +59,9 @@
         class="paginador"
       >
       </b-pagination>
-      <b-button pill class="boton" size="md" @click="agregarInsumo"
-        >Nuevo</b-button
-      >
+      <b-button pill class="boton" size="md" @click="agregarInsumo">Nuevo</b-button>
     </b-container>
-
+    <Loader v-if="loading" :loading="loading" />
     <router-view />
   </div>
 </template>
@@ -79,6 +72,7 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
 import Formatter from "@/utilidades/Formatters.js";
+import Loader from "@/components/Loader.vue";
 export default {
   mounted() {
     this.userVerifica();
@@ -87,12 +81,13 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    Loader: Loader,
   },
 
   data() {
     return {
       user: {},
-
+      loading: true,
       perPage: 7,
       currentPage: 1,
 
@@ -178,8 +173,7 @@ export default {
     },
 
     setInsumoOnRefresh(insumo, precio, id) {
-      insumo.precio =
-        precio != 0.0 ? this.formatter.formatMoney(precio) : "Sin Registro";
+      insumo.precio = precio != 0.0 ? this.formatter.formatMoney(precio) : "Sin Registro";
       this.insumosData.map((i, index) =>
         i.idInsumo == id ? this.insumosData.splice(index, 1, insumo) : ""
       );
@@ -188,6 +182,7 @@ export default {
     async getInsumos() {
       await this.service.getAll("insumo").then((data) => {
         this.insumosData = data;
+        this.loading = false;
       });
       return this.insumosData;
     },
@@ -195,9 +190,7 @@ export default {
     async getPreciosUnitariosActuales() {
       let insumos = [];
       await axios
-        .get(
-          "http://localhost:9001/buensabor/compras/preciosUnitariosActuales/"
-        )
+        .get("http://localhost:9001/buensabor/compras/preciosUnitariosActuales/")
         .then((response) => (this.preciosUnitarios = response.data))
         .then((insumos = await this.getInsumos()))
         .then(this.setPreciosUnitariosActuales(insumos));
@@ -213,9 +206,7 @@ export default {
     },
 
     setPreciosUnitariosActuales(insumos) {
-      insumos.forEach(
-        (insumo, i) => (insumos[i].precio = this.auxSetPrecios(insumo))
-      );
+      insumos.forEach((insumo, i) => (insumos[i].precio = this.auxSetPrecios(insumo)));
       this.preciosUnitarios = insumos;
     },
 
@@ -231,15 +222,12 @@ export default {
     },
 
     toast(data, append = false) {
-      this.$bvToast.toast(
-        `Se incorporaron ${data.cantidad} existencias al producto`,
-        {
-          title: `Alta de producto`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-          appendToast: append,
-        }
-      );
+      this.$bvToast.toast(`Se incorporaron ${data.cantidad} existencias al producto`, {
+        title: `Alta de producto`,
+        toaster: "b-toaster-top-center",
+        solid: true,
+        appendToast: append,
+      });
     },
 
     verificarStockMaximo(e) {

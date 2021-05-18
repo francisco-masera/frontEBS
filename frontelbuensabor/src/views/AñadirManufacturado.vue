@@ -335,6 +335,8 @@
         </b-form>
       </div>
     </b-container>
+    <Toast ref="toast" />
+    <Loader v-if="loading" :loading="loading" />
     <router-view />
   </div>
 </template>
@@ -351,6 +353,10 @@ import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
+import Toast from "@/components/Toast.vue";
+import Loader from "@/components/Loader.vue";
+import Utils from "@/utilidades/Utils.js";
+
 const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-zA-ZÀ-ÿ\d\u00f1\u00d1\s,./]*$/);
 export default {
   mixins: [validationMixin],
@@ -365,13 +371,17 @@ export default {
     cabecera: Header,
     menuLateral: MenuLateral,
     cantidad: DetalleCantidad,
+    Toast: Toast,
+    Loader: Loader,
   },
 
   data() {
     return {
+      loading: false,
       submitted: false,
       service: new Service(),
       formatter: new Formatter(),
+      utils: new Utils(),
       form1: {
         denominacion: "",
         descripcion: "",
@@ -586,8 +596,9 @@ export default {
 
     verificarDatosForm3() {
       let cantidadesLen = document.getElementsByName("cantidadesInput").length;
-      let rExp = new RegExp("(^|[ \\t])([-+]?(\\d+|\\.\\d+|\\d+\\.\\d*))($|[^+-.])");
-      let soloNumeros = this.cantidades.every((c) => rExp.test(c.cantidad));
+      let soloNumeros = this.cantidades.every((c) =>
+        /[+-]?([0-9]*[.])?[0-9]+/.test(c.cantidad)
+      );
       return (
         soloNumeros &&
         this.cantidades.length == cantidadesLen &&
@@ -598,22 +609,18 @@ export default {
     async guardar() {
       this.$v.$touch();
       if (this.$v.formRevision.$anyError) {
-        return;
+        return false;
       }
       let img = document.getElementById("imagen").files[0];
       if (img != undefined && img.size / 1024 > 1024) {
-        this.$bvToast.toast(`La imagen no debe superar los 1MB`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
-        return;
+        this.toastr("La imagen no debe superar los 1MB", "¡Atención!");
+        return false;
       }
       let sugerencia = Object.assign({}, this.manufacturado);
 
       delete sugerencia.id;
       sugerencia.imagen = img.name;
-
+      this.loading = true;
       let estadoImagen = await this.guardarImagen(img);
       let estadoSugerencia = false;
 
@@ -623,10 +630,12 @@ export default {
 
       if (typeof estadoSugerencia === "object") {
         this.guardarRecetas(estadoSugerencia);
+        this.loading = false;
         this.$refs["modal"].show();
         setTimeout(() => this.retornaAlCatalogo(), 3000);
       } else {
         this.toastError();
+        this.loading = false;
       }
     },
 
@@ -699,6 +708,9 @@ export default {
         : this.$router.push({
             path: "/manufacturadoDetalle/" + this.manufacturado.id,
           });
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
     },
   },
 

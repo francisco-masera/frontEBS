@@ -151,13 +151,18 @@
         </div>
       </div>
     </b-container>
+    <Toast ref="toast" />
   </b-navbar>
 </template>
 
 <script>
 import Service from "@/service/Service.js";
 import $ from "jquery";
+import Toast from "@/components/Toast.vue";
 export default {
+  components: {
+    Toast: Toast,
+  },
   data() {
     return {
       botones: [],
@@ -277,13 +282,8 @@ export default {
           if (value) this.$router.push({ name: "IngresoClientes" });
           else if (value == false) this.$router.push({ name: "Ingreso" });
         })
-        .catch((err) => {
-          this.$bvToast.toast(err.toString(), {
-            title: "Error",
-            toaster: "b-toaster-top-center",
-            solid: true,
-            appendToast: true,
-          });
+        .catch((e) => {
+          this.toastr(e.response.data.message, "Error");
         });
     },
 
@@ -310,6 +310,9 @@ export default {
             );
           });
       });
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
     },
   },
 };

@@ -90,6 +90,7 @@
         </b-card-group>
       </div>
     </div>
+    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 
@@ -98,18 +99,24 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import Producto from "@/components/Manufacturado.vue";
 import axios from "axios";
+import Loader from "@/components/Loader.vue";
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
   mounted() {
     this.getAllProductos();
   },
+  updated() {
+    this.loading = false;
+  },
   components: {
     cabecera: Header,
     producto: Producto,
     "menu-lateral": MenuLateral,
+    Loader: Loader,
   },
   data() {
     return {
+      loading: true,
       esHome:
         sessionStorage.getItem("user") == undefined ||
         sessionStorage.getItem("user") == null,

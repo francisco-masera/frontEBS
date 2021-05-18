@@ -35,21 +35,15 @@
           :filter="busqueda"
           class="tabla"
         >
-          <template v-slot:cell(denominacion)="row">{{
-            row.item.denominacion
-          }}</template>
+          <template v-slot:cell(denominacion)="row">{{ row.item.denominacion }}</template>
           <template v-slot:cell(categoria)="row">
-            <b-badge class="Badgecategoria">{{
-              row.item.rubro.denominacion
-            }}</b-badge>
+            <b-badge class="Badgecategoria">{{ row.item.rubro.denominacion }}</b-badge>
           </template>
           <template v-slot:cell(tiempo)="row">{{
             row.item.tiempoCocina + " min"
           }}</template>
           <template v-slot:cell(detalle)="row">
-            <b-button pill class="boton" @click="verDetalle(row.item)"
-              >Detalles</b-button
-            >
+            <b-button pill class="boton" @click="verDetalle(row.item)">Detalles</b-button>
           </template>
         </b-table>
         <b-button pill class="boton" @click="nuevoManufacturado" size="md"
@@ -71,12 +65,8 @@
       <b-container class="informacion">
         <h1>Catálogo manufacturados</h1>
 
-        <b-button class="hrefManu" @click="cambiarAProductos"
-          >PRODUCTOS</b-button
-        >
-        <b-button class="hrefManu" @click="cambiarACategorias"
-          >CATEGORÍAS</b-button
-        >
+        <b-button class="hrefManu" @click="cambiarAProductos">PRODUCTOS</b-button>
+        <b-button class="hrefManu" @click="cambiarACategorias">CATEGORÍAS</b-button>
         <div v-if="esProducto">
           <b-nav-form class="buscador">
             <b-form-input
@@ -111,9 +101,7 @@
               formatter.formatMoney(row.item.precioVenta)
             }}</template>
             <template v-slot:cell(categoria)="row">
-              <b-badge class="Badgecategoria">{{
-                row.item.rubro.denominacion
-              }}</b-badge>
+              <b-badge class="Badgecategoria">{{ row.item.rubro.denominacion }}</b-badge>
             </template>
             <template v-for="(costo, i) in costos">
               <div :key="i">{{ costo }}</div>
@@ -147,7 +135,7 @@
             class="tabla"
             id="tablaCategoriaManufacturado"
           >
-            <template v-slot:cell(accion)="row" style="float:right">
+            <template v-slot:cell(accion)="row" style="float: right">
               <b-btn-group id="admin-btn-grp">
                 <b-button
                   size="sm"
@@ -172,11 +160,7 @@
               </b-btn-group>
             </template>
           </b-table>
-          <b-button
-            pill
-            class="boton"
-            size="md"
-            @click="agregarCategoriaModal()"
+          <b-button pill class="boton" size="md" @click="agregarCategoriaModal()"
             >¡Agregar!</b-button
           >
         </div>
@@ -200,21 +184,16 @@
           >
         </form>
       </b-modal>
-      <b-modal
-        ref="eliminarCategoriaModal"
-        hide-footer
-        title="Eliminar categoria"
-      >
+      <b-modal ref="eliminarCategoriaModal" hide-footer title="Eliminar categoria">
         ¿Está seguro que desea eliminar la categoría
         {{ categoriaEliminar.denominacion }}?
         <b-button pill class="boton" size="md" @click="eliminarCategoria()"
           >Eliminar</b-button
         >
-        <b-button pill class="boton2" size="md" @click="cancelar()"
-          >Cancelar</b-button
-        >
+        <b-button pill class="boton2" size="md" @click="cancelar()">Cancelar</b-button>
       </b-modal>
     </div>
+    <Toast ref="toast" />
   </div>
 </template>
 
@@ -224,6 +203,7 @@ import Header from "@/components/Header.vue";
 import axios from "axios";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
+import Toast from "@/components/Toast.vue";
 export default {
   mounted() {
     this.getManufacturados();
@@ -233,6 +213,7 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    Toast: Toast,
   },
 
   data() {
@@ -251,7 +232,7 @@ export default {
       formatter: new Formatter(),
       esProducto: true,
       estadoEliminado: false,
-      categoriaModificada:false,
+      categoriaModificada: false,
       categoriaNueva: {
         denominacion: "",
         baja: false,
@@ -340,9 +321,7 @@ export default {
 
     generarStringIds() {
       let idManuf = [];
-      this.manufacturadosData.forEach((manufacturado) =>
-        idManuf.push(manufacturado.id)
-      );
+      this.manufacturadosData.forEach((manufacturado) => idManuf.push(manufacturado.id));
       let idsManufStr = idManuf.join(",");
       return idsManufStr;
     },
@@ -382,11 +361,7 @@ export default {
         .delete("rubroManufacturado", this.categoriaEliminar.id)
         .then((data) => {
           this.categoriaEliminar = data;
-          this.$bvToast.toast(`Categoría eliminada`, {
-            autoHideDelay: 5000,
-            toaster: "b-toaster-top-center",
-            solid: true,
-          });
+          this.toastr("Categoría eliminada", "");
           this.$refs["eliminarCategoriaModal"].hide();
           this.getCategorias();
         });
@@ -397,49 +372,37 @@ export default {
     },
 
     async agregarCategoria() {
-      if (this.categoriaNueva != "" && this.categoriaModificada ==false) {
+      if (this.categoriaNueva != "" && this.categoriaModificada == false) {
         await this.service
           .save("rubroManufacturado", this.categoriaNueva)
           .then((data) => {
             this.categoriaNueva = data;
-            this.$bvToast.toast(`Categoría añadida con éxito`, {
-              autoHideDelay: 5000,
-              toaster: "b-toaster-top-center",
-              solid: true,
-            });
+            this.toastr("Categoría añadida con éxito", "");
             this.categoriaNueva = {};
             this.$refs["modalAgregarCategoria"].hide();
             this.getCategorias();
           });
-      } else
-      if(this.categoriaNueva != "" && this.categoriaModificada == true){
-            this.modificarCategoria(this.categoriaNueva);
-      } else{
-      
-        this.$bvToast.toast(`El campo de categoría no puede estar vacio`, {
-          autoHideDelay: 5000,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
+      } else if (this.categoriaNueva != "" && this.categoriaModificada == true) {
+        this.modificarCategoria(this.categoriaNueva);
+      } else {
+        this.toastr("El campo de categoría no puede estar vacio", "");
       }
     },
 
-    async modificarCategoria(){
-     await this.service
-          .update("rubroManufacturado", this.categoriaNueva, this.categoriaNueva.id)
-          .then((data) => {
-            this.categoriaNueva = data;
-            this.$bvToast.toast(`Categoría Modificada con éxito`, {
-              autoHideDelay: 5000,
-              toaster: "b-toaster-top-center",
-              solid: true,
-            });
-            this.categoriaNueva = {};
-            this.$refs["modalAgregarCategoria"].hide();
-            this.getCategorias();
-          });
-  
-    }
+    async modificarCategoria() {
+      await this.service
+        .update("rubroManufacturado", this.categoriaNueva, this.categoriaNueva.id)
+        .then((data) => {
+          this.categoriaNueva = data;
+          this.toastr("Categoría Modificada con éxito", "");
+          this.categoriaNueva = {};
+          this.$refs["modalAgregarCategoria"].hide();
+          this.getCategorias();
+        });
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
+    },
   },
   computed: {
     rows() {

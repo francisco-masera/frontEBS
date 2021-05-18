@@ -4,13 +4,20 @@
     <b-button class="social" @click="gLogin()">
       <img class="img-fluid" src="http://localhost:9001/images/sistema/google.png" />
     </b-button>
+    <Toast ref="toast" />
+    <router-view />
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
 import axios from "axios";
+import Toast from "@/components/Toast.vue";
+
 export default {
+  components: {
+    Toast: Toast,
+  },
   data() {
     return {
       mail: "",
@@ -18,14 +25,6 @@ export default {
     };
   },
   methods: {
-    toast(title, error) {
-      this.$bvToast.toast(error, {
-        title: title,
-        toaster: "b-toaster-top-center",
-        solid: true,
-        appendToast: true,
-      });
-    },
     async gLogin() {
       const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
       await firebase
@@ -36,9 +35,9 @@ export default {
           console.log(res);
         })
         .catch((e) => {
-          this.toast(
-            "Lo sentimos",
-            "Algo ha fallado al ingresar con Google." + e.response.data.message
+          this.toastr(
+            "Algo ha fallado al ingresar con Google. " + e.response.data.message,
+            "Lo sentimos"
           );
         });
     },
@@ -55,10 +54,10 @@ export default {
         .then((data) => {
           if (data != null) this.redirect(data.data);
           else {
-            this.toast("Lo sentimos", "Ocurrió un error al intentar el ingreso.");
+            this.toastr("Ocurrió un error al intentar el ingreso.", "Lo sentimos");
           }
         })
-        .catch((e) => this.toast("Error", e.response.data.message));
+        .catch((e) => this.toastr(e.response.data.message, "Error"));
     },
 
     async gRegister(user, profile) {
@@ -83,9 +82,9 @@ export default {
         })
         .then((data) => {
           if (data != null) this.redirect(data.data);
-          else this.toast("Lo sentimos", "Ocurrió un error al intentar el ingreso.");
+          else this.toastr("Ocurrió un error al intentar el ingreso.", "Lo sentimos");
         })
-        .catch((e) => this.toast("Error", e.response.data.message));
+        .catch((e) => this.toastr(e.response.data.message, "Error"));
     },
 
     asyncForEach(array, callback, done) {
@@ -122,8 +121,11 @@ export default {
           );
         };
       } else {
-        this.toast("Lo sentimos:", "Su usario no está habilitado.");
+        this.toastr("Su usario no está habilitado.", "Lo sentimos:");
       }
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
     },
   },
 };

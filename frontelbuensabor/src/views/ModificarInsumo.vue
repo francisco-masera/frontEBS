@@ -235,7 +235,7 @@
               </div>
               <div class="col-4">
                 <b-button pill class="boton" size="md" @click="agregarInsumo"
-                  >Siguiente</b-button
+                  >Guardar</b-button
                 >
               </div>
               <div class="col-4">
@@ -252,7 +252,8 @@
               </div>
               <div class="col-4">
                 <b-button pill class="boton" size="md" @click="updateInsumo"
-                  >Siguiente</b-button
+                  >Guardar</b-button
+                >
                 >
               </div>
               <div class="col-4">
@@ -497,10 +498,11 @@
       <b-modal ref="modal" hide-footer hide-header centered title>
         <p class="modalTitulo" v-if="esNuevo">¡Insumo agregado con éxito! Aguarde...</p>
         <p class="modalTitulo" v-else>¡Insumo modificado con éxito! Aguarde...</p>
-        <p class="posicion"></p>
       </b-modal>
     </div>
-    <Toast ref="toast" /> <router-view />
+    <Toast ref="toast" />
+    <Loader v-if="loading" :loading="loading" />
+    <router-view />
   </div>
 </template>
 
@@ -521,21 +523,25 @@ import Service from "@/service/Service.js";
 import axios from "axios";
 import $ from "jquery";
 import Toast from "@/components/Toast.vue";
+import Loader from "@/components/Loader.vue";
+
 const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-zA-ZÀ-ÿ\d\u00f1\u00d1\s,./]*$/);
 export default {
   mounted() {
     this.userVerifica();
     this.getCategorias();
-    this.esNuevo = this.$route.params.id != "undefined" ? !this.esNuevo : this.esNuevo;
+    this.esNuevo = this.$route.params.id == "undefined" ? true : false;
   },
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
     Toast: Toast,
+    Loader: Loader,
   },
 
   data() {
     return {
+      loading: false,
       form1: {
         denominacion: "",
         stockMin: "",
@@ -544,7 +550,7 @@ export default {
       form2: {
         precioVenta: "",
         lineaDescripcion: "",
-        imagen: "",
+        imagen: [],
       },
       insumoEncontrado: {
         baja: false,
@@ -566,6 +572,7 @@ export default {
       },
       informacionVenta: {
         type: "InformacionInsumoVenta",
+        idInsumo: 0,
         descripcion: "",
         precioVenta: "",
         imagen: "",
@@ -664,14 +671,18 @@ export default {
     async getInsumosxId() {
       var parametroId = parseInt(this.$route.params.id);
       if (!isNaN(parametroId)) {
-        await this.service.getOne("insumo", parametroId).then((data) => {
-          this.insumoEncontrado = data;
-        });
-        this.esNuevo = false;
-        this.completarCamposForm1();
-        if (!this.insumoEncontrado.esInsumo) {
-          this.getInsumoVentaxId();
-        }
+        await this.service
+          .getOne("insumo", parametroId)
+          .then((data) => {
+            this.insumoEncontrado = data;
+          })
+          .then(() => {
+            this.esNuevo = false;
+            this.completarCamposForm1();
+            if (!this.insumoEncontrado.esInsumo) {
+              this.getInsumoVentaxId();
+            }
+          });
       }
     },
     completarCamposForm1() {
@@ -699,15 +710,25 @@ export default {
 
     async guardaStock() {
       if (this.esNuevo) {
-        await this.service.save("stock", this.insumoEncontrado.stock).then((data) => {
-          this.insumoEncontrado.stock = data;
-        });
+        await this.service
+          .save("stock", this.insumoEncontrado.stock)
+          .then((data) => {
+            this.insumoEncontrado.stock = data;
+            this.loading = !this.loading;
+          })
+          .catch((e) => {
+            this.loading = !this.loading;
+            this.toastr(e.response.data.message, "Error al guardar el stock");
+            return false;
+          });
       } else {
-        await this.service.update(
-          "stock",
-          this.insumoEncontrado.stock,
-          this.insumoEncontrado.stock.id
-        );
+        await this.service
+          .update("stock", this.insumoEncontrado.stock, this.insumoEncontrado.stock.id)
+          .catch((e) => {
+            this.loading = !this.loading;
+            this.toastr(e.response.data.message, "Error al actualizar el stock");
+            return false;
+          });
       }
     },
 
@@ -725,14 +746,19 @@ export default {
           return false;
         }
       }
+      this.loading = !this.loading;
 
       await this.guardaStock();
       await this.service
         .update("insumo", this.insumoEncontrado, this.insumoEncontrado.idInsumo)
-        .then(() => {
-          this.$refs["modal"].show();
-
-          setTimeout(() => this.retornaAlStock(), 3000);
+        .then(() => (this.loading = !this.loading))
+        .catch((e) => {
+          this.loading = !this.loading;
+          this.toastr(
+            e.response.data.message,
+            "Error al actualizar el actualizar el insumo:"
+          );
+          return false;
         });
 
       if (!this.insumoEncontrado.esInsumo) {
@@ -750,11 +776,20 @@ export default {
         await this.service
           .update("insumoVenta", this.informacionVenta, this.informacionVenta.id)
           .then((data) => {
+            this.loading = !this.loading;
             this.informacionVenta = data;
             this.$refs["modal"].show();
-
             setTimeout(() => this.retornaAlStock(), 3000);
+          })
+          .catch((e) => {
+            this.loading = !this.loading;
+            this.toastr(e.response.data.message, "Error al actualizar el insumo");
+            return false;
           });
+      } else {
+        this.loading = !this.loading;
+        this.$refs["modal"].show();
+        setTimeout(() => this.retornaAlStock(), 3000);
       }
     },
     async agregarInsumo() {
@@ -771,31 +806,41 @@ export default {
           return false;
         }
       }
-
+      this.loading = !this.loading;
       await this.guardaStock();
 
       await this.service.save("insumo", this.insumoEncontrado).then(async (data) => {
         if (!data.esInsumo) {
           this.informacionVenta.descripcion = this.form2.lineaDescripcion;
           this.informacionVenta.precioVenta = this.form2.precioVenta;
-          this.informacionVenta.insumo = this.data;
-
+          this.informacionVenta.insumo = data;
+          console.log(data);
           this.informacionVenta.imagen = img.name;
-          await this.guardarImagen(img);
-
-          await this.service.save("insumoVenta", this.informacionVenta).then((data) => {
-            this.informacionVenta = data;
+          await this.guardarImagen(img).catch(() => {
+            this.loading = !this.loading;
+            return false;
           });
+
+          await this.service
+            .save("insumoVenta", this.informacionVenta)
+            .then(() => {
+              this.loading = !this.loading;
+              this.$refs["modal"].show();
+              setTimeout(() => this.retornaAlStock(), 2500);
+            })
+            .catch((e) => {
+              this.loading = !this.loading;
+              this.toastr(e.response.data.message, "Error al guardar el insumo");
+            });
         }
-        this.$refs["modal"].show();
-        setTimeout(() => this.retornaAlStock(), 2500);
       });
     },
 
     async guardarImagen(imagen) {
-      imagen.name = imagen.name.toString().replaceAll(" ", "_");
+      var name = imagen.name.toString().replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
+      formData.append("name", name);
       await axios
         .post("http://localhost:9001/buensabor/informacionArticulo/uploadImg", formData, {
           headers: {
@@ -804,8 +849,10 @@ export default {
             "cache-control": "no-cache",
           },
         })
-        .catch((error) => {
-          return error;
+        .catch((e) => {
+          this.loading = !this.loading;
+          this.toastr(e.response.data.message, "Error al guardar la imagen");
+          return e;
         });
       return true;
     },

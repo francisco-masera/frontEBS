@@ -417,11 +417,13 @@ export default {
     },
 
     async guardarImagen(ph) {
-      ph.name = ph.name.toString().replaceAll(" ", "_");
+      var name = ph.name.toString().replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", ph);
+      formData.append("name", name);
+
       await axios
-        .post("http://localhost:9001/buensabor/persona/uploadFile", formData, {
+        .post("http://localhost:9001/buensabor/cliente/uploadFile", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             "Access-Control-Allow-Origins": "*",

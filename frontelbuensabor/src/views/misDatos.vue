@@ -370,9 +370,10 @@ export default {
       }
 
       this.verificaUsuario();
-      imagen.name = imagen.name.toString().replaceAll(" ", "_");
+      var name = imagen.name.toString().replaceAll(" ", "_");
       const formData = new FormData();
       formData.append("file", imagen);
+      formData.append("name", name);
       if (this.user.type === "Cliente") {
         await axios
           .post("http://localhost:9001/buensabor/cliente/uploadImg", formData, {

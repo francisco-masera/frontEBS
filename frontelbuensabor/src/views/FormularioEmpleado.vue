@@ -35,7 +35,7 @@
               class="error"
               v-if="$v.form1.nombre.$params.alpha && $v.form1.nombre.$model != ''"
             >
-              El nombre no puede contener números.
+              El nombre no puede contener números ni símbolos.
             </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display: flex">
@@ -63,7 +63,7 @@
               class="error"
               v-if="$v.form1.apellido.$params.alpha && $v.form1.apellido.$model != ''"
             >
-              El apellido no puede contener números.
+              El apellido no puede contener números ni símbolos.
             </b-form-invalid-feedback>
           </div>
           <div class="lineaForm" style="display: flex">
@@ -90,7 +90,7 @@
               class="error"
               v-if="$v.form1.telefono.$params.integer && $v.form1.telefono.$model != ''"
             >
-              El teléfono no puede contener letras.
+              El teléfono no puede contener letras ni símbolos.
             </b-form-invalid-feedback>
           </div>
           <br />
@@ -116,9 +116,9 @@
             </b-form-invalid-feedback>
             <b-form-invalid-feedback
               class="error"
-              v-if="$v.form1.calle.$params.alpha && $v.form1.calle.$model != ''"
+              v-if="!$v.form1.calle.$params.alphaNumSpc && $v.form1.calle.$model != ''"
             >
-              La calle no puede contener números.
+              La calle debe contener sólo números y/o letras.
             </b-form-invalid-feedback>
           </div>
 
@@ -181,7 +181,7 @@
               class="error"
               v-if="$v.form1.departamento.$params.alpha"
             >
-              El departamento no puede contener números
+              El departamento no puede contener números ni símbolos.
             </b-form-invalid-feedback>
           </div>
 
@@ -364,6 +364,7 @@
         </p>
       </b-modal>
     </b-container>
+    <Toast ref="toast" />
     <Loader v-if="loading" :loading="loading" />
     <router-view />
   </div>
@@ -379,13 +380,16 @@ import Service from "@/service/Service.js";
 import axios from "axios";
 import Utils from "@/utilidades/Utils.js";
 import Loader from "@/components/Loader.vue";
-const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
+import Toast from "@/components/Toast.vue";
 
+const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
+const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-zA-ZÀ-ÿ\d\s]*$/);
 export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
     Loader: Loader,
+    Toast: Toast,
   },
 
   data() {
@@ -466,40 +470,24 @@ export default {
 
       this.asignaCamposForm2();
       if (this.persona.rol == "") {
-        this.$bvToast.toast(`El rol del empleado no puede estar vacío`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
+        this.toastr("El rol del empleado no puede estar vacío", "¡Atención!");
         return false;
       }
       let img = document.getElementById("imagen").files[0];
 
       if (img == undefined || img == null) {
-        this.$bvToast.toast(`Debe elegir una foto .jpeg, .jpg o .png`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
+        this.toastr("Debe elegir una foto .jpeg, .jpg o .png", "¡Atención!");
         return false;
       }
       var splitted = img.name.split(".");
       var extension = splitted[splitted.length - 1];
       if (extension != "jpeg" && extension != "jpg" && extension != "png") {
-        this.$bvToast.toast(`La foto debe ser .jpeg, .jpg o .png`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
+        this.toastr("La foto debe ser .jpeg, .jpg o .png", "¡Atención!");
         return false;
       }
 
       if (img != undefined && img.size / 1024 > 512) {
-        this.$bvToast.toast(`La imagen no debe superar los 512KB`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
+        this.toastr("La imagen no debe superar los 512KB", "¡Atención!");
         return false;
       }
       this.persona.foto = img.name.toString().replaceAll(" ", "_");
@@ -519,11 +507,7 @@ export default {
             .catch((e) => {
               this.loading = !this.loading;
               this.utils.enableScroll();
-              this.$bvToast.toast(e.response.data.message, {
-                title: `¡Atención!`,
-                toaster: "b-toaster-top-center",
-                solid: true,
-              });
+              this.toastr(e.response.data.message, "¡Atención!");
               return false;
             });
         });
@@ -546,11 +530,7 @@ export default {
         .catch((e) => {
           this.loading = !this.loading;
           this.utils.enableScroll();
-          this.$bvToast.toast(e.response.data.message, {
-            title: `¡Atención!`,
-            toaster: "b-toaster-top-center",
-            solid: true,
-          });
+          this.toastr(e.response.data.message, "¡Atención!");
           return false;
         });
     },
@@ -587,9 +567,9 @@ export default {
       }
 
       if (this.form1.piso == "") {
-        this.domicilio.departamento = "0";
+        this.domicilio.piso = "0";
       } else {
-        this.domicilio.departamento = this.form1.piso;
+        this.domicilio.piso = this.form1.piso;
       }
 
       this.domicilio.localidad = this.form1.localidad;
@@ -603,6 +583,9 @@ export default {
 
     vuelveStock() {
       window.location.href = "/stockInsumos";
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
     },
   },
 
@@ -622,7 +605,7 @@ export default {
       },
       calle: {
         required,
-        alpha,
+        alphaNumSpc,
       },
       numero: {
         required,
