@@ -128,6 +128,7 @@ export default {
             .getAll("insumoVenta/conStock")
             .then((r) => r.forEach((d) => this.productos.push(d)))
         );
+        console.log(this.productos)
     },
     filtrarCategoria(tipo, categoria) {
       console.log(categoria, tipo);

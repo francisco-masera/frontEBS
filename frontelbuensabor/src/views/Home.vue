@@ -89,7 +89,7 @@
         <div v-if="windowMobile" class="contenedorCard--mobile">
           <div
             class="contenedorTarjeta"
-            v-for="manufacturado in manufacturadosData"
+            v-for="manufacturado in venta"
             :key="manufacturado.id"
           >
             <plato-item
@@ -100,7 +100,7 @@
         <div v-else class="contenedorCard">
           <div
             class="contenedorTarjeta"
-            v-for="manufacturado in manufacturadosData"
+            v-for="manufacturado in venta"
             :key="manufacturado.id"
           >
             <plato-item
@@ -178,7 +178,7 @@ export default {
     "plato-item": Plato,
   },
   mounted() {
-    this.getManufacturados();
+    this.getAllProductos();
       if(window.innerWidth<=426){
         this.windowMobile = true
       }else{
@@ -188,15 +188,20 @@ export default {
   data() {
     return {
       windowHeight:false,
-      manufacturadosData: [],
+      venta: [],
       service: new Service(),
     };
   },
   methods: {
-    async getManufacturados() {
-      await this.service.getAll("manufacturado").then((data) => {
-        this.manufacturadosData = data;
-      });
+      getAllProductos() {
+      this.service
+        .getAll("manufacturado/masVendidos")
+        .then((r) => r.forEach((d) => this.venta.push(d)))
+        .then(
+          this.service
+            .getAll("insumoVenta/masVendidos")
+            .then((r) => r.forEach((d) => this.venta.push(d)))
+        );
     },
   },
 };
