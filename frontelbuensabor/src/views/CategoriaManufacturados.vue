@@ -8,11 +8,11 @@
 
     <b-container class="informacion">
       <h1>Catálogo manufacturados</h1>
-      <a id="seleccion-manufacturado" href="http://localhost:8080/catalogoManu"
-        ><span style="float:left">PRODUCTOS</span></a
+      <a id="seleccion-manufacturado" href="http://localhost:8080/catalogo"
+        ><span style="float: left">PRODUCTOS</span></a
       >
       <a id="seleccion-manufacturado" href=""
-        ><span style="float:left; margin-left:50px">CATEGORÍAS</span></a
+        ><span style="float: left; margin-left: 50px">CATEGORÍAS</span></a
       >
       <b-table
         hover
@@ -25,7 +25,7 @@
         :borderless="true"
         class="tabla"
       >
-        <template slot="cell(accion)" style="float:right">
+        <template slot="cell(accion)" style="float: right">
           <b-button size="sm" class="botonImagen">
             <img
               src="http://localhost:9001/images/sistema/editar.png"
@@ -42,12 +42,14 @@
           </b-button>
         </template>
       </b-table>
-       <b-button pill class="boton" size="md" @click="agregarCategoria()">¡Agregar!</b-button>
+      <b-button pill class="boton" size="md" @click="agregarCategoria()"
+        >¡Agregar!</b-button
+      >
     </b-container>
     <router-view />
     <b-modal ref="modal" hide-footer title="Agregar categoría">
       <form>
-        <b-form-input class="contraseñaForm" placeholder="Nombre de categoria" >          
+        <b-form-input class="contraseñaForm" placeholder="Nombre de categoria">
         </b-form-input>
         <b-button pill class="boton" size="md">Agregar </b-button>
       </form>
@@ -81,11 +83,11 @@ export default {
       ],
     };
   },
-  methods:{
-   agregarCategoria(){
-       this.$refs["modal"].show();
-   } 
-  }
+  methods: {
+    agregarCategoria() {
+      this.$refs["modal"].show();
+    },
+  },
 };
 </script>
 

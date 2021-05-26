@@ -5,10 +5,15 @@
       <div id="buscador">
         <h1>Lo pedís, lo llevamos...</h1>
         <b-form-input id="inputBuscador"></b-form-input>
+<<<<<<< HEAD
         <b-button size="sm" class="botonImagenBuscador">
           <img
             src="http://localhost:9001/images/sistema/buscar.png"
           />
+=======
+        <b-button size="sm" class="botonImagen">
+          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
+>>>>>>> 004e5f73cc26ad3615cc06931ec61deaaab34b36
         </b-button>
       </div>
       <div v-if="windowMobile" id="pasosCuadro--mobile">
@@ -171,28 +176,39 @@
 import Header from "@/components/Header.vue";
 import Plato from "@/components/Manufacturado.vue";
 import Service from "@/service/Service.js";
+import Loader from "@/components/Loader.vue";
+import Utils from "@/utilidades/Utils.js";
 
 export default {
   components: {
     cabecera: Header,
     "plato-item": Plato,
+    Loader: Loader,
   },
   mounted() {
+<<<<<<< HEAD
     this.getAllProductos();
       if(window.innerWidth<=426){
         this.windowMobile = true
       }else{
         this.windowMobile = false
       }
+=======
+    this.utils.preventScroll();
+    this.getManufacturados();
+>>>>>>> 004e5f73cc26ad3615cc06931ec61deaaab34b36
   },
   data() {
     return {
       windowHeight:false,
       venta: [],
       service: new Service(),
+      loading: true,
+      utils: new Utils(),
     };
   },
   methods: {
+<<<<<<< HEAD
       getAllProductos() {
       this.service
         .getAll("manufacturado/masVendidos")
@@ -202,6 +218,14 @@ export default {
             .getAll("insumoVenta/masVendidos")
             .then((r) => r.forEach((d) => this.venta.push(d)))
         );
+=======
+    async getManufacturados() {
+      await this.service.getAll("manufacturado").then((data) => {
+        this.manufacturadosData = data;
+        this.loading = !this.loading;
+        this.utils.enableScroll();
+      });
+>>>>>>> 004e5f73cc26ad3615cc06931ec61deaaab34b36
     },
   },
 };

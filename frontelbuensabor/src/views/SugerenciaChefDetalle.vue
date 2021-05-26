@@ -30,9 +30,7 @@
             <b-card-text>{{ this.formatter.formatMoney(costo) }}</b-card-text>
           </b-card>
           <b-card header="Tiempo" class="tarjetaInfo">
-            <b-card-text
-              >{{ sugerenciaEncontrada.tiempoCocina }} min.</b-card-text
-            >
+            <b-card-text>{{ sugerenciaEncontrada.tiempoCocina }} min.</b-card-text>
           </b-card>
         </div>
         <div class="infoIngredientes">
@@ -58,11 +56,7 @@
             <p class="modalTitulo">¿Desea eliminar la sugerencia?</p>
 
             <p class="posicion">
-              <b-button
-                pill
-                size="md"
-                class="botonModal"
-                @click="denegarSugerencia"
+              <b-button pill size="md" class="botonModal" @click="denegarSugerencia"
                 >Aceptar</b-button
               >
               <b-button pill size="md" class="botonModal" @click="vuelveDetalle"
@@ -90,9 +84,11 @@
                 Seleccione una categoría para el producto
               </p>
               <b-form-select size="sm" id="rubrosSelect">
-                  <template v-slot:first>
-        <b-form-select-option disabled selected>-- Categorías --</b-form-select-option>
-      </template>
+                <template v-slot:first>
+                  <b-form-select-option disabled selected
+                    >-- Categorías --</b-form-select-option
+                  >
+                </template>
                 <b-form-select-option
                   v-for="rubro in rubros"
                   :key="rubro.id"
@@ -114,18 +110,14 @@
           <p class="modalTitulo">Sugerencia Aceptada</p>
           <p class="modalTitulo">Sugerencia Rechazada</p>
           <p class="posicion">
-            <b-button
-              pill
-              size="md"
-              class="botonModal"
-              @click="vuelveSugerencias"
+            <b-button pill size="md" class="botonModal" @click="vuelveSugerencias"
               >Aceptar</b-button
             >
           </p>
         </b-modal>
       </div>
     </b-container>
-
+    <Loader v-if="loading" :loading="loading" />
     <router-view />
   </div>
 </template>
@@ -136,6 +128,8 @@ import Header from "@/components/Header.vue";
 import Service from "@/service/Service.js";
 import axios from "axios";
 import Formatter from "@/utilidades/Formatters.js";
+import Loader from "@/components/Loader.vue";
+
 export default {
   mounted() {
     this.getSugerenciaXid();
@@ -143,9 +137,11 @@ export default {
   components: {
     menuLateral: MenuLateral,
     cabecera: Header,
+    Loader: Loader,
   },
   data() {
     return {
+      loading: false,
       sugerenciaEncontrada: [],
       service: new Service(),
       formatter: new Formatter(),
@@ -183,9 +179,7 @@ export default {
 
     async getRecetas(id) {
       await axios
-        .get(
-          "http://localhost:9001/buensabor/sugerencia/recetasSugerencia/" + id
-        )
+        .get("http://localhost:9001/buensabor/sugerencia/recetasSugerencia/" + id)
         .then((response) => (this.recetas = response.data));
       await this.obtenerCosto();
     },
@@ -245,11 +239,9 @@ export default {
     },
 
     async denegarSugerencia() {
+      this.loading = true;
       await this.service
-        .deleteRecetas(
-          "recetaSugerida/eliminaRecetas/",
-          this.sugerenciaEncontrada.id
-        )
+        .deleteRecetas("recetaSugerida/eliminaRecetas/", this.sugerenciaEncontrada.id)
         .then(() => {
           this.eliminarSugerencia();
         })
@@ -262,15 +254,14 @@ export default {
                 "Información"
               )
             : "";
+
           this.$refs["modalDeniega"].hide();
         })
-
-        .catch(() =>
-          this.toastInfo("Error al eliminar los registros.", "Error")
-        )
-        .then(() =>
-          setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
-        );
+        .then(() => setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000))
+        .catch(() => {
+          this.toastInfo("Error al eliminar los registros.", "Error");
+          this.loading = false;
+        });
     },
 
     async deleteImg() {
@@ -281,17 +272,14 @@ export default {
     },
 
     async aceptarSugerencia() {
-      
       let rubroSeleccionado = document.getElementById("rubrosSelect");
-      let rubroId =
-        rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
-      
+      let rubroId = rubroSeleccionado.options[rubroSeleccionado.selectedIndex].value;
 
-      this.informacionVenta.precioVenta = document.getElementById(
-        "precio"
-      ).value;
+      this.informacionVenta.precioVenta = document
+        .getElementById("precio")
+        .value.replace(",", ".");
 
-      if(rubroId == ''){
+      if (rubroId == "") {
         this.$bvToast.toast(`La categoría no puede estar vacía`, {
           title: `¡Atención!`,
           toaster: "b-toaster-top-center",
@@ -299,16 +287,18 @@ export default {
         });
         return;
       }
-if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.precioVenta)>0.0){
- this.$bvToast.toast(`El precio no puede estar vacío y debe ser mayor a 0`, {
+      if (
+        this.informacionVenta.precioVenta == "" ||
+        !parseFloat(this.informacionVenta.precioVenta) > 0.0
+      ) {
+        this.$bvToast.toast(`El precio no puede estar vacío y debe ser mayor a 0`, {
           title: `¡Atención!`,
           toaster: "b-toaster-top-center",
           solid: true,
         });
         return;
-}
-
-
+      }
+      this.loading = true;
       this.informacionVenta.descripcion = this.sugerenciaEncontrada.descripcion;
       this.informacionVenta.imagen = this.sugerenciaEncontrada.imagen;
       this.informacionVenta.denominacion = this.sugerenciaEncontrada.denominacion;
@@ -318,7 +308,6 @@ if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.
       this.informacionVenta.vegetariano = this.sugerenciaEncontrada.vegetariano;
       this.informacionVenta.rubro = parseInt(rubroId);
 
-      
       this.sugerenciaAprobada = true;
       await this.guardarSugerencia()
         .then((data) => this.guardarRecetas(data))
@@ -331,12 +320,11 @@ if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.
           );
           this.$refs["modal"].hide();
         })
-        .then(() =>
-          setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
-        )
-        .catch(() =>
-          this.toastInfo("Error al aceptar la sugerencia.", "Error")
-        );
+        .then(() => setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000))
+        .catch(() => {
+          this.toastInfo("Error al aceptar la sugerencia.", "Error");
+          this.loading = false;
+        });
     },
 
     async guardarSugerencia() {
@@ -380,9 +368,7 @@ if(this.informacionVenta.precioVenta == '' || !parseFloat(this.informacionVenta.
       this.recetas.forEach(
         (r) =>
           (error =
-            typeof this.auxGuardarRecetas(r, manufacturado) == "string"
-              ? true
-              : false)
+            typeof this.auxGuardarRecetas(r, manufacturado) == "string" ? true : false)
       );
       return error;
     },

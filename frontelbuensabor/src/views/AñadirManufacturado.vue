@@ -17,15 +17,28 @@
               <label class="labelForm">Nombre *</label>
               <b-form-input
                 class="campoForm"
-                v-model.lazy="form1.denominacion"
+                v-model.trim="form1.denominacion"
                 id="denominacionManufacturado"
-                :state="!$v.form1.denominacion.$invalid"
                 placeholder="Ingrese un nombre"
+                :state="
+                  !$v.form1.denominacion.$dirty
+                    ? !$v.form1.denominacion.$anyError
+                    : !$v.form1.denominacion.$error
+                "
+                @input="$v.form1.denominacion.$touch()"
               />
-              <br />
-              <b-form-invalid-feedback>
-                <br />Este campo es obligatorio. <br />Recuerde ingresar sólo letras.
-              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.denominacion.$dirty && $v.form1.denominacion.$model == ''"
+              >
+                El nombre es obligatorio.</b-form-invalid-feedback
+              >
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.denominacion.$dirty && !$v.form1.denominacion.alphaNumSpc"
+              >
+                Recuerde ingresar sólo letras y números.</b-form-invalid-feedback
+              >
             </b-form-group>
           </div>
           <div class="lineaForm" id="lineaDescripcion">
@@ -34,15 +47,29 @@
               <b-form-textarea
                 id="descripcionManufacturado"
                 class="campoForm"
-                v-model.lazy="form1.descripcion"
-                :state="!$v.form1.descripcion.$invalid"
+                v-model.trim="form1.descripcion"
+                :state="
+                  !$v.form1.descripcion.$dirty
+                    ? !$v.form1.descripcion.$anyError
+                    : !$v.form1.descripcion.$error
+                "
+                @input="$v.form1.descripcion.$touch()"
                 placeholder="Ingrese una descripción"
                 rows="3"
                 max-rows="6"
               />*
-              <b-form-invalid-feedback>
-                <br />Este campo es obligatorio. <br />Recuerde ingresar sólo letras.
-              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.descripcion.$dirty && $v.form1.descripcion.$model == ''"
+              >
+                La descripción es obligatoria.</b-form-invalid-feedback
+              >
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form1.descripcion.$dirty && !$v.form1.descripcion.alphaNumSpc"
+              >
+                Recuerde ingresar sólo letras y números.</b-form-invalid-feedback
+              >
             </b-form-group>
           </div>
           <br />
@@ -141,14 +168,31 @@
               <label class="labelForm">Tiempo en cocina</label>
               <b-form-input
                 type="number"
-                class="campoForm"
+                class="campoForm form-control"
                 id="tiempoCocina"
-                v-model.lazy="form2.tiempoCocina"
-                :state="!$v.form2.tiempoCocina.$invalid"
+                v-model.trim="form2.tiempoCocina"
+                :state="
+                  !$v.form2.tiempoCocina.$dirty
+                    ? !$v.form2.tiempoCocina.$anyError
+                    : !$v.form2.tiempoCocina.$error
+                "
+                @input="$v.form2.tiempoCocina.$touch()"
               ></b-form-input>
-              <b-form-invalid-feedback>
-                <br />Este campo es obligatorio <br />y sólo admite números mayores a cero
-                <br />sin coma ni punto.
+              <br />
+              <b-form-invalid-feedback
+                class="error"
+                v-if="$v.form2.tiempoCocina.$dirty && $v.form2.tiempoCocina.$model == ''"
+              >
+                El tiempo en cocina es obligatorio.
+              </b-form-invalid-feedback>
+              <b-form-invalid-feedback
+                class="error"
+                v-if="
+                  $v.form2.tiempoCocina.$params.integer &&
+                  $v.form2.tiempoCocina.$model != ''
+                "
+              >
+                El tiempo en cocina sólo admite números enteros (sin coma ni punto)
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -245,9 +289,7 @@
                   v-model.lazy="formRevision.imagen"
                   :state="!$v.formRevision.imagen.$invalid"
                 />
-                <b-form-invalid-feedback>
-                  <br />Este campo es obligatorio.
-                </b-form-invalid-feedback>
+                <span> <br />Este campo es obligatorio. </span>
               </b-form-group>
             </div>
             <div class="infoIngredientes">
@@ -293,6 +335,8 @@
         </b-form>
       </div>
     </b-container>
+    <Toast ref="toast" />
+    <Loader v-if="loading" :loading="loading" />
     <router-view />
   </div>
 </template>
@@ -300,7 +344,7 @@
 <script>
 import Vue from "vue";
 Vue.use(Vuelidate);
-import { required, numeric, integer } from "vuelidate/lib/validators";
+import { required, integer, helpers } from "vuelidate/lib/validators";
 import { validationMixin } from "vuelidate";
 import Vuelidate from "vuelidate";
 import MenuLateral from "@/components/MenuLateral.vue";
@@ -309,7 +353,11 @@ import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from "@/service/Service.js";
 import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
+import Toast from "@/components/Toast.vue";
+import Loader from "@/components/Loader.vue";
+import Utils from "@/utilidades/Utils.js";
 
+const alphaNumSpc = helpers.regex("alphaNumSpc", /^[a-zA-ZÀ-ÿ\d\u00f1\u00d1\s,./]*$/);
 export default {
   mixins: [validationMixin],
   mounted() {
@@ -323,12 +371,17 @@ export default {
     cabecera: Header,
     menuLateral: MenuLateral,
     cantidad: DetalleCantidad,
+    Toast: Toast,
+    Loader: Loader,
   },
 
   data() {
     return {
+      loading: false,
+      submitted: false,
       service: new Service(),
       formatter: new Formatter(),
+      utils: new Utils(),
       form1: {
         denominacion: "",
         descripcion: "",
@@ -524,9 +577,7 @@ export default {
     onSubmit3() {
       let camposCompletos = this.verificarDatosForm3();
       if (camposCompletos) {
-        this.cantidades.forEach((c) =>
-          this.setRecetasNuevas(c.cantidad.replace(",", "."), c.id)
-        );
+        this.cantidades.forEach((c) => this.setRecetasNuevas(c.cantidad, c.id));
         this.siguiente3();
       } else {
         this.$bvToast.show("toast-datos");
@@ -545,8 +596,9 @@ export default {
 
     verificarDatosForm3() {
       let cantidadesLen = document.getElementsByName("cantidadesInput").length;
-      let rExp = new RegExp("(\\d+(?:\\.\\d+)?)");
-      let soloNumeros = this.cantidades.every((c) => rExp.test(c.cantidad));
+      let soloNumeros = this.cantidades.every((c) =>
+        /[+-]?([0-9]*[.])?[0-9]+/.test(c.cantidad)
+      );
       return (
         soloNumeros &&
         this.cantidades.length == cantidadesLen &&
@@ -557,22 +609,18 @@ export default {
     async guardar() {
       this.$v.$touch();
       if (this.$v.formRevision.$anyError) {
-        return;
+        return false;
       }
       let img = document.getElementById("imagen").files[0];
-      if (img != undefined && img.size / 1024 > 512) {
-        this.$bvToast.toast(`La imagen no debe superar los 512KB`, {
-          title: `¡Atención!`,
-          toaster: "b-toaster-top-center",
-          solid: true,
-        });
-        return;
+      if (img != undefined && img.size / 1024 > 1024) {
+        this.toastr("La imagen no debe superar los 1MB", "¡Atención!");
+        return false;
       }
       let sugerencia = Object.assign({}, this.manufacturado);
 
       delete sugerencia.id;
       sugerencia.imagen = img.name;
-
+      this.loading = true;
       let estadoImagen = await this.guardarImagen(img);
       let estadoSugerencia = false;
 
@@ -582,10 +630,12 @@ export default {
 
       if (typeof estadoSugerencia === "object") {
         this.guardarRecetas(estadoSugerencia);
+        this.loading = false;
         this.$refs["modal"].show();
         setTimeout(() => this.retornaAlCatalogo(), 3000);
       } else {
         this.toastError();
+        this.loading = false;
       }
     },
 
@@ -598,7 +648,7 @@ export default {
       });
     },
     retornaAlCatalogo() {
-      window.location.href = "/catalogoManu/";
+      window.location.href = "/catalogo/";
     },
 
     async guardarImagen(imagen) {
@@ -654,10 +704,13 @@ export default {
 
     volver() {
       this.esNuevo
-        ? this.$router.push({ path: "/catalogoManu/" })
+        ? this.$router.push({ path: "/catalogo/" })
         : this.$router.push({
             path: "/manufacturadoDetalle/" + this.manufacturado.id,
           });
+    },
+    toastr(msg, title) {
+      this.$refs.toast.emitToast(msg, title);
     },
   },
 
@@ -671,16 +724,17 @@ export default {
     form1: {
       denominacion: {
         required,
+        alphaNumSpc,
       },
       descripcion: {
         required,
+        alphaNumSpc,
       },
     },
 
     form2: {
       tiempoCocina: {
         required,
-        numeric,
         integer,
       },
     },
@@ -694,6 +748,9 @@ export default {
 };
 </script>
 <style>
+.error {
+  color: #dc3545;
+}
 #titulo {
   line-height: 1.2rem;
   color: #151515;

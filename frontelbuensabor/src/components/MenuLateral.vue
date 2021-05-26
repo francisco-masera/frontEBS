@@ -15,13 +15,13 @@
       </div>
       <b-card-text>
         <p id="nombre">{{ this.user.nombre }} {{ this.user.apellido }}</p>
-        <p id="rol">{{ rol }}</p>
+        <p id="rol">{{ rol.toUpperCase() }}</p>
 
         <b-nav-item
           class="botonesMenu"
           v-for="boton in botones"
           :key="boton[0]"
-          v-bind:href="boton[3]"
+          @click="accion(boton)"
         >
           <b-img
             v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]"
@@ -37,6 +37,7 @@
 
 <script>
 import Service from "@/service/Service.js";
+
 export default {
   mounted() {
     this.cargaBotones();
@@ -45,81 +46,82 @@ export default {
     return {
       botones: [],
       rol: "",
-      user: this.usuario,
+      user: {},
       service: new Service(),
       userSession: {},
     };
   },
- 
+
   methods: {
-      async traeUser() {
-         this.userSession=JSON.parse(sessionStorage.getItem('user'));   
-           await this.service.getOne("persona",this.userSession.id).then((data) => {
-            this.user = data;
-          }); 
-      },
-      
-    
-     async cargaBotones(){
-       await this.traeUser();
-        var boton;
-        if(this.user.rol==="admin"){
-          boton = [0,"Stock de insumos","stock.png","/stockInsumos"];
-          this.botones.push(boton);
-          boton = [1,"Catálogo","manufacturados.png","/catalogoManu"];
-          this.botones.push(boton);    
-          boton = [2,"Sugerencias del chef","sugerenciasChef.png","/sugerenciaChef"];
-          this.botones.push(boton);  
-          boton = [3,"Pedidos","Pedidos.png","/pedidos"];
-          this.botones.push(boton);  
-          boton = [4,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
-          this.botones.push(boton);  
-          boton = [5,"Agregar empleado","misDatos.png","/formEmpleado/"];
-          this.botones.push(boton);  
-          boton = [6,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-          this.botones.push(boton);  
-          this.rol="Administrador";
-                
-        }else if(this.user.rol==="cocina"){
-          boton = [0,"Manufacturados","manufacturados.png","/catalogoManu"];
-          this.botones.push(boton);
-          boton = [1,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
-          this.botones.push(boton);  
-          boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-          this.botones.push(boton);  
-          this.rol="Cocinero";
+    accion(boton) {
+      if (boton[0] == 0) sessionStorage.clear();
+      location.href = boton[3];
+    },
+    async traeUser() {
+      this.userSession = JSON.parse(sessionStorage.getItem("user"));
+      await this.service.getOne("persona", this.userSession.id).then((data) => {
+        this.user = data;
+      });
+    },
 
-        }else if(this.user.rol ==="cliente"){
-          boton = [0,"Mis direcciones","misDirecciones.png",""];
-          this.botones.push(boton);
-          boton = [1,"Mis pedidos","Pedidos.png",""];
-          this.botones.push(boton);  
-          boton = [2,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
-          this.botones.push(boton);  
-          boton = [3,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-          this.botones.push(boton); 
-
-
-        }else if(this.user.rol==="delivery"){
-          boton = [0,"Pedidos","Pedidos.png","/pedidos"];
-          this.botones.push(boton);
-          boton = [1,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
-          this.botones.push(boton);   
-          boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-          this.botones.push(boton); 
-          this.rol="Delivery"; 
-
-        }else if(this.user.rol==="cajero"){
-          boton = [0,"Pedidos","Pedidos.png",""];
-          this.botones.push(boton);
-          boton = [1,"Pedidos anteriores","pedidosFacturados.png",""];
-          this.botones.push(boton); 
-           boton = [3,"Mis datos","misDatos.png","/misdatos/"+this.user.id];
-          this.botones.push(boton);   
-          boton = [2,"Cerrar sesión","cerrarSesion.png","/ingreso"];
-          this.botones.push(boton);  
-          this.rol="Cajero";
-        }
+    async cargaBotones() {
+      await this.traeUser();
+      var boton;
+      if (this.user.rol === "admin") {
+        boton = [1, "Stock de insumos", "stock.png", "/stockInsumos"];
+        this.botones.push(boton);
+        boton = [2, "Catálogo", "manufacturados.png", "/catalogo"];
+        this.botones.push(boton);
+        boton = [3, "Sugerencias del chef", "sugerenciasChef.png", "/sugerenciaChef"];
+        this.botones.push(boton);
+        boton = [4, "Menú", "menu.png", "/menu"];
+        this.botones.push(boton);
+        boton = [5, "Pedidos", "Pedidos.png", "/pedidos"];
+        this.botones.push(boton);
+        boton = [6, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        boton = [7, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
+        this.botones.push(boton);
+        boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+        this.botones.push(boton);
+        this.rol = "Administrador";
+      } else if (this.user.rol === "cocina") {
+        boton = [1, "Manufacturados", "manufacturados.png", "/catalogo"];
+        this.botones.push(boton);
+        boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+        this.botones.push(boton);
+        this.rol = "Cocinero";
+      } else if (this.user.rol == undefined) {
+        /*Cliente*/
+        boton = [1, "Mis direcciones", "misDirecciones.png", ""];
+        this.botones.push(boton);
+        boton = [2, "Mis pedidos", "Pedidos.png", ""];
+        this.botones.push(boton);
+        boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        boton = [0, "Cerrar sesión", "cerrarSesion.png", "/"];
+        this.botones.push(boton);
+      } else if (this.user.rol === "delivery") {
+        boton = [1, "Pedidos", "Pedidos.png", "/pedidos"];
+        this.botones.push(boton);
+        boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+        this.botones.push(boton);
+        this.rol = "Delivery";
+      } else if (this.user.rol === "cajero") {
+        boton = [1, "Pedidos", "Pedidos.png", ""];
+        this.botones.push(boton);
+        boton = [2, "Pedidos anteriores", "pedidosFacturados.png", ""];
+        this.botones.push(boton);
+        boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+        this.botones.push(boton);
+        boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+        this.botones.push(boton);
+        this.rol = "Cajero";
+      }
     },
   },
 };
@@ -146,10 +148,12 @@ export default {
 
   z-index: 1;
 }
+
 #imagenusuario {
   height: 100%;
   z-index: 2;
 }
+
 .imagenContenedor {
   width: 170px;
   height: 170px;
@@ -160,6 +164,7 @@ export default {
   margin-bottom: 25px;
   display: inline-block;
 }
+
 .botonesMenu {
   list-style: none;
   color: #151515;
@@ -169,6 +174,7 @@ export default {
   margin-left: 5%;
   margin-top: 5px;
 }
+
 .botonesMenu a:link {
   list-style: none;
   color: #151515;
@@ -182,25 +188,30 @@ export default {
   list-style: none;
   color: #e7511e;
 }
+
 .botonesMenu a:active {
   list-style: none;
   color: #e7511e;
   font-weight: 700;
 }
+
 .botonesMenu a:visited {
   list-style: none;
   color: #151515;
   font-weight: 700;
 }
+
 .iconosMenu {
   width: 20px;
   float: left;
   margin-right: 10px;
 }
+
 #rol {
   font-weight: 400;
   font-size: 12pt;
 }
+
 #nombre {
   margin-bottom: 0px;
   font-family: "Baloo Bhaina 2";
@@ -213,6 +224,7 @@ export default {
   .card-body {
     padding: 0px;
   }
+
   .botonesMenu {
     font-size: 12pt;
     margin-left: 5px;
