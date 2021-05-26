@@ -112,7 +112,7 @@
       
       </b-card-group>
       <br>
-      <b-button class="botonPlatos">¡Todos nuestros platos!</b-button>
+      <b-button class="botonPlatos" @click="$router.push({ path:'/menu'})">¡Todos nuestros platos!</b-button>
     </div>
 
       <div class="abajo"></div>
