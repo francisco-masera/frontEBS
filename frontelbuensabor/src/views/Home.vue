@@ -186,17 +186,12 @@ export default {
     Loader: Loader,
   },
   mounted() {
-<<<<<<< HEAD
     this.getAllProductos();
       if(window.innerWidth<=426){
         this.windowMobile = true
       }else{
         this.windowMobile = false
       }
-=======
-    this.utils.preventScroll();
-    this.getManufacturados();
->>>>>>> 004e5f73cc26ad3615cc06931ec61deaaab34b36
   },
   data() {
     return {
@@ -208,7 +203,6 @@ export default {
     };
   },
   methods: {
-<<<<<<< HEAD
       getAllProductos() {
       this.service
         .getAll("manufacturado/masVendidos")
@@ -218,14 +212,6 @@ export default {
             .getAll("insumoVenta/masVendidos")
             .then((r) => r.forEach((d) => this.venta.push(d)))
         );
-=======
-    async getManufacturados() {
-      await this.service.getAll("manufacturado").then((data) => {
-        this.manufacturadosData = data;
-        this.loading = !this.loading;
-        this.utils.enableScroll();
-      });
->>>>>>> 004e5f73cc26ad3615cc06931ec61deaaab34b36
     },
   },
 };
