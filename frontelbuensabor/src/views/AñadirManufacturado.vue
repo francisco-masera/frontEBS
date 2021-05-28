@@ -351,7 +351,6 @@ import MenuLateral from "@/components/MenuLateral.vue";
 import Header from "@/components/Header.vue";
 import DetalleCantidad from "@/components/DetalleCantidad.vue";
 import Service from "@/service/Service.js";
-import Formatter from "@/utilidades/Formatters.js";
 import axios from "axios";
 import Toast from "@/components/Toast.vue";
 import Loader from "@/components/Loader.vue";
@@ -380,7 +379,6 @@ export default {
       loading: false,
       submitted: false,
       service: new Service(),
-      formatter: new Formatter(),
       utils: new Utils(),
       form1: {
         denominacion: "",
