@@ -5,15 +5,10 @@
       <div id="buscador">
         <h1>Lo pedís, lo llevamos...</h1>
         <b-form-input id="inputBuscador"></b-form-input>
-<<<<<<< HEAD
         <b-button size="sm" class="botonImagenBuscador">
           <img
             src="http://localhost:9001/images/sistema/buscar.png"
           />
-=======
-        <b-button size="sm" class="botonImagen">
-          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
->>>>>>> 004e5f73cc26ad3615cc06931ec61deaaab34b36
         </b-button>
       </div>
       <div v-if="windowMobile" id="pasosCuadro--mobile">
@@ -170,6 +165,7 @@
           />
       </div>
       <div class="abajo"></div>
+      <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 <script>
@@ -183,7 +179,7 @@ export default {
   components: {
     cabecera: Header,
     "plato-item": Plato,
-    Loader: Loader,
+    Loader: Loader
   },
   mounted() {
     this.getAllProductos();
@@ -210,8 +206,11 @@ export default {
         .then(
           this.service
             .getAll("insumoVenta/masVendidos")
-            .then((r) => r.forEach((d) => this.venta.push(d)))
-        );
+            .then((r) => {
+              r.forEach((d) => this.venta.push(d));
+              this.loading= false;
+            })
+        ).catch(this.loading= false)
     },
   },
 };
