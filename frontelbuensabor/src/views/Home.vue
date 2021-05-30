@@ -4,8 +4,8 @@
       <cabecera v-bind:es-home="true"></cabecera>
       <div id="buscador">
         <h1>Lo pedís, lo llevamos...</h1>
-        <b-form-input id="inputBuscador"></b-form-input>
-        <b-button size="sm" class="botonImagenBuscador">
+        <b-form-input id="inputBuscador" placeholder="¿Qué comemos hoy?" v-model="buscarText"> </b-form-input>
+        <b-button size="sm" class="botonImagenBuscador"  @click="buscar()">
           <img
             src="http://localhost:9001/images/sistema/buscar.png"
           />
@@ -174,7 +174,6 @@ import Plato from "@/components/Manufacturado.vue";
 import Service from "@/service/Service.js";
 import Loader from "@/components/Loader.vue";
 import Utils from "@/utilidades/Utils.js";
-
 export default {
   components: {
     cabecera: Header,
@@ -188,6 +187,7 @@ export default {
       }else{
         this.windowMobile = false
       }
+     
   },
   data() {
     return {
@@ -196,6 +196,7 @@ export default {
       service: new Service(),
       loading: true,
       utils: new Utils(),
+      buscarText:""
     };
   },
   methods: {
@@ -212,6 +213,9 @@ export default {
             })
         ).catch(this.loading= false)
     },
+    buscar(){
+      this.$router.push({ name:"MenuBuscar", params:{ buscar:this.buscarText }});
+    }
   },
 };
 </script>
@@ -252,6 +256,9 @@ h2 {
   border: 2;
   width: 100%;
   color:black;
+}
+#inputBuscador::placeholder{
+  color: white;
 }
 #buscador {
   width: 35%;
