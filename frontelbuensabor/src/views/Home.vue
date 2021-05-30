@@ -174,6 +174,15 @@ import Plato from "@/components/Manufacturado.vue";
 import Service from "@/service/Service.js";
 import Loader from "@/components/Loader.vue";
 import Utils from "@/utilidades/Utils.js";
+export default new Router({
+    routes: [
+        {
+            path: '/Menu/:id',
+            name: 'Menu',
+            component: this.buscarText,
+        },
+    ]
+});
 export default {
   components: {
     cabecera: Header,
@@ -214,7 +223,7 @@ export default {
         ).catch(this.loading= false)
     },
     buscar(){
-      this.$router.push({ name:"MenuBuscar", params:{ buscar:this.buscarText }});
+
     }
   },
 };
