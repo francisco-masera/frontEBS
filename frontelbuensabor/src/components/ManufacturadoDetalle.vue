@@ -124,6 +124,7 @@
 					precioVenta: this.producto.precioVenta,
 				};
 				this.$store.dispatch("addItemCarrito", producto);
+				this.$emit("close");
 			},
 		},
 	};

@@ -10,7 +10,7 @@
 			</b-img>
 			<label id="usuario">Mi carrito</label>
 		</b-button>
-		<div v-if="!items">
+		<div v-if="!carrito">
 			<b-modal id="bv-modal-example" hide-footer>
 				<div class="d-block text-center">
 					<h3>
@@ -40,18 +40,29 @@
 							</div>
 						</div>
 					</div>
-					<div class="productos">
-						<div
-							v-for="item in items"
-							:key="item.idArticuloVenta"
-							class="detalle"
-						>
-							<Producto
-								:name="item.denominacion"
-								:cantidad="item.cantidad"
-								:denominacion="item.denominacion"
-								:precioVenta="item.precioVenta"
-							/>
+					<div
+						v-for="item in carrito"
+						:key="item.productoVentaID"
+						class="detalle"
+					>
+						<div class="container-fluid">
+							<div class="row fila-detalle">
+								<div class="col col-8">
+									<span>{{ item.cantidad }} {{ item.denominacion }} x</span>
+								</div>
+
+								<div class="col col-3">
+									<span>{{ formatter.formatMoney(item.precioVenta) }}</span>
+								</div>
+								<div class="col col-1">
+									<span>
+										<b-img
+											style="width: 1.7em"
+											src="http://localhost:9001/images/sistema/eliminar.png"
+										></b-img>
+									</span>
+								</div>
+							</div>
 						</div>
 					</div>
 					<hr style="width: 100%; border-top: 2px solid rgba(0, 0, 0, 0.1)" />
@@ -203,7 +214,8 @@
 <script>
 	import Formatter from "@/utilidades/Formatters.js";
 	import $ from "jquery";
-	import { Producto } from "./ProductoCarrito.vue";
+	//import Producto from "@/components/ProductoCarrito.vue";
+	//import { mapState } from "vuex";
 	export default {
 		data() {
 			return {
@@ -212,13 +224,10 @@
 			};
 		},
 		components: {
-			Producto: Producto,
+			//	Producto: Producto,
 		},
-		computed: {
-			items() {
-				return this.$store.state.carrito;
-			},
-		},
+
+		props: ["carrito"],
 		methods: {
 			toggleClassEntrega() {
 				var $parent = $("#entregas");
@@ -237,14 +246,15 @@
 				console.log($children);
 			},
 			updateCarrito() {
+				this.componentKey += 1;
 				var entregaID = $(".entrega").find(".btnActivo").attr("id");
 				var tarjeta = $(".pago").find(".btnActivo").attr("id");
-				this.items.forEach((i) => {
+				this.carrito.forEach((i) => {
 					i.envio = entregaID == "delivery";
 					i.esTarjeta = tarjeta == "tarjeta";
 				});
 
-				this.$store.dispatch("updateCarrito", this.items);
+				this.$store.dispatch("updateCarrito", this.carrito);
 			},
 		},
 	};

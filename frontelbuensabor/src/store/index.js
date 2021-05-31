@@ -13,6 +13,7 @@ export default new Vuex.Store({
     setCarrito(state, payload)
     {
       state.carrito[payload.idArticuloVenta] = { ...payload };
+      console.log(payload);
       console.log(state.carrito);
       /*  axios.post("http://localhost:9001/buensabor/pedido/pedidoPendiente", state.carrito, {
          headers: {
@@ -38,8 +39,11 @@ export default new Vuex.Store({
       {
         commit("setCarrito", producto);
       });
-    }
+    },
   },
   modules: {
-  }
+  },
+  getters: {
+    getCarrito: state => state.carrito
+  },
 })

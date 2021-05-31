@@ -107,7 +107,7 @@
 			</div>
 			<Loader v-if="loading" :loading="loading" />
 			<b-modal id="modalDetalle" hide-header hide-footer>
-				<ManufacturadoDetalle :id="platoElegido" />
+				<ManufacturadoDetalle :id="platoElegido" @close="closeModal" />
 			</b-modal>
 		</div>
 	</div>
@@ -192,6 +192,9 @@
 							.then((r) => (this.productos = r.data));
 					else this.getAllProductos();
 				}, 800);
+			},
+			closeModal() {
+				this.$bvModal.hide("modalDetalle");
 			},
 		},
 	};

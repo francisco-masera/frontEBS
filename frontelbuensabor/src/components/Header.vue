@@ -89,7 +89,7 @@
 									user.nombre + " " + user.apellido
 								}}</label>
 							</b-nav-item>
-							<Carrito ref="carrito" />
+							<Carrito ref="carrito" :carrito="carrito" />
 							<b-nav-item
 								class="menuLateral"
 								v-for="boton in botones"
@@ -187,6 +187,12 @@
 		},
 		props: ["imagen", "id", "screenLength", "esHome"],
 
+		computed: {
+			carrito() {
+				console.log(this.$store.state.carrito);
+				return this.$store.state.carrito;
+			},
+		},
 		methods: {
 			async verificaUsuario() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
