@@ -77,6 +77,11 @@
             >
           </div>
         </div>
+        <div v-if="estaFiltrado">
+          <b-button class="buttonText" @click="limpiarFiltro()">
+            Ver todos
+          </b-button>
+        </div>
       </div>
       <div class="platos">
         <b-card-group deck class="deckPlatos">
@@ -103,7 +108,11 @@ import Loader from "@/components/Loader.vue";
 import MenuLateral from "@/components/MenuLateral.vue";
 export default {
   mounted() {
+    if(this.parametroBusqueda && this.parametroBusqueda!=""){
+    filtrarPorTexto();
+    }else{      
     this.getAllProductos();
+    }
   },
   updated() {
     this.loading = false;
@@ -123,6 +132,8 @@ export default {
       service: new Service(),
       productos: [],
       timeout: null,
+      parametroBusqueda:"",
+      estaFiltrado:false
     };
   },
   methods: {
@@ -150,12 +161,18 @@ export default {
     },
 
     filtrarPorTexto() {
-      var terminos = document.getElementById("buscadorInput").value;
+      var terminos;
+      if(!this.parametroBusqueda)
+      {
+         terminos=document.getElementById("buscadorInput").value;
+      }else{
+        terminos=this.parametroBusqueda
+      }
 
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         this.productos = [];
-        if (terminos != "")
+        if (terminos != ""){
           axios
             .post(
               "http://localhost:9001/buensabor/informacionArticulo/filtrados/",
@@ -163,9 +180,23 @@ export default {
               { params: { terminos: terminos } }
             )
             .then((r) => (this.productos = r.data));
+            this.estaFiltrado=true;
+            }
         else this.getAllProductos();
       }, 800);
     },
+  limpiarFiltro(){
+    this.estaFiltrado=false;
+    this.$router.push({ path: "/menu", query:{}});
+  }
+  },
+   watch:{
+    "$route.query.search":{
+      immediate:true,
+      handler(search){
+        this.parametroBusqueda=search;
+      }
+    }
   },
 };
 </script>
@@ -174,6 +205,13 @@ export default {
 .tarjetaPlato {
   width: 100%;
   float: left;
+}
+.verTodos{
+  color:#151515;
+  background-color: none !important;
+}
+.verTodos::hover{
+  color:#e7511e;
 }
 
 #filtros {
