@@ -11,7 +11,7 @@
           @keyup="filtrar"
         >
         </b-form-input>
-        <b-button size="sm" class="botonImagenBuscador">
+        <b-button size="sm" class="botonImagenBuscador" @click="filtrarMenu">
           <img src="http://localhost:9001/images/sistema/buscar.png" />
         </b-button>
       </div>
@@ -242,6 +242,9 @@ export default {
         }
       }, 800);
     },
+    filtrarMenu(){
+      this.$router.push({ path: "/menu", query:{search:this.buscar}});
+    }
   },
 };
 </script>
