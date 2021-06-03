@@ -18,19 +18,15 @@
 				{{ manufacturadoParam.descripcion }}
 			</b-card-text>
 			<b-card-text class="precio" style="float: right">
-				{{ this.formatter.formatMoney(manufacturadoParam.precioVenta) }}
+				{{ manufacturadoParam.precioVenta | formatCurrency }}
 			</b-card-text>
 		</b-container>
 	</b-card>
 </template>
 
 <script>
-	import Formatter from "@/utilidades/Formatters.js";
 	export default {
 		props: ["manufacturadoParam"],
-		data() {
-			return { formatter: new Formatter() };
-		},
 	};
 </script>
 

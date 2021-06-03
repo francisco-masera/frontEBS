@@ -122,8 +122,12 @@
 					idArticuloVenta: this.producto.idArticuloVenta,
 					denominacion: this.producto.denominacion,
 					precioVenta: this.producto.precioVenta,
+					idPedido: 0,
 				};
 				this.$store.dispatch("addItemCarrito", producto);
+				this.$store.dispatch("setSubtotal");
+				this.$store.dispatch("setTotal");
+				this.$store.dispatch("setCarritoKey");
 				this.$emit("close");
 			},
 		},

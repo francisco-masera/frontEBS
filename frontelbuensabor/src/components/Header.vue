@@ -78,6 +78,7 @@
 							<b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
 							<b-nav-item :to="'/misdatos/' + this.user.id">
 								<b-img
+									v-if="user.id"
 									:src="user.foto"
 									alt=""
 									id="foto"
@@ -85,11 +86,20 @@
 									class="botonImagenHeader fotoUsuario"
 								>
 								</b-img>
-								<label id="usuario">{{
+								<b-img
+									v-else
+									src="http://localhost:9001/images/sistema/userDefaultChico.png"
+									alt=""
+									id="foto"
+									fluid
+									class="botonImagenHeader fotoUsuario"
+								>
+								</b-img>
+								<label v-show="user.nombre && user.apellido" id="usuario">{{
 									user.nombre + " " + user.apellido
 								}}</label>
 							</b-nav-item>
-							<Carrito ref="carrito" :carrito="carrito" />
+							<Carrito ref="carrito" />
 							<b-nav-item
 								class="menuLateral"
 								v-for="boton in botones"
@@ -181,18 +191,10 @@
 				imgFallBack: "http://localhost:9001/images/sistema/userDefaultChico.png",
 			};
 		},
-
 		mounted() {
 			this.verificaUsuario();
 		},
 		props: ["imagen", "id", "screenLength", "esHome"],
-
-		computed: {
-			carrito() {
-				console.log(this.$store.state.carrito);
-				return this.$store.state.carrito;
-			},
-		},
 		methods: {
 			async verificaUsuario() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
