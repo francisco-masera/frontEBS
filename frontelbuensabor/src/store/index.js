@@ -64,7 +64,8 @@ export default new Vuex.Store({
       axios.get("http://localhost:9001/buensabor/pedido/getCarritoPediente/" + state.idCliente, config).then(data =>
       {
         state.carrito = data.data;
-        state.subtotal = data.data.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0)
+        state.subtotal = data.data.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0);
+        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) + state.descuento + state.envio;
       }).catch((e) =>
       {
         console.log(e);
@@ -93,13 +94,11 @@ export default new Vuex.Store({
     {
       if (state.carrito.items.length != 0)
         state.subtotal = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0)
-      else state.subtotal = 0;
     },
     setTotal(state)
     {
       if (state.carrito.items.length != 0)
         state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) + state.descuento + state.envio;
-      else state.subtotal = 0;
     },
     setEnvio(state, isEnvio)
     {
@@ -152,9 +151,10 @@ export default new Vuex.Store({
     {
       commit("setSubtotal");
     },
-    setTotal({ commit })
+    setTotal({ commit, state })
     {
       commit("setTotal");
+      return state.total;
     },
     setEnvio({ commit }, isEnvio)
     {
@@ -168,7 +168,7 @@ export default new Vuex.Store({
     carritoKey: state => state.carritoKey,
     idCliente: state => state.idCliente,
     subtotal: state => state.subtotal,
-    setTotal: state => state.total,
+    total: state => state.total,
   },
 
 })

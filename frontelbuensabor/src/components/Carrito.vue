@@ -38,7 +38,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="click hover focus"
+				triggers="click"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"
@@ -52,13 +52,6 @@
 							</div>
 						</div>
 					</div>
-					<!-- <div
-						v-for="item in $store.state.carrito.items"
-						:key="item.idArticuloVenta"
-						class="detalle"
-					>
-						<Producto :item="item" class="container" />
-					</div> -->
 					<Producto :items="$store.state.carrito.items" />
 					<hr style="width: 100%; border-top: 2px solid rgba(0, 0, 0, 0.1)" />
 					<div class="col-7" style="margin-bottom: 3vh">
@@ -83,9 +76,9 @@
 								<div class="col-6">
 									<b-button
 										pill
-										@click="toggleClassEntrega"
+										@click="toggleClassEntrega(1)"
 										id="delivery"
-										class="btnActivo entrega"
+										class="btnNoActivo entrega"
 										>Delivery
 										<b-img></b-img>
 									</b-button>
@@ -93,7 +86,7 @@
 								<div class="col-6">
 									<b-button
 										pill
-										@click="toggleClassEntrega"
+										@click="toggleClassEntrega(2)"
 										id="tienda"
 										class="btnNoActivo entrega"
 										>Tienda
@@ -222,21 +215,43 @@
 			this.$store.dispatch("setCarritoKey");
 		},
 		methods: {
-			toggleClassEntrega() {
+			toggleClassEntrega(btn) {
 				var $parent = $("#entregas");
 				var $children = $parent.find(".entrega");
-				$.each($children, (i) => {
-					$($children[i]).toggleClass("btnActivo btnNoActivo");
-				});
-				console.log($children);
+				this.toggleClass($children);
+				var $tarjeta = $("#tarjeta");
+				if (btn == 1) {
+					$tarjeta.attr("disabled", true);
+				} else {
+					$tarjeta.attr("disabled", false);
+				}
 			},
 			toggleClassPago() {
-				var $parent = $("#pagos");
-				var $children = $parent.find(".pago");
+				if (!$("#tarjeta").is(":disabled")) {
+					var $parent = $("#pagos");
+					var $children = $parent.find(".pago");
+					this.toggleClass($children);
+				}
+			},
+
+			toggleClass($children) {
 				$.each($children, (i) => {
-					$($children[i]).toggleClass("btnActivo btnNoActivo");
+					if ($($children[i]).hasClass("btnActivo")) {
+						$($children[i]).removeClass("btnActivo").addClass("btnNoActivo");
+						$($children[i + 1])
+							.removeClass("btnNoActivo")
+							.addClass("btnActivo");
+
+						return false;
+					} else {
+						$($children[i]).removeClass("btnNoActivo").addClass("btnActivo");
+						$($children[i + 1])
+							.removeClass("btnActivo")
+							.addClass("btnNoActivo");
+
+						return false;
+					}
 				});
-				console.log($children);
 			},
 			updateCarrito() {
 				var entregaID = $(".entrega").find(".btnActivo").attr("id");
@@ -274,25 +289,6 @@
 	}
 
 	.btnActivo {
-		border: none;
-		background-color: #e7511e;
-		color: #ffffff;
-		font-weight: 600;
-		width: max-content;
-		height: 35px;
-		margin: -2vh 0;
-		margin-bottom: 4vh;
-	}
-
-	.btnActivo:hover {
-		border: #e7511e;
-		background-color: #ffffff;
-		border-style: solid;
-		border-width: 1px;
-		color: #e7511e;
-	}
-
-	.btnNoActivo {
 		color: #e7511e !important;
 		border: #e7511e;
 		background-color: #ffffff;
@@ -305,10 +301,29 @@
 		margin-bottom: 4vh;
 	}
 
-	.btnNoActivo:hover {
+	.btnActivo:hover {
 		border: none;
 		background-color: #e7511e;
 		color: #ffffff !important;
+	}
+
+	.btnNoActivo {
+		border: none;
+		background-color: #e7511e;
+		color: #ffffff;
+		font-weight: 600;
+		width: max-content;
+		height: 35px;
+		margin: -2vh 0;
+		margin-bottom: 4vh;
+	}
+
+	.btnNoActivo:hover {
+		border: #e7511e;
+		background-color: #ffffff;
+		border-style: solid;
+		border-width: 1px;
+		color: #e7511e !important;
 	}
 
 	h4 {

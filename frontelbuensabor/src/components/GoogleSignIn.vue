@@ -91,7 +91,6 @@
 					.then((data) => {
 						if (data != null) {
 							this.$store.dispatch("setIdCliente", data.data.id);
-							debugger;
 							this.redirect(data.data);
 						} else
 							this.toastr(
