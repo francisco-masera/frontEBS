@@ -18,7 +18,7 @@ const cliente = JSON.parse(sessionStorage.getItem("user"));
 
 export default new Vuex.Store({
   state: {
-    carrito: { items: [] },
+    carrito: { items: [], idPedido: 0 },
     carritoKey: 0,
     idCliente: cliente != undefined ? cliente.id : "",
     subtotal: 0,
@@ -37,7 +37,6 @@ export default new Vuex.Store({
         var item = {
           idArticuloVenta: i.idArticuloVenta,
           cantidad: i.cantidad,
-          idPedido: i.idPedido,
           precioVenta: i.precioVenta,
           denominacion: i.denominacion,
           idItem: 0
@@ -74,13 +73,18 @@ export default new Vuex.Store({
       return state.carrito;
 
     },
-    delItem(state, params)
+    delItem(state, idArticuloVenta)
     {
-      axios.delete("http://localhost:9001/buensabor/detallePedido/quitarItem/" + params.idArticuloVenta + "/" + params.idPedido, config).then(() =>
-      {
-        var idx = state.carrito.items.findIndex(i => i.idArticuloVenta == params.idArticuloVenta);
-        state.carrito.items.splice(idx, 1);
-      }).catch();
+      axios.delete("http://localhost:9001/buensabor/detallePedido/quitarItem/" + idArticuloVenta + "/" + state.carrito.idPedido, config)
+        .then(() =>
+        {
+          var idx = state.carrito.items.findIndex(i => i.idArticuloVenta == idArticuloVenta);
+          state.carrito.items.splice(idx, 1);
+        }).catch(e => console.log(e));
+    },
+    delCarrito(state)
+    {
+      axios.delete("http://localhost:9001/buensabor/pedido/eliminarPedido/" + state.idCliente, config).catch(e => console.log(e));
     },
     setCarritoKey(state)
     {
@@ -98,7 +102,7 @@ export default new Vuex.Store({
     setTotal(state)
     {
       if (state.carrito.items.length != 0)
-        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) + state.descuento + state.envio;
+        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) + - state.descuento + state.envio;
     },
     setEnvio(state, isEnvio)
     {
@@ -130,6 +134,15 @@ export default new Vuex.Store({
         commit("setPedido", producto);
       });
     },
+    delItem({ commit }, idArticuloVenta)
+    {
+
+      commit("delItem", idArticuloVenta);
+    },
+    delCarrito({ commit })
+    {
+      commit("delCarrito");
+    },
     getCarrito({ commit })
     {
       commit("getCarrito");
@@ -138,11 +151,7 @@ export default new Vuex.Store({
     {
       commit("setCarritoKey");
     },
-    delItem({ commit }, params)
-    {
 
-      commit("delItem", params);
-    },
     setIdCliente({ commit }, id)
     {
       commit("setIdCliente", id);

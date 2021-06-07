@@ -12,7 +12,7 @@
 		</template>
 		<template v-slot:cell(eliminar)="row">
 			<b-btn
-				@click="delItem(row.item)"
+				@click="delItem(row.item.idArticuloVenta)"
 				:id="row.item.idPedido"
 				style="background: transparent; border-color: transparent"
 			>
@@ -40,14 +40,11 @@
 			};
 		},
 		methods: {
-			delItem(item) {
-				console.log("del");
-				debugger;
-				this.$store.dispatch("delItem", {
-					idArticuloVenta: item.idArticuloVenta,
-					idPedido: item.idPedido,
-				});
+			delItem(idArticuloVenta) {
+				this.$store.dispatch("delItem", idArticuloVenta);
 				this.$store.dispatch("setSubtotal");
+				this.$store.dispatch("setTotal");
+				this.$store.dispatch("setCarritoKey");
 			},
 		},
 		props: ["items"],

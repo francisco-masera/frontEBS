@@ -109,7 +109,7 @@
 										pill
 										@click="toggleClassPago"
 										id="efectivo"
-										class="btnActivo pago"
+										class="btnNoActivo pago"
 										>Efectivo
 										<b-img></b-img>
 									</b-button>
@@ -134,7 +134,7 @@
 					</div>
 					<div class="col-4" style="margin-bottom: 3vh">
 						<div class="d-block">
-							<span>{{ 50 | formatCurrency }}</span>
+							<span>{{ $store.state.envio | formatCurrency }}</span>
 						</div>
 					</div>
 					<div class="col-7" style="margin-bottom: 3vh">
@@ -144,7 +144,7 @@
 					</div>
 					<div class="col-4" style="margin-bottom: 3vh">
 						<div class="d-block">
-							<span>{{ 0 | formatCurrency }}</span>
+							<span>{{ $store.state.descuento | formatCurrency }}</span>
 						</div>
 					</div>
 					<div class="col-7" style="margin-bottom: 2vh">
@@ -159,20 +159,26 @@
 							<span>{{ $store.state.total | formatCurrency }}</span>
 						</div>
 					</div>
-					<div class="hora col-12">
-						<h4>Hora Estimada</h4>
+					<b-collapse
+						id="tiempo"
+						:visible="tiempoEstimado != null"
+						style="width: 90%"
+					>
+						<h4>Tiempo Estimado</h4>
 						<div class="col-12 mb-4">
-							<span style="margin-left: 30%">
+							<span style="margin-left: 40%">
 								<b-img
 									width="30"
 									src="http://localhost:9001/images/sistema/reloj.png"
 								></b-img>
-								22.30
+								<span class="">{{ tiempoEstimado }}</span>
 							</span>
 						</div>
-					</div>
+					</b-collapse>
 					<div class="col-12 mb-4" style="text-align: center">
-						<b-button pill class="m-auto btnActivo">Confirmar Pedido</b-button>
+						<b-button pill class="m-auto btnActivo" @click="confirmar"
+							>Confirmar Pedido</b-button
+						>
 					</div>
 
 					<div class="col-12" style="text-align: center">
@@ -185,25 +191,70 @@
 							"
 							pill
 							class="cancelar"
+							@click="showConfirmation"
 						>
 							Cancelar Pedido
 						</b-button>
 					</div>
 				</div>
+				<b-overlay
+					style="height: 100%"
+					:show="showOverlay"
+					no-wrap
+					variant="dark"
+					opacity="1"
+					blur="2px"
+				>
+					<template #overlay>
+						<div
+							ref="dialog"
+							tabindex="-1"
+							role="dialog"
+							aria-modal="false"
+							aria-labelledby="form-confirm-label"
+							class="text-center p-3"
+						>
+							<p>
+								<strong id="form-confirm-label" class="text-danger"
+									>¿Desea vaciar el carrito?</strong
+								>
+							</p>
+							<div>
+								<b-button
+									variant="outline-success"
+									class="mr-3"
+									@click="onCancel"
+								>
+									No
+								</b-button>
+								<b-button variant="outline-danger" @click="onOK"
+									>Vaciar</b-button
+								>
+							</div>
+						</div>
+					</template>
+				</b-overlay>
 			</b-popover>
 		</div>
+		<Toast ref="toast" />
 	</div>
 </template>
 
 <script>
 	import $ from "jquery";
 	import Producto from "@/components/ProductoCarrito.vue";
+	import axios from "axios";
+	import Toast from "@/components/Toast.vue";
 	export default {
 		data() {
-			return {};
+			return {
+				showOverlay: false,
+				tiempoEstimado: null,
+			};
 		},
 		components: {
 			Producto: Producto,
+			Toast: Toast,
 		},
 		computed: {
 			mostrarBtnMenu() {
@@ -222,15 +273,28 @@
 				var $tarjeta = $("#tarjeta");
 				if (btn == 1) {
 					$tarjeta.attr("disabled", true);
+					$("#efectivo").addClass("btnActivo").removeClass("btnNoActivo");
+					$("#tarjeta").addClass("btnNoActivo").removeClass("btnActivo");
+					this.$store.state.descuento = 0;
+					this.$store.state.envio = 50;
 				} else {
 					$tarjeta.attr("disabled", false);
+					this.$store.state.descuento = this.$store.state.subtotal * 0.1;
+					this.$store.state.envio = 0;
 				}
+				this.$store.dispatch("setTotal");
 			},
 			toggleClassPago() {
 				if (!$("#tarjeta").is(":disabled")) {
+					this.$store.state.carrito.formaPago = true;
 					var $parent = $("#pagos");
 					var $children = $parent.find(".pago");
 					this.toggleClass($children);
+				} else {
+					if ($("#efectivo").hasClass("btnNoActivo")) {
+						$("#efectivo").addClass("btnActivo").removeClass("btnNoActivo");
+					}
+					this.$store.state.carrito.formaPago = false;
 				}
 			},
 
@@ -265,6 +329,42 @@
 			},
 			toMenu() {
 				if (location.pathname != "/menu") this.$router.push({ name: "Menu" });
+			},
+			showConfirmation() {
+				this.showOverlay = true;
+			},
+			onOK() {
+				this.$store.dispatch("delCarrito");
+				location.reload();
+				this.onCancel();
+			},
+			onCancel() {
+				this.showOverlay = false;
+			},
+			confirmar() {
+				if (this.$store.state.descuento == 0 && this.$store.state.envio == 0) {
+					this.toastr("Debe elegir una forma de entrega", "¡Atención!");
+					return false;
+				}
+				if ($(".pago").find(".btnActivo").attr("id")) {
+					this.toastr("Debe elegir una forma de pago", "¡Atención!");
+					return false;
+				}
+				var manufacturadosID = this.$store.state.carrito.items.map((i) => {
+					return i.idArticuloVenta;
+				});
+
+				var esDelivery = $("#delivery").hasClass("btnActivo");
+				axios
+					.post("http://localhost:9001/buensabor/manufacturado/calcularTiempo", {
+						manufacturadosID,
+						esDelivery,
+					})
+					.then((data) => (this.tiempoEstimado = data.data + " min"));
+				/* .then(() => setTimeout(() => location.reload(), 2500)); */
+			},
+			toastr(msg, title) {
+				this.$refs.toast.emitToast(msg, title);
 			},
 		},
 	};
@@ -340,6 +440,8 @@
 	}
 
 	.cancelar:focus {
-		box-shadow: none;
+		box-shadow: none !important;
+		border-color: transparent !important;
+		outline: none !important;
 	}
 </style>

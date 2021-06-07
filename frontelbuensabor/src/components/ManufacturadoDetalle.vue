@@ -1,26 +1,27 @@
 <template>
 	<b-card
-		:title="this.producto.denominacion"
-		img-src="https://picsum.photos/600/300/?image=25"
-		img-alt="plato"
+		:title="producto.denominacion"
+		:img-src="img"
 		img-fluid
 		tag="article"
 		class="mb-2"
-		style="width: 40vw"
+		style="width: 38.5vw"
+		img-height="400"
+		id="cardP"
 	>
 		<div class="row">
 			<div class="col-8">
 				<b-card-text>
-					{{ this.producto.descripcion }}
+					{{ producto.descripcion }}
 				</b-card-text>
 			</div>
 			<div class="col-4">
 				<div class="row">
-					<img
+					<b-img
 						v-if="producto.aptoCeliaco"
 						src="http://localhost:9001/images/sistema/sinTacc.png"
 					/>
-					<img
+					<b-img
 						v-if="producto.vegetariano || producto.vegano"
 						src="http://localhost:9001/images/sistema/vegetariano.png"
 						style="margin-left: 30px"
@@ -34,15 +35,16 @@
 			multiple
 			:select-size="3"
 			style="width: 23vw"
+			class="form-control"
 		>
 		</b-select>
-		<p></p>
 		<b-input
+			class="form-control"
 			placeholder="Aclaraciones del pedido"
 			style="width: 23vw; border: none; border-bottom: 1px solid black"
 		/>
-		<p></p>
-		<div class="row">
+
+		<div class="row mb-3">
 			<div class="col-8">
 				<b-form-select
 					v-model="cantidad"
@@ -55,8 +57,6 @@
 				<h3>${{ producto.precioVenta }}</h3>
 			</div>
 		</div>
-
-		<p></p>
 		<b-button variant="primary" @click="agregarAlCarrito"
 			>¡Agregar a mi pedido! ({{ precioVenta }})</b-button
 		>
@@ -65,6 +65,7 @@
 
 <script>
 	import Service from "@/service/Service.js";
+	import $ from "jquery";
 	export default {
 		data() {
 			return {
@@ -74,11 +75,12 @@
 				adicionalesId: [],
 				hayAdicionales: false,
 				precioVenta: 0,
+				img: "",
 			};
 		},
 		computed: {
 			adicionales() {
-				return ["Adicionales"];
+				return [{ value: null, text: "Adicionales", disabled: true }];
 			},
 		},
 		props: ["id"],
@@ -88,6 +90,7 @@
 		updated() {
 			if (this.producto.esInsumo == false)
 				if (this.adicionales.length) this.hayAdicionales = true;
+			this.setImgFallBack();
 		},
 		methods: {
 			async getProducto() {
@@ -96,6 +99,7 @@
 					.then((data) => {
 						this.producto = data;
 						this.precioVenta = "$" + data.precioVenta;
+						this.img = "http://localhost:9001/images/productos/" + data.imagen;
 					})
 					.catch((e) => console.log(e.response.data.message));
 			},
@@ -130,9 +134,24 @@
 				this.$store.dispatch("setCarritoKey");
 				this.$emit("close");
 			},
+			setImgFallBack() {
+				$("#cardP")
+					.find("img:first")
+					.on("load", () => {
+						console.log("image loaded correctly");
+					})
+					.on("error", () => {
+						console.log("error loading image");
+
+						this.img = "";
+					});
+			},
 		},
 	};
 </script>
 
-<style>
+<style scoped>
+	.form-control {
+		margin-bottom: 20px;
+	}
 </style>
