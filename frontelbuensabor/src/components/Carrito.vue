@@ -78,9 +78,13 @@
 										pill
 										@click="toggleClassEntrega(1)"
 										id="delivery"
-										class="btnNoActivo entrega"
+										class="entrega"
+										:class="
+											tipoEntrega == 1 && $store.state.carrito.formaPago
+												? 'btnActivo'
+												: 'btnNoActivo'
+										"
 										>Delivery
-										<b-img></b-img>
 									</b-button>
 								</div>
 								<div class="col-6">
@@ -88,9 +92,15 @@
 										pill
 										@click="toggleClassEntrega(2)"
 										id="tienda"
-										class="btnNoActivo entrega"
+										class="entrega"
+										:class="
+											tipoEntrega == 2 &&
+											$store.state.carrito.formaPago == false
+												? 'btnActivo'
+												: 'btnNoActivo'
+										"
+										:disabled="tipoEntrega == 2"
 										>Tienda
-										<b-img></b-img>
 									</b-button>
 								</div>
 							</div>
@@ -107,9 +117,14 @@
 								<div class="col-6">
 									<b-button
 										pill
-										@click="toggleClassPago"
+										@click="toggleClassPago(1)"
 										id="efectivo"
-										class="btnNoActivo pago"
+										class="pago"
+										:class="
+											$store.state.carrito.formaPago
+												? 'btnActivo'
+												: 'btnNoActivo'
+										"
 										>Efectivo
 										<b-img></b-img>
 									</b-button>
@@ -117,9 +132,15 @@
 								<div class="col-6">
 									<b-button
 										pill
-										@click="toggleClassPago"
+										@click="toggleClassPago(2)"
 										id="tarjeta"
-										class="btnNoActivo pago"
+										class="pago"
+										:class="
+											!$store.state.carrito.formaPago && tipoEntrega != 1
+												? 'btnActivo'
+												: 'btnNoActivo'
+										"
+										:disabled="$store.state.envio != 0"
 										>Tarjeta
 										<b-img></b-img>
 									</b-button>
@@ -161,7 +182,7 @@
 					</div>
 					<b-collapse
 						id="tiempo"
-						:visible="tiempoEstimado != null"
+						:visible="tiempoEstimado != null && confirmado"
 						style="width: 90%"
 					>
 						<h4>Tiempo Estimado</h4>
@@ -250,6 +271,9 @@
 			return {
 				showOverlay: false,
 				tiempoEstimado: null,
+				tipoEntrega: "",
+				formaPago: "",
+				confirmado: false,
 			};
 		},
 		components: {
@@ -267,35 +291,28 @@
 		},
 		methods: {
 			toggleClassEntrega(btn) {
-				var $parent = $("#entregas");
-				var $children = $parent.find(".entrega");
-				this.toggleClass($children);
-				var $tarjeta = $("#tarjeta");
 				if (btn == 1) {
-					$tarjeta.attr("disabled", true);
-					$("#efectivo").addClass("btnActivo").removeClass("btnNoActivo");
-					$("#tarjeta").addClass("btnNoActivo").removeClass("btnActivo");
 					this.$store.state.descuento = 0;
 					this.$store.state.envio = 50;
+					this.$store.dispatch("setFormaPago", true);
+					this.formaPago = true;
+					console.log(this.$store.state.envio);
 				} else {
-					$tarjeta.attr("disabled", false);
 					this.$store.state.descuento = this.$store.state.subtotal * 0.1;
 					this.$store.state.envio = 0;
+					console.log(this.$store.state.envio);
 				}
+				this.tipoEntrega = btn;
 				this.$store.dispatch("setTotal");
 			},
-			toggleClassPago() {
-				if (!$("#tarjeta").is(":disabled")) {
-					this.$store.state.carrito.formaPago = true;
-					var $parent = $("#pagos");
-					var $children = $parent.find(".pago");
-					this.toggleClass($children);
-				} else {
-					if ($("#efectivo").hasClass("btnNoActivo")) {
-						$("#efectivo").addClass("btnActivo").removeClass("btnNoActivo");
-					}
-					this.$store.state.carrito.formaPago = false;
+			toggleClassPago(val) {
+				this.tipoEntrega = val;
+				this.formaPago = val == 1;
+				if (this.tipoEntrega == 1) {
+					this.$store.dispatch("setFormaPago", true);
+					return false;
 				}
+				this.$store.dispatch("setFormaPago", val == 1);
 			},
 
 			toggleClass($children) {
@@ -317,16 +334,6 @@
 					}
 				});
 			},
-			updateCarrito() {
-				var entregaID = $(".entrega").find(".btnActivo").attr("id");
-				var tarjeta = $(".pago").find(".btnActivo").attr("id");
-				this.carrito.forEach((i) => {
-					i.envio = entregaID == "delivery";
-					i.esTarjeta = tarjeta == "tarjeta";
-				});
-
-				this.$store.dispatch("updateCarrito", this.carrito);
-			},
 			toMenu() {
 				if (location.pathname != "/menu") this.$router.push({ name: "Menu" });
 			},
@@ -346,7 +353,7 @@
 					this.toastr("Debe elegir una forma de entrega", "¡Atención!");
 					return false;
 				}
-				if ($(".pago").find(".btnActivo").attr("id")) {
+				if (this.formaPago == "") {
 					this.toastr("Debe elegir una forma de pago", "¡Atención!");
 					return false;
 				}
@@ -360,8 +367,37 @@
 						manufacturadosID,
 						esDelivery,
 					})
-					.then((data) => (this.tiempoEstimado = data.data + " min"));
-				/* .then(() => setTimeout(() => location.reload(), 2500)); */
+					.then((data) => {
+						this.tiempoEstimado = data.data + " min";
+						this.$store.state.carrito.tiempoEstimado = data.data;
+					})
+					.then(() =>
+						axios
+							.put(
+								"http://localhost:9001/buensabor/pedido/confirmarPedido/",
+								this.$store.state.carrito
+							)
+							.then((data) => {
+								if (data.data) {
+									setTimeout(() => {
+										this.$store.dispatch("resetCarrito");
+										location.reload(), 2300;
+									});
+								} else {
+									this.toastr(
+										"Su pedido no ha podido ser confirmado",
+										"Ocurrió un error: "
+									);
+								}
+							})
+							.catch((e) => console.log(e))
+					)
+					.catch(() => {
+						this.toastr(
+							"Su pedido no ha podido ser confirmado",
+							"Ocurrió un error: "
+						);
+					});
 			},
 			toastr(msg, title) {
 				this.$refs.toast.emitToast(msg, title);

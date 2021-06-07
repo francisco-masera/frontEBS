@@ -24,7 +24,7 @@ export default new Vuex.Store({
     subtotal: 0,
     total: 0,
     descuento: 0,
-    envio: 0
+    envio: 0,
   },
   mutations: {
 
@@ -47,17 +47,14 @@ export default new Vuex.Store({
 
       var carrito = {
         idCliente: state.idCliente, formaPago: false, tipoEntrega: false,
-        estado: 'Pendiente', numero: 0, horaEstimada: null, items: items
+        estado: 'Pendiente', numero: 0, horaEstimada: null, items: items,
+        tiempoEstimado: 0,
       };
 
       carrito = JSON.parse(JSON.stringify(carrito));
       axios.post("http://localhost:9001/buensabor/pedido/saveCarrito/", carrito, config);
     },
-    setPedido(state)
-    {
-      axios.put("http://localhost:9001/buensabor/pedido/carritoPendiente", state.carrito, config);
 
-    },
     getCarrito(state)
     {
       axios.get("http://localhost:9001/buensabor/pedido/getCarritoPediente/" + state.idCliente, config).then(data =>
@@ -86,6 +83,15 @@ export default new Vuex.Store({
     {
       axios.delete("http://localhost:9001/buensabor/pedido/eliminarPedido/" + state.idCliente, config).catch(e => console.log(e));
     },
+    resetCarrito(state)
+    {
+      state.carrito = {
+        idCliente: state.idCliente, formaPago: false, tipoEntrega: false,
+        estado: 'Pendiente', numero: 0, horaEstimada: null, items: [],
+        tiempoEstimado: 0,
+      };
+
+    },
     setCarritoKey(state)
     {
       state.carritoKey += 1;
@@ -108,6 +114,10 @@ export default new Vuex.Store({
     {
       state.envio = isEnvio ? 50 : 0
     },
+    setFormaPago(state, isEfectivo)
+    {
+      state.carrito.formaPago = isEfectivo
+    },
 
   },
   actions: {
@@ -127,13 +137,13 @@ export default new Vuex.Store({
       }
       commit('setCarrito', producto);
     },
-    updateCarrito({ commit, state }, producto)
-    {
-      state.carrito.forEach(() =>
-      {
-        commit("setPedido", producto);
-      });
-    },
+    /*    updateCarrito({ commit, state }, producto)
+       {
+         state.carrito.forEach(() =>
+         {
+           commit("setPedido", producto);
+         });
+       }, */
     delItem({ commit }, idArticuloVenta)
     {
 
@@ -147,11 +157,14 @@ export default new Vuex.Store({
     {
       commit("getCarrito");
     },
+    resetCarrito({ commit })
+    {
+      commit("resetCarrito");
+    },
     setCarritoKey({ commit })
     {
       commit("setCarritoKey");
     },
-
     setIdCliente({ commit }, id)
     {
       commit("setIdCliente", id);
@@ -168,6 +181,10 @@ export default new Vuex.Store({
     setEnvio({ commit }, isEnvio)
     {
       commit("setEnvio", isEnvio);
+    },
+    setFormaPago({ commit }, isEfectivo)
+    {
+      commit("setFormaPago", isEfectivo);
     }
   },
   modules: {
