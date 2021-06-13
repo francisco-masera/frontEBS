@@ -163,6 +163,7 @@ export default {
   margin-top: 20px;
   margin-bottom: 25px;
   display: inline-block;
+
 }
 
 .botonesMenu {
