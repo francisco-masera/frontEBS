@@ -161,7 +161,7 @@ export default {
 				this.cargaPendientes();
 			},
 
-
+  
     cargaPendientes() {
       if (this.pedidosPendientes) {
         this.filtroPendientes = this.pedidosDelivery.filter(
@@ -186,7 +186,7 @@ export default {
       this.cargaEntregados();
     },
 
-    cargaBuscados(filtrados) {
+    /*cargaBuscados(filtrados) {
       this.pedidosPendientes = false;
       this.pedidosEntregados = false;
       if (!filtrados == undefined && !filtrados == null) {
@@ -204,7 +204,7 @@ export default {
           console.log(error.message);
         }
       );
-    },
+    },*/
     busquedaPedidos() {
       if (this.busquedaOrden != "") {
         this.filtroBuscados = this.pedidosDelivery.filter((pedido) => {
@@ -232,9 +232,16 @@ export default {
       this.timeout = setTimeout(() => {
         this.productos = [];
         if (inputBusqueda == "") {
+         
+          if(this.pedidosPendientes == false){
+           
           this.getPedidos();
-          this.pedidosPendientes = true;
-          this.pedidosEntregados = false;
+          this.cambiarAPendientes();
+          }else{
+            
+          this.getPedidos();
+          this.cambiarAEntregados();
+          }
         }
       }, 800);
     },

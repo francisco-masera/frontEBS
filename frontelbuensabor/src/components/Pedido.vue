@@ -186,7 +186,7 @@ import axios from "axios";
 export default {
   props: ["pedidoParam", "domicilioParam"],
   mounted() {
-    console.log(this.$props.pedidoParam, this.$props.domiclioParam);
+   
   },
   data() {
     return {
@@ -196,24 +196,21 @@ export default {
   },
   methods: {
     async cambiaAEntregado() {
-      var estado = "Entregado";
+   
       var id = this.pedidoParam.id;
-       console.log(id + estado);
+      console.log(this.domicilioParam);
+      
       await axios
         .put(
           "http://localhost:9001/buensabor/pedido/pedidoEntregado/" +
             parseInt(id) +
             "/" +
-            estado
-        )
-        .then((data) => {
-          this.resultEstado = data.data;
-          if (this.resultEstado === 1) {
+            "Entregado"
+        ).then(() => {
+         
             this.$refs.modalEntrega.show();
             setTimeout(() => this.refrescaPantalla(), 1000);
-          } else {
-            console.log("Error para entregar");
-          }
+        
         });
     },
 
