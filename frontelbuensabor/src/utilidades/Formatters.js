@@ -1,5 +1,8 @@
-export default class Formatter {
-	formatMoney = (money) => {
+
+export default class Formatter
+{
+	formatMoney = (money) =>
+	{
 		const formatter = new Intl.NumberFormat('es-Ar', {
 			style: 'currency',
 			currency: 'ARS',
@@ -8,13 +11,15 @@ export default class Formatter {
 		return formatter.format(parseFloat(money));
 	};
 
-	formatNumber = (n) => {
+	formatNumber = (n) =>
+	{
 		let numberStrArray = String(n).split('');
 		numberStrArray = numberStrArray.map((e) => (e == ',' ? (e = '.') : e));
 		return Math.round(parseFloat(numberStrArray.join('')) * 10) / 10;
 	};
 
-	formatHour = (hour) => {
+	formatHour = (hour) =>
+	{
 		if (hour == null) return '';
 		let timeArr = hour.split(':');
 		let hh = parseInt(timeArr[0]) + 3;
@@ -24,4 +29,5 @@ export default class Formatter {
 
 		return new String(hh + ':' + mm + ':' + ss);
 	};
+
 }

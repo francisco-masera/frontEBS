@@ -154,22 +154,13 @@ export default {
       });
     },
 
-    agregaDomicilioPedido() {
-      this.pedidosDelivery.forEach((pedido) => {
-        this.domicilios.forEach((domicilio) => {
-          if (pedido.cliente.id == domicilio.persona.id) {
-            pedido.cliente.domicilio = domicilio;
-          }
-        });
-      });
 
-      console.log(this.pedidosDelivery);
-    },
-    cambiarAPendientes() {
-      this.pedidosPendientes = true;
-      this.pedidosEntregados = false;
-      this.cargaPendientes();
-    },
+			cambiarAPendientes() {
+				this.pedidosPendientes = true;
+				this.pedidosEntregados = false;
+				this.cargaPendientes();
+			},
+
 
     cargaPendientes() {
       if (this.pedidosPendientes) {
