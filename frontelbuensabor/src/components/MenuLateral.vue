@@ -140,6 +140,7 @@
 </script>
 
 <style>
+
 	@import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
 
 	#MenuLateral {
@@ -250,4 +251,5 @@
 			display: none;
 		}
 	}
+
 </style>
