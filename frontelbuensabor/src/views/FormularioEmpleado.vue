@@ -545,6 +545,12 @@
 								this.toastr(e.response.data.message, "¡Atención!");
 								return false;
 							});
+					})
+					.catch((e) => {
+						this.loading = !this.loading;
+						this.utils.enableScroll();
+						this.toastr(e.response.data.message, "¡Atención!");
+						return false;
 					});
 			},
 
