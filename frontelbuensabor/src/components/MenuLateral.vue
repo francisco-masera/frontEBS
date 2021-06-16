@@ -140,7 +140,6 @@
 </script>
 
 <style>
-
 	@import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaina+2:wght@400;500;600;700;800&display=swap");
 
 	#MenuLateral {
@@ -225,6 +224,7 @@
 	#rol {
 		font-weight: 400;
 		font-size: 12pt;
+		margin-left: 2.7em;
 	}
 
 	#nombre {
@@ -251,5 +251,4 @@
 			display: none;
 		}
 	}
-
 </style>
