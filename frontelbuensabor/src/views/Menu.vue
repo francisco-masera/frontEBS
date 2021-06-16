@@ -11,43 +11,43 @@
 				<div style="float: right">
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/pizza.svg"
 						/>
 					</b-button>
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/lomo.svg"
 						/>
 					</b-button>
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/hamburger.svg"
 						/>
 					</b-button>
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 4)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/papasFritas.svg"
 						/>
 					</b-button>
 
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/sandwich.svg"
 						/>
 					</b-button>
 					<b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/botella.svg"
 					/></b-button>
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
 						<b-img
-							width="50px"
+							width="30px"
 							src="http://localhost:9001/images/sistema/cupcake.svg"
 						/>
 					</b-button>

@@ -157,7 +157,8 @@
 		margin-left: 100px;
 		margin-top: -50px;
 		position: absolute;
-
+		width: 17vw;
+		min-width: 240px;
 		z-index: 1;
 	}
 
@@ -175,6 +176,7 @@
 		margin-top: 20px;
 		margin-bottom: 25px;
 		display: inline-block;
+		margin-left: 2em;
 	}
 
 	.botonesMenu {
@@ -228,7 +230,7 @@
 		margin-bottom: 0px;
 		font-family: "Baloo Bhaina 2";
 		font-weight: 700;
-
+		margin-left: 2em;
 		font-size: 16pt;
 	}
 

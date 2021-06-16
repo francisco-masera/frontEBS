@@ -29,7 +29,11 @@
 							</div>
 						</div>
 					</div>
-					<b-button class="mt-3" v-show="mostrarBtnMenu" block
+					<b-button
+						class="mt-3"
+						@click="$router.push({ name: 'Menu' })"
+						v-show="mostrarBtnMenu"
+						block
 						>Ver todos los platos</b-button
 					>
 				</div>
@@ -282,7 +286,7 @@
 		},
 		computed: {
 			mostrarBtnMenu() {
-				return location.pathname != "/menu";
+				return location.href != "/menu";
 			},
 		},
 		created() {

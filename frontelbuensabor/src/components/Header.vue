@@ -99,7 +99,10 @@
 									user.nombre + " " + user.apellido
 								}}</label>
 							</b-nav-item>
-							<Carrito ref="carrito" />
+							<Carrito
+								ref="carrito"
+								v-show="user.id != undefined && user.id != null"
+							/>
 							<b-nav-item
 								class="menuLateral"
 								v-for="boton in botones"
