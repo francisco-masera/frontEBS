@@ -156,13 +156,8 @@
 			},
 			getAllProductos() {
 				this.service
-					.getAll("manufacturado/conStock")
-					.then((r) => r.forEach((d) => this.productos.push(d)))
-					.then(
-						this.service
-							.getAll("insumoVenta/conStock")
-							.then((r) => r.forEach((d) => this.productos.push(d)))
-					);
+					.getAll("informacionArticulo/conStock")
+					.then((r) => r.forEach((d) => this.productos.push(d)));
 			},
 			filtrarCategoria(tipo, categoria) {
 				console.log(categoria, tipo);
