@@ -107,7 +107,7 @@
 					this.rol = "Cocinero";
 				} else if (this.user.rol == undefined) {
 					/*Cliente*/
-					boton = [1, "Mis direcciones", "misDirecciones.png", ""];
+					boton = [1, "Mis direcciones", "misDirecciones.png", "/misDirecciones"];
 					this.botones.push(boton);
 					boton = [2, "Mis pedidos", "Pedidos.png", ""];
 					this.botones.push(boton);

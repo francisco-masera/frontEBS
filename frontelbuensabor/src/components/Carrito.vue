@@ -286,7 +286,7 @@
 		},
 		computed: {
 			mostrarBtnMenu() {
-				return location.href != "/menu";
+				return location.pathname != "/menu";
 			},
 		},
 		created() {
