@@ -6,7 +6,7 @@
 					<b-img
 						id="brandImg"
 						alt=""
-						src="http://localhost:9001/images/sistema/logo.png"
+						src="images/logo.png"
 					></b-img>
 				</a>
 			</div>
@@ -49,7 +49,7 @@
 							class="bg-transparent border-0"
 						>
 							<b-img
-								src="http://localhost:9001/images/sistema/cerrarSesion.png"
+								src="images/cerrarSesion.png"
 							></b-img>
 						</b-button>
 					</b-navbar-nav>
@@ -64,7 +64,7 @@
 					<b-img
 						id="brandImg"
 						alt=""
-						src="http://localhost:9001/images/sistema/logo.png"
+						src="images/logo.png"
 					></b-img>
 				</a>
 			</div>
@@ -88,7 +88,7 @@
 								</b-img>
 								<b-img
 									v-else
-									src="http://localhost:9001/images/sistema/userDefaultChico.png"
+									src="images/userDefaultChico.png"
 									alt=""
 									id="foto"
 									fluid
@@ -111,7 +111,7 @@
 							>
 								<b-img
 									v-bind:src="
-										'http://localhost:9001/images/sistema/' + boton[2]
+										'images/' + boton[2]
 									"
 									fluid
 									class="iconosMenu"
@@ -136,7 +136,7 @@
 								</b-img>
 								<b-img
 									v-else
-									src="http://localhost:9001/images/sistema/userDefaultChico.png"
+									src="images/userDefaultChico.png"
 									alt=""
 									id="foto"
 									fluid
@@ -157,7 +157,7 @@
 							>
 								<b-img
 									v-bind:src="
-										'http://localhost:9001/images/sistema/' + boton[2]
+										'mages/' + boton[2]
 									"
 									fluid
 									class="iconosMenu"
@@ -191,7 +191,7 @@
 				es_Home: false,
 				service: new Service(),
 				screenWidth: window.screen.width < 1024,
-				imgFallBack: "http://localhost:9001/images/sistema/userDefaultChico.png",
+				imgFallBack: "images/userDefaultChico.png",
 			};
 		},
 		mounted() {
@@ -277,7 +277,7 @@
 
 							{
 								props: {
-									src: "http://localhost:9001/images/sistema/hamburguesa-02.svg",
+									src: "images/hamburguesa-02.svg",
 									thumbnail: true,
 									center: true,
 									fluid: true,
@@ -354,7 +354,7 @@
 
 							$(this).attr(
 								"src",
-								"http://localhost:9001/images/sistema/userDefaultChico.png"
+								"images/userDefaultChico.png"
 							);
 						});
 				});

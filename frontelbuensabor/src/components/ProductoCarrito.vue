@@ -19,7 +19,7 @@
 				<b-img-lazy
 					class=""
 					width="25%"
-					src="http://localhost:9001/images/sistema/eliminar.png"
+					src="images/eliminar.png"
 				></b-img-lazy>
 			</b-btn>
 		</template>

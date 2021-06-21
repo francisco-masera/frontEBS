@@ -4,7 +4,7 @@
 		<b-button class="social" @click="gLogin()">
 			<img
 				class="img-fluid"
-				src="http://localhost:9001/images/sistema/google.png"
+				src="images/google.png"
 			/>
 		</b-button>
 		<Toast ref="toast" />

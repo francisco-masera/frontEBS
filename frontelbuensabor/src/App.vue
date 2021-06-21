@@ -67,7 +67,7 @@
 	}
 
 	.abajo {
-		background-image: url("http://localhost:9001/images/sistema/reticula.png");
+		background-image: url("http://localhost:8080/images/reticula.png");
 		background-repeat: repeat-x;
 		width: 100%;
 		background-color: #ededed;
@@ -249,7 +249,7 @@
 		margin-bottom: 50px;
 	}
 	.costado {
-		background-image: url("http://localhost:9001/images/sistema/reticulaVertical.png");
+		background-image: url("http://localhost:8080/images/reticulaVertical.png");
 		background-repeat: repeat-y;
 		position: absolute;
 		left: 0;
@@ -302,7 +302,7 @@
 
 	@media screen and (max-width: 774px) {
 		.costado {
-			background-image: url("http://localhost:9001/images/sistema/reticulaVertical-mobile.png");
+			background-image: url("http://localhost:8080/images/reticulaVertical-mobile.png.png");
 			width: 60px;
 			min-width: 60px;
 		}

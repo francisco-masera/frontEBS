@@ -30,7 +30,7 @@
           @click="busquedaPedidos()"
         >
           <img
-            src="http://localhost:9001/images/sistema/buscar.png"
+            src="images/buscar.png"
             id="imagenBuscar"
           />
         </b-button>

@@ -4,7 +4,7 @@
 			<b-img
 				id="carrito-img"
 				fluid
-				src="http://localhost:9001/images/sistema/carrito.png"
+				src="images/carrito.png"
 				class="botonImagenHeader"
 			>
 			</b-img>
@@ -194,7 +194,7 @@
 							<span style="margin-left: 40%">
 								<b-img
 									width="30"
-									src="http://localhost:9001/images/sistema/reloj.png"
+									src="images/reloj.png"
 								></b-img>
 								<span class="">{{ tiempoEstimado }}</span>
 							</span>

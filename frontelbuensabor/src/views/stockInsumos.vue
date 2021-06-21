@@ -14,7 +14,7 @@
           v-model="busqueda"
         ></b-form-input>
         <b-button size="sm" class="botonImagen" type="submit">
-          <img src="http://localhost:9001/images/sistema/buscar.png" id="imagenBuscar" />
+          <img src="images/buscar.png" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
 

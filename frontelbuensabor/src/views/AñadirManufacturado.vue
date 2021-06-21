@@ -266,7 +266,7 @@
               {{ manufacturado.denominacion }}
               <b-button size="sm" id="btn-editar" class="botonImagen">
                 <img
-                  src="http://localhost:9001/images/sistema/editar.png"
+                  src="images/editar.png"
                   id="imagenAgregar"
                 />
               </b-button>

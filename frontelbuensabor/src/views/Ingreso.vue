@@ -4,7 +4,7 @@
       <b-img
         style="cursor: pointer"
         @click="$router.push({ name: 'Home' })"
-        src="http://localhost:9001/images/sistema/logo-01.png"
+        src="images/logo-01.png"
         class="imagen"
       ></b-img>
     </div>
@@ -786,7 +786,7 @@ export default {
 }
 
 .abajoIngreso {
-  background-image: url("http://localhost:9001/images/sistema/reticula.png");
+  background-image: url("http://localhost:8080/images/reticula.png");
   background-repeat: repeat-x;
   width: 100%;
   background-color: #ededed;

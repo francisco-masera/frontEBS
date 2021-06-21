@@ -9,7 +9,7 @@
 				/>
 				<img
 					v-else
-					src="http://localhost:9001/images/sistema/userDefaultGrande.png"
+					src="images/userDefaultGrande.png"
 					id="imagenusuario"
 				/>
 			</div>
@@ -24,7 +24,7 @@
 					@click="accion(boton)"
 				>
 					<b-img
-						v-bind:src="'http://localhost:9001/images/sistema/' + boton[2]"
+						v-bind:src="'images/' + boton[2]"
 						fluid
 						class="iconosMenu"
 					></b-img>

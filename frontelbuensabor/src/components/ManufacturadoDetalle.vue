@@ -19,11 +19,11 @@
 				<div class="row">
 					<b-img
 						v-if="producto.aptoCeliaco"
-						src="http://localhost:9001/images/sistema/sinTacc.png"
+						src="images/sinTacc.png"
 					/>
 					<b-img
 						v-if="producto.vegetariano || producto.vegano"
-						src="http://localhost:9001/images/sistema/vegetariano.png"
+						src="images/vegetariano.png"
 						style="margin-left: 30px"
 					/>
 				</div>

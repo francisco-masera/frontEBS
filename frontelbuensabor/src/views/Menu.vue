@@ -12,43 +12,43 @@
           <b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/pizza.svg"
+              src="images/pizza.svg"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/lomo.svg"
+              src="images//lomo.svg"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/hamburger.svg"
+              src="images/hamburger.svg"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 4)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/papasFritas.svg"
+              src="images/papasFritas.svg"
             />
           </b-button>
 
           <b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/sandwich.svg"
+              src="images/sandwich.svg"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/botella.svg"
+              src="images/botella.svg"
           /></b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
             <b-img
               width="30px"
-              src="http://localhost:9001/images/sistema/cupcake.svg"
+              src="images/cupcake.svg"
             />
           </b-button>
         </div>
@@ -70,7 +70,7 @@
             <b-button class="botonImagen" @click="filtrarCategoria(2, 1)">
               <img
                 width="30px"
-                src="http://localhost:9001/images/sistema/sinTacc.png"
+                src="images/sinTacc.png"
                 style="float: left; margin-right: 8px"
               />
             </b-button>
@@ -82,7 +82,7 @@
             <b-button class="botonImagen" @click="filtrarCategoria(2, 2)">
               <img
                 width="30px"
-                src="http://localhost:9001/images/sistema/vegetariano.png"
+                src="images/vegetariano.png"
                 style="float: left; margin-right: 8px"
               />
             </b-button>

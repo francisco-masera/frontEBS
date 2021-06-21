@@ -12,13 +12,13 @@
         >
         </b-form-input>
         <b-button size="sm" class="botonImagenBuscador" @click="filtrarMenu">
-          <img src="http://localhost:9001/images/sistema/buscar.png" />
+          <img src="images/buscar.png" />
         </b-button>
       </div>
       <div v-if="windowMobile" id="pasosCuadro--mobile">
         <div class="pasos">
           <img
-            src="http://localhost:9001/images/sistema/icono pasos-01.png"
+            src="images/icono pasos-01.png"
             width="70px"
             class="imgPasos"
           />
@@ -29,7 +29,7 @@
         </div>
         <div class="pasos">
           <img
-            src="http://localhost:9001/images/sistema/icono pasos-02.png"
+            src="images/icono pasos-02.png"
             width="90px"
             class="imgPasos"
           />
@@ -40,7 +40,7 @@
         </div>
         <div class="pasos">
           <img
-            src="http://localhost:9001/images/sistema/icono pasos-03.png"
+            src="images/icono pasos-03.png"
             width="90px"
             class="imgPasos"
           />
@@ -53,7 +53,7 @@
       <div v-else id="pasosCuadro">
         <div class="pasos">
           <img
-            src="http://localhost:9001/images/sistema/icono pasos-01.png"
+            src="images/icono pasos-01.png"
             width="70px"
             class="imgPasos"
           />
@@ -64,7 +64,7 @@
         </div>
         <div class="pasos">
           <img
-            src="http://localhost:9001/images/sistema/icono pasos-02.png"
+            src="images/icono pasos-02.png"
             width="90px"
             class="imgPasos"
           />
@@ -75,7 +75,7 @@
         </div>
         <div class="pasos">
           <img
-            src="http://localhost:9001/images/sistema/icono pasos-03.png"
+            src="images/icono pasos-03.png"
             width="90px"
             class="imgPasos"
           />
@@ -117,7 +117,7 @@
     <div class="abajo"></div>
     <div id="home3">
       <div class="cuadro">
-        <img src="http://localhost:9001/images/sistema/nosotros.png" />
+        <img src="images/nosotros.png" />
       </div>
       <div class="cuadro" style="background-color: #1f91b6">
         <div class="cuadroText">
@@ -168,7 +168,7 @@
     </div>
     <div class="footer">
 	<Loader v-if="loading" :loading="loading" />
-      <img src="http://localhost:9001/images/sistema/logo-01.png" />
+      <img src="images/logo-01.png" />
     </div>
     <div class="abajo"></div>
     <Loader v-if="loading" :loading="loading" />
@@ -250,12 +250,29 @@ export default {
 };
 </script>
 <style>
-	#buscador h1 {
-		color: #ffffff;
-		font-family: "Baloo Bhaina 2";
-		font-weight: 600;
-		font-size: 22pt;
-	}
+#buscador h1 {
+  color: #ffffff;
+  font-family: "Baloo Bhaina 2";
+  font-weight: 600;
+  font-size: 22pt;
+}
+h2 {
+  color: #151515;
+  font-family: "Baloo Bhaina 2";
+  font-weight: 600;
+  font-size: 22pt;
+}
+#home {
+  background-color: #ededed;
+}
+#home1 {
+  background-image: url("http://localhost:8080/images/fondo.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  min-height: 750px;
+  width: 100%;
+}
 
 #home2 {
   text-align: center;
@@ -308,22 +325,6 @@ export default {
 }
 .imgPasos {
   float: left;
-}
-
-.botonImagenBuscador {
-  background-color: transparent;
-  border: none;
-  padding: 0px;
-  outline: none;
-  position: relative;
-  float: right;
-  z-index: 98;
-  min-width: 0px;
-  margin-top: -30px;
-  margin-right: 10px;
-}
-.botonImagenBuscador img {
-  width: 60%;
 }
 
 	.botonImagenBuscador {

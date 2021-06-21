@@ -17,7 +17,7 @@
 					></b-form-input>
 					<b-button size="sm" class="botonImagen" type="submit">
 						<img
-							src="http://localhost:9001/images/sistema/buscar.png"
+							src="images/buscar.png"
 							id="imagenBuscar"
 						/>
 					</b-button>
@@ -87,7 +87,7 @@
 						></b-form-input>
 						<b-button size="sm" class="botonImagen" type="submit">
 							<img
-								src="http://localhost:9001/images/sistema/buscar.png"
+								src="images/buscar.png"
 								id="imagenBuscar"
 							/>
 						</b-button>
@@ -155,7 +155,7 @@
 									class="botonImagen"
 								>
 									<img
-										src="http://localhost:9001/images/sistema/editar.png"
+										src="images/editar.png"
 										id="imagenAgregar"
 									/>
 								</b-button>
@@ -165,7 +165,7 @@
 									class="botonImagen"
 								>
 									<img
-										src="http://localhost:9001/images/sistema/eliminar.png"
+										src="images/eliminar.png"
 										id="imagenAgregar"
 									/>
 								</b-button>
