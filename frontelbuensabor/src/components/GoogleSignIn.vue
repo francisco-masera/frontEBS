@@ -4,7 +4,7 @@
 		<b-button class="social" @click="gLogin()">
 			<img
 				class="img-fluid"
-				src="images/google.png"
+				:src="require('../assets/images/buscar.png')"
 			/>
 		</b-button>
 		<Toast ref="toast" />

@@ -9,7 +9,7 @@
 				/>
 				<img
 					v-else
-					src="images/userDefaultGrande.png"
+					:src="require('../assets/images/userDefaultGrande.png')"
 					id="imagenusuario"
 				/>
 			</div>
@@ -24,7 +24,7 @@
 					@click="accion(boton)"
 				>
 					<b-img
-						v-bind:src="'images/' + boton[2]"
+						v-bind:src="require('../assets/images/' + boton[2])"
 						fluid
 						class="iconosMenu"
 					></b-img>
@@ -86,7 +86,7 @@
 						"/sugerenciaChef",
 					];
 					this.botones.push(boton);
-					boton = [4, "Menú", "menu.png", "/menu"];
+					boton = [4, "Menú", "misDatos.png", "/menu"];
 					this.botones.push(boton);
 					boton = [5, "Pedidos", "Pedidos.png", "/pedidos"];
 					this.botones.push(boton);

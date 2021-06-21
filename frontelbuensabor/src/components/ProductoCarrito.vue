@@ -19,7 +19,7 @@
 				<b-img-lazy
 					class=""
 					width="25%"
-					src="images/eliminar.png"
+					:src="require('../assets/images/eliminar.png')"
 				></b-img-lazy>
 			</b-btn>
 		</template>

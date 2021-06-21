@@ -4,7 +4,7 @@
       <b-img
         style="cursor: pointer"
         @click="$router.push({ name: 'Home' })"
-        src="images/logo-01.png"
+     :src="require('@/assets/images/logo-01.png')"
         class="imagen"
       ></b-img>
     </div>

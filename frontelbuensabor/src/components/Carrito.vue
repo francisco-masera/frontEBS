@@ -4,7 +4,7 @@
 			<b-img
 				id="carrito-img"
 				fluid
-				src="images/carrito.png"
+				:src="require('../assets/images/carrito.png')"
 				class="botonImagenHeader"
 			>
 			</b-img>
@@ -194,7 +194,7 @@
 							<span style="margin-left: 40%">
 								<b-img
 									width="30"
-									src="images/reloj.png"
+									:src="require('../assets/images/buscar.png')"
 								></b-img>
 								<span class="">{{ tiempoEstimado }}</span>
 							</span>

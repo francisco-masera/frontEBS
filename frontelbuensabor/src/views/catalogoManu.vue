@@ -17,7 +17,7 @@
 					></b-form-input>
 					<b-button size="sm" class="botonImagen" type="submit">
 						<img
-							src="images/buscar.png"
+						:src="require('../assets/images/buscar.png')"
 							id="imagenBuscar"
 						/>
 					</b-button>
@@ -87,7 +87,7 @@
 						></b-form-input>
 						<b-button size="sm" class="botonImagen" type="submit">
 							<img
-								src="images/buscar.png"
+								:src="require('../assets/images/buscar.png')"
 								id="imagenBuscar"
 							/>
 						</b-button>
@@ -155,7 +155,7 @@
 									class="botonImagen"
 								>
 									<img
-										src="images/editar.png"
+										:src="require('../assets/images/editar.png')"
 										id="imagenAgregar"
 									/>
 								</b-button>
@@ -165,7 +165,7 @@
 									class="botonImagen"
 								>
 									<img
-										src="images/eliminar.png"
+										:src="require('../assets/images/eliminar.png')"
 										id="imagenAgregar"
 									/>
 								</b-button>

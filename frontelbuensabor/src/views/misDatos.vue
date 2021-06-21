@@ -35,14 +35,14 @@
       </div>
       <b-button class="buttonText" @click="abreModalEliminar">
         <img
-          src="images/eliminar.png"
+          :src="require('@/assets/images/eliminar.png')"
           style="width: 25px"
         />
         Eliminar cuenta
       </b-button>
       <br />
       <b-button class="buttonText" @click="cambiarImagen">
-        <img src="images/camera.png" style="width: 25px" />
+        <img :src="require('@/assets/images/camera.png')" style="width: 25px" />
         Cambiar foto de perfil
       </b-button>
     </b-container>

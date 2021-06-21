@@ -30,7 +30,7 @@
           @click="busquedaPedidos()"
         >
           <img
-            src="images/buscar.png"
+            :src="require('@/assets/images/buscar.png')"
             id="imagenBuscar"
           />
         </b-button>
