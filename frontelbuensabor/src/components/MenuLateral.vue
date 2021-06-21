@@ -86,7 +86,7 @@
 						"/sugerenciaChef",
 					];
 					this.botones.push(boton);
-					boton = [4, "Menú", "misDatos.png", "/menu"];
+					boton = [4, "Menú", "menu.png", "/menu"];
 					this.botones.push(boton);
 					boton = [5, "Pedidos", "Pedidos.png", "/pedidos"];
 					this.botones.push(boton);

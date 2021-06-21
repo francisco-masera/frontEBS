@@ -194,7 +194,7 @@
 							<span style="margin-left: 40%">
 								<b-img
 									width="30"
-									:src="require('../assets/images/buscar.png')"
+									:src="require('../assets/images/reloj.svg')"
 								></b-img>
 								<span class="">{{ tiempoEstimado }}</span>
 							</span>
