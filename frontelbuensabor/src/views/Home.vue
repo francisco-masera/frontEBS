@@ -167,6 +167,7 @@
       </div>
     </div>
     <div class="footer">
+	<Loader v-if="loading" :loading="loading" />
       <img src="http://localhost:9001/images/sistema/logo-01.png" />
     </div>
     <div class="abajo"></div>
@@ -249,30 +250,12 @@ export default {
 };
 </script>
 <style>
-#buscador h1 {
-  color: #ffffff;
-  font-family: "Baloo Bhaina 2";
-  font-weight: 600;
-  font-size: 22pt;
-}
-
-h2 {
-  color: #151515;
-  font-family: "Baloo Bhaina 2";
-  font-weight: 600;
-  font-size: 22pt;
-}
-#home {
-  background-color: #ededed;
-}
-#home1 {
-  background-image: url("http://localhost:9001/images/sistema/fondo.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  min-height: 750px;
-  width: 100%;
-}
+	#buscador h1 {
+		color: #ffffff;
+		font-family: "Baloo Bhaina 2";
+		font-weight: 600;
+		font-size: 22pt;
+	}
 
 #home2 {
   text-align: center;
@@ -343,22 +326,27 @@ h2 {
   width: 60%;
 }
 
-.botonImagenBuscador:hover {
-  background-color: transparent !important;
-  border: none !important;
-  outline: none;
-}
+	.botonImagenBuscador {
+		background-color: transparent;
+		border: none;
+		padding: 0px;
+		outline: none;
+		position: relative;
+		float: right;
+		z-index: 98;
+		min-width: 0px;
+		margin-top: -30px;
+		margin-right: 10px;
+	}
+	.botonImagenBuscador img {
+		width: 60%;
+	}
 
-.botonImagenBuscador:active {
-  background-color: transparent !important;
-  border: none !important;
-  outline: none;
-}
-.botonImagenBuscador:visited {
-  background-color: transparent !important;
-  border: none !important;
-  outline: none;
-}
+	.botonImagenBuscador:hover {
+		background-color: transparent !important;
+		border: none !important;
+		outline: none;
+	}
 
 .botonImagenBuscador:focus {
   background-color: transparent !important;

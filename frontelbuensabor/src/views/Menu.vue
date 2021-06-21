@@ -10,32 +10,46 @@
       <div id="filtros">
         <div style="float: right">
           <b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
-            <b-img width="50px" src="http://localhost:9001/images/sistema/pizza.svg" />
+            <b-img
+              width="30px"
+              src="http://localhost:9001/images/sistema/pizza.svg"
+            />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
-            <b-img width="50px" src="http://localhost:9001/images/sistema/lomo.svg" />
+            <b-img
+              width="30px"
+              src="http://localhost:9001/images/sistema/lomo.svg"
+            />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
             <b-img
-              width="50px"
+              width="30px"
               src="http://localhost:9001/images/sistema/hamburger.svg"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 4)">
             <b-img
-              width="50px"
+              width="30px"
               src="http://localhost:9001/images/sistema/papasFritas.svg"
             />
           </b-button>
 
           <b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
-            <b-img width="50px" src="http://localhost:9001/images/sistema/sandwich.svg" />
+            <b-img
+              width="30px"
+              src="http://localhost:9001/images/sistema/sandwich.svg"
+            />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
-            <b-img width="50px" src="http://localhost:9001/images/sistema/botella.svg"
+            <b-img
+              width="30px"
+              src="http://localhost:9001/images/sistema/botella.svg"
           /></b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
-            <b-img width="50px" src="http://localhost:9001/images/sistema/cupcake.svg" />
+            <b-img
+              width="30px"
+              src="http://localhost:9001/images/sistema/cupcake.svg"
+            />
           </b-button>
         </div>
         <b-nav-form class="buscador">
@@ -77,11 +91,6 @@
             >
           </div>
         </div>
-        <div v-if="estaFiltrado">
-          <b-button class="buttonText" @click="limpiarFiltro()">
-            Ver todos
-          </b-button>
-        </div>
       </div>
       <div class="platos">
         <b-card-group deck class="deckPlatos">
@@ -89,13 +98,18 @@
             class="contenedorTarjeta"
             v-for="producto in this.productos"
             :key="producto.id"
+            @click="verDetalle"
+            :id="producto.id"
           >
             <producto :manufacturadoParam="producto" class="tarjetaPlato" />
           </div>
         </b-card-group>
       </div>
+      <Loader v-if="loading" :loading="loading" />
+      <b-modal id="modalDetalle" hide-header hide-footer>
+        <ManufacturadoDetalle :id="platoElegido" @close="closeModal" />
+      </b-modal>
     </div>
-    <Loader v-if="loading" :loading="loading" />
   </div>
 </template>
 
@@ -106,12 +120,14 @@ import Producto from "@/components/Manufacturado.vue";
 import axios from "axios";
 import Loader from "@/components/Loader.vue";
 import MenuLateral from "@/components/MenuLateral.vue";
+import ManufacturadoDetalle from "@/components/ManufacturadoDetalle.vue";
+import $ from "jquery";
 export default {
   mounted() {
-    if(this.parametroBusqueda && this.parametroBusqueda!=""){
-    filtrarPorTexto();
-    }else{      
-    this.getAllProductos();
+    if (this.parametroBusqueda && this.parametroBusqueda != "") {
+      filtrarPorTexto();
+    } else {
+      this.getAllProductos();
     }
   },
   updated() {
@@ -122,6 +138,7 @@ export default {
     producto: Producto,
     "menu-lateral": MenuLateral,
     Loader: Loader,
+    ManufacturadoDetalle: ManufacturadoDetalle,
   },
   data() {
     return {
@@ -132,21 +149,22 @@ export default {
       service: new Service(),
       productos: [],
       timeout: null,
-      parametroBusqueda:"",
-      estaFiltrado:false
+      platoElegido: 0,
+      parametroBusqueda: "",
+      estaFiltrado: false,
     };
   },
+
   methods: {
+    verDetalle(e) {
+      var id = $(e.target).closest(".contenedorTarjeta").attr("id");
+      this.platoElegido = id;
+      this.$bvModal.show("modalDetalle");
+    },
     getAllProductos() {
       this.service
-        .getAll("manufacturado/conStock")
-        .then((r) => r.forEach((d) => this.productos.push(d)))
-        .then(
-          this.service
-            .getAll("insumoVenta/conStock")
-            .then((r) => r.forEach((d) => this.productos.push(d)))
-        );
-        console.log(this.productos)
+        .getAll("informacionArticulo/conStock")
+        .then((r) => r.forEach((d) => this.productos.push(d)));
     },
     filtrarCategoria(tipo, categoria) {
       console.log(categoria, tipo);
@@ -159,20 +177,18 @@ export default {
         )
         .then((r) => (this.productos = r.data));
     },
-
     filtrarPorTexto() {
       var terminos;
-      if(!this.parametroBusqueda)
-      {
-         terminos=document.getElementById("buscadorInput").value;
-      }else{
-        terminos=this.parametroBusqueda
+      if (!this.parametroBusqueda) {
+        terminos = document.getElementById("buscadorInput").value;
+      } else {
+        terminos = this.parametroBusqueda;
       }
 
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
         this.productos = [];
-        if (terminos != ""){
+        if (terminos != "")
           axios
             .post(
               "http://localhost:9001/buensabor/informacionArticulo/filtrados/",
@@ -180,23 +196,24 @@ export default {
               { params: { terminos: terminos } }
             )
             .then((r) => (this.productos = r.data));
-            this.estaFiltrado=true;
-            }
         else this.getAllProductos();
       }, 800);
     },
-  limpiarFiltro(){
-    this.estaFiltrado=false;
-    this.$router.push({ path: "/menu", query:{}});
-  }
+    limpiarFiltro() {
+      this.estaFiltrado = false;
+      this.$router.push({ path: "/menu", query: {} });
+    },
+    closeModal() {
+      this.$bvModal.hide("modalDetalle");
+    },
   },
-   watch:{
-    "$route.query.search":{
-      immediate:true,
-      handler(search){
-        this.parametroBusqueda=search;
-      }
-    }
+  watch: {
+    "$route.query.search": {
+      immediate: true,
+      handler(search) {
+        this.parametroBusqueda = search;
+      },
+    },
   },
 };
 </script>
@@ -205,13 +222,6 @@ export default {
 .tarjetaPlato {
   width: 100%;
   float: left;
-}
-.verTodos{
-  color:#151515;
-  background-color: none !important;
-}
-.verTodos::hover{
-  color:#e7511e;
 }
 
 #filtros {
@@ -239,5 +249,15 @@ export default {
 .menuDiv {
   margin-top: 20px;
   margin-left: 15%;
+}
+.contenedorTarjeta:hover {
+  cursor: pointer;
+}
+
+#modalDetalle .modal-body {
+  padding: 0 !important;
+}
+#modalDetalle .card-body {
+  padding: 1rem;
 }
 </style>
