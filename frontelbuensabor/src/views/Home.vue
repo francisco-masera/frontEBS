@@ -103,6 +103,8 @@
             class="contenedorTarjeta"
             v-for="manufacturado in venta"
             :key="manufacturado.id"
+            @click="verDetalle"
+             :id="manufacturado.id"
           >
             <plato-item :manufacturadoParam="manufacturado"></plato-item>
           </div>
@@ -112,6 +114,9 @@
       <b-button class="botonPlatos" @click="$router.push({ path: '/menu' })"
         >¡Todos nuestros platos!</b-button
       >
+      <b-modal id="modalDetalle" hide-header hide-footer>
+        <ManufacturadoDetalle :id="platoElegido" @close="closeModal" />
+      </b-modal>
     </div>
 
     <div class="abajo"></div>
@@ -180,11 +185,14 @@ import Plato from "@/components/Manufacturado.vue";
 import Service from "@/service/Service.js";
 import Loader from "@/components/Loader.vue";
 import Utils from "@/utilidades/Utils.js";
+import ManufacturadoDetalle from "@/components/ManufacturadoDetalle.vue";
+import $ from "jquery";
 export default {
   components: {
     cabecera: Header,
     "plato-item": Plato,
     Loader: Loader,
+     ManufacturadoDetalle: ManufacturadoDetalle,
   },
   mounted() {
     this.getAllProductos();
@@ -205,6 +213,7 @@ export default {
       allProductos: [],
       filtrados: [],
       timeout: null,
+      platoElegido: 0,
     };
   },
   methods: {
@@ -245,7 +254,15 @@ export default {
     },
     filtrarMenu(){
       this.$router.push({ path: "/menu", query:{search:this.buscar}});
-    }
+    },  
+    verDetalle(e) {
+      var id = $(e.target).closest(".contenedorTarjeta").attr("id");
+      this.platoElegido = id;
+      this.$bvModal.show("modalDetalle");
+    },
+     closeModal() {
+      this.$bvModal.hide("modalDetalle");
+    },
   },
 };
 </script>
@@ -366,6 +383,7 @@ h2 {
   justify-content: space-around;
 }
 .contenedorTarjeta {
+  cursor:pointer;
   max-width: 350px;
   margin: 10px;
   display: inline-block;
@@ -460,6 +478,12 @@ h2 {
 }
 .footer img {
   width: 20%;
+}
+#modalDetalle .modal-body {
+  padding: 0 !important;
+}
+#modalDetalle .card-body {
+  padding: 1rem;
 }
 @supports (object-fit: cover) {
   .cuadro img {

@@ -19,7 +19,7 @@ const routes = [
 	{
 		path: '/stockInsumos',
 		name: 'StockInsumos',
-		component: () => import('../views/StockInsumos.vue')
+		component: () => import('../views/stockInsumos.vue')
 	},
 	{
 		path: '/catalogo',
