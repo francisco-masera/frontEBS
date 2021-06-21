@@ -125,7 +125,7 @@ import $ from "jquery";
 export default {
   mounted() {
     if (this.parametroBusqueda && this.parametroBusqueda != "") {
-      filtrarPorTexto();
+      this.filtrarPorTexto();
     } else {
       this.getAllProductos();
     }
