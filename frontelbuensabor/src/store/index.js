@@ -47,7 +47,7 @@ export default new Vuex.Store({
 
       var carrito = {
         idCliente: state.idCliente, formaPago: false, tipoEntrega: false,
-        estado: 'Pendiente', numero: 0, horaEstimada: null, items: items,
+        estado: 'En Espera', numero: 0, horaEstimada: null, items: items,
         tiempoEstimado: 0,
       };
 
@@ -87,7 +87,7 @@ export default new Vuex.Store({
     {
       state.carrito = {
         idCliente: state.idCliente, formaPago: false, tipoEntrega: false,
-        estado: 'Pendiente', numero: 0, horaEstimada: null, items: [],
+        estado: 'En Espera', numero: 0, horaEstimada: null, items: [],
         tiempoEstimado: 0,
       };
 

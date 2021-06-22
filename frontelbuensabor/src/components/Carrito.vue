@@ -42,7 +42,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="click"
+				triggers="hover focus"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"
@@ -192,10 +192,7 @@
 						<h4>Tiempo Estimado</h4>
 						<div class="col-12 mb-4">
 							<span style="margin-left: 40%">
-								<b-img
-									width="30"
-									src="images/reloj.png"
-								></b-img>
+								<b-img width="30" src="images/reloj.png"></b-img>
 								<span class="">{{ tiempoEstimado }}</span>
 							</span>
 						</div>
@@ -378,7 +375,7 @@
 					.then(() =>
 						axios
 							.put(
-								"http://localhost:9001/buensabor/pedido/confirmarPedido/",
+								"http://localhost:9001/buensabor/pedido/confirmarPedidoCliente",
 								this.$store.state.carrito
 							)
 							.then((data) => {

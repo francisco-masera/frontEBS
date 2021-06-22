@@ -7,11 +7,7 @@
 					:src="this.user.foto"
 					id="imagenusuario"
 				/>
-				<img
-					v-else
-					src="images/userDefaultGrande.png"
-					id="imagenusuario"
-				/>
+				<img v-else src="images/userDefaultGrande.png" id="imagenusuario" />
 			</div>
 			<b-card-text>
 				<p id="nombre">{{ this.user.nombre }} {{ this.user.apellido }}</p>
@@ -24,7 +20,7 @@
 					@click="accion(boton)"
 				>
 					<b-img
-						v-bind:src="'images/' + boton[2]"
+						v-bind:src="'/images/' + boton[2]"
 						fluid
 						class="iconosMenu"
 					></b-img>
