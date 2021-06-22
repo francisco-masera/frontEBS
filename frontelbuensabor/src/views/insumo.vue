@@ -17,7 +17,7 @@
 							class="botonImagen"
 						>
 							<img
-								src="images/editar.png"
+								:src="require('@/assets/images/editar.png')"
 								id="imagenAgregar"
 							/>
 						</b-button>
@@ -112,7 +112,7 @@
 							class="botonImagen"
 						>
 							<img
-								src="images/editar.png"
+								:src="require('@/assets/images/editar.png')"
 								id="imagenAgregar"
 							/>
 						</b-button>

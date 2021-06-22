@@ -28,14 +28,14 @@
         <template slot="cell(accion)" style="float: right">
           <b-button size="sm" class="botonImagen">
             <img
-              src="images/editar.png"
+              :src="require('../assets/images/editar.png')"
               alt=""
               id="btnEditar"
             />
           </b-button>
           <b-button size="sm" class="botonImagen">
             <img
-              src="images/eliminar.png"
+              :src="require('../assets/images/eliminar.png')"
               alt=""
               id="btnEliminar"
             />

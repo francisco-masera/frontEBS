@@ -29,7 +29,7 @@
 					id="lupita"
 					@click="busquedaPedidos()"
 				>
-					<img src="images/buscar.png" id="imagenBuscar" />
+					<img :src="require('@/assets/images/buscar.png')" id="imagenBuscar" />
 				</b-button>
 			</b-nav-form>
 			<div v-if="pedidosPendientes" class="divCard">
@@ -183,24 +183,24 @@
 			},
 
 			/*cargaBuscados(filtrados) {
-			      this.pedidosPendientes = false;
-			      this.pedidosEntregados = false;
-			      if (!filtrados == undefined && !filtrados == null) {
-			        this.filtroBuscados = filtrados;
-			      }
-			      console.log(this.filtroBuscados);
-			    },
-			    locatorButtonPressed() {
-			      navigator.geolocation.getCurrentPosition(
-			        (position) => {
-			          console.log(position.coords.latitude);
-			          console.log(position.coords.longitude);
-			        },
-			        (error) => {
-			          console.log(error.message);
-			        }
-			      );
-			    },*/
+				      this.pedidosPendientes = false;
+				      this.pedidosEntregados = false;
+				      if (!filtrados == undefined && !filtrados == null) {
+				        this.filtroBuscados = filtrados;
+				      }
+				      console.log(this.filtroBuscados);
+				    },
+				    locatorButtonPressed() {
+				      navigator.geolocation.getCurrentPosition(
+				        (position) => {
+				          console.log(position.coords.latitude);
+				          console.log(position.coords.longitude);
+				        },
+				        (error) => {
+				          console.log(error.message);
+				        }
+				      );
+				    },*/
 			busquedaPedidos() {
 				if (this.busquedaOrden != "") {
 					this.filtroBuscados = this.pedidosDelivery.filter((pedido) => {

@@ -12,13 +12,13 @@
         >
         </b-form-input>
         <b-button size="sm" class="botonImagenBuscador" @click="filtrarMenu">
-          <img src="images/buscar.png" />
+          <img :src="require('@/assets/images/buscar.png')" />
         </b-button>
       </div>
       <div v-if="windowMobile" id="pasosCuadro--mobile">
         <div class="pasos">
           <img
-            src="images/icono pasos-01.png"
+          :src="require('@/assets/images/icono pasos-01.png')"
             width="70px"
             class="imgPasos"
           />
@@ -29,7 +29,7 @@
         </div>
         <div class="pasos">
           <img
-            src="images/icono pasos-02.png"
+            :src="require('@/assets/images/icono pasos-02.png')"
             width="90px"
             class="imgPasos"
           />
@@ -40,7 +40,7 @@
         </div>
         <div class="pasos">
           <img
-            src="images/icono pasos-03.png"
+            :src="require('@/assets/images/icono pasos-03.png')"
             width="90px"
             class="imgPasos"
           />
@@ -53,7 +53,7 @@
       <div v-else id="pasosCuadro">
         <div class="pasos">
           <img
-            src="images/icono pasos-01.png"
+            :src="require('@/assets/images/icono pasos-01.png')"
             width="70px"
             class="imgPasos"
           />
@@ -64,7 +64,7 @@
         </div>
         <div class="pasos">
           <img
-            src="images/icono pasos-02.png"
+            :src="require('@/assets/images/icono pasos-02.png')"
             width="90px"
             class="imgPasos"
           />
@@ -75,7 +75,7 @@
         </div>
         <div class="pasos">
           <img
-            src="images/icono pasos-03.png"
+            :src="require('@/assets/images/icono pasos-03.png')"
             width="90px"
             class="imgPasos"
           />
@@ -103,6 +103,8 @@
             class="contenedorTarjeta"
             v-for="manufacturado in venta"
             :key="manufacturado.id"
+            @click="verDetalle"
+             :id="manufacturado.id"
           >
             <plato-item :manufacturadoParam="manufacturado"></plato-item>
           </div>
@@ -112,12 +114,15 @@
       <b-button class="botonPlatos" @click="$router.push({ path: '/menu' })"
         >¡Todos nuestros platos!</b-button
       >
+      <b-modal id="modalDetalle" hide-header hide-footer>
+        <ManufacturadoDetalle :id="platoElegido" @close="closeModal" />
+      </b-modal>
     </div>
 
     <div class="abajo"></div>
     <div id="home3">
       <div class="cuadro">
-        <img src="images/nosotros.png" />
+        <img :src="require('@/assets/images/nosotros.png')" />
       </div>
       <div class="cuadro" style="background-color: #1f91b6">
         <div class="cuadroText">
@@ -135,23 +140,23 @@
           <h1 style="color: white">¡Contáctanos!</h1>
           <div class="enlaces">
             <a :href="'//www.facebook.com/elbuensabor'" target="_blank"
-              ><img src="images/facebook.svg" />ElBuenSabor</a
+              ><img :src="require('@/assets/images/facebook.svg')"  />ElBuenSabor</a
             >
             <br />
             <a :href="'//www.instagram.com/elbuensabor'" target="_blank"
-              ><img src="images/instagram.svg" />elbuensabor</a
+              ><img :src="require('@/assets/images/instagram.svg')" />elbuensabor</a
             >
             <br />
             <a :href="'mailto:info@elbuensabor.com'" target="_blank"
-              ><img src="images/correo.svg" />info@elbuensabor.com</a
+              ><img :src="require('@/assets/images/correo.svg')" />info@elbuensabor.com</a
             >
             <br />
             <a :href="'tel:+54 261 156789873'"
-              ><img src="images/telefono.svg" />+54 261 156789873</a
+              ><img :src="require('@/assets/images/telefono.svg')" />+54 261 156789873</a
             >
             <br />
             <a :href="'https://maps.google.com/?q=-32.890848,-68.839388'"
-              ><img src="images/direccion.svg" />San Martín 1087, Mendoza</a
+              ><img :src="require('@/assets/images//direccion.svg')" />San Martín 1087, Mendoza</a
             >
           </div>
         </div>
@@ -168,7 +173,7 @@
     </div>
     <div class="footer">
 	<Loader v-if="loading" :loading="loading" />
-      <img src="images/logo-01.png" />
+      <img :src="require('@/assets/images/logo-01.png')" />
     </div>
     <div class="abajo"></div>
     <Loader v-if="loading" :loading="loading" />
@@ -180,11 +185,14 @@ import Plato from "@/components/Manufacturado.vue";
 import Service from "@/service/Service.js";
 import Loader from "@/components/Loader.vue";
 import Utils from "@/utilidades/Utils.js";
+import ManufacturadoDetalle from "@/components/ManufacturadoDetalle.vue";
+import $ from "jquery";
 export default {
   components: {
     cabecera: Header,
     "plato-item": Plato,
     Loader: Loader,
+     ManufacturadoDetalle: ManufacturadoDetalle,
   },
   mounted() {
     this.getAllProductos();
@@ -205,6 +213,7 @@ export default {
       allProductos: [],
       filtrados: [],
       timeout: null,
+      platoElegido: 0,
     };
   },
   methods: {
@@ -245,7 +254,15 @@ export default {
     },
     filtrarMenu(){
       this.$router.push({ path: "/menu", query:{search:this.buscar}});
-    }
+    },  
+    verDetalle(e) {
+      var id = $(e.target).closest(".contenedorTarjeta").attr("id");
+      this.platoElegido = id;
+      this.$bvModal.show("modalDetalle");
+    },
+     closeModal() {
+      this.$bvModal.hide("modalDetalle");
+    },
   },
 };
 </script>
@@ -366,6 +383,7 @@ h2 {
   justify-content: space-around;
 }
 .contenedorTarjeta {
+  cursor:pointer;
   max-width: 350px;
   margin: 10px;
   display: inline-block;
@@ -460,6 +478,12 @@ h2 {
 }
 .footer img {
   width: 20%;
+}
+#modalDetalle .modal-body {
+  padding: 0 !important;
+}
+#modalDetalle .card-body {
+  padding: 1rem;
 }
 @supports (object-fit: cover) {
   .cuadro img {

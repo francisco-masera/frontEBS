@@ -12,43 +12,43 @@
           <b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
             <b-img
               width="30px"
-              src="images/pizza.svg"
+              :src="require('@/assets/images/pizza.svg')"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
             <b-img
               width="30px"
-              src="images//lomo.svg"
+              :src="require('@/assets/images/lomo.svg')"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
             <b-img
               width="30px"
-              src="images/hamburger.svg"
+              :src="require('@/assets/images/hamburger.svg')"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 4)">
             <b-img
               width="30px"
-              src="images/papasFritas.svg"
+              :src="require('@/assets/images/papasFritas.svg')"
             />
           </b-button>
 
           <b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
             <b-img
               width="30px"
-              src="images/sandwich.svg"
+              :src="require('@/assets/images/sandwich.svg')"
             />
           </b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
             <b-img
               width="30px"
-              src="images/botella.svg"
+              :src="require('@/assets/images/botella.svg')"
           /></b-button>
           <b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
             <b-img
               width="30px"
-              src="images/cupcake.svg"
+              :src="require('@/assets/images/cupcake.svg')"
             />
           </b-button>
         </div>
@@ -70,7 +70,7 @@
             <b-button class="botonImagen" @click="filtrarCategoria(2, 1)">
               <img
                 width="30px"
-                src="images/sinTacc.png"
+                :src="require('@/assets/images/sinTacc.png')"
                 style="float: left; margin-right: 8px"
               />
             </b-button>
@@ -82,7 +82,7 @@
             <b-button class="botonImagen" @click="filtrarCategoria(2, 2)">
               <img
                 width="30px"
-                src="images/vegetariano.png"
+                :src="require('@/assets/images/vegetariano.png')"
                 style="float: left; margin-right: 8px"
               />
             </b-button>

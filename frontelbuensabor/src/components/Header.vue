@@ -6,7 +6,7 @@
 					<b-img
 						id="brandImg"
 						alt=""
-						src="images/logo.png"
+						:src="require('../assets/images/logo.png')"
 					></b-img>
 				</a>
 			</div>
@@ -49,7 +49,7 @@
 							class="bg-transparent border-0"
 						>
 							<b-img
-								src="images/cerrarSesion.png"
+							:src="require('../assets/images/cerrarSesion.png')"
 							></b-img>
 						</b-button>
 					</b-navbar-nav>
@@ -64,7 +64,7 @@
 					<b-img
 						id="brandImg"
 						alt=""
-						src="images/logo.png"
+						:src="require('../assets/images/logo.png')"
 					></b-img>
 				</a>
 			</div>
@@ -88,7 +88,7 @@
 								</b-img>
 								<b-img
 									v-else
-									src="images/userDefaultChico.png"
+									:src="require('../assets/images/userDefaultChico.png')"
 									alt=""
 									id="foto"
 									fluid
@@ -109,10 +109,8 @@
 								:key="boton[0]"
 								v-bind:href="boton[3]"
 							>
-								<b-img
-									v-bind:src="
-										'images/' + boton[2]
-									"
+								<b-img								
+									v-bind:src="require('../assets/images/'+ boton[2])"
 									fluid
 									class="iconosMenu"
 								></b-img>
@@ -136,7 +134,7 @@
 								</b-img>
 								<b-img
 									v-else
-									src="images/userDefaultChico.png"
+									:src="require('../assets/images/userDefaultChico.png')"
 									alt=""
 									id="foto"
 									fluid
@@ -277,7 +275,7 @@
 
 							{
 								props: {
-									src: "images/hamburguesa-02.svg",
+									src: "../assets/images/hamburguesa-02.svg",
 									thumbnail: true,
 									center: true,
 									fluid: true,
@@ -354,7 +352,7 @@
 
 							$(this).attr(
 								"src",
-								"images/userDefaultChico.png"
+								"../assets/images/userDefaultChico.png"
 							);
 						});
 				});

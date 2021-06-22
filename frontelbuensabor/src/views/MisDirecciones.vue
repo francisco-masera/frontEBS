@@ -11,7 +11,7 @@
 						{{ d.calle }} {{ d.numero }}, {{ d.localidad }}
 						<b-button size="sm" class="botonImagen" @click="editarDir(d.id)">
 							<img
-								src="images/editar.png"
+								:src="require('@/assets/images/editar.png')"
 								alt=""
 								id="btnEditar"
 								width="20"
@@ -19,7 +19,7 @@
 						</b-button>
 						<b-button size="sm" class="botonImagen" @click="eliminarDir(d.id)">
 							<img
-								src="images/eliminar.png"
+								:src="require('@/assets/images/eliminar.png')"
 								alt=""
 								id="btnEliminar"
 								width="20"
