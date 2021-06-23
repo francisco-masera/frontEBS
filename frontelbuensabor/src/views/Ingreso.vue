@@ -110,7 +110,7 @@ export default {
             params: { user: this.user },
           });
         } else if (this.user.rol == "cajero") {
-          window.location = "/";
+          window.location = "/pedidos";
         } else {
           this.esCliente = true;
         }
