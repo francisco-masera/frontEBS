@@ -23,11 +23,7 @@
 					:key="boton[0]"
 					@click="accion(boton)"
 				>
-					<b-img
-						v-bind:src="require('../assets/images/' + boton[2])"
-						fluid
-						class="iconosMenu"
-					></b-img>
+					<b-img :src="boton[2]" fluid class="iconosMenu"></b-img>
 					{{ boton[1] }}
 				</b-nav-item>
 			</b-card-text>
@@ -75,62 +71,152 @@
 				await this.traeUser();
 				var boton;
 				if (this.user.rol === "admin") {
-					boton = [1, "Stock de insumos", "stock.png", "/stockInsumos"];
+					boton = [
+						1,
+						"Stock de insumos",
+						require("../assets/images/stock.png"),
+						"/stockInsumos",
+					];
 					this.botones.push(boton);
-					boton = [2, "Catálogo", "manufacturados.png", "/catalogo"];
+					boton = [
+						2,
+						"Catálogo",
+						require("../assets/images/manufacturados.png"),
+						"/catalogo",
+					];
 					this.botones.push(boton);
 					boton = [
 						3,
 						"Sugerencias del chef",
-						"sugerenciasChef.png",
+						require("../assets/images/sugerenciasChef.png"),
 						"/sugerenciaChef",
 					];
 					this.botones.push(boton);
-					boton = [4, "Menú", "menu.png", "/menu"];
+					boton = [4, "Menú", require("../assets/images/menu.png"), "/menu"];
 					this.botones.push(boton);
-					boton = [5, "Pedidos", "Pedidos.png", "/pedidos"];
+					boton = [
+						5,
+						"Pedidos",
+						require("../assets/images/Pedidos.png"),
+						"/pedidos",
+					];
 					this.botones.push(boton);
-					boton = [6, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [
+						6,
+						"Mis datos",
+						require("../assets/images/misDatos.png"),
+						"/misdatos/" + this.user.id,
+					];
 					this.botones.push(boton);
-					boton = [7, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
+					boton = [
+						7,
+						"Agregar empleado",
+						require("../assets/images/misDatos.png"),
+						"/formEmpleado/",
+					];
 					this.botones.push(boton);
-					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+					boton = [
+						0,
+						"Cerrar sesión",
+						require("../assets/images/cerrarSesion.png"),
+						"/ingreso",
+					];
 					this.botones.push(boton);
 					this.rol = "Administrador";
 				} else if (this.user.rol === "cocina") {
-					boton = [1, "Manufacturados", "manufacturados.png", "/catalogo"];
+					boton = [
+						1,
+						"Manufacturados",
+						require("../assets/images/manufacturados.png"),
+						"/catalogo",
+					];
 					this.botones.push(boton);
-					boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [
+						2,
+						"Mis datos",
+						require("../assets/images/misDatos.png"),
+						"/misdatos/" + this.user.id,
+					];
 					this.botones.push(boton);
-					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+					boton = [
+						0,
+						"Cerrar sesión",
+						require("../assets/images/cerrarSesion.png"),
+						"/ingreso",
+					];
 					this.botones.push(boton);
 					this.rol = "Cocinero";
 				} else if (this.user.rol == undefined) {
 					/*Cliente*/
-					boton = [1, "Mis direcciones", "misDirecciones.png", "/misDirecciones"];
+					boton = [
+						1,
+						"Mis direcciones",
+						require("../assets/images/misDirecciones.png"),
+						"/misDirecciones",
+					];
 					this.botones.push(boton);
-					boton = [2, "Mis pedidos", "Pedidos.png", ""];
+					boton = [2, "Mis pedidos", require("../assets/images/Pedidos.png"), ""];
 					this.botones.push(boton);
-					boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [
+						3,
+						"Mis datos",
+						require("../assets/images/misDatos.png"),
+						"/misdatos/" + this.user.id,
+					];
 					this.botones.push(boton);
-					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/"];
+					boton = [
+						0,
+						"Cerrar sesión",
+						require("../assets/images/cerrarSesion.png"),
+						"/",
+					];
 					this.botones.push(boton);
 				} else if (this.user.rol === "delivery") {
-					boton = [1, "Pedidos", "Pedidos.png", "/pedidos"];
+					boton = [
+						1,
+						"Pedidos",
+						require("../assets/images/Pedidos.png"),
+						"/pedidos",
+					];
 					this.botones.push(boton);
-					boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [
+						2,
+						"Mis datos",
+						require("../assets/images/misDatos.png"),
+						"/misdatos/" + this.user.id,
+					];
 					this.botones.push(boton);
-					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+					boton = [
+						0,
+						"Cerrar sesión",
+						require("../assets/images/cerrarSesion.png"),
+						"/ingreso",
+					];
 					this.botones.push(boton);
 					this.rol = "Delivery";
 				} else if (this.user.rol === "cajero") {
-					boton = [1, "Pedidos", "Pedidos.png", ""];
+					boton = [1, "Pedidos", require("../assets/images/Pedidos.png"), ""];
 					this.botones.push(boton);
-					boton = [2, "Pedidos anteriores", "pedidosFacturados.png", ""];
+					boton = [
+						2,
+						"Pedidos anteriores",
+						require("../assets/images/pedidosFacturados.png"),
+						"",
+					];
 					this.botones.push(boton);
-					boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [
+						3,
+						"Mis datos",
+						require("../assets/images/misDatos.png"),
+						"/misdatos/" + this.user.id,
+					];
 					this.botones.push(boton);
-					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
+					boton = [
+						0,
+						"Cerrar sesión",
+						require("../assets/images/cerrarSesion.png"),
+						"/ingreso",
+					];
 					this.botones.push(boton);
 					this.rol = "Cajero";
 				}

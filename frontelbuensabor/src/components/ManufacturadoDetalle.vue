@@ -29,15 +29,6 @@
 				</div>
 			</div>
 		</div>
-		<b-select
-			:options="adicionales"
-			v-if="hayAdicionales"
-			multiple
-			:select-size="3"
-			style="width: 23vw"
-			class="form-control"
-		>
-		</b-select>
 		<b-input
 			class="form-control"
 			placeholder="Aclaraciones del pedido"
@@ -72,24 +63,15 @@
 				cantidad: 1,
 				service: new Service(),
 				producto: {},
-				adicionalesId: [],
-				hayAdicionales: false,
 				precioVenta: 0,
 				img: "",
 			};
 		},
-		computed: {
-			adicionales() {
-				return [{ value: null, text: "Adicionales", disabled: true }];
-			},
-		},
 		props: ["id"],
 		mounted() {
-			this.getProducto().then(this.getAdicionales());
+			this.getProducto();
 		},
 		updated() {
-			if (this.producto.esInsumo == false)
-				if (this.adicionales.length) this.hayAdicionales = true;
 			this.setImgFallBack();
 		},
 		methods: {
@@ -102,18 +84,6 @@
 						this.img = "http://localhost:9001/images/productos/" + data.imagen;
 					})
 					.catch((e) => console.log(e.response.data.message));
-			},
-			async getAdicionales() {
-				await this.service
-					.getAll("insumo/getAdicionales")
-					.then((data) => {
-						data.forEach((d) => this.adicionales.push(d.denominacion));
-					})
-					.then(() => {})
-					.catch((e) => {
-						console.log(e.response.data.message);
-						this.adicionales = null;
-					});
 			},
 			actualizarPrecio(e) {
 				this.cantidad = e;

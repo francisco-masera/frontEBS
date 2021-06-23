@@ -146,6 +146,13 @@
 
 		methods: {
 			verDetalle(e) {
+				if (
+					!this.esSesion ||
+					JSON.parse(sessionStorage.getItem("user")).rol.toUpperCase() !=
+						"CLIENTE"
+				) {
+					return false;
+				}
 				var id = $(e.target).closest(".contenedorTarjeta").attr("id");
 				this.platoElegido = id;
 				this.$bvModal.show("modalDetalle");
