@@ -1,5 +1,10 @@
 <template>
-	<b-navbar id="headerHome" toggleable="md" type="dark" v-if="esHome">
+	<b-navbar
+		:id="esHome ? 'headerHome' : 'header'"
+		toggleable="md"
+		type="dark"
+		v-if="esHome || esHome == undefined"
+	>
 		<b-container>
 			<div id="logoContainer">
 				<a href="\">
@@ -17,26 +22,26 @@
 						<b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
 						<b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
 						<b-button
-							v-if="!this.user.id"
+							v-show="!this.user.id"
 							@click="$router.push({ name: 'Registro' })"
 							pill
 							class="boton"
 							>Registrarme</b-button
 						>
 						<b-button
-							v-if="!this.user.id"
+							v-show="!this.user.id"
 							@click="redirectoToLogin()"
 							pill
 							class="boton2"
 							>Ingresar</b-button
 						>
 						<b-button
-							v-if="!!this.user.id"
+							v-show="!!this.user.id"
 							@click="$router.push({ path: '/misDatos/' + user.id })"
 							class="bg-transparent border-0"
 						>
 							<b-img
-								v-if="this.user.foto != '' && this.user.foto"
+								v-show="this.user.foto != '' && this.user.foto"
 								rounded="circle"
 								:src="this.user.foto"
 								width="60"
@@ -44,7 +49,7 @@
 							></b-img>
 						</b-button>
 						<b-button
-							v-if="!!this.user.id"
+							v-show="!!this.user.id"
 							@click="logOut()"
 							class="bg-transparent border-0"
 						>
@@ -191,16 +196,14 @@
 			};
 		},
 		mounted() {
-			this.verificaUsuario();
+			this.traeUser();
 		},
 		props: ["imagen", "id", "screenLength", "esHome"],
 		methods: {
 			async verificaUsuario() {
-				this.user = JSON.parse(sessionStorage.getItem("user"));
-				if (this.user == null) this.user = {};
 				this.es_Home = this.$props.esHome;
-				await this.traeUser();
 				var boton;
+
 				if (this.user) {
 					if (this.user.rol == undefined) {
 						this.esCliente = true;
@@ -248,17 +251,21 @@
 							boton = [2, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
 							this.botones.push(boton);
 						}
+						console.log(this.user);
 					}
 				}
 			},
 			async traeUser() {
+				this.user = JSON.parse(sessionStorage.getItem("user"));
+				if (this.user == null) this.user = {};
 				if (this.user.id && this.user.contrasenia != "") {
 					await this.service.getOne("persona", this.user.id).then((data) => {
 						this.user = data;
+						this.verificaUsuario();
 					});
+					if (this.user.foto) this.loadPh();
+					this.setImgFallBack();
 				}
-				if (this.user.foto) this.loadPh();
-				this.setImgFallBack();
 			},
 			redirectoToLogin() {
 				const h = this.$createElement;
