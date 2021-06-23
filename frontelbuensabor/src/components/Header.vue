@@ -49,7 +49,7 @@
 							class="bg-transparent border-0"
 						>
 							<b-img
-							:src="require('../assets/images/cerrarSesion.png')"
+								:src="require('../assets/images/cerrarSesion.png')"
 							></b-img>
 						</b-button>
 					</b-navbar-nav>
@@ -109,8 +109,8 @@
 								:key="boton[0]"
 								v-bind:href="boton[3]"
 							>
-								<b-img								
-									v-bind:src="require('../assets/images/'+ boton[2])"
+								<b-img
+									v-bind:src="require('../assets/images/' + boton[2])"
 									fluid
 									class="iconosMenu"
 								></b-img>
@@ -154,9 +154,7 @@
 								v-bind:href="boton[3]"
 							>
 								<b-img
-									v-bind:src="
-										'mages/' + boton[2]
-									"
+									v-bind:src="'mages/' + boton[2]"
 									fluid
 									class="iconosMenu"
 								></b-img>
@@ -189,7 +187,7 @@
 				es_Home: false,
 				service: new Service(),
 				screenWidth: window.screen.width < 1024,
-				imgFallBack: "images/userDefaultChico.png",
+				imgFallBack: require("../assets/images/userDefaultChico.png"),
 			};
 		},
 		mounted() {
@@ -275,7 +273,7 @@
 
 							{
 								props: {
-									src: "../assets/images/hamburguesa-02.svg",
+									src: require("../assets/images/hamburguesa-02.svg"),
 									thumbnail: true,
 									center: true,
 									fluid: true,
@@ -350,10 +348,7 @@
 						.on("error", function () {
 							console.log("error loading image");
 
-							$(this).attr(
-								"src",
-								"../assets/images/userDefaultChico.png"
-							);
+							$(this).attr("src", "../assets/images/userDefaultChico.png");
 						});
 				});
 			},
