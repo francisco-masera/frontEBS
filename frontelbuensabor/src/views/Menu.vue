@@ -146,12 +146,11 @@
 
 		methods: {
 			verDetalle(e) {
-				if (
-					!this.esSesion ||
-					JSON.parse(sessionStorage.getItem("user")).rol.toUpperCase() !=
-						"CLIENTE"
-				) {
-					return false;
+				var usuario = JSON.parse(sessionStorage.getItem("user"));
+				if (usuario != undefined && usuario != null) {
+					if (usuario.rol.toUpperCase() != "CLIENTE") {
+						return false;
+					}
 				}
 				var id = $(e.target).closest(".contenedorTarjeta").attr("id");
 				this.platoElegido = id;

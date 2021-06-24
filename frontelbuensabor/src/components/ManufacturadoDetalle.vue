@@ -1,62 +1,67 @@
 <template>
-	<b-card
-		:title="producto.denominacion"
-		:img-src="img"
-		img-fluid
-		tag="article"
-		class="mb-2"
-		style="width: 38.5vw"
-		img-height="400"
-		id="cardP"
-	>
-		<div class="row">
-			<div class="col-8">
-				<b-card-text>
-					{{ producto.descripcion }}
-				</b-card-text>
-			</div>
-			<div class="col-4">
-				<div class="row">
-					<b-img
-						v-if="producto.aptoCeliaco"
-						:src="require('../assets/images/sinTacc.png')"
-					/>
-					<b-img
-						v-if="producto.vegetariano || producto.vegano"
-						:src="require('../assets/images/vegetariano.png')"
-						style="margin-left: 30px"
-					/>
+	<div>
+		<b-card
+			:title="producto.denominacion"
+			:img-src="img"
+			img-fluid
+			tag="article"
+			class="mb-2"
+			style="width: 38.5vw"
+			img-height="400"
+			id="cardP"
+		>
+			<div class="row">
+				<div class="col-8">
+					<b-card-text>
+						{{ producto.descripcion }}
+					</b-card-text>
+				</div>
+				<div class="col-4">
+					<div class="row">
+						<b-img
+							v-if="producto.aptoCeliaco"
+							:src="require('../assets/images/sinTacc.png')"
+						/>
+						<b-img
+							v-if="producto.vegetariano || producto.vegano"
+							:src="require('../assets/images/vegetariano.png')"
+							style="margin-left: 30px"
+						/>
+					</div>
 				</div>
 			</div>
-		</div>
-		<b-input
-			class="form-control"
-			placeholder="Aclaraciones del pedido"
-			style="width: 23vw; border: none; border-bottom: 1px solid black"
-		/>
+			<b-input
+				class="form-control"
+				placeholder="Aclaraciones del pedido"
+				style="width: 23vw; border: none; border-bottom: 1px solid black"
+			/>
 
-		<div class="row mb-3">
-			<div class="col-8">
-				<b-form-select
-					v-model="cantidad"
-					:options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
-					style="width: 65px"
-					@change="actualizarPrecio"
-				></b-form-select>
+			<div class="row mb-3">
+				<div class="col-8">
+					<b-form-select
+						v-model="cantidad"
+						:options="[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+						style="width: 65px"
+						@change="actualizarPrecio"
+					></b-form-select>
+				</div>
+				<div class="col-4">
+					<h3>${{ producto.precioVenta }}</h3>
+				</div>
 			</div>
-			<div class="col-4">
-				<h3>${{ producto.precioVenta }}</h3>
-			</div>
-		</div>
-		<b-button variant="primary" @click="agregarAlCarrito"
-			>¡Agregar a mi pedido! ({{ precioVenta }})</b-button
-		>
-	</b-card>
+			<b-button variant="primary" @click="agregarAlCarrito"
+				>¡Agregar a mi pedido! ({{ precioVenta }})</b-button
+			>
+		</b-card>
+		<Toast ref="toast" />
+	</div>
 </template>
 
 <script>
 	import Service from "@/service/Service.js";
 	import $ from "jquery";
+	import Toast from "@/components/Toast.vue";
+
 	export default {
 		data() {
 			return {
@@ -73,6 +78,9 @@
 		},
 		updated() {
 			this.setImgFallBack();
+		},
+		components: {
+			Toast: Toast,
 		},
 		methods: {
 			async getProducto() {
@@ -91,6 +99,11 @@
 				console.log(this.cantidad);
 			},
 			agregarAlCarrito() {
+				var usuario = JSON.parse(sessionStorage.getItem("user"));
+				if (usuario == null || usuario == undefined) {
+					this.toastr("Debe estar registrado para esta acción", "¡Atención!");
+					return false;
+				}
 				let producto = {
 					cantidad: this.cantidad,
 					idArticuloVenta: this.producto.idArticuloVenta,
@@ -115,6 +128,9 @@
 
 						this.img = "";
 					});
+			},
+			toastr(msg, title) {
+				this.$refs.toast.emitToast(msg, title);
 			},
 		},
 	};
