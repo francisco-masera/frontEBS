@@ -146,6 +146,12 @@
 
 		methods: {
 			verDetalle(e) {
+				var usuario = JSON.parse(sessionStorage.getItem("user"));
+				if (usuario != undefined && usuario != null) {
+					if (usuario.type.toUpperCase() != "CLIENTE") {
+						return false;
+					}
+				}
 				var id = $(e.target).closest(".contenedorTarjeta").attr("id");
 				this.platoElegido = id;
 				this.$bvModal.show("modalDetalle");

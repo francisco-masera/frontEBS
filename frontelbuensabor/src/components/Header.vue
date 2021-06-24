@@ -355,7 +355,10 @@
 						.on("error", function () {
 							console.log("error loading image");
 
-							$(this).attr("src", "../assets/images/userDefaultChico.png");
+							$(this).attr(
+								"src",
+								require("@/assets/images/userDefaultChico.png")
+							);
 						});
 				});
 			},
