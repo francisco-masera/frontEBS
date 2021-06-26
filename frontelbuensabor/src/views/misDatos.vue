@@ -20,7 +20,11 @@
 				</div>
 				<div class="lineaForm">
 					<label class="tituloForm"> Email: </label>
-					<b-form-input class="inputForm" v-model="user.email"></b-form-input>
+					<b-form-input
+						readonly
+						class="inputForm"
+						v-model="user.email"
+					></b-form-input>
 				</div>
 				<div class="lineaForm">
 					<label class="tituloForm"> </label>
@@ -235,12 +239,16 @@
 			modal-header-close
 		>
 			<form class="estiloForm">
-				<b-form-file class="campoForm" id="imagen"></b-form-file>
+				<b-form-file
+					class="campoForm"
+					style="width: 90%"
+					id="imagen"
+				></b-form-file>
 			</form>
 			<p class="posicion">
 				<b-button
 					pill
-					class="boton botonEliminar"
+					class="boton botonEliminar mt-3"
 					size="sm"
 					@click="updateImagen"
 					>Guardar imagen
