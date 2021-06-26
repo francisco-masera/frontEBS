@@ -77,7 +77,7 @@ const routes = [
 		component: () => import('../views/Menu.vue')
 	},
 	{
-		path: '/ingresoClientes/',
+		path: '/ingresoClientes/:token/:email',
 		name: 'IngresoClientes',
 		component: () => import('../views/IngresoClientes.vue')
 	},
@@ -95,6 +95,11 @@ const routes = [
 		path: '/misDirecciones/',
 		name: 'Direcciones',
 		component: () => import('../views/MisDirecciones.vue')
+	},
+	{
+		path: '/listarEmpleados/',
+		name: 'Empleados',
+		component: () => import('../views/ListarEmpleados.vue')
 	},
 ];
 

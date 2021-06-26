@@ -91,6 +91,7 @@
 				var contador = 0;
 				var calle = "";
 				var localidad = "";
+
 				for (const key in this.locationSelected.address_components) {
 					if (contador == 2) break;
 					if (
@@ -102,6 +103,15 @@
 						const element = this.locationSelected.address_components[key];
 						console.log(key);
 						console.log(element);
+						if (element.types[0] == "administrative_area_level_1") {
+							if (element.types[0].toUpperCase() != "MENDOZA") {
+								this.toastr(
+									"Su ubicación es inválida. Debe estar ubicada en la proincia de Mendoza.",
+									"Error: "
+								);
+								return false;
+							}
+						}
 						if (element.types[0] == "route") {
 							contador++;
 							calle = element.long_name;

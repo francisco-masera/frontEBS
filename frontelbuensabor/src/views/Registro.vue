@@ -319,7 +319,7 @@
 						toaster: "b-toaster-top-center",
 						solid: true,
 					});
-					return;
+					return false;
 				}
 				var cliente = {
 					id: 0,
@@ -451,6 +451,11 @@
 						const element = locationSelected.address_components[key];
 						console.log(key);
 						console.log(element);
+						if (element.types[0] == "administrative_area_level_1") {
+							if (element.types[0].toUpperCase() != "MENDOZA") {
+								throw "Su ubicación es inválida. Debe estar ubicada en la proincia de Mendoza.";
+							}
+						}
 						if (element.types[0] == "route") {
 							contador++;
 							calle = element.long_name;
