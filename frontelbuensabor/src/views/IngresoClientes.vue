@@ -131,6 +131,7 @@
 					:state="contraseniaNuevaState"
 				>
 					<b-form-input
+						type="password"
 						id="token-input"
 						v-model="contraseniaNueva"
 						:state="contraseniaNuevaState"
@@ -144,6 +145,7 @@
 					:state="contraseniaNueva2State"
 				>
 					<b-form-input
+						type="password"
 						id="token-input"
 						v-model="contraseniaNueva2"
 						:state="contraseniaNueva2State"

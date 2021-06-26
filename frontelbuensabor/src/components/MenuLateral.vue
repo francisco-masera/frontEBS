@@ -94,6 +94,8 @@
 					this.botones.push(boton);
 					boton = [7, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
 					this.botones.push(boton);
+					boton = [8, "Empleados", "misDatos.png", "/listarEmpleados"];
+					this.botones.push(boton);
 					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
 					this.botones.push(boton);
 					this.rol = "Administrador";

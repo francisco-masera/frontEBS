@@ -96,6 +96,11 @@ const routes = [
 		name: 'Direcciones',
 		component: () => import('../views/MisDirecciones.vue')
 	},
+	{
+		path: '/listarEmpleados/',
+		name: 'Empleados',
+		component: () => import('../views/ListarEmpleados.vue')
+	},
 ];
 
 const router = new VueRouter({
