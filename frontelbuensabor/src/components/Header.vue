@@ -325,7 +325,7 @@
 					.then((value) => {
 						if (value)
 							this.$router.push({
-								name: "IngresoClientes",
+								path: `/ingresoClientes/${null}/${null}`,
 							});
 						else if (value == false)
 							this.$router.push({

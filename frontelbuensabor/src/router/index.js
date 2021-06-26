@@ -77,7 +77,7 @@ const routes = [
 		component: () => import('../views/Menu.vue')
 	},
 	{
-		path: '/ingresoClientes/',
+		path: '/ingresoClientes/:token/:email',
 		name: 'IngresoClientes',
 		component: () => import('../views/IngresoClientes.vue')
 	},
