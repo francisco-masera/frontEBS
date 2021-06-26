@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pedidoParam.estado == 'Pendiente'">
+  <div v-if="pedidoParam.estado == 'PendienteEntrega'">
     <b-card no-body border-variant="dark" style="max-width: 600px">
       <b-container style="padding: 0">
         <div class="filasPedido">
@@ -186,15 +186,31 @@ import axios from "axios";
 export default {
   props: ["pedidoParam", "domicilioParam"],
   mounted() {
-   
+   this.userVerifica();
   },
   data() {
     return {
       service: new Service(),
       resultEstado: 0,
+      userDelivery: true,
+      userCajero: false
     };
   },
   methods: {
+    userVerifica() {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+
+      if (this.user.rol == "delivery") {
+        this.userDelivery = true;
+      } else if (this.user.rol == "admin") {
+        this.userDelivery = false;
+      } else if (this.user.rol == "cajero") {
+        this.userCajero = true;
+        this.userDelivery = false;
+      } else {
+        this.$router.push({ name: "Home" });
+      }
+    },
     async cambiaAEntregado() {
    
       var id = this.pedidoParam.id;
