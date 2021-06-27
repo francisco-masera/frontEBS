@@ -155,6 +155,32 @@
 				</b-form-group>
 			</form>
 		</b-modal>
+		<b-modal
+			id="modalReabrir"
+			ref="modalReabrir"
+			title="Cuenta dada de baja ¿Desea reabrirla?"
+			@ok="handleReabrirOk"
+			@hidden="resetModalReabrir"
+			@show="resetModalReabrir"
+			cancel-title="NO"
+		>
+			<form ref="formReabrir" @submit.stop.prevent="handleReabrir">
+				<b-form-group
+					label-for="email-input"
+					invalid-feedback="Campo obligatorio"
+					:state="contrasenia"
+				>
+					<b-form-input
+						id="email-input"
+						v-model="contrasenia"
+						:state="contraseniaState"
+						required
+						type="password"
+						placeholder="Última contraseña"
+					></b-form-input>
+				</b-form-group>
+			</form>
+		</b-modal>
 	</div>
 </template>
 
@@ -191,6 +217,7 @@
 				submitted: false,
 				cuenta: "",
 				contrasenia: "",
+				contraseniaState: null,
 				service: new Service(),
 				loading: false,
 				utils: new Utils(),
@@ -236,6 +263,7 @@
 					solid: true,
 					appendToast: true,
 					variant: "info",
+					autoHideDelay: 2000,
 				});
 			},
 
@@ -262,6 +290,11 @@
 						this.toast("Error", e.response.data.message);
 						this.loading = !this.loading;
 						this.utils.enableScroll();
+						if (
+							e.response.data.message == "Este usuario no tiene acceso al portal."
+						) {
+							this.$refs.modalReabrir.show();
+						}
 					});
 			},
 			async generarToken() {
@@ -292,6 +325,26 @@
 					)
 					.catch((e) => this.toast("Error: ", e.response.data.message));
 			},
+			async reabrirCuenta() {
+				var email = this.cuenta;
+				var pass = this.contrasenia;
+				await axios
+					.put("http://localhost:9001/buensabor/cliente/reabrirCuenta", null, {
+						params: {
+							email,
+							pass,
+						},
+					})
+					.then((d) => {
+						if (d.data)
+							this.toast(
+								"Cuenta habilitada",
+								"Ya puede ingresar con sus datos nuevamente."
+							);
+						else this.toast("Error:", "No se ha podido reabrir la cuenta.");
+					})
+					.catch((e) => this.toast("Error", e.response.data.message));
+			},
 			checkTokenFormValidity() {
 				const valid = this.$refs.formToken.checkValidity();
 				this.emailState = valid;
@@ -310,6 +363,11 @@
 
 				return valid;
 			},
+			checkReabrirFormValidity() {
+				const valid = this.$refs.formReabrir.checkValidity();
+				this.contraseniaState = valid;
+				return valid;
+			},
 			resetModalToken() {
 				this.email = "";
 				this.emailState = null;
@@ -323,6 +381,10 @@
 				this.contraseniaNueva2 = "";
 				this.contraseniaNueva2State = null;
 			},
+			resetModalReabrir() {
+				this.contrasenia = "";
+				this.contraseniaState = null;
+			},
 			handleTokenOk(bvModalEvt) {
 				bvModalEvt.preventDefault();
 				this.handleToken();
@@ -330,6 +392,19 @@
 			handlePassOk(bvModalEvt) {
 				bvModalEvt.preventDefault();
 				this.handlePass();
+			},
+			handleReabrirOk(bvModalEvt) {
+				bvModalEvt.preventDefault();
+				this.handleReabrir();
+			},
+			handleToken() {
+				if (!this.checkTokenFormValidity()) {
+					return false;
+				}
+				this.generarToken();
+				this.$nextTick(() => {
+					this.$bvModal.hide("modalToken");
+				});
 			},
 			handlePass() {
 				if (!this.checkPassFormValidity()) {
@@ -340,13 +415,14 @@
 					this.$bvModal.hide("modalPassNueva");
 				});
 			},
-			handleToken() {
-				if (!this.checkTokenFormValidity()) {
+
+			handleReabrir() {
+				if (!this.checkReabrirFormValidity()) {
 					return false;
 				}
-				this.generarToken();
+				this.reabrirCuenta();
 				this.$nextTick(() => {
-					this.$bvModal.hide("modalToken");
+					this.$bvModal.hide("modalReabrir");
 				});
 			},
 		},
@@ -363,7 +439,8 @@
 
 <style>
 	#modalToken footer .btn,
-	#modalPassNueva footer .btn {
+	#modalPassNueva footer .btn,
+	#modalReabrir footer .btn {
 		padding: 0;
 	}
 	.error {

@@ -11,6 +11,7 @@
 					solid: true,
 					appendToast: true,
 					variant: "info",
+					autoHideDelay: 2000,
 				});
 			},
 		},

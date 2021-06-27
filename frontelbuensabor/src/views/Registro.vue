@@ -1,270 +1,303 @@
 <template>
-	<div class="container-fluid" style="margin-top: 10vh">
-		<div class="col-6" style="float: left; margin-left: 20vw">
-			<label class="title">Ingrese sus datos para registrarse</label>
-			<b-form id="formRegistro">
-				<div class="form-group col-md-6">
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="text"
-						id="nombre"
-						required
-						placeholder="Nombres"
-						@input="$v.form1.nombre.$touch()"
-						:state="
-							!$v.form1.nombre.$dirty
-								? !$v.form1.nombre.$anyError
-								: !$v.form1.nombre.$error
-						"
-						v-model.trim="form1.nombre"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.nombre.$dirty && $v.form1.nombre.$model == ''"
-					>
-						El nombre es obligatorio.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.nombre.$params.alpha && $v.form1.nombre.$model != ''"
-					>
-						El nombre no puede contener números.
-					</b-form-invalid-feedback>
-				</div>
-				<div class="form-group col-md-6">
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="text"
-						id="apellido"
-						placeholder="Apellidos"
-						required
-						@input="$v.form1.apellido.$touch()"
-						:state="
-							!$v.form1.apellido.$dirty
-								? !$v.form1.apellido.$anyError
-								: !$v.form1.apellido.$error
-						"
-						v-model.trim="form1.apellido"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.apellido.$dirty && $v.form1.apellido.$model == ''"
-					>
-						El apellido es obligatorio.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="
-							$v.form1.apellido.$params.alpha && $v.form1.apellido.$model != ''
-						"
-					>
-						No debe ingresar números.
-					</b-form-invalid-feedback>
-				</div>
-				<div
-					class="form-group col-md-6"
-					:class="{ 'form-group--error': $v.form1.email.$error }"
-				>
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="email"
-						id="email"
-						placeholder="Email"
-						required
-						@input="$v.form1.email.$touch()"
-						:state="
-							!$v.form1.email.$dirty
-								? !$v.form1.email.$anyError
-								: !$v.form1.email.$error
-						"
-						v-model.trim="$v.form1.email.$model"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.email.$dirty && $v.form1.email.$model == ''"
-					>
-						El email es obligatorio.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.email.$params.email && $v.form1.email.$model != ''"
-					>
-						El formato de email es inválido
-					</b-form-invalid-feedback>
-				</div>
-				<div class="form-group col-md-6">
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="numeric"
-						id="telefono"
-						placeholder="Teléfono"
-						@input="$v.form1.telefono.$touch()"
-						:state="
-							!$v.form1.telefono.$dirty
-								? !$v.form1.telefono.$anyError
-								: !$v.form1.telefono.$error
-						"
-						v-model.trim="form1.telefono"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.telefono.$dirty && $v.form1.telefono.$model == ''"
-					>
-						El teléfono es obligatorio.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.telefono.$params.numeric"
-					>
-						Recuerde ingresar sólo números.
-					</b-form-invalid-feedback>
-				</div>
-				<div class="form-group col-md-6">
-					<GmapAutocomplete
-						class="border-white shadow form-control d-flex autocomplete"
-						@place_changed="setAddress"
-					></GmapAutocomplete>
-					<div class="form-check">
-						<label class="form-check-label">
-							<input
-								class="form-check-input"
-								ref="esDepto"
-								type="checkbox"
-								@change="setEsDepto"
+	<div>
+		<cabecera></cabecera>
+		<div class="costado"></div>
+		<div class="container-fluid" style="margin-top: 10vh">
+			<div class="col-6" style="float: left; margin-left: 30vw">
+				<h2 class="mb-4">Ingrese sus datos para registrarse</h2>
+				<b-form id="formRegistro">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="text"
+								id="nombre"
+								required
+								placeholder="Nombres"
+								@input="$v.form1.nombre.$touch()"
+								:state="
+									!$v.form1.nombre.$dirty
+										? !$v.form1.nombre.$anyError
+										: !$v.form1.nombre.$error
+								"
+								v-model.trim="form1.nombre"
 							/>
-							Es Departamento
-						</label>
-					</div>
-					<div v-show="this.esDepto">
-						<input
-							type="text"
-							class="border-white shadow form-control d-flex autocomplete"
-							name=""
-							id="depto"
-							ref="depto"
-							placeholder="Departamento"
-						/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="$v.form1.nombre.$dirty && $v.form1.nombre.$model == ''"
+							>
+								El nombre es obligatorio.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="
+									$v.form1.nombre.$params.alpha && $v.form1.nombre.$model != ''
+								"
+							>
+								El nombre no puede contener números.
+							</b-form-invalid-feedback>
+						</div>
+						<div class="form-group col-md-6">
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="text"
+								id="apellido"
+								placeholder="Apellidos"
+								required
+								@input="$v.form1.apellido.$touch()"
+								:state="
+									!$v.form1.apellido.$dirty
+										? !$v.form1.apellido.$anyError
+										: !$v.form1.apellido.$error
+								"
+								v-model.trim="form1.apellido"
+							/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="
+									$v.form1.apellido.$dirty && $v.form1.apellido.$model == ''
+								"
+							>
+								El apellido es obligatorio.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="
+									$v.form1.apellido.$params.alpha &&
+									$v.form1.apellido.$model != ''
+								"
+							>
+								No debe ingresar números.
+							</b-form-invalid-feedback>
+						</div>
+						<div
+							class="form-group col-md-6"
+							:class="{ 'form-group--error': $v.form1.email.$error }"
+						>
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="email"
+								id="email"
+								placeholder="Email"
+								required
+								@input="$v.form1.email.$touch()"
+								:state="
+									!$v.form1.email.$dirty
+										? !$v.form1.email.$anyError
+										: !$v.form1.email.$error
+								"
+								v-model.trim="$v.form1.email.$model"
+							/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="$v.form1.email.$dirty && $v.form1.email.$model == ''"
+							>
+								El email es obligatorio.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="
+									$v.form1.email.$params.email && $v.form1.email.$model != ''
+								"
+							>
+								El formato de email es inválido
+							</b-form-invalid-feedback>
+						</div>
+						<div class="form-group col-md-6">
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="numeric"
+								id="telefono"
+								placeholder="Teléfono"
+								@input="$v.form1.telefono.$touch()"
+								:state="
+									!$v.form1.telefono.$dirty
+										? !$v.form1.telefono.$anyError
+										: !$v.form1.telefono.$error
+								"
+								v-model.trim="form1.telefono"
+							/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="
+									$v.form1.telefono.$dirty && $v.form1.telefono.$model == ''
+								"
+							>
+								El teléfono es obligatorio.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="
+									$v.form1.telefono.$params.numeric &&
+									$v.form1.telefono.$model != ''
+								"
+							>
+								Recuerde ingresar sólo números.
+							</b-form-invalid-feedback>
+						</div>
+						<div class="form-group col-md-6">
+							<GmapAutocomplete
+								class="border-white shadow form-control d-flex autocomplete"
+								@place_changed="setAddress"
+							></GmapAutocomplete>
+							<div class="form-check">
+								<label class="form-check-label">
+									<input
+										class="form-check-input"
+										ref="esDepto"
+										type="checkbox"
+										@change="setEsDepto"
+									/>
+									Es Departamento
+								</label>
+							</div>
+							<div v-show="this.esDepto">
+								<input
+									type="text"
+									class="
+										border-white
+										shadow
+										form-control
+										d-flex
+										autocomplete
+										mb-3
+										mt-3
+									"
+									name=""
+									id="depto"
+									ref="depto"
+									placeholder="Departamento"
+								/>
 
-						<input
-							type="numer"
-							class="border-white shadow form-control d-flex autocomplete"
-							name=""
-							id="piso"
-							ref="piso"
-							placeholder="Piso"
-						/>
+								<input
+									type="numer"
+									class="border-white shadow form-control d-flex autocomplete"
+									name=""
+									id="piso"
+									ref="piso"
+									placeholder="Piso"
+								/>
+							</div>
+						</div>
+						<div class="form-group col-md-6">
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="text"
+								id="usuario"
+								placeholder="Usuario"
+								required
+								@input="$v.form1.usuario.$touch()"
+								:state="
+									!$v.form1.usuario.$dirty
+										? !$v.form1.usuario.$anyError
+										: !$v.form1.usuario.$error
+								"
+								v-model.trim="form1.usuario"
+							/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="$v.form1.usuario.$dirty && $v.form1.usuario.$model == ''"
+							>
+								El usuario es obligatorio.
+							</b-form-invalid-feedback>
+						</div>
+						<div class="form-group col-md-6">
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="password"
+								id="pass"
+								placeholder="Contraseña"
+								required
+								@input="$v.form1.pass.$touch()"
+								:state="
+									!$v.form1.pass.$dirty
+										? !$v.form1.pass.$anyError
+										: !$v.form1.pass.$error
+								"
+								v-model.trim="form1.pass"
+							/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="$v.form1.pass.$dirty && $v.form1.pass.$model == ''"
+							>
+								La contraseña es obligatoria.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="!$v.form1.pass.$dirty && !$v.form1.pass.alphaNum"
+							>
+								La contraseña debe ser alfanumérica y no poseer espacios.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="!$v.form1.pass.$dirty && !$v.form1.pass.minLength"
+							>
+								La contraseña debe tener mínimo 8 caracteres.
+							</b-form-invalid-feedback>
+						</div>
+						<div class="form-group col-md-6">
+							<b-form-input
+								class="border-white shadow form-control d-flex"
+								type="password"
+								id="pass2"
+								placeholder="Confirmar contraseña"
+								required
+								@input="$v.form1.pass2.$touch()"
+								:state="
+									!$v.form1.pass2.$dirty
+										? !$v.form1.pass2.$anyError
+										: !$v.form1.pass2.$error
+								"
+								v-model.trim="form1.pass2"
+							/>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="$v.form1.pass2.$dirty && $v.form1.pass2.$model == ''"
+							>
+								La validación de contraseña es obligatoria.
+							</b-form-invalid-feedback>
+							<b-form-invalid-feedback
+								class="error"
+								v-if="!$v.form1.pass2.sameAsPassword"
+								>Las contraseñas deben ser iguales</b-form-invalid-feedback
+							>
+						</div>
+						<div class="form-group col-md-6">
+							<label>Foto</label>
+							<b-form-file
+								class="border-white shadow form-control d-flex"
+								id="ph"
+								accept="jpeg,jpg,png"
+							/>
+						</div>
 					</div>
-				</div>
-				<div class="form-group col-md-6">
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="text"
-						id="usuario"
-						placeholder="Usuario"
-						required
-						@input="$v.form1.usuario.$touch()"
-						:state="
-							!$v.form1.usuario.$dirty
-								? !$v.form1.usuario.$anyError
-								: !$v.form1.usuario.$error
-						"
-						v-model.trim="form1.usuario"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.usuario.$dirty && $v.form1.usuario.$model == ''"
+					<b-button
+						class="btn boton btnRegistro mt-4"
+						style="margin-left: 17.3vw"
+						@click="register()"
 					>
-						El usuario es obligatorio.
-					</b-form-invalid-feedback>
-				</div>
-				<div class="form-group col-md-6">
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="password"
-						id="pass"
-						placeholder="Contraseña"
-						required
-						@input="$v.form1.pass.$touch()"
-						:state="
-							!$v.form1.pass.$dirty
-								? !$v.form1.pass.$anyError
-								: !$v.form1.pass.$error
-						"
-						v-model.trim="form1.pass"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.pass.$dirty && $v.form1.pass.$model == ''"
-					>
-						La contraseña es obligatoria.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="!$v.form1.pass.$dirty && !$v.form1.pass.alphaNum"
-					>
-						La contraseña debe ser alfanumérica y no poseer espacios.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="!$v.form1.pass.$dirty && !$v.form1.pass.minLength"
-					>
-						La contraseña debe tener mínimo 8 caracteres.
-					</b-form-invalid-feedback>
-				</div>
-				<div class="form-group col-md-6">
-					<b-form-input
-						class="border-white shadow form-control d-flex"
-						type="password"
-						id="pass2"
-						placeholder="Confirmar contraseña"
-						required
-						@input="$v.form1.pass2.$touch()"
-						:state="
-							!$v.form1.pass2.$dirty
-								? !$v.form1.pass2.$anyError
-								: !$v.form1.pass2.$error
-						"
-						v-model.trim="form1.pass2"
-					/>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="$v.form1.pass2.$dirty && $v.form1.pass2.$model == ''"
-					>
-						La validación de contraseña es obligatoria.
-					</b-form-invalid-feedback>
-					<b-form-invalid-feedback
-						class="error"
-						v-if="!$v.form1.pass2.sameAsPassword"
-						>Las contraseñas deben ser iguales</b-form-invalid-feedback
-					>
-				</div>
-				<div class="form-group col-md-6">
-					<label>Foto</label>
-					<b-form-file
-						class="border-white shadow form-control d-flex"
-						id="ph"
-						accept="jpeg,jpg,png"
-					/>
-				</div>
-				<b-button class="btn boton" @click="register()">Registrarse</b-button>
-			</b-form>
-			<b-alert
-				variant="success"
-				:show="alertaExito"
-				@dismissed="!alertaExito"
-				dismissible
-				fade
-				>¡Registro Exitoso!</b-alert
-			>
-			<b-alert
-				variant="danger"
-				:show="alertaError"
-				@dismissed="!alertaError"
-				dismissible
-				fade
-				>¡Registro Fallido!</b-alert
-			>
+						Registrarse
+					</b-button>
+				</b-form>
+				<b-alert
+					variant="success"
+					:show="alertaExito"
+					@dismissed="!alertaExito"
+					dismissible
+					fade
+					>¡Registro Exitoso!</b-alert
+				>
+				<b-alert
+					variant="danger"
+					:show="alertaError"
+					@dismissed="!alertaError"
+					dismissible
+					fade
+					>¡Registro Fallido!</b-alert
+				>
+			</div>
 		</div>
+
 		<router-view />
 	</div>
 </template>
@@ -283,10 +316,16 @@
 		alphaNum,
 		minLength,
 	} from "vuelidate/lib/validators";
-	const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
+
+	import Header from "@/components/Header.vue";
 	import axios from "axios";
 
+	const alpha = helpers.regex("alpha", /^[ a-zA-ZÀ-ÿ\u00f1\u00d1]*$/);
+
 	export default {
+		components: {
+			cabecera: Header,
+		},
 		methods: {
 			setAddress(coord) {
 				var latLng = coord.geometry.location;
@@ -475,15 +514,13 @@
 					this.esDepto &&
 					(this.$refs.piso == undefined || this.$refs.piso.value == "")
 				) {
-					this.toastr("Debe ingresar un piso", "Error: ");
-					return false;
+					throw "Debe ingresar un piso";
 				}
 				if (
 					this.esDepto &&
 					(this.$refs.depto == undefined || this.$refs.depto.value == "")
 				) {
-					this.toastr("Debe ingresar un departamento", "Error: ");
-					return false;
+					throw "Debe ingresar un departamento";
 				}
 				var numero;
 				var tieneNumero = false;
@@ -616,7 +653,7 @@
 		margin-left: 1em;
 		margin-bottom: 4vh;
 	}
-	.btn {
+	.btnRegistro {
 		margin-left: 1.5%;
 	}
 	.error {

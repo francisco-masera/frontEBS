@@ -43,7 +43,7 @@
 			<b-button
 				class="buttonText"
 				@click="abreModalEliminar"
-				v-show="user.type !== 'Empleado' || user.rol === 'admin'"
+				v-show="user.type !== 'Empleado'"
 			>
 				<img
 					:src="require('@/assets/images/eliminar.png')"
@@ -169,7 +169,7 @@
 			</template>
 			Error al cambiar la contraseña
 		</b-toast>
-		<b-modal
+		<!-- <b-modal
 			ref="modalEliminarCuenta"
 			title="¿Esta seguro de eliminar su cuenta?"
 			class="modalEliminar"
@@ -195,9 +195,9 @@
 					@click="verificarContraseniaEliminar"
 					>Eliminar
 				</b-button>
-			</p>
-			<!-- Toast que muestra el error en la eliminación de la cuenta por error en contraseña-->
-			<b-toast id="toast-eliminar-error" variant="warning" solid>
+			</p> -->
+		<!-- Toast que muestra el error en la eliminación de la cuenta por error en contraseña-->
+		<!-- 	<b-toast id="toast-eliminar-error" variant="warning" solid>
 				<template v-slot:toast-title>
 					<div class="d-flex flex-grow-1 align-items-baseline">
 						<b-img
@@ -210,10 +210,10 @@
 					</div>
 				</template>
 				¡La contraseña no es correcta!
-			</b-toast>
+			</b-toast> -->
 
-			<!-- Toast que muestra la confirmación de eliminado con éxito-->
-			<b-toast id="toast-eliminar-exito" variant="success" solid>
+		<!-- Toast que muestra la confirmación de eliminado con éxito-->
+		<!-- <b-toast id="toast-eliminar-exito" variant="success" solid>
 				<template v-slot:toast-title>
 					<div class="d-flex flex-grow-1 align-items-baseline">
 						<b-img
@@ -227,7 +227,7 @@
 				</template>
 				Baja exitosa
 			</b-toast>
-		</b-modal>
+		</b-modal> -->
 
 		<b-modal
 			ref="modalCambioImagen"
@@ -360,26 +360,32 @@
 			},
 
 			abreModalEliminar() {
-				this.$refs.modalEliminarCuenta.show();
-			},
-
-			async verificarContraseniaEliminar() {
-				let contraseniaVerificada = await axios
-					.get("http://localhost:9001/buensabor/persona/validarContrasenia", {
-						params: {
-							id: this.user.id,
-							password: this.contraseniaUsuario,
-						},
+				//this.$refs.modalEliminarCuenta.show();
+				this.$bvModal
+					.msgBoxConfirm("Va a eliminar su cuenta ¿Está seguro?", {
+						size: "sm",
+						buttonSize: "md",
+						okTitle: "SI",
+						cancelTitle: "NO",
+						footerClass: "p-2",
+						hideHeaderClose: false,
+						centered: true,
+						id: "modalEliminar",
 					})
-					.then((res) => res.data);
-				contraseniaVerificada
-					? this.eliminarCuenta()
-					: this.$bvToast.show("toast-eliminar-error");
+					.then((value) => {
+						if (value == true) {
+							this.eliminarCuenta();
+						}
+					})
+					.catch((err) => {
+						console.log(err);
+					});
 			},
 
 			forceRerender() {
 				this.componentKey += 1;
 			},
+
 			async guardar() {
 				var parametroId = parseInt(this.$route.params.id);
 				this.verificaUsuario();
@@ -497,16 +503,14 @@
 						.update("cliente", this.user, parametroId)
 						.then((data) => {
 							this.user = data;
-							this.$refs.modalCambioPass.hide();
-							this.$bvToast.show("toast-eliminar-exito");
+							this.contraseniaUsuario = "";
+							sessionStorage.clear();
+							this.$router.push({ path: "/" });
 						})
 						.catch(() => {
 							this.$bvToast.show("toast-error-sistema");
 						});
 				}
-				this.contraseniaUsuario = "";
-				this.$refs.modalEliminarCuenta.hide();
-				this.$router.push({ path: "/ingreso" });
 			},
 
 			async verificarContrasenia() {
@@ -570,6 +574,9 @@
 	};
 </script>
 <style>
+	#modalEliminar footer .btn {
+		padding: 0;
+	}
 	.contenedorForm {
 		margin-top: 20px;
 	}
