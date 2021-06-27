@@ -25,7 +25,7 @@
 							v-show="!this.user.id"
 							@click="$router.push({ name: 'Registro' })"
 							pill
-							class="boton"
+							class="btn boton"
 							>Registrarme</b-button
 						>
 						<b-button
