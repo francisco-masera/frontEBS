@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pedidoParam.estado == 'PendienteEntrega'">
+  <div v-if="pedidoParam.estado == 'PendienteEntrega' && this.userDelivery==true">
     <b-card no-body border-variant="dark" style="max-width: 600px">
       <b-container style="padding: 0">
         <div class="filasPedido">
@@ -24,8 +24,7 @@
           <div id="fila3">
             <p
               v-if="
-                domicilioParam.departamento == 0 && domicilioParam.piso == 0
-              "
+                domicilioParam.departamento == 0 && domicilioParam.piso == 0"
             >
               <strong>Dirección:</strong>
               {{ domicilioParam.calle }}
@@ -34,8 +33,7 @@
             </p>
             <p
               v-else-if="
-                domicilioParam.departamento > 0 && domicilioParam.piso == 0
-              "
+                domicilioParam.departamento > 0 && domicilioParam.piso == 0"
             >
               <strong>Dirección:</strong>
               {{ domicilioParam.calle }}
@@ -104,7 +102,7 @@
       </b-container>
     </b-card>
   </div>
-  <div v-else>
+  <div v-else-if="this.userDelivery == true && this.pedidoParam.estado =='Entregado'">
     <b-card no-body border-variant="dark" style="max-width: 600px">
       <b-container style="padding: 0">
         <div class="filasPedido">
@@ -179,6 +177,82 @@
       </b-container>
     </b-card>
   </div>
+  <div v-else-if="this.userCajero == true">
+      <b-card no-body border-variant="dark" style="max-width: 600px">
+      <b-container style="padding: 0">
+        <div class="filasPedido">
+          <div id="fila1">
+            <div id="orden">
+              <strong>#Orden {{ pedidoParam.numero }} </strong>
+            </div>
+            <div id="tipoRetiro"><strong>{{pedidoParam.tipoEntrega}}</strong></div>
+            <div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+            <div id="total">
+              <strong>Total: </strong>${{ pedidoParam.factura.total }}
+            </div>
+          </div>
+          <div id="fila2">
+            <div id="cliente">
+              <strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
+              {{ pedidoParam.cliente.apellido }}
+            </div>
+            <div id="telefono">
+              <strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
+            </div>
+          </div>
+          <div id="fila3">
+            <p
+              v-if="
+                domicilioParam.departamento == 0 && domicilioParam.piso == 0"
+            >
+              <strong>Dirección:</strong>
+              {{ domicilioParam.calle }}
+              {{ domicilioParam.numero }} -
+              {{ domicilioParam.localidad }}
+            </p>
+            <p
+              v-else-if="
+                domicilioParam.departamento > 0 && domicilioParam.piso == 0"
+            >
+              <strong>Dirección:</strong>
+              {{ domicilioParam.calle }}
+              {{ domicilioParam.numero }} - Departamento:
+              {{ domicilioParam.departamento }} Piso: PB -
+              {{ domicilioParam.localidad }}
+            </p>
+            <p v-else>
+              <strong>Dirección:</strong>
+              {{ domicilioParam.calle }}
+              {{ domicilioParam.numero }} - Departamento:
+              {{ domicilioParam.departamento }} Piso:
+              {{ domicilioParam.piso }} -
+              {{ domicilioParam.localidad }}
+            </p>
+          </div>
+          <div style="" id="fila4">
+            <div class="contenedorDetalle">
+              <strong>Detalle:</strong>
+              <div
+                v-for="detalle in pedidoParam.detalles"
+                v-bind:key="detalle.cantidad"
+                class=""
+              >
+                <label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.denominacion }}</label
+                >
+                <label v-else
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.insumo.denominacion }}</label
+                >
+              </div>
+            </div>
+            <br />
+          </div>
+        </div>
+      </b-container>
+    </b-card>
+  </div>
 </template>
 <script>
 import Service from "@/service/Service.js";
@@ -186,20 +260,21 @@ import axios from "axios";
 export default {
   props: ["pedidoParam", "domicilioParam"],
   mounted() {
-   this.userVerifica();
+    this.userVerifica();
   },
   data() {
     return {
       service: new Service(),
       resultEstado: 0,
       userDelivery: true,
-      userCajero: false
+      userCajero: false,
     };
   },
   methods: {
-    userVerifica() {
-      this.user = JSON.parse(sessionStorage.getItem("user"));
 
+      userVerifica() {
+      this.user = JSON.parse(sessionStorage.getItem("user"));
+     
       if (this.user.rol == "delivery") {
         this.userDelivery = true;
       } else if (this.user.rol == "admin") {
@@ -211,6 +286,7 @@ export default {
         this.$router.push({ name: "Home" });
       }
     },
+
     async cambiaAEntregado() {
    
       var id = this.pedidoParam.id;
@@ -306,6 +382,11 @@ export default {
   margin-top: 7%;
   text-align: center;
   font-size: 25px;
+}
+#tipoRetiro{
+float: left;
+padding-top: 10px;
+  margin-left: 20px;
 }
 
 @media screen and (max-width: 550px) {

@@ -7,21 +7,31 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Pedidos</h1>
-      <div v-if="this.userDelivery == true">
-        <b-button class="hrefPedido" @click="cambiarAPendientes"
-          >PENDIENTES</b-button
-        >
-        <b-button class="hrefPedido" @click="cambiarAEntregados"
-          >ENTREGADOS</b-button
-        >
-      </div>
-      <div v-else>
-        <b-button class="hrefPedido" @click="getPedidos">TODOS</b-button>
-        <b-button class="hrefPedido">PENDIENTES</b-button>
-        <b-button class="hrefPedido">EN COCINA</b-button>
-        <b-button class="hrefPedido">LISTOS</b-button>
-        <b-button class="hrefPedido">EN DELIVERY</b-button>
-      </div>
+	  <div v-if="this.userDelivery">
+      <b-button class="hrefPedido" @click="cambiarAPendientes"
+        >PENDIENTES</b-button
+      >
+      <b-button class="hrefPedido" @click="cambiarAEntregados"
+        >ENTREGADOS</b-button
+      >
+	  </div>
+	  <div v-else>
+		<b-button class="hrefPedido" @click="mostrarTodos"
+        >TODOS</b-button
+      >
+      <b-button class="hrefPedido"
+        >PENDIENTES</b-button
+      >  
+	   <b-button class="hrefPedido"
+        >EN COCINA</b-button
+      > 
+	   <b-button class="hrefPedido"
+        >LISTOS</b-button
+      > 
+	   <b-button class="hrefPedido"
+        >EN DELIVERY</b-button
+      > 
+	  </div>
       <b-nav-form class="buscador" id="busqueda">
         <b-form-input
           size="sm"
@@ -41,7 +51,7 @@
           <img :src="require('@/assets/images/buscar.png')" id="imagenBuscar" />
         </b-button>
       </b-nav-form>
-	  <div v-if="this.userDelivery == true">
+      <div v-if="this.userDelivery">
       <div v-if="pedidosPendientes" class="divCard">
         <b-card-group>
           <div
@@ -86,11 +96,12 @@
             ></pedido>
           </div>
         </b-card-group>
-		</div>
-		<div v-else>
-			 <b-card-group>
+      </div>
+      </div>
+      <div v-if="this.userCajero">
+         <b-card-group style="margin-top: 120px">
           <div
-            v-for="pedido in peddidos"
+            v-for="pedido in pedidosDelivery"
             :key="pedido.id"
             id="contenedorTarjeta"
           >
@@ -101,7 +112,6 @@
             ></pedido>
           </div>
         </b-card-group>
-		</div>
       </div>
     </b-container>
   </div>
@@ -141,14 +151,13 @@ export default {
       formatter: new Formatters(),
       timeout: null,
       userCajero: false,
-      pedidos: {},
     };
   },
 
   methods: {
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
-
+     
       if (this.user.rol == "delivery") {
         this.userDelivery = true;
       } else if (this.user.rol == "admin") {
@@ -169,21 +178,32 @@ export default {
 
     async getPedidos() {
       await this.service.getAll("pedido").then((data) => {
-        this.pedidos = data;
-		console.log(this.pedidos);
-        this.adjustmentHour();
-		
-          this.cargaPendientes();
-		
+        this.pedidosDelivery = data;
+        //	this.agregaDomicilioPedido();
+         this.adjustmentHour();
+         this.ajusteTipoRetiro();
+        if(this.userDelivery == true){
+        this.cargaPendientes();
+        }
        
+        console.log(this.pedidosDelivery)
       });
     },
     adjustmentHour() {
-      this.pedidos.forEach((pedido) => {
+      this.pedidosDelivery.forEach((pedido) => {
         pedido.hora = this.formatter.formatHour(pedido.hora);
       });
     },
-
+    ajusteTipoRetiro(){
+      this.pedidosDelivery.forEach((pedido) =>{
+        if(pedido.tipoEntrega == false){
+            pedido.tipoEntrega = "Delivery"
+        }else{
+          pedido.tipoEntrega = "Retiro en local"
+        }
+       
+      });
+    },
     cambiarAPendientes() {
       this.pedidosPendientes = true;
       this.pedidosEntregados = false;
@@ -192,7 +212,7 @@ export default {
 
     cargaPendientes() {
       if (this.pedidosPendientes) {
-        this.filtroPendientes = this.pedidos.filter(
+        this.filtroPendientes = this.pedidosDelivery.filter(
           (pedido) => pedido.estado == "PendienteEntrega"
         );
       }
@@ -201,7 +221,7 @@ export default {
 
     cargaEntregados() {
       if (!this.pedidosPendientes) {
-        this.filtroEntregados = this.pedidos.filter(
+        this.filtroEntregados = this.pedidosDelivery.filter(
           (pedido) => pedido.estado == "Entregado"
         );
       }
@@ -235,7 +255,7 @@ export default {
 				    },*/
     busquedaPedidos() {
       if (this.busquedaOrden != "") {
-        this.filtroBuscados = this.pedidos.filter((pedido) => {
+        this.filtroBuscados = this.pedidosDelivery.filter((pedido) => {
           return (
             pedido.numero == this.busquedaOrden ||
             pedido.cliente.nombre == this.busquedaOrden ||
