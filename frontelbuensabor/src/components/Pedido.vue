@@ -230,7 +230,7 @@
             </p>
           </div>
           <div style="" id="fila4">
-            <div class="contenedorDetalle">
+            <div class="contenedorDetalleCaja">
               <strong>Detalle:</strong>
               <div
                 v-for="detalle in pedidoParam.detalles"
@@ -246,9 +246,29 @@
                   {{ detalle.articulo.insumo.denominacion }}</label
                 >
               </div>
+            
             </div>
             <br />
-          </div>
+            
+        <div class="contenedorCajeroBtn">
+              <b-button
+                pill
+                class="boton"
+                id="botonAprueba"
+                size="md"
+               
+                >Aprobar</b-button
+              >
+              <b-button
+                pill
+                class="boton"
+                id="botonCancela"
+                size="md"
+                
+                >Cancelar</b-button
+              >
+            </div>
+            </div>
         </div>
       </b-container>
     </b-card>
@@ -386,7 +406,35 @@ export default {
 #tipoRetiro{
 float: left;
 padding-top: 10px;
-  margin-left: 20px;
+margin-left: 20px;
+}
+#botonAprueba{
+  width: auto;
+  height: 30px;
+  margin: 0;
+  margin-right: 20px;
+  margin-left: 150px;
+  
+
+}
+#botonCancela{
+  width: auto;
+  height: 30px;
+  margin: 0;
+  margin-right: 80px;
+}
+.contenedorCajeroBtn{
+  position: absolute;
+  display: block;
+  bottom: 15px;
+
+ 
+}
+.contenedorDetalleCaja{
+  width: 200px;
+
+  display: block;
+  margin-bottom: 20px;
 }
 
 @media screen and (max-width: 550px) {
@@ -404,6 +452,9 @@ padding-top: 10px;
     margin-top: 7%;
     text-align: center;
     font-size: 25px;
+  }
+  #botonEstadosCajero{
+   
   }
 }
 @media screen and (min-width: 320px) and (max-width: 450px) {
