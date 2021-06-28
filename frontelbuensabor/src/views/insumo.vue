@@ -36,27 +36,27 @@
 					<div id="stockColor" style="background-color: #ed3247"></div>
 					Stock {{ stock }}
 					<b-badge class="Badgecategoria">{{
-						insumoEncontrado.rubroInsumo.denominacion
+						insumoEncontrado.insumo.rubroInsumo.denominacion
 					}}</b-badge>
 				</div>
 
 				<div id="infoProductoVenta">
 					<b-card header="Stock actual" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.stock.actual
-							}}{{ insumoEncontrado.unidadMedida }}
+							>{{ insumoEncontrado.insumo.stock.actual
+							}}{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
 					<b-card header="Stock min" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.stock.minimo
-							}}{{ insumoEncontrado.unidadMedida }}
+							>{{ insumoEncontrado.insumo.stock.minimo
+							}}{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
 					<b-card header="Stock max" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.stock.maximo
-							}}{{ insumoEncontrado.unidadMedida }}
+							>{{ insumoEncontrado.insumo.stock.maximo
+							}}{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
 					<b-card header="Costo" class="tarjetaInfo">
@@ -388,7 +388,6 @@
 				formatter: new Formatter(),
 			};
 		},
-
 		methods: {
 			verificarUsuario() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
@@ -399,15 +398,15 @@
 
 			async getDetalleInsumoxId() {
 				var parametroId = parseInt(this.$route.params.id);
-				console.log(this.$route.params);
 				await axios
 					.get(
 						"http://localhost:9001/buensabor/insumo/getDetalleByID/" + parametroId
 					)
-					.then((insumo) => {
-						this.insumoEncontrado = insumo.data;
+					.then((d) => {
+						this.insumoEncontrado = d.data;
 						this.getOrdenCompra();
-						this.switchChecked = !insumo.data.baja;
+						this.switchChecked = !d.data.insumo.baja;
+						if (!d.data.insumo.esInsumo) this.esInsumoVenta = true;
 					});
 			},
 
@@ -417,7 +416,7 @@
 				await this.service
 					.getOne(
 						"compras/historialCompras",
-						parseInt(this.insumoEncontrado.idInsumo)
+						parseInt(this.insumoEncontrado.insumo.idInsumo)
 					)
 					.then((data) => {
 						data.forEach((o, i) => {
@@ -465,7 +464,7 @@
 			async verificarStock() {
 				let clase = document.getElementById("stockColor");
 				await this.service
-					.getOne("stock/estadoStock", this.insumoEncontrado.idInsumo)
+					.getOne("stock/estadoStock", this.insumoEncontrado.insumo.idInsumo)
 					.then((estado) => {
 						if (estado == 1) {
 							this.stock = "alto";
@@ -530,7 +529,7 @@
 				if (this.insumoEncontrado.esInsumo) {
 					this.compra.insumo = this.insumoEncontrado;
 				} else {
-					this.compra.insumo = this.insumoEncontrado.insumo;
+					this.compra.insumo = this.insumo;
 				}
 			},
 
@@ -635,7 +634,9 @@
 		border-radius: 15px;
 		color: #ffffff;
 	}
-
+	.tarjetaInfo .card-body {
+		text-align: center;
+	}
 	.card-body {
 		padding-top: 10px;
 		padding-bottom: 10px;
