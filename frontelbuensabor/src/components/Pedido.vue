@@ -154,7 +154,7 @@
             </p>
           </div>
           <div style="" id="fila4">
-            <div class="contenedorDetalle">
+            <div id="contenedorDetalle">
               <strong>Detalle:</strong>
               <div
                 v-for="detalle in pedidoParam.detalles"
@@ -230,7 +230,7 @@
             </p>
           </div>
           <div style="" id="fila4">
-            <div class="contenedorDetalleCaja">
+            <div id="contenedorDetalle">
               <strong>Detalle:</strong>
               <div
                 v-for="detalle in pedidoParam.detalles"
@@ -246,7 +246,14 @@
                   {{ detalle.articulo.insumo.denominacion }}</label
                 >
               </div>
-            
+             <div id="divBtnEstados"><b-button
+                pill
+                class="boton"
+                id="btnEstados"
+                size="md"
+               
+                >Boton</b-button
+              ></div>
             </div>
             <br />
             
@@ -281,6 +288,7 @@ export default {
   props: ["pedidoParam", "domicilioParam"],
   mounted() {
     this.userVerifica();
+
   },
   data() {
     return {
@@ -297,11 +305,13 @@ export default {
      
       if (this.user.rol == "delivery") {
         this.userDelivery = true;
+        
       } else if (this.user.rol == "admin") {
         this.userDelivery = false;
       } else if (this.user.rol == "cajero") {
         this.userCajero = true;
         this.userDelivery = false;
+        this.styleCajero();
       } else {
         this.$router.push({ name: "Home" });
       }
@@ -329,6 +339,11 @@ export default {
     refrescaPantalla() {
       window.location.href = "/pedidos/";
     },
+
+    styleCajero(){
+      document.getElementById("contenedorDetalle").style.marginBottom = "20px";
+      document.getElementById("contenedorDetalle").style.marginRight = "40px";
+    }
   },
 };
 </script>
@@ -379,8 +394,8 @@ export default {
 }
 .contenedorDetalle {
   width: 200px;
-
   display: block;
+
 }
 .contenedorCard {
   right: 0px;
@@ -426,17 +441,18 @@ margin-left: 20px;
 .contenedorCajeroBtn{
   position: absolute;
   display: block;
-  bottom: 15px;
-
- 
-}
-.contenedorDetalleCaja{
-  width: 200px;
-
-  display: block;
-  margin-bottom: 20px;
+  bottom: 10px;
+  
 }
 
+#divBtnEstados{
+float: right;
+margin-top: 0;
+
+}
+#btnEstados{
+margin-right: 10px;
+}
 @media screen and (max-width: 550px) {
   .contenedorDetalle {
     width: 100%;
@@ -453,9 +469,7 @@ margin-left: 20px;
     text-align: center;
     font-size: 25px;
   }
-  #botonEstadosCajero{
-   
-  }
+
 }
 @media screen and (min-width: 320px) and (max-width: 450px) {
   #orden {

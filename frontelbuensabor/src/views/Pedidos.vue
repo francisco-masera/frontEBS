@@ -16,7 +16,7 @@
       >
 	  </div>
 	  <div v-else>
-		<b-button class="hrefPedido" @click="mostrarTodos"
+		<b-button class="hrefPedido"
         >TODOS</b-button
       >
       <b-button class="hrefPedido"
@@ -101,7 +101,7 @@
       <div v-if="this.userCajero">
          <b-card-group style="margin-top: 120px">
           <div
-            v-for="pedido in pedidosDelivery"
+            v-for="pedido in pedidos"
             :key="pedido.id"
             id="contenedorTarjeta"
           >
@@ -139,7 +139,7 @@ export default {
     return {
       user: {},
       userDelivery: true,
-      pedidosDelivery: {},
+      pedidos: {},
       service: new Service(),
       domicilios: {},
       pedidosPendientes: true,
@@ -178,7 +178,7 @@ export default {
 
     async getPedidos() {
       await this.service.getAll("pedido").then((data) => {
-        this.pedidosDelivery = data;
+        this.pedidos = data;
         //	this.agregaDomicilioPedido();
          this.adjustmentHour();
          this.ajusteTipoRetiro();
@@ -186,16 +186,16 @@ export default {
         this.cargaPendientes();
         }
        
-        console.log(this.pedidosDelivery)
+        console.log(this.pedidos)
       });
     },
     adjustmentHour() {
-      this.pedidosDelivery.forEach((pedido) => {
+      this.pedidos.forEach((pedido) => {
         pedido.hora = this.formatter.formatHour(pedido.hora);
       });
     },
     ajusteTipoRetiro(){
-      this.pedidosDelivery.forEach((pedido) =>{
+      this.pedidos.forEach((pedido) =>{
         if(pedido.tipoEntrega == false){
             pedido.tipoEntrega = "Delivery"
         }else{
@@ -212,7 +212,7 @@ export default {
 
     cargaPendientes() {
       if (this.pedidosPendientes) {
-        this.filtroPendientes = this.pedidosDelivery.filter(
+        this.filtroPendientes = this.pedidos.filter(
           (pedido) => pedido.estado == "PendienteEntrega"
         );
       }
@@ -221,7 +221,7 @@ export default {
 
     cargaEntregados() {
       if (!this.pedidosPendientes) {
-        this.filtroEntregados = this.pedidosDelivery.filter(
+        this.filtroEntregados = this.pedidos.filter(
           (pedido) => pedido.estado == "Entregado"
         );
       }
@@ -255,7 +255,7 @@ export default {
 				    },*/
     busquedaPedidos() {
       if (this.busquedaOrden != "") {
-        this.filtroBuscados = this.pedidosDelivery.filter((pedido) => {
+        this.filtroBuscados = this.pedidos.filter((pedido) => {
           return (
             pedido.numero == this.busquedaOrden ||
             pedido.cliente.nombre == this.busquedaOrden ||
