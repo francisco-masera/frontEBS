@@ -92,7 +92,6 @@
 	import MenuLateral from "@/components/MenuLateral.vue";
 	import Header from "@/components/Header.vue";
 	import Service from "@/service/Service.js";
-	//	import axios from "axios";
 
 	export default {
 		components: {

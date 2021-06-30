@@ -213,6 +213,7 @@
 					v-model="contraseniaUsuario"
 					class="contraseñaForm"
 					placeholder="Contraseña"
+					type="password"
 				>
 				</b-form-input>
 			</form>
@@ -335,6 +336,7 @@
 				</form>
 			</b-modal>
 		</div>
+		<Toast ref="toast" />
 		<Loader v-if="loading" :loading="loading" />
 	</div>
 </template>
@@ -346,6 +348,7 @@
 	import Formatter from "@/utilidades/Formatters.js";
 	import axios from "axios";
 	import Loader from "@/components/Loader.vue";
+	import Toast from "@/components/Toast.vue";
 
 	export default {
 		mounted() {
@@ -355,6 +358,7 @@
 			menuLateral: MenuLateral,
 			cabecera: Header,
 			Loader: Loader,
+			Toast: Toast,
 		},
 		data() {
 			return {
@@ -483,29 +487,34 @@
 
 			async cambiarEstadoBaja() {
 				let id = this.$route.params.id;
-				await this.service
-					.delete("insumo", id)
-					.then((data) => (this.insumoEncontrado = data))
-					.then(
-						this.$bvToast.show("toast-eliminar-exito"),
-						(this.switchChecked = !!this.insumoEncontrado.baja),
-						this.$refs.modalAB.hide()
-					);
+
+				await axios
+					.delete("http://localhost:9001/buensabor/insumo/bajaInsumo/" + id)
+					.catch(() => {
+						this.toastr(
+							"No se puede eliminar el insumo. Aún hay recetas asociadas.",
+							"Error"
+						);
+						this.switchChecked = !this.switchChecked;
+					})
+					.finally(() => this.$refs.modalAB.hide());
 			},
 
 			async verificarContrasenia() {
-				let contraseniaVerificada = await axios
+				await axios
 					.get("http://localhost:9001/buensabor/persona/validarContrasenia", {
 						params: {
 							id: this.user.id,
 							password: this.contraseniaUsuario,
 						},
 					})
-					.then((res) => res.data);
-				contraseniaVerificada
-					? this.cambiarEstadoBaja()
-					: (this.$bvToast.show("toast-eliminar-error"),
-					  (this.switchChecked = !this.switchChecked));
+					.then((res) => {
+						if (res.data) {
+							this.cambiarEstadoBaja();
+						} else {
+							this.$bvToast.show("toast-eliminar-error");
+						}
+					});
 			},
 
 			modificarInsumo(id) {
@@ -566,6 +575,9 @@
 						console.log(e);
 						this.loading = false;
 					});
+			},
+			toastr(msg, title) {
+				this.$refs.toast.emitToast(msg, title);
 			},
 		},
 		computed: {

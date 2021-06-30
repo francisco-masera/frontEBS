@@ -394,7 +394,12 @@
 									);
 								}
 							})
-							.catch((e) => console.log(e))
+							.catch(() =>
+								this.toastr(
+									"Su pedido no ha podido ser confirmado",
+									"Ocurrió un error: "
+								)
+							)
 					)
 					.catch(() => {
 						this.toastr(
