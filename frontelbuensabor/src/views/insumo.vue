@@ -9,11 +9,11 @@
 			<!-- Renderiza insumo que no se vende directamente, es decir que son insumos propiamente dichos-->
 			<div v-if="!esInsumoVenta">
 				<h3>
-					{{ insumoEncontrado.denominacion }}
+					{{ insumoEncontrado.insumo.denominacion }}
 					<b-btn-group>
 						<b-button
 							size="sm"
-							@click="modificarInsumo(insumoEncontrado.idInsumo)"
+							@click="modificarInsumo(insumoEncontrado.insumo.idInsumo)"
 							class="botonImagen"
 						>
 							<img
@@ -43,8 +43,7 @@
 				<div id="infoProductoVenta">
 					<b-card header="Stock actual" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.insumo.stock.actual
-							}}{{ insumoEncontrado.insumo.unidadMedida }}
+							>{{ stockActual }}{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
 					<b-card header="Stock min" class="tarjetaInfo">
@@ -60,7 +59,7 @@
 						</b-card-text>
 					</b-card>
 					<b-card header="Costo" class="tarjetaInfo">
-						<b-card-text>{{ costo }}</b-card-text>
+						<b-card-text>{{ costoInsumo }}</b-card-text>
 					</b-card>
 				</div>
 				<div class="HistorialCompra">
@@ -141,7 +140,7 @@
 				<div id="infoProductoVenta">
 					<b-card header="Stock actual" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.insumo.stock.actual }}
+							>{{ stockActual }}
 							{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
@@ -529,7 +528,7 @@
 				if (this.insumoEncontrado.esInsumo) {
 					this.compra.insumo = this.insumoEncontrado;
 				} else {
-					this.compra.insumo = this.insumo;
+					this.compra.insumo = this.insumoEncontrado.insumo;
 				}
 			},
 
@@ -550,8 +549,7 @@
 			async añadirCompra() {
 				this.$refs["modalAñadir"].hide();
 				this.loading = !this.loading;
-				this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
-
+				this.compra.fechaCompra = new Date();
 				await this.service
 					.save("compras", this.compra)
 					.then((data) => {
@@ -561,7 +559,7 @@
 						this.compra.cantidad = 0;
 						this.compra.precioUnitario = 0;
 						this.compra.insumo = {};
-						this.getOrdenCompra(this.compra.insumo);
+						this.getDetalleInsumoxId();
 						this.loading = !this.loading;
 					})
 					.catch((e) => {
@@ -573,6 +571,15 @@
 		computed: {
 			rows() {
 				return this.ordenCompra.length;
+			},
+			costoInsumo() {
+				return this.costo ? this.costo : "$ 0,00";
+			},
+			stockActual() {
+				var actual = this.insumoEncontrado.insumo.stock.actual;
+				return actual != undefined && actual != null
+					? this.insumoEncontrado.insumo.stock.actual
+					: "$ 0,00";
 			},
 		},
 	};
