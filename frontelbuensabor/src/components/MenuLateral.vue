@@ -92,7 +92,7 @@
 					this.botones.push(boton);
 					boton = [6, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
 					this.botones.push(boton);
-					boton = [7, "Agregar empleado", "misDatos.png", "/formEmpleado/"];
+					boton = [7, "Agregar empleado", "agregarUsuario.png", "/formEmpleado/"];
 					this.botones.push(boton);
 					boton = [8, "Empleados", "misDatos.png", "/listarEmpleados"];
 					this.botones.push(boton);
