@@ -87,18 +87,6 @@
 					})
 					.catch((e) => console.log(e.response.data.message));
 			},
-			async getAdicionales() {
-				await this.service
-					.getAll("insumo/getAdicionales")
-					.then((data) => {
-						data.forEach((d) => this.adicionales.push(d.denominacion));
-					})
-					.then(() => {})
-					.catch((e) => {
-						console.log(e.response.data.message);
-						this.adicionales = null;
-					});
-			},
 			actualizarPrecio(e) {
 				this.cantidad = e;
 				this.precioVenta = "$" + e * this.producto.precioVenta;
