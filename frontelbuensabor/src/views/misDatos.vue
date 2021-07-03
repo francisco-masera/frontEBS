@@ -29,7 +29,7 @@
 				<div class="lineaForm">
 					<label class="tituloForm"> </label>
 					<div class="botonCambiarContraseña">
-						<b-button class="buttonText" @click="cambiarContra"
+						<b-button class="buttonText" @click="cambiarContra" v-show="user.type !== 'Empleado' || user.rol === 'admin'"
 							>Cambiar contraseña</b-button
 						>
 					</div>
@@ -90,16 +90,7 @@
 				>
 				</b-form-input>
 			</form>
-			<p class="posicion">
-				<b-button
-					v-show="user.type !== 'Empleado' || user.rol === 'admin'"
-					pill
-					class="boton botonEliminar"
-					size="sm"
-					@click="verificarContrasenia"
-					>Cambiar contraseña
-				</b-button>
-			</p>
+			
 
 			<!-- Toast que muestra la confirmación de cambio de contraseña con exito-->
 			<b-toast id="toast-cambiar-exito" variant="success" solid no-auto-hide>
@@ -571,6 +562,7 @@
 				}
 			},
 		},
+	
 	};
 </script>
 <style>
