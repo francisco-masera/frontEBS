@@ -25,6 +25,7 @@ export default new Vuex.Store({
     total: 0,
     descuento: 0,
     envio: 0,
+    formaPago: undefined
   },
   mutations: {
 
@@ -116,7 +117,8 @@ export default new Vuex.Store({
     },
     setFormaPago(state, isEfectivo)
     {
-      state.carrito.formaPago = isEfectivo
+      state.formaPago = isEfectivo;
+      state.carrito.formaPago = isEfectivo;
     },
 
   },
@@ -146,7 +148,6 @@ export default new Vuex.Store({
        }, */
     delItem({ commit }, idArticuloVenta)
     {
-
       commit("delItem", idArticuloVenta);
     },
     delCarrito({ commit })

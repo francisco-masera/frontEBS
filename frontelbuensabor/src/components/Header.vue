@@ -3,7 +3,7 @@
 		:id="esHome ? 'headerHome' : 'header'"
 		toggleable="md"
 		type="dark"
-		v-if="esHome || esHome == undefined"
+		v-if="esHome == true"
 	>
 		<b-container>
 			<div id="logoContainer">
@@ -35,19 +35,17 @@
 							class="boton2"
 							>Ingresar</b-button
 						>
-						<b-button
-							v-show="!!this.user.id"
-							@click="$router.push({ path: '/misDatos/' + user.id })"
-							class="bg-transparent border-0"
-						>
+						<b-nav-item :to="'/misdatos/' + this.user.id">
 							<b-img
 								v-show="this.user.foto != '' && this.user.foto"
 								rounded="circle"
 								:src="this.user.foto"
-								width="60"
-								class="fotoUsuario"
+								class="fotoUsuario botonImagenHeader"
 							></b-img>
-						</b-button>
+							<label v-show="user.nombre && user.apellido" id="usuario">{{
+								user.nombre + " " + user.apellido
+							}}</label>
+						</b-nav-item>
 						<b-button
 							v-show="!!this.user.id"
 							@click="logOut()"
@@ -62,7 +60,12 @@
 			</div>
 		</b-container>
 	</b-navbar>
-	<b-navbar id="header" toggleable="md" type="dark" v-else>
+	<b-navbar
+		id="header"
+		toggleable="md"
+		type="dark"
+		v-else-if="esHome == false || esHome == undefined"
+	>
 		<b-container>
 			<div id="logoContainer">
 				<a href="\">
@@ -143,11 +146,11 @@
 									alt=""
 									id="foto"
 									fluid
-									class="botonImagenHeader"
+									class="botonImagenHeader fotoUsuario"
 								>
 								</b-img>
 								<label
-									v-if="this.user.nombre && this.user.apellido"
+									v-show="this.user.nombre && this.user.apellido"
 									id="usuario"
 									>{{ this.user.nombre + " " + this.user.apellido }}
 								</label>
@@ -192,7 +195,6 @@
 				es_Home: false,
 				service: new Service(),
 				screenWidth: window.screen.width < 1024,
-				imgFallBack: require("../assets/images/userDefaultChico.png"),
 			};
 		},
 		mounted() {
@@ -203,7 +205,7 @@
 			async verificaUsuario() {
 				this.es_Home = this.$props.esHome;
 				var boton;
-
+				console.log(this.user);
 				if (this.user) {
 					if (this.user.rol == undefined) {
 						this.esCliente = true;
@@ -258,13 +260,12 @@
 			async traeUser() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
 				if (this.user == null) this.user = {};
-				if (this.user.id && this.user.contrasenia != "") {
+				if (this.user.id) {
 					await this.service.getOne("persona", this.user.id).then((data) => {
 						this.user = data;
 						this.verificaUsuario();
 					});
-					if (this.user.foto) this.loadPh();
-					this.setImgFallBack();
+					this.loadPh();
 				}
 			},
 			redirectoToLogin() {
@@ -342,6 +343,12 @@
 				location.href = "/";
 			},
 			loadPh() {
+				var fotoSession = JSON.parse(sessionStorage.getItem("user")).foto;
+				if (fotoSession.includes("https")) {
+					console.log(fotoSession);
+					this.user.foto = fotoSession;
+					return false;
+				}
 				if (!this.user.foto.includes("https"))
 					this.user.foto =
 						"http://localhost:9001/images/personas/" + this.user.foto;
@@ -366,6 +373,7 @@
 				this.$refs.toast.emitToast(msg, title);
 			},
 		},
+		computed: {},
 	};
 </script>
 

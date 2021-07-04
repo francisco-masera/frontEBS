@@ -270,6 +270,8 @@
 	import Producto from "@/components/ProductoCarrito.vue";
 	import axios from "axios";
 	import Toast from "@/components/Toast.vue";
+	import Service from "@/service/Service.js";
+
 	export default {
 		data() {
 			return {
@@ -278,6 +280,7 @@
 				tipoEntrega: "",
 				formaPago: "",
 				confirmado: false,
+				service: new Service(),
 			};
 		},
 		components: {
@@ -357,7 +360,7 @@
 					this.toastr("Debe elegir una forma de entrega", "¡Atención!");
 					return false;
 				}
-				if (this.formaPago == "") {
+				if (this.$store.state.formaPago == undefined) {
 					this.toastr("Debe elegir una forma de pago", "¡Atención!");
 					return false;
 				}
@@ -366,6 +369,29 @@
 				});
 
 				var esDelivery = $("#delivery").hasClass("btnActivo");
+				var idUsuario = JSON.parse(sessionStorage.getItem("user")).id;
+				if (esDelivery) {
+					this.service
+						.getAll("domicilio/getByIDPersona/" + idUsuario)
+						.then((data) => {
+							if (data.length == 0) {
+								this.toastr(
+									"No puede pedir a domicilio si no ha agregado direcciones.",
+									"¡Atención!"
+								);
+								return false;
+							} else {
+								this.confirmarPedido(manufacturadosID, esDelivery);
+							}
+						})
+						.catch((e) => {
+							this.toastr(e.response.data.message, "Error!");
+						});
+				} else {
+					this.confirmarPedido(manufacturadosID, esDelivery);
+				}
+			},
+			confirmarPedido(manufacturadosID, esDelivery) {
 				axios
 					.post("http://localhost:9001/buensabor/manufacturado/calcularTiempo", {
 						manufacturadosID,
