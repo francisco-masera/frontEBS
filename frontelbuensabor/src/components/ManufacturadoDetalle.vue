@@ -17,7 +17,7 @@
           </b-card-text>
           <b-card-text>
             <strong> Ingredientes</strong>
-			 <ul>
+            <ul>
               <li v-for="(receta, index) in recetas" :key="index">
                 {{ receta.insumo.denominacion }}
               </li>
@@ -78,7 +78,6 @@ export default {
   props: ["id"],
   mounted() {
     this.getProducto();
-    this.getReceta();
   },
   updated() {
     this.setImgFallBack();
@@ -94,9 +93,9 @@ export default {
           this.producto = data;
           this.precioVenta = "$" + data.precioVenta;
           this.img = "http://localhost:9001/images/productos/" + data.imagen;
+          this.getReceta();
         })
         .catch((e) => console.log(e.response.data.message));
-		
     },
     async getReceta() {
       await axios
@@ -105,8 +104,6 @@ export default {
             this.$props.id
         )
         .then((response) => (this.recetas = response.data));
-		
-    
     },
     actualizarPrecio(e) {
       this.cantidad = e;
