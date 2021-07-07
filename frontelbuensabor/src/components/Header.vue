@@ -205,7 +205,6 @@
 			async verificaUsuario() {
 				this.es_Home = this.$props.esHome;
 				var boton;
-				console.log(this.user);
 				if (this.user) {
 					if (this.user.rol == undefined) {
 						this.esCliente = true;
@@ -253,7 +252,6 @@
 							boton = [2, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
 							this.botones.push(boton);
 						}
-						console.log(this.user);
 					}
 				}
 			},
@@ -345,13 +343,13 @@
 			loadPh() {
 				var fotoSession = JSON.parse(sessionStorage.getItem("user")).foto;
 				if (fotoSession.includes("https")) {
-					console.log(fotoSession);
 					this.user.foto = fotoSession;
 					return false;
 				}
 				if (!this.user.foto.includes("https"))
 					this.user.foto =
 						"http://localhost:9001/images/personas/" + this.user.foto;
+				this.setImgFallBack();
 			},
 			setImgFallBack() {
 				$(".fotoUsuario").each(function () {

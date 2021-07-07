@@ -101,6 +101,11 @@ const routes = [
 		name: 'Empleados',
 		component: () => import('../views/ListarEmpleados.vue')
 	},
+	{
+		path: '/reportes',
+		name: 'Reportes',
+		component: () => import('../views/Reportes.vue')
+	},
 ];
 
 const router = new VueRouter({
