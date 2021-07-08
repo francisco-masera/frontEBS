@@ -191,12 +191,12 @@
 							"Fecha Facturación": "factura.fechaHora",
 							"Forma de Pago": {
 								callback: (val) => {
-									return val.factura.formaPago ? "Tarjeta" : "Efectivo";
+									return !val.factura.formaPago ? "Tarjeta" : "Efectivo";
 								},
 							},
 							Descuento: {
 								callback: (val) => {
-									return val.factura.formaPago
+									return !val.factura.formaPago
 										? this.formatter.formatMoney(val.factura.total * 0.1)
 										: "N/A";
 								},
@@ -204,7 +204,7 @@
 							Total: "factura.total",
 							"Total c/descuento": {
 								callback: (val) => {
-									return val.factura.formaPago
+									return !val.factura.formaPago
 										? this.formatter.formatMoney(
 												val.factura.total + val.factura.total * 0.1
 										  )
