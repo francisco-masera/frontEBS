@@ -9,11 +9,11 @@
 			<!-- Renderiza insumo que no se vende directamente, es decir que son insumos propiamente dichos-->
 			<div v-if="!esInsumoVenta">
 				<h3>
-					{{ insumoEncontrado.denominacion }}
+					{{ insumoEncontrado.insumo.denominacion }}
 					<b-btn-group>
 						<b-button
 							size="sm"
-							@click="modificarInsumo(insumoEncontrado.idInsumo)"
+							@click="modificarInsumo(insumoEncontrado.insumo.idInsumo)"
 							class="botonImagen"
 						>
 							<img
@@ -43,8 +43,7 @@
 				<div id="infoProductoVenta">
 					<b-card header="Stock actual" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.insumo.stock.actual
-							}}{{ insumoEncontrado.insumo.unidadMedida }}
+							>{{ stockActual }}{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
 					<b-card header="Stock min" class="tarjetaInfo">
@@ -60,7 +59,7 @@
 						</b-card-text>
 					</b-card>
 					<b-card header="Costo" class="tarjetaInfo">
-						<b-card-text>{{ costo }}</b-card-text>
+						<b-card-text>{{ costoInsumo }}</b-card-text>
 					</b-card>
 				</div>
 				<div class="HistorialCompra">
@@ -141,7 +140,7 @@
 				<div id="infoProductoVenta">
 					<b-card header="Stock actual" class="tarjetaInfo">
 						<b-card-text
-							>{{ insumoEncontrado.insumo.stock.actual }}
+							>{{ stockActual }}
 							{{ insumoEncontrado.insumo.unidadMedida }}
 						</b-card-text>
 					</b-card>
@@ -214,6 +213,7 @@
 					v-model="contraseniaUsuario"
 					class="contraseñaForm"
 					placeholder="Contraseña"
+					type="password"
 				>
 				</b-form-input>
 			</form>
@@ -336,6 +336,7 @@
 				</form>
 			</b-modal>
 		</div>
+		<Toast ref="toast" />
 		<Loader v-if="loading" :loading="loading" />
 	</div>
 </template>
@@ -347,6 +348,7 @@
 	import Formatter from "@/utilidades/Formatters.js";
 	import axios from "axios";
 	import Loader from "@/components/Loader.vue";
+	import Toast from "@/components/Toast.vue";
 
 	export default {
 		mounted() {
@@ -356,6 +358,7 @@
 			menuLateral: MenuLateral,
 			cabecera: Header,
 			Loader: Loader,
+			Toast: Toast,
 		},
 		data() {
 			return {
@@ -484,29 +487,34 @@
 
 			async cambiarEstadoBaja() {
 				let id = this.$route.params.id;
-				await this.service
-					.delete("insumo", id)
-					.then((data) => (this.insumoEncontrado = data))
-					.then(
-						this.$bvToast.show("toast-eliminar-exito"),
-						(this.switchChecked = !!this.insumoEncontrado.baja),
-						this.$refs.modalAB.hide()
-					);
+
+				await axios
+					.delete("http://localhost:9001/buensabor/insumo/bajaInsumo/" + id)
+					.catch(() => {
+						this.toastr(
+							"No se puede eliminar el insumo. Aún hay recetas asociadas.",
+							"Error"
+						);
+						this.switchChecked = !this.switchChecked;
+					})
+					.finally(() => this.$refs.modalAB.hide());
 			},
 
 			async verificarContrasenia() {
-				let contraseniaVerificada = await axios
+				await axios
 					.get("http://localhost:9001/buensabor/persona/validarContrasenia", {
 						params: {
 							id: this.user.id,
 							password: this.contraseniaUsuario,
 						},
 					})
-					.then((res) => res.data);
-				contraseniaVerificada
-					? this.cambiarEstadoBaja()
-					: (this.$bvToast.show("toast-eliminar-error"),
-					  (this.switchChecked = !this.switchChecked));
+					.then((res) => {
+						if (res.data) {
+							this.cambiarEstadoBaja();
+						} else {
+							this.$bvToast.show("toast-eliminar-error");
+						}
+					});
 			},
 
 			modificarInsumo(id) {
@@ -529,7 +537,7 @@
 				if (this.insumoEncontrado.esInsumo) {
 					this.compra.insumo = this.insumoEncontrado;
 				} else {
-					this.compra.insumo = this.insumo;
+					this.compra.insumo = this.insumoEncontrado.insumo;
 				}
 			},
 
@@ -550,8 +558,7 @@
 			async añadirCompra() {
 				this.$refs["modalAñadir"].hide();
 				this.loading = !this.loading;
-				this.compra.fechaCompra = this.compra.fechaCompra.concat("T00:00:00");
-
+				this.compra.fechaCompra = new Date();
 				await this.service
 					.save("compras", this.compra)
 					.then((data) => {
@@ -561,7 +568,7 @@
 						this.compra.cantidad = 0;
 						this.compra.precioUnitario = 0;
 						this.compra.insumo = {};
-						this.getOrdenCompra(this.compra.insumo);
+						this.getDetalleInsumoxId();
 						this.loading = !this.loading;
 					})
 					.catch((e) => {
@@ -569,10 +576,22 @@
 						this.loading = false;
 					});
 			},
+			toastr(msg, title) {
+				this.$refs.toast.emitToast(msg, title);
+			},
 		},
 		computed: {
 			rows() {
 				return this.ordenCompra.length;
+			},
+			costoInsumo() {
+				return this.costo ? this.costo : "$ 0,00";
+			},
+			stockActual() {
+				var actual = this.insumoEncontrado.insumo.stock.actual;
+				return actual != undefined && actual != null
+					? this.insumoEncontrado.insumo.stock.actual
+					: "$ 0,00";
 			},
 		},
 	};
