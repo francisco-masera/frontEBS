@@ -15,6 +15,8 @@
         >ENTREGADOS</b-button
       >
 	  </div>
+	   <div v-else-if="this.userCocina">
+		</div>
 	  <div v-else>
 		<b-button class="hrefPedido" @click="mostrarTodos"
         >TODOS</b-button
@@ -113,6 +115,19 @@
           </div>
         </b-card-group>
       </div>
+	   <div v-if="this.userCocina">
+		    <!-- <b-card-group>
+          	<div
+            	v-for="pedido in filtroConfirmados"
+            	:key="pedido.id"
+            	id="contenedorTarjeta"
+          	>
+            	<pedido
+              		:pedidoParam="pedido"
+            	/>
+          </div>
+        </b-card-group> -->
+		</div>
     </b-container>
   </div>
 </template>
@@ -147,10 +162,12 @@ export default {
       filtroPendientes: {},
       filtroEntregados: {},
       filtroBuscados: {},
+	  filtroConfirmados: {},
       busquedaOrden: "",
       formatter: new Formatters(),
       timeout: null,
       userCajero: false,
+	  userCocina: false,
     };
   },
 
@@ -164,6 +181,9 @@ export default {
         this.userDelivery = false;
       } else if (this.user.rol == "cajero") {
         this.userCajero = true;
+        this.userDelivery = false;
+	  }else if (this.user.rol == "cocina") {
+        this.userCocina = true;
         this.userDelivery = false;
       } else {
         this.$router.push({ name: "Home" });
@@ -185,7 +205,9 @@ export default {
         if(this.userDelivery == true){
         this.cargaPendientes();
         }
-       
+       if(this.userCocina == true){
+		   this.cargaConfirmados();
+	   }
         console.log(this.pedidosDelivery)
       });
     },
@@ -227,7 +249,12 @@ export default {
       }
       console.log(this.filtroEntregados);
     },
-
+	cargaConfirmados() {
+        this.filtroConfirmados = this.pedidosDelivery.filter(
+          (pedido) => pedido.estado == "Confirmado"
+        );
+      console.log(this.filtroConfirmados);
+    },
     cambiarAEntregados() {
       this.pedidosEntregados = true;
       this.pedidosPendientes = false;

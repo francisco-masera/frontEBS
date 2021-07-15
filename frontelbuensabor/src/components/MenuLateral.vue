@@ -101,8 +101,10 @@
 					this.rol = "Administrador";
 				} else if (this.user.rol === "cocina") {
 					boton = [1, "Manufacturados", "manufacturados.png", "/catalogo"];
+					this.botones.push(boton);					
+					boton = [2, "Pedidos", "Pedidos.png", "/pedidos"];
 					this.botones.push(boton);
-					boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
 					this.botones.push(boton);
 					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
 					this.botones.push(boton);
