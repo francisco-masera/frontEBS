@@ -177,6 +177,62 @@
       </b-container>
     </b-card>
   </div>
+  <div v-else-if="this.userCocina">
+      <b-card no-body border-variant="grey" style="max-width: 600px">
+      <b-container style="padding: 0">
+        <div class="filasPedido">
+          <div id="fila1">
+            <div id="orden">
+              <strong>#Orden {{ pedidoParam.numero }} </strong>
+            </div>
+            <div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+          </div>
+          <div id="fila2">
+            <div id="cliente">
+              <strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
+              {{ pedidoParam.cliente.apellido }}
+            </div>
+            <div id="telefono">
+              <strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
+            </div>
+          </div>
+          <div style="" id="fila4">
+            <div class="contenedorDetalle">
+              <strong>Detalle:</strong>
+              <div
+                v-for="detalle in pedidoParam.detalles"
+                v-bind:key="detalle.cantidad"
+                class=""
+              >
+                <label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.denominacion }}</label
+                >
+                <label v-else
+                  >{{ detalle.cantidad }}
+                  {{ detalle.articulo.insumo.denominacion }}</label
+                >
+              </div>
+            </div>
+            <br />
+            <div class="contenedorCard">
+              <b-button
+                pill
+                class="boton"
+                id="botonEntrega"
+                size="md"
+                @click="cambiaAListo()"
+                >Listo</b-button
+              >
+            </div>
+            <b-modal ref="modalEntrega" hide-footer hide-header centered title>
+              <p class="modalTitulo">¡Pedido entregado!</p>
+            </b-modal>
+          </div>
+        </div>
+      </b-container>
+    </b-card>
+  </div>
   <div v-else-if="this.userCajero == true">
       <b-card no-body border-variant="dark" style="max-width: 600px">
       <b-container style="padding: 0">
@@ -288,6 +344,7 @@ export default {
       resultEstado: 0,
       userDelivery: true,
       userCajero: false,
+      userCocina:false,
     };
   },
   methods: {
@@ -302,7 +359,10 @@ export default {
       } else if (this.user.rol == "cajero") {
         this.userCajero = true;
         this.userDelivery = false;
-      } else {
+      } else if (this.user.rol== "cocina"){
+        this.userCocina = true;
+        this.userDelivery = false;
+        }else {
         this.$router.push({ name: "Home" });
       }
     },
@@ -320,6 +380,21 @@ export default {
             "Entregado"
         ).then(() => {
          
+            this.$refs.modalEntrega.show();
+            setTimeout(() => this.refrescaPantalla(), 1000);
+        
+        });
+    },
+
+     async cambiaAListo() {   
+      var id = this.pedidoParam.id;      
+      await axios
+        .put(
+          "http://localhost:9001/buensabor/pedido/pedidoEntregado/" +
+            parseInt(id) +
+            "/" +
+            "Listo"
+        ).then(() => {         
             this.$refs.modalEntrega.show();
             setTimeout(() => this.refrescaPantalla(), 1000);
         

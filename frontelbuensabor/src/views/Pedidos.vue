@@ -7,33 +7,22 @@
     <div class="costado"></div>
     <b-container class="informacion">
       <h1>Pedidos</h1>
-	  <div v-if="this.userDelivery">
-      <b-button class="hrefPedido" @click="cambiarAPendientes"
-        >PENDIENTES</b-button
-      >
-      <b-button class="hrefPedido" @click="cambiarAEntregados"
-        >ENTREGADOS</b-button
-      >
-	  </div>
-	   <div v-else-if="this.userCocina">
-		</div>
-	  <div v-else>
-		<b-button class="hrefPedido" @click="mostrarTodos"
-        >TODOS</b-button
-      >
-      <b-button class="hrefPedido"
-        >PENDIENTES</b-button
-      >  
-	   <b-button class="hrefPedido"
-        >EN COCINA</b-button
-      > 
-	   <b-button class="hrefPedido"
-        >LISTOS</b-button
-      > 
-	   <b-button class="hrefPedido"
-        >EN DELIVERY</b-button
-      > 
-	  </div>
+      <div v-if="this.userDelivery">
+        <b-button class="hrefPedido" @click="cambiarAPendientes"
+          >PENDIENTES</b-button
+        >
+        <b-button class="hrefPedido" @click="cambiarAEntregados"
+          >ENTREGADOS</b-button
+        >
+      </div>
+      <div v-else-if="this.userCocina"></div>
+      <div v-else>
+        <b-button class="hrefPedido" @click="mostrarTodos">TODOS</b-button>
+        <b-button class="hrefPedido">PENDIENTES</b-button>
+        <b-button class="hrefPedido">EN COCINA</b-button>
+        <b-button class="hrefPedido">LISTOS</b-button>
+        <b-button class="hrefPedido">EN DELIVERY</b-button>
+      </div>
       <b-nav-form class="buscador" id="busqueda">
         <b-form-input
           size="sm"
@@ -54,54 +43,57 @@
         </b-button>
       </b-nav-form>
       <div v-if="this.userDelivery">
-      <div v-if="pedidosPendientes" class="divCard">
-        <b-card-group>
-          <div
-            v-for="pedido in filtroPendientes"
-            :key="pedido.id"
-            id="contenedorTarjeta"
-          >
-            <pedido
-              :pedidoParam="pedido"
-              :domicilioParam="
-                domicilios.find((d) => d.persona.id == pedido.cliente.id)"
-            ></pedido>
-          </div>
-        </b-card-group>
-      </div>
-      <div v-if="pedidosEntregados" class="divCard">
-        <b-card-group>
-          <div
-            v-for="pedido in filtroEntregados"
-            :key="pedido.id"
-            id="contenedorTarjeta"
-          >
-            <pedido
-              :pedidoParam="pedido"
-              :domicilioParam="
-                domicilios.find((d) => d.persona.id == pedido.cliente.id)"
-            ></pedido>
-          </div>
-        </b-card-group>
-      </div>
-      <div v-if="!pedidosEntregados && !pedidosPendientes" class="divCard">
-        <b-card-group>
-          <div
-            v-for="pedido in filtroBuscados"
-            :key="pedido.id"
-            id="contenedorTarjeta"
-          >
-            <pedido
-              :pedidoParam="pedido"
-              :domicilioParam="
-                domicilios.find((d) => d.persona.id == pedido.cliente.id)"
-            ></pedido>
-          </div>
-        </b-card-group>
-      </div>
+        <div v-if="pedidosPendientes" class="divCard">
+          <b-card-group>
+            <div
+              v-for="pedido in filtroPendientes"
+              :key="pedido.id"
+              id="contenedorTarjeta"
+            >
+              <pedido
+                :pedidoParam="pedido"
+                :domicilioParam="
+                  domicilios.find((d) => d.persona.id == pedido.cliente.id)
+                "
+              ></pedido>
+            </div>
+          </b-card-group>
+        </div>
+        <div v-if="pedidosEntregados" class="divCard">
+          <b-card-group>
+            <div
+              v-for="pedido in filtroEntregados"
+              :key="pedido.id"
+              id="contenedorTarjeta"
+            >
+              <pedido
+                :pedidoParam="pedido"
+                :domicilioParam="
+                  domicilios.find((d) => d.persona.id == pedido.cliente.id)
+                "
+              ></pedido>
+            </div>
+          </b-card-group>
+        </div>
+        <div v-if="!pedidosEntregados && !pedidosPendientes" class="divCard">
+          <b-card-group>
+            <div
+              v-for="pedido in filtroBuscados"
+              :key="pedido.id"
+              id="contenedorTarjeta"
+            >
+              <pedido
+                :pedidoParam="pedido"
+                :domicilioParam="
+                  domicilios.find((d) => d.persona.id == pedido.cliente.id)
+                "
+              ></pedido>
+            </div>
+          </b-card-group>
+        </div>
       </div>
       <div v-if="this.userCajero">
-         <b-card-group style="margin-top: 120px">
+        <b-card-group style="margin-top: 120px">
           <div
             v-for="pedido in pedidosDelivery"
             :key="pedido.id"
@@ -110,24 +102,26 @@
             <pedido
               :pedidoParam="pedido"
               :domicilioParam="
-                domicilios.find((d) => d.persona.id == pedido.cliente.id)"
+                domicilios.find((d) => d.persona.id == pedido.cliente.id)
+              "
             ></pedido>
           </div>
         </b-card-group>
       </div>
-	   <div v-if="this.userCocina">
-		    <!-- <b-card-group>
-          	<div
-            	v-for="pedido in filtroConfirmados"
-            	:key="pedido.id"
-            	id="contenedorTarjeta"
-          	>
-            	<pedido
-              		:pedidoParam="pedido"
-            	/>
-          </div>
-        </b-card-group> -->
-		</div>
+      <div v-if="this.userCocina">
+        <b-card-group>
+            <div
+              v-for="pedido in filtroConfirmados"
+              :key="pedido.id"
+              id="contenedorTarjeta"
+            >
+              <pedido
+                :pedidoParam="pedido"
+              ></pedido>
+            </div>
+          </b-card-group>
+        
+      </div>
     </b-container>
   </div>
 </template>
@@ -162,19 +156,19 @@ export default {
       filtroPendientes: {},
       filtroEntregados: {},
       filtroBuscados: {},
-	  filtroConfirmados: {},
+      filtroConfirmados: {},
       busquedaOrden: "",
       formatter: new Formatters(),
       timeout: null,
       userCajero: false,
-	  userCocina: false,
+      userCocina: false,
     };
   },
 
   methods: {
     userVerifica() {
       this.user = JSON.parse(sessionStorage.getItem("user"));
-     
+
       if (this.user.rol == "delivery") {
         this.userDelivery = true;
       } else if (this.user.rol == "admin") {
@@ -182,7 +176,7 @@ export default {
       } else if (this.user.rol == "cajero") {
         this.userCajero = true;
         this.userDelivery = false;
-	  }else if (this.user.rol == "cocina") {
+      } else if (this.user.rol == "cocina") {
         this.userCocina = true;
         this.userDelivery = false;
       } else {
@@ -200,15 +194,15 @@ export default {
       await this.service.getAll("pedido").then((data) => {
         this.pedidosDelivery = data;
         //	this.agregaDomicilioPedido();
-         this.adjustmentHour();
-         this.ajusteTipoRetiro();
-        if(this.userDelivery == true){
-        this.cargaPendientes();
+        this.adjustmentHour();
+        this.ajusteTipoRetiro();
+        if (this.userDelivery == true) {
+          this.cargaPendientes();
         }
-       if(this.userCocina == true){
-		   this.cargaConfirmados();
-	   }
-        console.log(this.pedidosDelivery)
+        if (this.userCocina == true) {
+          this.cargaConfirmados();
+        }
+        console.log(this.pedidosDelivery);
       });
     },
     adjustmentHour() {
@@ -216,14 +210,13 @@ export default {
         pedido.hora = this.formatter.formatHour(pedido.hora);
       });
     },
-    ajusteTipoRetiro(){
-      this.pedidosDelivery.forEach((pedido) =>{
-        if(pedido.tipoEntrega == false){
-            pedido.tipoEntrega = "Delivery"
-        }else{
-          pedido.tipoEntrega = "Retiro en local"
+    ajusteTipoRetiro() {
+      this.pedidosDelivery.forEach((pedido) => {
+        if (pedido.tipoEntrega == false) {
+          pedido.tipoEntrega = "Delivery";
+        } else {
+          pedido.tipoEntrega = "Retiro en local";
         }
-       
       });
     },
     cambiarAPendientes() {
@@ -249,10 +242,10 @@ export default {
       }
       console.log(this.filtroEntregados);
     },
-	cargaConfirmados() {
-        this.filtroConfirmados = this.pedidosDelivery.filter(
-          (pedido) => pedido.estado == "Confirmado"
-        );
+    cargaConfirmados() {
+      this.filtroConfirmados = this.pedidosDelivery.filter(
+        (pedido) => pedido.estado == "Confirmado"
+      );
       console.log(this.filtroConfirmados);
     },
     cambiarAEntregados() {
