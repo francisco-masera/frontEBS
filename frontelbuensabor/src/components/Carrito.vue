@@ -42,7 +42,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="hover focus"
+				triggers="hover focus click"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"
@@ -60,7 +60,7 @@
 					<hr style="width: 100%; border-top: 2px solid rgba(0, 0, 0, 0.1)" />
 					<div class="col-7" style="margin-bottom: 3vh">
 						<div class="d-block">
-							<strong>Subtotal</strong>
+							<strong style="font-size: 1.1em">Subtotal</strong>
 						</div>
 					</div>
 					<div class="col-4" style="margin-bottom: 3vh">
@@ -154,7 +154,7 @@
 					</div>
 					<div class="col-7" style="margin-bottom: 3vh">
 						<div class="d-block">
-							<span>Envío</span>
+							<span style="font-size: 1.3em">Envío</span>
 						</div>
 					</div>
 					<div class="col-4" style="margin-bottom: 3vh">
@@ -164,7 +164,7 @@
 					</div>
 					<div class="col-7" style="margin-bottom: 3vh">
 						<div class="d-block">
-							<span>Descuento</span>
+							<span style="font-size: 1.3em">Descuento</span>
 						</div>
 					</div>
 					<div class="col-4" style="margin-bottom: 3vh">
@@ -212,7 +212,7 @@
 								background: none;
 								border: none;
 								color: black;
-								font-size: 10pt;
+								font-size: 1.1em;
 							"
 							pill
 							class="cancelar"

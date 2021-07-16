@@ -31,11 +31,11 @@
 		data() {
 			return {
 				tbody: [
-					{ key: "cantidad", label: "" },
-					{ key: "denominacion", label: "", class: "denominacion" },
+					{ key: "cantidad", label: "", class: "info" },
+					{ key: "denominacion", label: "", class: "info denominacion" },
 					{ key: "x", label: "" },
-					{ key: "precioVenta", label: "" },
-					{ key: "eliminar", label: "" },
+					{ key: "precioVenta", label: "", class: "info" },
+					{ key: "eliminar", label: "", class: "btn-Act" },
 				],
 			};
 		},
@@ -67,5 +67,12 @@
 	.table td,
 	.table th {
 		padding: 0.3rem;
+		vertical-align: middle;
+	}
+	.info {
+		font-size: 1.1em;
+	}
+	.btn-Act {
+		padding: 0;
 	}
 </style>
