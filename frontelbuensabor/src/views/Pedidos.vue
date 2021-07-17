@@ -16,17 +16,39 @@
 				>
 			</div>
 			<div v-else-if="this.userCocina"></div>
-			<div v-else>
+			<div v-else-if="this.userCajero">
 				<b-button class="hrefPedido" @click="filtrar(1)">TODOS</b-button>
 				<b-button class="hrefPedido" @click="filtrar(2)">PENDIENTES</b-button>
 				<b-button class="hrefPedido" @click="filtrar(3)">EN COCINA</b-button>
 				<b-button class="hrefPedido" @click="filtrar(4)">LISTOS</b-button>
 				<b-button class="hrefPedido" @click="filtrar(5)">EN DELIVERY</b-button>
 			</div>
+			<div v-if="!this.user.rol">
+				<b-button
+					v-if="!this.user.rol"
+					class="hrefPedido"
+					@click="filtrarCliente(1)"
+					>TODOS</b-button
+				>
+				<b-button class="hrefPedido" @click="filtrarCliente(2)"
+					>PENDIENTES</b-button
+				>
+				<b-button class="hrefPedido" @click="filtrarCliente(3)"
+					>ENTREGADOS</b-button
+				>
+				<b-button
+					v-if="!this.user.rol"
+					class="hrefPedido"
+					@click="filtrarCliente(4)"
+					>CANCELADOS</b-button
+				>
+			</div>
 			<b-nav-form
 				class="buscador"
 				id="busqueda"
-				:style="this.userCocina ? 'display:none' : ''"
+				:style="
+					this.userCocina || this.user.rol == undefined ? 'display:none' : ''
+				"
 			>
 				<b-form-input
 					size="sm"
@@ -96,7 +118,7 @@
 					</b-card-group>
 				</div>
 			</div>
-			<div v-if="this.userCajero">
+			<div v-else-if="this.userCajero">
 				<b-card-group style="margin-top: 120px">
 					<div
 						v-for="pedido in pedidosFiltrados"
@@ -112,10 +134,21 @@
 					</div>
 				</b-card-group>
 			</div>
-			<div v-if="this.userCocina">
+			<div v-else-if="this.userCocina">
 				<b-card-group>
 					<div
 						v-for="pedido in filtroConfirmados"
+						:key="pedido.id"
+						id="contenedorTarjeta"
+					>
+						<pedido :pedidoParam="pedido"></pedido>
+					</div>
+				</b-card-group>
+			</div>
+			<div v-else>
+				<b-card-group>
+					<div
+						v-for="pedido in pedidos"
 						:key="pedido.id"
 						id="contenedorTarjeta"
 					>
@@ -148,6 +181,7 @@
 		data() {
 			return {
 				user: {},
+				cliente: false,
 				userDelivery: true,
 				pedidosDelivery: {},
 				service: new Service(),
@@ -181,6 +215,9 @@
 				} else if (this.user.rol == "cocina") {
 					this.userCocina = true;
 					this.userDelivery = false;
+				} else if (this.user.rol == undefined && this.user.id) {
+					this.userDelivery = false;
+					this.cliente = true;
 				} else {
 					this.$router.push({ name: "Home" });
 				}
@@ -204,8 +241,10 @@
 					if (this.userCocina == true) {
 						this.cargaConfirmados();
 					}
+					if (this.user.rol == undefined) {
+						this.cargaPedidosCliente();
+					}
 					console.log(this.pedidosDelivery);
-					this.pedidosFiltrados = data;
 				});
 			},
 			adjustmentHour() {
@@ -250,6 +289,12 @@
 					(pedido) => pedido.estado == "Confirmado"
 				);
 				console.log(this.filtroConfirmados);
+			},
+			cargaPedidosCliente() {
+				this.pedidosFiltrados = this.pedidosDelivery
+					.filter((pedido) => pedido.cliente.id == this.user.id)
+					.sort((a, b) => a.estado < b.estado);
+				console.log(this.pedidosFiltrados);
 			},
 			cambiarAEntregados() {
 				this.pedidosEntregados = true;
@@ -306,6 +351,42 @@
 						break;
 				}
 			},
+			filtrarCliente(val) {
+				switch (val) {
+					case 1:
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter((d) => d.cliente.id == this.user.id)
+							.sort((a, b) => a.estado < b.estado);
+						break;
+					case 2:
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter(
+								(d) =>
+									(d.estado == "Pendiente" ||
+										d.estado == "Listo" ||
+										d.estado == "En Cocina" ||
+										d.estado == "En Delivery") &&
+									d.cliente.id == this.user.id
+							)
+							.sort((a, b) => a.estado < b.estado);
+						break;
+					case 3:
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter(
+								(d) => d.estado == "Facturado" && d.cliente.id == this.user.id
+							)
+							.sort((a, b) => a.estado < b.estado);
+						break;
+					case 4:
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter(
+								(d) => d.estado == "Cancelado" && d.cliente.id == this.user.id
+							)
+							.sort((a, b) => a.estado < b.estado);
+						break;
+				}
+			},
+
 			verificaEstadoInput() {
 				var inputBusqueda = document.getElementById("inputBusqueda").value;
 				clearTimeout(this.timeout);

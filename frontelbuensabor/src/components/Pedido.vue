@@ -347,6 +347,89 @@
 			</b-container>
 		</b-card>
 	</div>
+	<div v-else>
+		<b-card no-body border-variant="dark" style="max-width: 600px">
+			<b-container style="padding: 0">
+				<div class="filasPedido">
+					<div id="fila1">
+						<div id="orden">
+							<strong>#Orden {{ pedidoParam.numero }} </strong>
+						</div>
+						<div id="tipoRetiro">
+							<strong>{{
+								pedidoParam.tipoEntrega == "Delivery"
+									? "Envío"
+									: pedidoParam.tipoEntrega
+							}}</strong>
+						</div>
+						<div id="total">
+							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
+						</div>
+					</div>
+					<div style="" id="fila2">
+						<div class="contenedorDetalleCaja ml-5">
+							<strong class="">Detalle: </strong>
+							<div
+								v-for="detalle in pedidoParam.detalles"
+								v-bind:key="detalle.cantidad"
+								class=""
+							>
+								<label>
+									{{ detalle.cantidad }}
+									{{ detalle.articulo.denominacion }}
+								</label>
+							</div>
+							<b-button
+								class="hrefPedido"
+								@click="detalle"
+								style="margin-left: -10px"
+							>
+								Ver Detalle
+							</b-button>
+						</div>
+						<br />
+						<div>
+							<b-badge
+								style="margin-left: -85px"
+								class="BadgeEstado"
+								:variant="
+									pedidoParam.estado == 'Pendiente'
+										? 'danger'
+										: pedidoParam.estado == 'Listo'
+										? 'success'
+										: pedidoParam.estado == 'En Delivery'
+										? 'info'
+										: pedidoParam.estado == 'Confirmado'
+										? 'secondary'
+										: pedidoParam.estado == 'En Cocina'
+										? 'warning'
+										: 'primary'
+								"
+							>
+								{{ pedidoParam.estado }}
+							</b-badge>
+							<div style="margin-left: 50px">
+								<span
+									class=""
+									v-if="
+										pedidoParam.estado != 'Facturado' &&
+										pedidoParam.estado != 'Cancelado'
+									"
+									>Hora de llegada aproximada {{ hora }}</span
+								>
+								<b-button
+									class="hrefPedido"
+									v-if="pedidoParam.estado == 'Facturado'"
+									@click="return false;"
+									>Recibo</b-button
+								>
+							</div>
+						</div>
+					</div>
+				</div>
+			</b-container>
+		</b-card>
+	</div>
 </template>
 <script>
 	import Service from "@/service/Service.js";
@@ -363,9 +446,18 @@
 				userDelivery: true,
 				userCajero: false,
 				userCocina: false,
+				cliente: false,
+				hora: this.setHora(),
 			};
 		},
 		methods: {
+			detalle() {
+				return null;
+			},
+			setHora() {
+				var horaArr = this.pedidoParam.hora.split(":");
+				return horaArr[0] + ":" + horaArr[1];
+			},
 			userVerifica() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
 
@@ -379,6 +471,9 @@
 				} else if (this.user.rol == "cocina") {
 					this.userCocina = true;
 					this.userDelivery = false;
+				} else if (this.user.rol == undefined && this.user.id) {
+					this.userDelivery = false;
+					this.cliente = true;
 				} else {
 					this.$router.push({ name: "Home" });
 				}

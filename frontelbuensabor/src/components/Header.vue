@@ -111,7 +111,7 @@
 								ref="carrito"
 								v-show="user.id != undefined && user.id != null"
 							/>
-							<b-nav-item
+							<!-- 	<b-nav-item
 								class="menuLateral"
 								v-for="boton in botones"
 								:key="boton[0]"
@@ -123,7 +123,7 @@
 									class="iconosMenu"
 								></b-img>
 								{{ boton[1] }}
-							</b-nav-item>
+							</b-nav-item> -->
 						</b-navbar-nav>
 					</b-collapse>
 				</div>
@@ -155,19 +155,19 @@
 									>{{ this.user.nombre + " " + this.user.apellido }}
 								</label>
 							</b-nav-item>
-							<b-nav-item
+							<!-- 	<b-nav-item
 								class="menuLateral"
 								v-for="boton in botones"
 								:key="boton[0]"
 								v-bind:href="boton[3]"
 							>
 								<b-img
-									v-bind:src="'mages/' + boton[2]"
+									v-bind:src="'images/' + boton[2]"
 									fluid
 									class="iconosMenu"
 								></b-img>
 								{{ boton[1] }}
-							</b-nav-item>
+							</b-nav-item> -->
 						</b-navbar-nav>
 					</b-collapse>
 				</div>

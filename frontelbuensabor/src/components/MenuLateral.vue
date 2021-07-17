@@ -103,7 +103,7 @@
 					this.rol = "Administrador";
 				} else if (this.user.rol === "cocina") {
 					boton = [1, "Manufacturados", "manufacturados.png", "/catalogo"];
-					this.botones.push(boton);					
+					this.botones.push(boton);
 					boton = [2, "Pedidos", "Pedidos.png", "/pedidos"];
 					this.botones.push(boton);
 					boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
@@ -115,7 +115,7 @@
 					/*Cliente*/
 					boton = [1, "Mis direcciones", "misDirecciones.png", "/misDirecciones"];
 					this.botones.push(boton);
-					boton = [2, "Mis pedidos", "Pedidos.png", ""];
+					boton = [2, "Mis pedidos", "Pedidos.png", "/pedidos"];
 					this.botones.push(boton);
 					boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
 					this.botones.push(boton);
