@@ -233,6 +233,7 @@
 				await this.service.getAll("pedido/pedidos").then((data) => {
 					this.pedidosDelivery = data;
 					//	this.agregaDomicilioPedido();
+					this.pedidosFiltrados = data;
 					this.adjustmentHour();
 					this.ajusteTipoRetiro();
 					if (this.userDelivery == true) {
