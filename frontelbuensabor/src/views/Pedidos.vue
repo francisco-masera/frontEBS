@@ -17,11 +17,11 @@
 			</div>
 			<div v-else-if="this.userCocina"></div>
 			<div v-else>
-				<b-button class="hrefPedido" @click="mostrarTodos">TODOS</b-button>
-				<b-button class="hrefPedido">PENDIENTES</b-button>
-				<b-button class="hrefPedido">EN COCINA</b-button>
-				<b-button class="hrefPedido">LISTOS</b-button>
-				<b-button class="hrefPedido">EN DELIVERY</b-button>
+				<b-button class="hrefPedido" @click="filtrar(1)">TODOS</b-button>
+				<b-button class="hrefPedido" @click="filtrar(2)">PENDIENTES</b-button>
+				<b-button class="hrefPedido" @click="filtrar(3)">EN COCINA</b-button>
+				<b-button class="hrefPedido" @click="filtrar(4)">LISTOS</b-button>
+				<b-button class="hrefPedido" @click="filtrar(5)">EN DELIVERY</b-button>
 			</div>
 			<b-nav-form
 				class="buscador"
@@ -99,7 +99,7 @@
 			<div v-if="this.userCajero">
 				<b-card-group style="margin-top: 120px">
 					<div
-						v-for="pedido in pedidosDelivery"
+						v-for="pedido in pedidosFiltrados"
 						:key="pedido.id"
 						id="contenedorTarjeta"
 					>
@@ -163,6 +163,7 @@
 				timeout: null,
 				userCajero: false,
 				userCocina: false,
+				pedidosFiltrados: [],
 			};
 		},
 
@@ -192,7 +193,7 @@
 			},
 
 			async getPedidos() {
-				await this.service.getAll("pedido").then((data) => {
+				await this.service.getAll("pedido/pedidos").then((data) => {
 					this.pedidosDelivery = data;
 					//	this.agregaDomicilioPedido();
 					this.adjustmentHour();
@@ -204,6 +205,7 @@
 						this.cargaConfirmados();
 					}
 					console.log(this.pedidosDelivery);
+					this.pedidosFiltrados = data;
 				});
 			},
 			adjustmentHour() {
@@ -229,7 +231,7 @@
 			cargaPendientes() {
 				if (this.pedidosPendientes) {
 					this.filtroPendientes = this.pedidosDelivery.filter(
-						(pedido) => pedido.estado == "PendienteEntrega"
+						(pedido) => pedido.estado == "Pendiente"
 					);
 				}
 				console.log(this.filtroPendientes);
@@ -255,46 +257,55 @@
 				this.cargaEntregados();
 			},
 
-			/*cargaBuscados(filtrados) {
-																			      this.pedidosPendientes = false;
-																			      this.pedidosEntregados = false;
-																			      if (!filtrados == undefined && !filtrados == null) {
-																			        this.filtroBuscados = filtrados;
-																			      }
-																			      console.log(this.filtroBuscados);
-																			    },
-																			    locatorButtonPressed() {
-																			      navigator.geolocation.getCurrentPosition(
-																			        (position) => {
-																			          console.log(position.coords.latitude);
-																			          console.log(position.coords.longitude);
-																			        },
-																			        (error) => {
-																			          console.log(error.message);
-																			        }
-																			      );
-																			    },*/
 			busquedaPedidos() {
 				if (this.busquedaOrden != "") {
-					this.filtroBuscados = this.pedidosDelivery.filter((pedido) => {
+					this.filtroBuscados = this.pedidosFiltrados.filter((pedido) => {
 						return (
 							pedido.numero == this.busquedaOrden ||
-							pedido.cliente.nombre == this.busquedaOrden ||
-							pedido.cliente.apellido == this.busquedaOrden ||
-							pedido.cliente.nombre + " " + pedido.cliente.apellido ==
+							pedido.cliente.nombre.includes(this.busquedaOrden) ||
+							pedido.cliente.apellido.includes(this.busquedaOrden) ||
+							(pedido.cliente.nombre + " " + pedido.cliente.apellido).includes(
 								this.busquedaOrden
+							)
 						);
 					});
 
 					if (this.filtroBuscados != undefined && this.filtroBuscados != null) {
 						this.pedidosPendientes = false;
 						this.pedidosEntregados = false;
+						this.pedidosFiltrados = this.filtroBuscados;
 					}
+				} else {
+					this.pedidosFiltrados = this.pedidosDelivery;
 				}
-
-				console.log(this.filtroBuscados);
 			},
-
+			filtrar(val) {
+				switch (val) {
+					case 1:
+						this.pedidosFiltrados = this.pedidosDelivery;
+						break;
+					case 2:
+						this.pedidosFiltrados = this.pedidosDelivery.filter(
+							(d) => d.estado == "Pendiente"
+						);
+						break;
+					case 3:
+						this.pedidosFiltrados = this.pedidosDelivery.filter(
+							(d) => d.estado == "En Cocina"
+						);
+						break;
+					case 4:
+						this.pedidosFiltrados = this.pedidosDelivery.filter(
+							(d) => d.estado == "Listo"
+						);
+						break;
+					case 5:
+						this.pedidosFiltrados = this.pedidosDelivery.filter(
+							(d) => d.estado == "En Delivery"
+						);
+						break;
+				}
+			},
 			verificaEstadoInput() {
 				var inputBusqueda = document.getElementById("inputBusqueda").value;
 				clearTimeout(this.timeout);
@@ -310,6 +321,11 @@
 						}
 					}
 				}, 800);
+			},
+		},
+		computed: {
+			pedidos() {
+				return this.pedidosFiltrados;
 			},
 		},
 	};

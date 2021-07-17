@@ -1,7 +1,5 @@
 <template>
-	<div
-		v-if="pedidoParam.estado == 'PendienteEntrega' && this.userDelivery == true"
-	>
+	<div v-if="pedidoParam.estado == 'Pendiente' && this.userDelivery == true">
 		<b-card no-body border-variant="dark" style="max-width: 600px">
 			<b-container style="padding: 0">
 				<div class="filasPedido">
@@ -11,7 +9,7 @@
 						</div>
 						<div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
 						<div id="total">
-							<strong>Total: </strong>${{ pedidoParam.factura.total }}
+							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
 						</div>
 					</div>
 					<div id="fila2">
@@ -19,11 +17,11 @@
 							<strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
 							{{ pedidoParam.cliente.apellido }}
 						</div>
-						<div id="telefono">
+						<div id="telefono" v-if="pedidoParam.cliente.telefono != ''">
 							<strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
 						</div>
 					</div>
-					<div id="fila3">
+					<div id="fila3" v-if="domicilioParam">
 						<p
 							v-if="
 								domicilioParam.departamento == 0 && domicilioParam.piso == 0
@@ -62,14 +60,10 @@
 								v-bind:key="detalle.cantidad"
 								class=""
 							>
-								<label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
+								<label
 									>{{ detalle.cantidad }}
-									{{ detalle.articulo.denominacion }}</label
-								>
-								<label v-else
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.insumo.denominacion }}</label
-								>
+									{{ detalle.articulo.denominacion }}
+								</label>
 							</div>
 						</div>
 						<br />
@@ -88,7 +82,7 @@
 						</b-modal>
 					</div>
 				</div>
-				<b-card-footer>
+				<b-card-footer v-if="domicilioParam">
 					<iframe
 						:src="
 							'https://maps.google.com/maps?q=' +
@@ -120,7 +114,7 @@
 						</div>
 						<div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
 						<div id="total">
-							<strong>Total: </strong>${{ pedidoParam.factura.total }}
+							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
 						</div>
 					</div>
 					<div id="fila2">
@@ -128,11 +122,11 @@
 							<strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
 							{{ pedidoParam.cliente.apellido }}
 						</div>
-						<div id="telefono">
+						<div id="telefono" v-if="pedidoParam.cliente.telefono != ''">
 							<strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
 						</div>
 					</div>
-					<div id="fila3">
+					<div id="fila3" v-if="domicilioParam">
 						<p
 							v-if="
 								domicilioParam.departamento == 0 && domicilioParam.piso == 0
@@ -171,14 +165,10 @@
 								v-bind:key="detalle.cantidad"
 								class=""
 							>
-								<label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.denominacion }}</label
-								>
-								<label v-else
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.insumo.denominacion }}</label
-								>
+								<label>
+									{{ detalle.cantidad }}
+									{{ detalle.articulo.denominacion }}
+								</label>
 							</div>
 						</div>
 						<br />
@@ -202,7 +192,7 @@
 							<strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
 							{{ pedidoParam.cliente.apellido }}
 						</div>
-						<div id="telefono">
+						<div id="telefono" v-if="pedidoParam.cliente.telefono != ''">
 							<strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
 						</div>
 					</div>
@@ -214,14 +204,10 @@
 								v-bind:key="detalle.cantidad"
 								class=""
 							>
-								<label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.denominacion }}</label
-								>
-								<label v-else
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.insumo.denominacion }}</label
-								>
+								<label>
+									{{ detalle.cantidad }}
+									{{ detalle.articulo.denominacion }}
+								</label>
 							</div>
 						</div>
 						<br />
@@ -256,7 +242,7 @@
 						</div>
 						<div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
 						<div id="total">
-							<strong>Total: </strong>${{ pedidoParam.factura.total }}
+							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
 						</div>
 					</div>
 					<div id="fila2">
@@ -264,11 +250,11 @@
 							<strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
 							{{ pedidoParam.cliente.apellido }}
 						</div>
-						<div id="telefono">
-							<strong>Teléfono:</strong> {{ pedidoParam.cliente.telefono }}
+						<div id="telefono" v-if="pedidoParam.cliente.telefono != ''">
+							<strong>Teléfono: </strong> {{ pedidoParam.cliente.telefono }}
 						</div>
 					</div>
-					<div id="fila3">
+					<div v-if="domicilioParam" id="fila3">
 						<p
 							v-if="
 								domicilioParam.departamento == 0 && domicilioParam.piso == 0
@@ -301,29 +287,61 @@
 					</div>
 					<div style="" id="fila4">
 						<div class="contenedorDetalleCaja">
-							<strong>Detalle:</strong>
+							<strong>Detalle: </strong>
 							<div
 								v-for="detalle in pedidoParam.detalles"
 								v-bind:key="detalle.cantidad"
 								class=""
 							>
-								<label v-if="detalle.articulo.type == 'ArticuloManufacturado'"
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.denominacion }}</label
-								>
-								<label v-else
-									>{{ detalle.cantidad }}
-									{{ detalle.articulo.insumo.denominacion }}</label
-								>
+								<label>
+									{{ detalle.cantidad }}
+									{{ detalle.articulo.denominacion }}
+								</label>
 							</div>
+							<br />
+							<b-badge
+								class="BadgeEstado"
+								:variant="
+									pedidoParam.estado == 'Pendiente'
+										? 'danger'
+										: pedidoParam.estado == 'Listo'
+										? 'success'
+										: pedidoParam.estado == 'En Delivery'
+										? 'info'
+										: pedidoParam.estado == 'Confirmado'
+										? 'secondary'
+										: pedidoParam.estado == 'En Cocina'
+										? 'warning'
+										: 'primary'
+								"
+							>
+								{{ pedidoParam.estado }}
+							</b-badge>
 						</div>
+
 						<br />
 
-						<div class="contenedorCajeroBtn">
-							<b-button pill class="boton" id="botonAprueba" size="md"
+						<div
+							class="contenedorCajeroBtn"
+							v-if="
+								pedidoParam.tipoEntrega == 'Retiro en local' &&
+								pedidoParam.estado == 'Pendiente'
+							"
+						>
+							<b-button
+								pill
+								class="boton"
+								id="botonAprueba"
+								size="md"
+								@click="aprobar()"
 								>Aprobar</b-button
 							>
-							<b-button pill class="boton" id="botonCancela" size="md"
+							<b-button
+								pill
+								class="boton"
+								id="botonCancela"
+								size="md"
+								@click="cancelar"
 								>Cancelar</b-button
 							>
 						</div>
@@ -404,6 +422,28 @@
 			refrescaPantalla() {
 				window.location.href = "/pedidos/";
 			},
+			async cancelar() {
+				this.pedidoParam.estado = "Cancelado";
+				this.pedidoParam.hora = "00:00:00";
+				this.pedidoParam.tipoEntrega = false;
+				this.pedidoParam.detalles = null;
+				await this.service.update(
+					"pedido",
+					this.pedidoParam,
+					this.pedidoParam.id
+				);
+			},
+			async aprobar() {
+				var id = this.pedidoParam.id;
+				await axios
+					.put(
+						"http://localhost:9001/buensabor/pedido/pedidoEntregado/" +
+							parseInt(id) +
+							"/" +
+							"Confirmado"
+					)
+					.then(() => (this.pedidoParam.estado = "Confirmado"));
+			},
 		},
 		computed: {
 			horaEntrega() {
@@ -420,6 +460,11 @@
 </script>
 
 <style>
+	.BadgeEstado {
+		width: auto;
+		font-size: 11pt;
+		color: #fff;
+	}
 	#fila1 {
 		text-align: center;
 		border-bottom: 1px solid;
