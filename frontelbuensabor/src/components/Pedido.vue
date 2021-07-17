@@ -323,10 +323,7 @@
 
 						<div
 							class="contenedorCajeroBtn"
-							v-if="
-								pedidoParam.tipoEntrega == 'Retiro en local' &&
-								pedidoParam.estado == 'Pendiente'
-							"
+							v-if="pedidoParam.estado == 'Pendiente'"
 						>
 							<b-button
 								pill
