@@ -5,7 +5,7 @@
 			<menuLateral></menuLateral>
 		</div>
 		<div class="costado"></div>
-		<b-container class="informacion">
+		<b-container class="informacion pedidos">
 			<h1>Pedidos</h1>
 			<div v-if="this.userDelivery">
 				<b-button class="hrefPedido" @click="cambiarAPendientes"
@@ -454,7 +454,11 @@
 		margin-top: 10px;
 		width: 800px;
 	}
-
+.pedidos{
+	background-color: brown;
+	display: flex;
+	flex-direction: column;
+}
 	@media screen and (max-width: 550px) {
 		.divCard {
 			width: 95%;
