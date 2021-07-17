@@ -133,7 +133,7 @@
 				var res = null;
 
 				switch (this.type) {
-					case "Ranking":
+					case "Ranking de pedidos por periodo":
 						url =
 							"http://localhost:9001/buensabor/informacionArticulo/masVendidos";
 						res = await axios
@@ -153,7 +153,7 @@
 							"Precio de venta": "precioVenta",
 						};
 						break;
-					case "Ingresos":
+					case "Ingresos por periodo":
 						url = "http://localhost:9001/buensabor/factura/ingresos";
 						res = await axios
 							.get(url, {
@@ -171,7 +171,7 @@
 							Ingresos: res.data,
 						};
 						break;
-					case "Pedidos":
+					case "Pedidos por periodo":
 						(url = "http://localhost:9001/buensabor/pedido/pedidosPorCliente"),
 							(res = await axios
 								.get(url, {
