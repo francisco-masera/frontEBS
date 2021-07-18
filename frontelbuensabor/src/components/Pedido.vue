@@ -834,7 +834,7 @@
 					0
 				);
 				if (this.pedidoParam.tipoEntrega == "Retiro en local") {
-					return subTotal - (this.pedido.formaPago ? subTotal * 0.1 : 0);
+					return subTotal - (this.pedidoParam.formaPago ? subTotal * 0.1 : 0);
 				} else if (this.pedidoParam.tipoEntrega == "Retiro en local") {
 					return subTotal;
 				}
