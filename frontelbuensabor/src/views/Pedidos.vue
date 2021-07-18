@@ -455,7 +455,6 @@
 		width: 800px;
 	}
 .pedidos{
-	background-color: brown;
 	display: flex;
 	flex-direction: column;
 }
