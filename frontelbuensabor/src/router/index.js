@@ -87,7 +87,7 @@ const routes = [
 		component: () => import('../views/Registro.vue')
 	},
 	{
-		path: '/pedidos/',
+		path: '/pedidos',
 		name: 'Pedidos',
 		component: () => import('../views/Pedidos.vue')
 	},
@@ -106,6 +106,13 @@ const routes = [
 		name: 'Reportes',
 		component: () => import('../views/Reportes.vue')
 	},
+
+	{
+		path: '/descargarFactura/:idPedido',
+		name: 'DescargarFactura',
+		component: () => import('../views/DescargarFactura.vue')
+	},
+
 ];
 
 const router = new VueRouter({

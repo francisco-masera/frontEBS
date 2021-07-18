@@ -152,7 +152,11 @@
 						:key="pedido.id"
 						id="contenedorTarjeta"
 					>
-						<pedido :pedidoParam="pedido"></pedido>
+						<pedido
+							:pedidoParam="pedido"
+							:idFactura="$route.params.idFactura"
+							:idCliente="$route.params.idCliente"
+						></pedido>
 					</div>
 				</b-card-group>
 			</div>
@@ -271,7 +275,7 @@
 			cargaPendientes() {
 				if (this.pedidosPendientes) {
 					this.filtroPendientes = this.pedidosDelivery.filter(
-						(pedido) => pedido.estado == "Pendiente"
+						(pedido) => pedido.estado == "PendienteEntrega"
 					);
 				}
 				console.log(this.filtroPendientes);

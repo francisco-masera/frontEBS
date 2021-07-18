@@ -62,7 +62,7 @@ export default new Vuex.Store({
       {
         state.carrito = data.data;
         state.subtotal = data.data.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0);
-        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) + state.descuento + state.envio;
+        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) - state.descuento + state.envio;
       }).catch((e) =>
       {
         console.log(e);
@@ -109,7 +109,7 @@ export default new Vuex.Store({
     setTotal(state)
     {
       if (state.carrito.items.length != 0)
-        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) + - state.descuento + state.envio;
+        state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) - state.descuento + state.envio;
     },
     setEnvio(state, isEnvio)
     {
