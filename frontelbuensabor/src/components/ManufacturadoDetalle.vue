@@ -73,11 +73,14 @@ export default {
       recetas: [],
       precioVenta: 0,
       img: "",
+      horarios: true
+      
     };
   },
   props: ["id"],
   mounted() {
     this.getProducto();
+    this.getHorariosApertura();
   },
   updated() {
     this.setImgFallBack();
@@ -86,6 +89,17 @@ export default {
     Toast: Toast,
   },
   methods: {
+    getHorariosApertura(){
+      var horarioActual = new Date().toLocaleTimeString();
+      var dia = new Date().getDay();
+      var horarioSemanaIni = "20:00:00";
+      var horarioSemanaFin = "00:00:00";
+
+      if(dia != 0 || dia != 6){
+        if(horarioSemanaIni)
+      }
+      console.log("Dia" +  dia)
+    },
     async getProducto() {
       await this.service
         .getOne("informacionArticulo/getDetalle", this.$props.id)
