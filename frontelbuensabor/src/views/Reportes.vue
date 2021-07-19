@@ -94,7 +94,6 @@
 				this.$refs.toast.emitToast(msg, title);
 			},
 			setFechaMax(e) {
-				console.log(e);
 				this.fechaMax = e.activeYMD;
 			},
 			setFechaMin(e) {
@@ -104,14 +103,17 @@
 				switch (e) {
 					case "a":
 						this.type = "Ranking de pedidos por periodo";
+						this.title = "Ranking de pedidos por periodo";
 						this.showDate = true;
 						break;
 					case "b":
 						this.type = "Ingresos por periodo";
+						this.title = "Ingresos por periodo";
 						this.showDate = true;
 						break;
 					case "c":
 						this.type = "Pedidos por periodo";
+						this.title = "Pedidos por periodo";
 						this.showDate = true;
 						break;
 					case "d":
@@ -126,12 +128,11 @@
 				}
 			},
 			async generarReporte() {
-				let url;
 				if (this.type == null) {
 					return {};
 				}
 				var res = null;
-
+				let url;
 				switch (this.type) {
 					case "Ranking de pedidos por periodo":
 						url =
@@ -140,17 +141,29 @@
 							.get(url, {
 								params: {
 									yMax: this.fechaMax.split("-")[0],
-									mMax: this.fechaMax.split("-")[1] - 1,
+									mMax: this.fechaMax.split("-")[1],
 									dMax: this.fechaMax.split("-")[2],
 									yMin: this.fechaMin.split("-")[0],
-									mMin: this.fechaMin.split("-")[1] - 1,
+									mMin: this.fechaMin.split("-")[1],
 									dMin: this.fechaMin.split("-")[2],
 								},
 							})
 							.catch((e) => this.toastr(e.response.data.message, "Error"));
+						if (!res.data.length) {
+							this.toastr(
+								"No hay datos para el rango de fechas elegido",
+								"Atención"
+							);
+							return false;
+						}
 						this.dataFields = {
 							Artículo: "denominacion",
 							"Precio de venta": "precioVenta",
+							"Cantidad vendidos": {
+								callback: (val) => {
+									return val.cantidadVenta + " unidades";
+								},
+							},
 						};
 						break;
 					case "Ingresos por periodo":
@@ -159,36 +172,64 @@
 							.get(url, {
 								params: {
 									yMax: this.fechaMax.split("-")[0],
-									mMax: this.fechaMax.split("-")[1] - 1,
+									mMax: this.fechaMax.split("-")[1],
 									dMax: this.fechaMax.split("-")[2],
 									yMin: this.fechaMin.split("-")[0],
-									mMin: this.fechaMin.split("-")[1] - 1,
+									mMin: this.fechaMin.split("-")[1],
 									dMin: this.fechaMin.split("-")[2],
 								},
 							})
 							.catch((e) => this.toastr(e.response.data.message, "Error"));
+						if (res.data.ingresos == 0) {
+							this.toastr(
+								"No hay datos para el rango de fechas elegido",
+								"Atención"
+							);
+							return false;
+						}
 						this.dataFields = {
-							Ingresos: res.data,
+							Desde: {
+								callback: (val) => {
+									return new Date(val.fechaMin).toLocaleDateString();
+								},
+							},
+							Hasta: {
+								callback: (val) => {
+									return new Date(val.fechaMax).toLocaleDateString();
+								},
+							},
+							Ingresos: "ingresos",
 						};
 						break;
 					case "Pedidos por periodo":
-						(url = "http://localhost:9001/buensabor/pedido/pedidosPorCliente"),
-							(res = await axios
-								.get(url, {
-									params: {
-										yMax: this.fechaMax.split("-")[0],
-										mMax: this.fechaMax.split("-")[1] - 1,
-										dMax: this.fechaMax.split("-")[2],
-										yMin: this.fechaMin.split("-")[0],
-										mMin: this.fechaMin.split("-")[1] - 1,
-										dMin: this.fechaMin.split("-")[2],
-									},
-								})
-								.catch((e) => this.toastr(e.response.data.message, "Error")));
+						url = "http://localhost:9001/buensabor/pedido/pedidosPorCliente";
+						res = await axios
+							.get(url, {
+								params: {
+									yMax: this.fechaMax.split("-")[0],
+									mMax: this.fechaMax.split("-")[1],
+									dMax: this.fechaMax.split("-")[2],
+									yMin: this.fechaMin.split("-")[0],
+									mMin: this.fechaMin.split("-")[1],
+									dMin: this.fechaMin.split("-")[2],
+								},
+							})
+							.catch((e) => this.toastr(e.response.data.message, "Error"));
+						if (!res.data.length) {
+							this.toastr(
+								"No hay datos para el rango de fechas elegido",
+								"Atención"
+							);
+							return false;
+						}
 						this.dataFields = {
 							Cliente: "cliente.nombre",
 							Email: "cliente.email",
-							"Fecha Facturación": "factura.fechaHora",
+							"Fecha Facturación": {
+								callback: (val) => {
+									return new Date(val.factura.fechaHora).toLocaleDateString();
+								},
+							},
 							"Forma de Pago": {
 								callback: (val) => {
 									return !val.factura.formaPago ? "Tarjeta" : "Efectivo";
@@ -201,12 +242,31 @@
 										: "N/A";
 								},
 							},
-							Total: "factura.total",
+							Envío: {
+								callback: (val) => {
+									return !val.tipoEntrega
+										? this.formatter.formatMoney(50)
+										: "N/A";
+								},
+							},
+							Total: {
+								callback: (val) => {
+									if (val.tipoEntrega) {
+										return this.formatter.formatMoney(
+											val.factura.total -
+												(val.formaPago ? val.factura.total * 0.1 : 0)
+										);
+									} else if (val.tipoEntrega) {
+										return this.formatter.formatMoney(val.factura.total);
+									}
+									return this.formatter.formatMoney(val.factura.total + 50);
+								},
+							},
 							"Total c/descuento": {
 								callback: (val) => {
 									return !val.factura.formaPago
 										? this.formatter.formatMoney(
-												val.factura.total + val.factura.total * 0.1
+												val.factura.total - val.factura.total * 0.1
 										  )
 										: "N/A";
 								},
@@ -236,9 +296,13 @@
 						res = await axios
 							.get(url)
 							.catch((e) => this.toastr(e.response.data.message, "Error"));
+						if (!res.data.length) {
+							this.toastr("No insumos con bajo stock", "Atención");
+							return false;
+						}
 						break;
 				}
-				return res == undefined ? {} : res.data;
+				return res.data;
 			},
 		},
 		computed: {
