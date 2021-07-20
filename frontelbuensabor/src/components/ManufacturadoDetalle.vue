@@ -73,11 +73,13 @@ export default {
       recetas: [],
       precioVenta: 0,
       img: "",
+      horarios: true,
     };
   },
   props: ["id"],
   mounted() {
     this.getProducto();
+    this.getHorariosApertura();
   },
   updated() {
     this.setImgFallBack();
@@ -86,6 +88,24 @@ export default {
     Toast: Toast,
   },
   methods: {
+    getHorariosApertura() {
+      var horarioActual = new Date();
+      var dia = new Date().getDay();
+      if (dia == 0 || dia == 6) {
+        if (
+          horarioActual.getHours() >= 15 ||
+          horarioActual.getHours() < 11 ||
+          horarioActual.getHours() >= 0 ||
+          horarioActual.getHours() < 20
+        ) {
+          this.horarios = false;
+        }
+      } else {
+        if (horarioActual.getHours() >= 0 || horarioActual.getHours() < 20) {
+          this.horarios = false;
+        }
+      }
+    },
     async getProducto() {
       await this.service
         .getOne("informacionArticulo/getDetalle", this.$props.id)
@@ -115,6 +135,13 @@ export default {
       if (usuario == null || usuario == undefined) {
         this.toastr(
           "Debe estar registrado para realizar esta acción",
+          "¡Atención!"
+        );
+        return false;
+      }
+      if (!this.horarios) {
+        this.toastr(
+          "El local todavía se encuentra cerrado, intente mas tarde",
           "¡Atención!"
         );
         return false;
