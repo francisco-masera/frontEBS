@@ -42,7 +42,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="hover focus click"
+				triggers="click"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"
@@ -84,7 +84,7 @@
 										id="delivery"
 										class="entrega"
 										:class="
-											tipoEntrega == 1 && $store.state.carrito.formaPago
+											$store.state.tipoEntrega == false
 												? 'btnActivo'
 												: 'btnNoActivo'
 										"
@@ -98,12 +98,10 @@
 										id="tienda"
 										class="entrega"
 										:class="
-											tipoEntrega == 2 &&
-											$store.state.carrito.formaPago == false
+											$store.state.tipoEntrega == true
 												? 'btnActivo'
 												: 'btnNoActivo'
 										"
-										:disabled="tipoEntrega == 2"
 										>Tienda
 									</b-button>
 								</div>
@@ -125,7 +123,7 @@
 										id="efectivo"
 										class="pago"
 										:class="
-											$store.state.carrito.formaPago
+											$store.state.formaPago == true
 												? 'btnActivo'
 												: 'btnNoActivo'
 										"
@@ -140,11 +138,11 @@
 										id="tarjeta"
 										class="pago"
 										:class="
-											!$store.state.carrito.formaPago && tipoEntrega != 1
+											!$store.state.formaPago == false
 												? 'btnActivo'
 												: 'btnNoActivo'
 										"
-										:disabled="$store.state.envio != 0"
+										:disabled="$store.state.tipoEntrega == false"
 										>Tarjeta
 										<b-img></b-img>
 									</b-button>
@@ -184,22 +182,6 @@
 							<span>{{ $store.state.total | formatCurrency }}</span>
 						</div>
 					</div>
-					<b-collapse
-						id="tiempo"
-						:visible="tiempoEstimado != null && confirmado"
-						style="width: 90%"
-					>
-						<h4>Tiempo Estimado</h4>
-						<div class="col-12 mb-4">
-							<span style="margin-left: 40%">
-								<b-img
-									width="30"
-									:src="require('../assets/images/reloj.svg')"
-								></b-img>
-								<span class="">{{ tiempoEstimado }}</span>
-							</span>
-						</div>
-					</b-collapse>
 					<div class="col-12 mb-4" style="text-align: center">
 						<b-button pill class="m-auto btnActivo" @click="confirmar"
 							>Confirmar Pedido</b-button
@@ -259,6 +241,53 @@
 						</div>
 					</template>
 				</b-overlay>
+				<b-overlay
+					style="height: 100%"
+					:show="confirmado"
+					no-wrap
+					variant="dark"
+					opacity="1"
+					blur="2px"
+				>
+					<template #overlay>
+						<div
+							ref="dialog"
+							tabindex="-1"
+							role="dialog"
+							aria-modal="false"
+							aria-labelledby="form-confirm-label"
+							class="text-center p-3 container"
+							style="display: ruby"
+						>
+							<div class="row">
+								<div class="col-12 mb-4">
+									<b-img
+										style="margin-right: 20px"
+										width="30"
+										:src="require('../assets/images/reloj.svg')"
+									></b-img>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12">
+									<h4 class="text-info">Tiempo Estimado</h4>
+									<span style="">
+										<p class="text-danger">{{ tiempoEstimado }}</p>
+									</span>
+								</div>
+							</div>
+							<div class="col-5">
+								<b-button
+									variant="outline-success"
+									class="mr-3"
+									@click="resetCarrito"
+								>
+									Ok
+								</b-button>
+							</div>
+						</div>
+					</template>
+				</b-overlay>
 			</b-popover>
 		</div>
 		<Toast ref="toast" />
@@ -299,21 +328,26 @@
 		methods: {
 			toggleClassEntrega(btn) {
 				if (btn == 1) {
+					if (this.formaPago == false) {
+						this.toastr(
+							"No puede pagar con tarjeta si elije la entrega a domicilio",
+							"Atención"
+						);
+					}
 					this.$store.state.descuento = 0;
 					this.$store.state.envio = 50;
 					this.$store.dispatch("setFormaPago", true);
+					this.$store.dispatch("setTipoEntrega", false);
 					this.formaPago = true;
-					console.log(this.$store.state.envio);
 				} else {
 					this.$store.state.descuento = this.$store.state.subtotal * 0.1;
 					this.$store.state.envio = 0;
-					console.log(this.$store.state.envio);
+					this.$store.dispatch("setTipoEntrega", true);
 				}
 				this.tipoEntrega = btn;
 				this.$store.dispatch("setTotal");
 			},
 			toggleClassPago(val) {
-				this.tipoEntrega = val;
 				this.formaPago = val == 1;
 				if (this.tipoEntrega == 1) {
 					this.$store.dispatch("setFormaPago", true);
@@ -321,7 +355,10 @@
 				}
 				this.$store.dispatch("setFormaPago", val == 1);
 			},
-
+			resetCarrito() {
+				this.$store.dispatch("resetCarrito");
+				this.confirmado = false;
+			},
 			toggleClass($children) {
 				$.each($children, (i) => {
 					if ($($children[i]).hasClass("btnActivo")) {
@@ -409,10 +446,7 @@
 							)
 							.then((data) => {
 								if (data.data) {
-									setTimeout(() => {
-										this.$store.dispatch("resetCarrito");
-										location.reload(), 2300;
-									});
+									this.confirmado = true;
 								} else {
 									this.toastr(
 										"Su pedido no ha podido ser confirmado",
