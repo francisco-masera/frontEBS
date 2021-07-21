@@ -70,7 +70,6 @@
 					this.user.foto =
 						"http://localhost:9001/images/personas/" + this.user.foto;
 			},
-
 			async cargaBotones() {
 				await this.traeUser();
 				var boton;
@@ -130,11 +129,9 @@
 					this.botones.push(boton);
 					this.rol = "Delivery";
 				} else if (this.user.rol === "cajero") {
-					boton = [1, "Pedidos", "Pedidos.png", ""];
+					boton = [1, "Pedidos", "Pedidos.png", "/pedidos"];
 					this.botones.push(boton);
-					boton = [2, "Pedidos anteriores", "pedidosFacturados.png", ""];
-					this.botones.push(boton);
-					boton = [3, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
+					boton = [2, "Mis datos", "misDatos.png", "/misdatos/" + this.user.id];
 					this.botones.push(boton);
 					boton = [0, "Cerrar sesión", "cerrarSesion.png", "/ingreso"];
 					this.botones.push(boton);

@@ -139,6 +139,14 @@
 							]"
 						></b-form-select
 						>*
+						<b-form-checkbox
+							v-show="esNuevo"
+							id="checkbox-1"
+							name="checkbox-1"
+							v-model="esInsumoVenta"
+							@change="setEsVenta"
+							>Directo a venta
+						</b-form-checkbox>
 					</div>
 					<div class="lineaForm">
 						<h4 id="datos">*Datos necesarios</h4>
@@ -264,7 +272,6 @@
 							<div class="col-4">
 								<b-button pill class="boton" size="md" @click="updateInsumo"
 									>Guardar</b-button
-								>
 								>
 							</div>
 							<div class="col-4">
@@ -450,15 +457,6 @@
 							>
 						</b-collapse>
 					</div>
-
-					<!--    <div class="lineaFormDerecha" style="float: right" v-if="esInsumoVenta">
-            <b-button pill class="boton2" size="md" @click="retornaAlStock()"
-              >Cancelar</b-button
-            >
-            <b-button pill class="boton" size="md" @click="siguiente2()"
-              >Siguiente</b-button
-            >
-          </div> -->
 					<div class="container-fluid" v-if="esInsumoVenta">
 						<div class="row lineaFormDerecha">
 							<div class="col-4">
@@ -510,7 +508,7 @@
 								>
 							</div>
 							<div class="col-4">
-								<b-button pill class="boton" @click.prevent="volverPaso1sssss"
+								<b-button pill class="boton" @click.prevent="volverPaso1"
 									>Atrás</b-button
 								>
 							</div>
@@ -623,6 +621,10 @@
 				console.log(e);
 				var $input = $(e.target);
 				$input.val($input.val().replace(",", "."));
+			},
+			setEsVenta(e) {
+				console.log(e);
+				this.esInsumoVenta = e;
 			},
 			siguiente1() {
 				this.$v.$touch();
@@ -852,7 +854,7 @@
 						return false;
 					}
 				}
-				this.loading = !this.loading;
+				this.loading = true;
 				await this.guardaStock();
 
 				await this.service
@@ -865,24 +867,27 @@
 							console.log(data);
 							this.informacionVenta.imagen = img.name;
 							await this.guardarImagen(img).catch(() => {
-								this.loading = !this.loading;
+								this.loading = false;
 								return false;
 							});
 
 							await this.service
 								.save("insumoVenta", this.informacionVenta)
 								.then(() => {
-									this.loading = !this.loading;
+									this.loading = false;
 									this.$refs["modal"].show();
 									setTimeout(() => this.retornaAlStock(), 2500);
 								})
 								.catch((e) => {
-									this.loading = !this.loading;
+									this.loading = false;
 									this.toastr(
 										e.response.data.message,
 										"Error al guardar el insumo"
 									);
 								});
+						} else {
+							this.$refs["modal"].show();
+							setTimeout(() => this.retornaAlStock(), 2500);
 						}
 					});
 			},

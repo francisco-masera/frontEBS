@@ -8,9 +8,6 @@
 				class="imagen"
 			></b-img>
 		</div>
-		<!-- <b-alert v-model="alertDatosNull">Debe ingresar usuario y contraseña</b-alert>
-    <b-alert v-model="alertDatosErroneos">Usuario o contraseña incorrecta</b-alert>
-    <b-alert v-model="esCliente">No tiene permisos para acceder a esta sección</b-alert> -->
 		<div id="ingreso">
 			<div class="ingresoForm">
 				<form>
@@ -33,7 +30,7 @@
 						placeholder="Contraseña"
 						class="contraseñaForm"
 					></b-form-input>
-					<div class="olvido">Olvidé mi contraseña</div>
+
 					<b-button
 						pill
 						class="botonIngreso"
@@ -72,8 +69,6 @@
 				email: "",
 				contrasenia: "",
 				user: {},
-				//alertDatosNull: false,
-				//alertDatosErroneos: false,
 				esCliente: false,
 				service: new Service(),
 				utils: new Utils(),
@@ -92,14 +87,10 @@
 					) {
 						this.redirect();
 					} else {
-						//this.alertDatosErroneos = true;
 						this.email = "";
 						this.contrasenia = "";
 						this.user = null;
 					}
-					/* } else {
-															        this.alertDatosNull = true;
-															      } */
 				}
 			},
 
@@ -158,52 +149,6 @@
 	};
 </script>
 <style>
-	/* .loginBtn {
-																		  box-sizing: border-box;
-																		  position: relative;
-																		  padding: 0 15px 0 46px;
-																		  text-align: left;
-																		  line-height: 34px;
-																		  width: 50%;
-																		  white-space: nowrap;
-																		  font-size: 15px;
-																		  color: #fff;
-																		  border-color: #6c757d;
-																		  border: 1px solid transparent;
-																		  background-color: #e7511e;
-																		  margin-top: 5%;
-																		  margin-left: 25%;
-																		  margin-bottom: 5%;
-																		}
-																		.loginBtn:before {
-																		  content: "";
-																		  box-sizing: border-box;
-																		  position: absolute;
-																		  top: 0;
-																		  left: 0;
-																		  width: 34px;
-																		  height: 100%;
-																		}
-																		.loginBtn:focus {
-																		  outline: none;
-																		}
-																		.loginBtn:active {
-																		  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
-																		}
-																		.loginBtn--google {
-																		  background: #e7511e;
-																		}
-																		.loginBtn--google:hover,
-																		.loginBtn--google:focus {
-																		  background-color: #6c757d;
-																		}
-
-																		.loginBtn--google:before {
-																		  border-right: #bb3f30 1px solid;
-																		  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
-																		    6px 6px no-repeat;
-																		} */
-
 	@media screen and (min-width: 320px) and (max-width: 630px) {
 		.tituloIngreso {
 			text-align: center;
@@ -803,55 +748,4 @@
 		position: absolute;
 		bottom: 0;
 	}
-	/* 
-																		.loginBtn {
-																		  width: 120px;
-																		  box-sizing: content-box;
-																		} */
-	/* 
-																		.loginBtn {
-																		  box-sizing: border-box;
-																		  position: relative;
-																		  padding: 0 15px 0 46px;
-																		  text-align: left;
-																		  line-height: 34px;
-																		  width: 55%;
-																		  white-space: nowrap;
-																		  font-size: 15px;
-																		  color: #fff;
-																		  border-color: #6c757d;
-																		  border: 1px solid transparent;
-																		  background-color: #e7511e;
-																		  margin-top: 0.5%;
-																		  margin-left: 24%;
-																		  margin-bottom: 5%;
-																		}
-																		.loginBtn:before {
-																		  content: "";
-																		  box-sizing: border-box;
-																		  position: absolute;
-																		  top: 0;
-																		  left: 0;
-																		  width: 34px;
-																		  height: 100%;
-																		}
-																		.loginBtn:focus {
-																		  outline: none;
-																		}
-																		.loginBtn:active {
-																		  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
-																		}
-																		.loginBtn--google {
-																		  background: #e7511e;
-																		}
-																		.loginBtn--google:hover,
-																		.loginBtn--google:focus {
-																		  background-color: #6c757d;
-																		}
-
-																		.loginBtn--google:before {
-																		  border-right: #bb3f30 1px solid;
-																		  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/14082/icon_google.png")
-																		    6px 6px no-repeat;
-																		} */
 </style>

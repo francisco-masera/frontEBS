@@ -1,7 +1,5 @@
-{{ factura.total | formatCurrency }}<template>
-	<div
-		v-if="pedidoParam.estado == 'PendienteEntrega' && this.userDelivery == true"
-	>
+<template>
+	<div v-if="pedidoParam.estado == 'Listo' && this.userDelivery == true">
 		<b-card no-body border-variant="dark" style="max-width: 600px">
 			<b-container style="padding: 0">
 				<div class="filasPedido">
@@ -9,7 +7,7 @@
 						<div id="orden">
 							<strong>#Orden {{ pedidoParam.numero }} </strong>
 						</div>
-						<div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+						<div id="hora"><strong>Hora: </strong>{{ horaEntrega }}</div>
 						<div id="total">
 							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
 						</div>
@@ -114,7 +112,7 @@
 						<div id="orden">
 							<strong>#Orden {{ pedidoParam.numero }} </strong>
 						</div>
-						<div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+						<div id="hora"><strong>Hora: </strong>{{ horaEntrega }}</div>
 						<div id="total">
 							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
 						</div>
@@ -242,7 +240,9 @@
 						<div id="tipoRetiro">
 							<strong>{{ pedidoParam.tipoEntrega }}</strong>
 						</div>
-						<div id="hora"><strong>Hora: </strong>{{ pedidoParam.hora }}</div>
+						<div v-if="pedidoParam.estado != 'Cancelado'" id="hora">
+							<strong>Hora: </strong>{{ horaEntrega }}
+						</div>
 						<div id="total">
 							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
 						</div>
@@ -347,8 +347,9 @@
 						<div
 							class="contenedorCajeroBtn"
 							v-if="
-								pedidoParam.estado == 'Listo' &&
-								pedidoParam.tipoEntrega != 'Delivery'
+								(pedidoParam.estado == 'Listo' &&
+									pedidoParam.tipoEntrega != 'Delivery') ||
+								pedidoParam.estado == 'Entregado'
 							"
 						>
 							<b-button
@@ -436,7 +437,7 @@
 										pedidoParam.estado != 'Facturado' &&
 										pedidoParam.estado != 'Cancelado'
 									"
-									>Hora de llegada aproximada {{ hora }}</span
+									>Hora de llegada aproximada {{ horaEntrega }}</span
 								>
 								<b-button
 									class="hrefPedido"
@@ -655,7 +656,7 @@
 				userCajero: false,
 				userCocina: false,
 				cliente: false,
-				hora: this.setHora(),
+
 				verFactura: false,
 				factura: {},
 				save: false,
@@ -688,22 +689,23 @@
 			verDetalle() {
 				this.$refs["modalDetalle"].show();
 			},
-			setHora() {
-				var horaArr = this.pedidoParam.hora.split(":");
-				return horaArr[0] + ":" + horaArr[1];
-			},
+
 			async facturar() {
-				this.pedidoParam.hora = "00:00:00";
-				this.pedidoParam.tipoEntrega =
+				var hora = this.pedidoParam.hora;
+				var pedido = this.pedidoParam;
+				pedido.hora = "00:00:00";
+				this.pedidoParam.hora = hora;
+				var tipoEntrega = this.pedidoParam.tipoEntrega;
+				pedido.tipoEntrega =
 					this.pedidoParam.tipoEntrega == "Delivery" ? false : true;
-				this.pedidoParam.detalles.forEach(
+				this.pedidoParam.tipoEntrega = tipoEntrega;
+				pedido.detalles.forEach(
 					(d) => (d.articulo.type = "ArticuloManufacturado")
 				);
-				var pedido = this.pedidoParam;
 				await axios
 					.post("http://localhost:9001/buensabor/factura/generar", pedido)
-					.catch((e) => console.log(e))
-					.then(this.cambiaAFacturado());
+					.then(this.cambiaAFacturado())
+					.catch((e) => console.log(e));
 			},
 			userVerifica() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
@@ -760,6 +762,7 @@
 
 			async cambiaAListo() {
 				var id = this.pedidoParam.id;
+
 				await axios
 					.put(
 						"http://localhost:9001/buensabor/pedido/pedidoEntregado/" +
@@ -777,15 +780,14 @@
 				window.location.href = "/pedidos";
 			},
 			async cancelar() {
-				this.pedidoParam.estado = "Cancelado";
-				this.pedidoParam.hora = "00:00:00";
-				this.pedidoParam.tipoEntrega = false;
-				this.pedidoParam.detalles = null;
-				await this.service.update(
-					"pedido",
-					this.pedidoParam,
-					this.pedidoParam.id
-				);
+				var tipoEntrega = this.pedidoParam.tipoEntrega;
+				var pedido = this.pedidoParam;
+				pedido.estado = "Cancelado";
+				pedido.hora = "00:00:00";
+				pedido.tipoEntrega = false;
+				this.pedidoParam.tipoEntrega = tipoEntrega;
+				pedido.detalles = null;
+				await this.service.update("pedido", pedido, pedido.id);
 			},
 			async aprobar() {
 				var id = this.pedidoParam.id;
@@ -810,12 +812,11 @@
 		computed: {
 			horaEntrega() {
 				var tiempoEstimado = this.pedidoParam.hora.split(":");
-				var date = new Date();
-				date.setHours(tiempoEstimado[0] - 3);
-				date.setMinutes(tiempoEstimado[1]);
-				date.setSeconds(tiempoEstimado[2]);
-
-				return date.toLocaleTimeString("es-Ar");
+				var hora = tiempoEstimado[0];
+				var minutos = tiempoEstimado[1];
+				if (hora.length == 1) hora = "0" + hora;
+				if (minutos.length == 1) minutos = "0" + minutos;
+				return hora + ":" + minutos;
 			},
 			totalFactura() {
 				if (this.pedidoParam.tipoEntrega == "Retiro en local") {

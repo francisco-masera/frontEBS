@@ -20,26 +20,22 @@
 				<b-button class="hrefPedido" @click="filtrar(1)">TODOS</b-button>
 				<b-button class="hrefPedido" @click="filtrar(2)">PENDIENTES</b-button>
 				<b-button class="hrefPedido" @click="filtrar(3)">EN COCINA</b-button>
-				<b-button class="hrefPedido" @click="filtrar(4)">LISTOS</b-button>
+				<b-button class="hrefPedido" @click="filtrar(4)"
+					>PARA ENTREGAR</b-button
+				>
 				<b-button class="hrefPedido" @click="filtrar(5)">EN DELIVERY</b-button>
+				<b-button class="hrefPedido" @click="filtrar(6)">FACTURABLES</b-button>
+				<b-button class="hrefPedido" @click="filtrar(7)">FACTURADOS</b-button>
 			</div>
 			<div v-if="!this.user.rol">
-				<b-button
-					v-if="!this.user.rol"
-					class="hrefPedido"
-					@click="filtrarCliente(1)"
-					>TODOS</b-button
-				>
+				<b-button class="hrefPedido" @click="filtrarCliente(1)">TODOS</b-button>
 				<b-button class="hrefPedido" @click="filtrarCliente(2)"
 					>PENDIENTES</b-button
 				>
 				<b-button class="hrefPedido" @click="filtrarCliente(3)"
 					>ENTREGADOS</b-button
 				>
-				<b-button
-					v-if="!this.user.rol"
-					class="hrefPedido"
-					@click="filtrarCliente(4)"
+				<b-button class="hrefPedido" @click="filtrarCliente(4)"
 					>CANCELADOS</b-button
 				>
 			</div>
@@ -236,7 +232,6 @@
 			async getPedidos() {
 				await this.service.getAll("pedido/pedidos").then((data) => {
 					this.pedidosDelivery = data;
-					//	this.agregaDomicilioPedido();
 					this.pedidosFiltrados = data;
 					this.adjustmentHour();
 					this.ajusteTipoRetiro();
@@ -249,7 +244,6 @@
 					if (this.user.rol == undefined) {
 						this.cargaPedidosCliente();
 					}
-					console.log(this.pedidosDelivery);
 				});
 			},
 			adjustmentHour() {
@@ -275,7 +269,8 @@
 			cargaPendientes() {
 				if (this.pedidosPendientes) {
 					this.filtroPendientes = this.pedidosDelivery.filter(
-						(pedido) => pedido.estado == "PendienteEntrega"
+						(pedido) =>
+							pedido.estado == "Listo" && pedido.tipoEntrega == "Delivery"
 					);
 				}
 				console.log(this.filtroPendientes);
@@ -335,25 +330,38 @@
 						this.pedidosFiltrados = this.pedidosDelivery;
 						break;
 					case 2:
-						this.pedidosFiltrados = this.pedidosDelivery.filter(
-							(d) => d.estado == "Pendiente"
-						);
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter((d) => d.estado == "Pendiente")
+							.sort((a, b) => a.estado < b.estado);
 						break;
 					case 3:
-						this.pedidosFiltrados = this.pedidosDelivery.filter(
-							(d) => d.estado == "En Cocina"
-						);
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter((d) => d.estado == "En Cocina")
+							.sort((a, b) => a.estado < b.estado);
 						break;
 					case 4:
-						this.pedidosFiltrados = this.pedidosDelivery.filter(
-							(d) => d.estado == "Listo"
-						);
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter((d) => d.estado == "Listo" && d.tipoEntrega == "Delivery")
+							.sort((a, b) => a.estado < b.estado);
 						break;
 					case 5:
-						this.pedidosFiltrados = this.pedidosDelivery.filter(
-							(d) => d.estado == "En Delivery"
-						);
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter((d) => d.estado == "En Delivery")
+							.sort((a, b) => a.estado < b.estado);
 						break;
+					case 6:
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter(
+								(d) =>
+									(d.estado == "Listo" && d.tipoEntrega == "Retiro en local") ||
+									d.estado == "Entregado"
+							)
+							.sort((a, b) => a.estado < b.estado);
+						break;
+					case 7:
+						this.pedidosFiltrados = this.pedidosDelivery
+							.filter((d) => d.estado == "Facturado")
+							.sort((a, b) => a.estado < b.estado);
 				}
 			},
 			filtrarCliente(val) {
@@ -458,10 +466,10 @@
 		margin-top: 10px;
 		width: 800px;
 	}
-.pedidos{
-	display: flex;
-	flex-direction: column;
-}
+	.pedidos {
+		display: flex;
+		flex-direction: column;
+	}
 	@media screen and (max-width: 550px) {
 		.divCard {
 			width: 95%;

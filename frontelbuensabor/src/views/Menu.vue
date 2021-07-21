@@ -131,7 +131,7 @@
 		},
 		data() {
 			return {
-				loading: true,
+				loading: false,
 				esSesion:
 					JSON.parse(sessionStorage.getItem("user")) !== undefined &&
 					JSON.parse(sessionStorage.getItem("user")) !== null,
@@ -157,9 +157,11 @@
 				this.$bvModal.show("modalDetalle");
 			},
 			getAllProductos() {
+				this.loading = true;
 				this.service
 					.getAll("informacionArticulo/conStock")
-					.then((r) => r.forEach((d) => this.productos.push(d)));
+					.then((r) => r.forEach((d) => this.productos.push(d)))
+					.then(() => (this.loading = false));
 			},
 			filtrarCategoria(tipo, categoria) {
 				console.log(categoria, tipo);

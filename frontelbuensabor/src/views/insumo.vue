@@ -608,10 +608,10 @@
 
 	.imagenProducto {
 		width: 100%;
+		height: 300px;
 		border-top-left-radius: 15px;
 		border-top-right-radius: 15px;
-		height: 300px;
-		object-fit: cover;
+		object-fit: contain;
 		margin-bottom: 30px;
 	}
 

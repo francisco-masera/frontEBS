@@ -29,7 +29,10 @@
 				<div class="lineaForm">
 					<label class="tituloForm"> </label>
 					<div class="botonCambiarContraseña">
-						<b-button class="buttonText" @click="cambiarContra" v-show="user.type !== 'Empleado' || user.rol === 'admin'"
+						<b-button
+							class="buttonText"
+							@click="cambiarContra"
+							v-show="user.type !== 'Empleado' || user.rol === 'admin'"
 							>Cambiar contraseña</b-button
 						>
 					</div>
@@ -90,7 +93,6 @@
 				>
 				</b-form-input>
 			</form>
-			
 
 			<!-- Toast que muestra la confirmación de cambio de contraseña con exito-->
 			<b-toast id="toast-cambiar-exito" variant="success" solid no-auto-hide>
@@ -160,65 +162,6 @@
 			</template>
 			Error al cambiar la contraseña
 		</b-toast>
-		<!-- <b-modal
-			ref="modalEliminarCuenta"
-			title="¿Esta seguro de eliminar su cuenta?"
-			class="modalEliminar"
-			no-close-on-esc
-			hide-footer
-			no-close-on-backdrop
-			modal-header-close
-		>
-			<form class="estiloForm">
-				<b-form-input
-					v-model="contraseniaUsuario"
-					class="contraseñaForm"
-					placeholder="Contraseña"
-					type="password"
-				>
-				</b-form-input>
-			</form>
-			<p class="posicion">
-				<b-button
-					pill
-					class="boton botonEliminar"
-					size="sm"
-					@click="verificarContraseniaEliminar"
-					>Eliminar
-				</b-button>
-			</p> -->
-		<!-- Toast que muestra el error en la eliminación de la cuenta por error en contraseña-->
-		<!-- 	<b-toast id="toast-eliminar-error" variant="warning" solid>
-				<template v-slot:toast-title>
-					<div class="d-flex flex-grow-1 align-items-baseline">
-						<b-img
-							blank
-							blank-color="#ff5555"
-							class="mr-2"
-							width="12"
-							height="12"
-						></b-img>
-					</div>
-				</template>
-				¡La contraseña no es correcta!
-			</b-toast> -->
-
-		<!-- Toast que muestra la confirmación de eliminado con éxito-->
-		<!-- <b-toast id="toast-eliminar-exito" variant="success" solid>
-				<template v-slot:toast-title>
-					<div class="d-flex flex-grow-1 align-items-baseline">
-						<b-img
-							blank
-							blank-color="#ff5555"
-							class="mr-2"
-							width="12"
-							height="12"
-						></b-img>
-					</div>
-				</template>
-				Baja exitosa
-			</b-toast>
-		</b-modal> -->
 
 		<b-modal
 			ref="modalCambioImagen"
@@ -351,7 +294,6 @@
 			},
 
 			abreModalEliminar() {
-				//this.$refs.modalEliminarCuenta.show();
 				this.$bvModal
 					.msgBoxConfirm("Va a eliminar su cuenta ¿Está seguro?", {
 						size: "sm",
@@ -385,6 +327,7 @@
 						.update("empleado", this.user, parametroId)
 						.then((data) => {
 							this.user = data;
+							sessionStorage.setItem("user", JSON.stringify(data));
 							this.$bvToast.show("toast-datos-exito");
 							this.forceRerender();
 						})
@@ -411,7 +354,7 @@
 				let noError = await this.guardarImagen(img);
 				if (noError) {
 					this.$refs.modalCambioImagen.hide();
-					this.traeUsuario();
+					this.traeUsuario().then(setTimeout(() => location.reload(), 800));
 				}
 			},
 
@@ -562,7 +505,6 @@
 				}
 			},
 		},
-	
 	};
 </script>
 <style>
