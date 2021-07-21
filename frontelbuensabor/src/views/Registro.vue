@@ -224,14 +224,11 @@
 							</b-form-invalid-feedback>
 							<b-form-invalid-feedback
 								class="error"
-								v-if="!$v.form1.pass.$dirty && !$v.form1.pass.alphaNum"
+								v-if="$v.form1.pass.$dirty && !$v.form1.pass.alphaNum"
 							>
 								La contraseña debe ser alfanumérica y no poseer espacios.
 							</b-form-invalid-feedback>
-							<b-form-invalid-feedback
-								class="error"
-								v-if="!$v.form1.pass.$dirty && !$v.form1.pass.minLength"
-							>
+							<b-form-invalid-feedback class="error">
 								La contraseña debe tener mínimo 8 caracteres.
 							</b-form-invalid-feedback>
 						</div>
@@ -331,7 +328,6 @@
 				var latLng = coord.geometry.location;
 				this.coord = { lat: latLng.lat(), lng: latLng.lng() };
 				this.locationSelected = coord;
-				console.log(this.coord, coord);
 			},
 			async register() {
 				this.$v.$touch();
@@ -353,7 +349,7 @@
 				try {
 					this.domicilios = this.setDomicilio();
 				} catch (e) {
-					this.$bvToast.toast(e.response.data.message, {
+					this.$bvToast.toast(e, {
 						title: `¡Atención!`,
 						toaster: "b-toaster-top-center",
 						solid: true,
@@ -370,7 +366,6 @@
 					contrasenia: this.form1.pass,
 					usuario: this.form1.usuario,
 					foto: nombreFoto.toString().replaceAll(" ", ","),
-					//domicilios: [this.domicilios],
 				};
 				if (ph != null && ph != undefined) {
 					var splitted = ph.name.split(".");
@@ -393,24 +388,47 @@
 						return;
 					}
 					var id;
-					await this.service
-						.save("persona", cliente)
-						.then((res) => {
-							id = res.id;
-							if (id != undefined && id != null) {
-								try {
-									this.guardarDomicilio(id);
-									this.mostrarResultado(true);
-								} catch (e) {
+					await axios
+						.get("http://localhost:9001/buensabor/persona/verificarEmail", {
+							params: {
+								email: this.$v.form1.email.$model,
+							},
+						})
+						.then(async () => {
+							await this.service
+								.save("persona", cliente)
+								.then((res) => {
+									id = res.id;
+									if (id != undefined && id != null) {
+										try {
+											this.guardarDomicilio(id);
+											this.mostrarResultado(true);
+										} catch (e) {
+											this.$bvToast.toast(e.response.data.message, {
+												title: `¡Atención!`,
+												toaster: "b-toaster-top-center",
+												solid: true,
+											});
+										}
+									} else {
+										this.mostrarResultado(false);
+									}
+								})
+								.catch((e) =>
 									this.$bvToast.toast(e.response.data.message, {
 										title: `¡Atención!`,
 										toaster: "b-toaster-top-center",
 										solid: true,
-									});
-								}
-							} else {
-								this.mostrarResultado(false);
-							}
+									})
+								);
+
+							this.guardarImagen(ph).catch((e) =>
+								this.$bvToast.toast(e.response.data.message, {
+									title: `¡Atención!`,
+									toaster: "b-toaster-top-center",
+									solid: true,
+								})
+							);
 						})
 						.catch((e) =>
 							this.$bvToast.toast(e.response.data.message, {
@@ -419,14 +437,6 @@
 								solid: true,
 							})
 						);
-
-					this.guardarImagen(ph).catch((e) =>
-						this.$bvToast.toast(e.response.data.message, {
-							title: `¡Atención!`,
-							toaster: "b-toaster-top-center",
-							solid: true,
-						})
-					);
 				}
 			},
 
@@ -461,10 +471,8 @@
 				if (data) {
 					this.alertaExito = true;
 					setTimeout(() => {
-						this.alertaExito = false;
+						this.$router.push({ name: "IngresoClientes" });
 					}, 2000);
-					this.locationSelected = null;
-					this.coord = null;
 				} else {
 					this.alertaError = true;
 					setTimeout(() => {
@@ -488,18 +496,20 @@
 						Object.hasOwnProperty.call(locationSelected.address_components, key)
 					) {
 						const element = locationSelected.address_components[key];
-						console.log(key);
-						console.log(element);
+
 						if (element.types[0] == "administrative_area_level_1") {
-							if (element.types[0].toUpperCase() != "MENDOZA") {
-								throw "Su ubicación es inválida. Debe estar ubicada en la proincia de Mendoza.";
+							if (element.short_name != "Mendoza") {
+								throw "Su ubicación es inválida. Debe estar ubicada en la provincia de Mendoza.";
 							}
 						}
 						if (element.types[0] == "route") {
 							contador++;
 							calle = element.long_name;
 						}
-						if (element.types[0] == "neighborhood") {
+						if (
+							element.types[0] == "locality" ||
+							element.types[0] == "neighborhood"
+						) {
 							contador++;
 							localidad = element.long_name;
 						}
@@ -529,8 +539,7 @@
 						Object.hasOwnProperty.call(locationSelected.address_components, key)
 					) {
 						const element = locationSelected.address_components[key];
-						console.log(key);
-						console.log(element);
+
 						if (element.types[0] == "street_number") {
 							tieneNumero = true;
 							numero = element.long_name;

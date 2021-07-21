@@ -51,7 +51,12 @@
 						</div>
 						<div class="text-center p-t-115">
 							<span class="txt1"> ¿No tienes cuenta? </span>
-							<a class="txt2" href="./registro"> ¡Regístrate! </a>
+							<b-btn
+								class="txt2 btn-sm"
+								@click="$router.push({ name: 'Registro' })"
+							>
+								¡Regístrate!
+							</b-btn>
 						</div>
 					</b-form>
 					<div class="text-center p-t-115">
@@ -210,7 +215,6 @@
 				this.email = email.substring(email.indexOf("=") + 1, email.length);
 				this.$refs["modalPassNueva"].show();
 			}
-			console.log(this.$route.params);
 		},
 		data() {
 			return {
@@ -280,8 +284,6 @@
 						},
 					})
 					.then((data) => {
-						console.log(data);
-
 						this.redirect(data.data);
 						this.loading = !this.loading;
 						this.utils.enableScroll();
@@ -586,11 +588,15 @@
 	}
 
 	.txt2 {
+		background-color: #fff;
+		color: #17a2b8 !important;
 		font-size: 13px;
-		color: #333333;
 		line-height: 1.5;
 	}
-
+	.txt2:hover {
+		background-color: #17a2b8;
+		color: #fff !important;
+	}
 	.limiter {
 		width: 100%;
 		margin: 0 auto;

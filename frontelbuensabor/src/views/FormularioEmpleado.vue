@@ -526,28 +526,28 @@
 					return false;
 				}
 				this.persona.foto = img.name.toString().replaceAll(" ", "_");
-				this.loading = !this.loading;
+				this.loading = true;
 				this.utils.preventScroll();
 
 				await axios
 					.post("http://localhost:9001/buensabor/empleado/registro", this.persona)
 					.then((d) => {
 						this.persona = d.data;
-						console.log(typeof d.data);
 						this.guardarImagen(img)
-							.then((d) => {
-								console.log(d);
-								this.loading = !this.loading;
+							.then(() => {
+								this.loading = true;
+								this.toastr("Empleado agregado con éxito", "¡Excelente!");
+								setTimeout(() => this.vuelveStock(), 800);
 							})
 							.catch((e) => {
-								this.loading = !this.loading;
+								this.loading = false;
 								this.utils.enableScroll();
 								this.toastr(e.response.data.message, "¡Atención!");
 								return false;
 							});
 					})
 					.catch((e) => {
-						this.loading = !this.loading;
+						this.loading = false;
 						this.utils.enableScroll();
 						this.toastr(e.response.data.message, "¡Atención!");
 						return false;
@@ -556,20 +556,16 @@
 
 			async guardarDomicilio() {
 				this.domicilio.persona.id = this.persona.id;
-				console.log(this.domicilio.persona.id);
 				await this.service
 					.save("domicilio", this.domicilio)
 					.then((data) => {
 						this.domicilio = data;
-						this.loading = !this.loading;
+						this.loading = false;
 						if (data) this.$refs["modal"].show();
-						else {
-							this.loading = !this.loading;
-							return false;
-						}
+						else return false;
 					})
 					.catch((e) => {
-						this.loading = !this.loading;
+						this.loading = false;
 						this.utils.enableScroll();
 						this.toastr(e.response.data.message, "¡Atención!");
 						return false;

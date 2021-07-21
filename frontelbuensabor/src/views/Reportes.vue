@@ -90,6 +90,21 @@
 			};
 		},
 		methods: {
+			totalPedido(pedido) {
+				var subTotal = pedido.detalles.reduce(
+					(a, b) => a + b.articulo.precioVenta * b.cantidad,
+					0
+				);
+				if (pedido.tipoEntrega) return subTotal - subTotal * 0.1;
+
+				return subTotal + 50;
+			},
+			subtotal(pedido) {
+				return pedido.detalles.reduce(
+					(a, b) => a + b.articulo.precioVenta * b.cantidad,
+					0
+				);
+			},
 			toastr(msg, title) {
 				this.$refs.toast.emitToast(msg, title);
 			},
@@ -198,8 +213,13 @@
 									return new Date(val.fechaMax).toLocaleDateString();
 								},
 							},
-							Ingresos: "ingresos",
+							Ingresos: {
+								callback: (val) => {
+									return this.formatter.formatMoney(val.ingresos);
+								},
+							},
 						};
+
 						break;
 					case "Pedidos por periodo":
 						url = "http://localhost:9001/buensabor/pedido/pedidosPorCliente";
@@ -232,13 +252,19 @@
 							},
 							"Forma de Pago": {
 								callback: (val) => {
-									return !val.factura.formaPago ? "Tarjeta" : "Efectivo";
+									return val.formaPago ? "Efectivo" : "Tarjeta";
+								},
+							},
+							Entrega: {
+								callback: (val) => {
+									return val.tipoEntrega ? "Retiro en local" : "A Domicilio";
 								},
 							},
 							Descuento: {
 								callback: (val) => {
-									return !val.factura.formaPago
-										? this.formatter.formatMoney(val.factura.total * 0.1)
+									console.log(val.tipoEntrega);
+									return val.tipoEntrega
+										? this.formatter.formatMoney(this.subtotal(val) * 0.1)
 										: "N/A";
 								},
 							},
@@ -251,29 +277,15 @@
 							},
 							Total: {
 								callback: (val) => {
-									if (val.tipoEntrega) {
-										return this.formatter.formatMoney(
-											val.factura.total -
-												(val.formaPago ? val.factura.total * 0.1 : 0)
-										);
-									} else if (val.tipoEntrega) {
-										return this.formatter.formatMoney(val.factura.total);
-									}
-									return this.formatter.formatMoney(val.factura.total + 50);
+									return this.formatter.formatMoney(this.totalPedido(val));
 								},
 							},
 							"Total c/descuento": {
 								callback: (val) => {
-									return !val.factura.formaPago
-										? this.formatter.formatMoney(
-												val.factura.total - val.factura.total * 0.1
-										  )
+									var total = this.totalPedido(val);
+									return !val.formaPago
+										? this.formatter.formatMoney(total - total * 0.1)
 										: "N/A";
-								},
-							},
-							Entrega: {
-								callback: (val) => {
-									return val.tipoEntrega ? "A Domicilio" : "Retiro en local";
 								},
 							},
 						};

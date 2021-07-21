@@ -3,7 +3,7 @@
 		<b-container>
 			<b-card-img
 				style="height: auto; max-height: 180px"
-				class="imagen img-fluid"
+				class="imagen img-fluid imagenProducto"
 				:src="
 					'http://localhost:9001/images/productos/' + manufacturadoParam.imagen
 				"
@@ -42,5 +42,12 @@
 		font-size: 16pt;
 		font-weight: 600;
 		text-align: right;
+	}
+	.imagenProducto {
+		width: 100%;
+		border-top-left-radius: 15px;
+		border-top-right-radius: 15px;
+		object-fit: scale-down;
+		margin-bottom: 30px;
 	}
 </style>

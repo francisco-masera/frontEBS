@@ -571,8 +571,7 @@
 						this.getDetalleInsumoxId();
 						this.loading = !this.loading;
 					})
-					.catch((e) => {
-						console.log(e);
+					.catch(() => {
 						this.loading = false;
 					});
 			},

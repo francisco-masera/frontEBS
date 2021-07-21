@@ -17,7 +17,7 @@
 					></b-form-input>
 					<b-button size="sm" class="botonImagen" type="submit">
 						<img
-						:src="require('../assets/images/buscar.png')"
+							:src="require('../assets/images/buscar.png')"
 							id="imagenBuscar"
 						/>
 					</b-button>
@@ -336,7 +336,6 @@
 					})
 					.then((response) => {
 						this.costos = response.data;
-						console.log(this.costos);
 						this.agregarCostos();
 					});
 			},

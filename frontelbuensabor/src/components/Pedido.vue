@@ -1,5 +1,5 @@
 <template>
-	<div v-if="pedidoParam.estado == 'Listo' && this.userDelivery == true">
+	<div v-if="pedidoParam.estado == 'En Delivery' && this.userDelivery == true">
 		<b-card no-body border-variant="dark" style="max-width: 600px">
 			<b-container style="padding: 0">
 				<div class="filasPedido">
@@ -102,7 +102,7 @@
 	</div>
 	<div
 		v-else-if="
-			this.userDelivery == true && this.pedidoParam.estado == 'Entregado'
+			this.userDelivery == true && this.pedidoParam.estado == 'Facturado'
 		"
 	>
 		<b-card no-body border-variant="dark" style="max-width: 600px">
@@ -177,7 +177,7 @@
 			</b-container>
 		</b-card>
 	</div>
-	<div v-else-if="this.userCocina">
+	<div v-else-if="this.userCocina == true">
 		<b-card no-body border-variant="grey" style="max-width: 600px">
 			<b-container style="padding: 0">
 				<div class="filasPedido">
@@ -221,6 +221,10 @@
 								>Listo</b-button
 							>
 						</div>
+						<b-button pill class="boton" size="md" @click="cancelar"
+							>Cancelar</b-button
+						>
+						<div class="contenedorCard"></div>
 						<b-modal ref="modalEntrega" hide-footer hide-header centered title>
 							<p class="modalTitulo">¡Pedido entregado!</p>
 						</b-modal>
@@ -369,7 +373,7 @@
 			</b-container>
 		</b-card>
 	</div>
-	<div v-else>
+	<div v-else-if="cliente">
 		<b-card no-body border-variant="dark" style="max-width: 600px">
 			<b-container style="padding: 0">
 				<div class="filasPedido">
@@ -517,7 +521,7 @@
 						<tr>
 							<td>Subtotal</td>
 							<td>
-								{{ factura.total | formatCurrency }}
+								{{ subtotal | formatCurrency }}
 							</td>
 						</tr>
 						<tr>
@@ -527,8 +531,20 @@
 							<td>
 								<label class="text-right">
 									{{
-										factura.formaPago ? factura.total * 0.1 : 0 | formatCurrency
+										pedidoParam.tipoEntrega
+											? subtotal * 0.1
+											: 0 | formatCurrency
 									}}
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div class="cell-with-input">Envío</div>
+							</td>
+							<td>
+								<label class="text-right">
+									{{ pedidoParam.tipoEntrega ? 0 : 50 | formatCurrency }}
 								</label>
 							</td>
 						</tr>
@@ -536,7 +552,7 @@
 						<tr class="text-bold">
 							<td>Total</td>
 							<td>
-								{{ totalFactura | formatCurrency }}
+								{{ totalPedido | formatCurrency }}
 							</td>
 						</tr>
 					</table>
@@ -599,7 +615,7 @@
 							{{
 								pedidoParam.formaPago
 									? pedidoParam.detalles.reduce(
-											(a, b) => a + b.articulo.precioVenta,
+											(a, b) => a + b.articulo.precioVenta * b.cantidad,
 											0
 									  ) * 0.1
 									: 0 | formatCurrency
@@ -656,7 +672,6 @@
 				userCajero: false,
 				userCocina: false,
 				cliente: false,
-
 				verFactura: false,
 				factura: {},
 				save: false,
@@ -694,18 +709,18 @@
 				var hora = this.pedidoParam.hora;
 				var pedido = this.pedidoParam;
 				pedido.hora = "00:00:00";
-				this.pedidoParam.hora = hora;
 				var tipoEntrega = this.pedidoParam.tipoEntrega;
 				pedido.tipoEntrega =
 					this.pedidoParam.tipoEntrega == "Delivery" ? false : true;
-				this.pedidoParam.tipoEntrega = tipoEntrega;
+
 				pedido.detalles.forEach(
 					(d) => (d.articulo.type = "ArticuloManufacturado")
 				);
 				await axios
 					.post("http://localhost:9001/buensabor/factura/generar", pedido)
-					.then(this.cambiaAFacturado())
-					.catch((e) => console.log(e));
+					.then(this.cambiaAFacturado());
+				this.pedidoParam.hora = hora;
+				this.pedidoParam.tipoEntrega = tipoEntrega;
 			},
 			userVerifica() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
@@ -729,7 +744,6 @@
 			},
 			async cambiaAFacturado() {
 				var id = this.pedidoParam.id;
-				console.log(this.domicilioParam);
 
 				await axios
 					.put(
@@ -745,7 +759,6 @@
 			},
 			async cambiaAEntregado() {
 				var id = this.pedidoParam.id;
-				console.log(this.domicilioParam);
 
 				await axios
 					.put(
@@ -756,24 +769,35 @@
 					)
 					.then(() => {
 						this.$refs.modalEntrega.show();
-						setTimeout(() => this.refrescaPantalla(), 1000);
 					});
 			},
 
 			async cambiaAListo() {
 				var id = this.pedidoParam.id;
-
+				var estado =
+					this.pedidoParam.tipoEntrega == "Delivery" ? "En Delivery" : "Listo";
 				await axios
 					.put(
 						"http://localhost:9001/buensabor/pedido/pedidoEntregado/" +
 							parseInt(id) +
 							"/" +
-							"Listo"
+							estado
 					)
-					.then(() => {
+					.then((e) => {
 						this.$refs.modalEntrega.show();
 						setTimeout(() => this.refrescaPantalla(), 1000);
-					});
+						console.log(e.data);
+					})
+					.catch((e) =>
+						this.$bvToast.toast(e.response.data, {
+							title: "¡Atención!",
+							toaster: "b-toaster-top-center",
+							solid: true,
+							appendToast: true,
+							variant: "info",
+							autoHideDelay: 2000,
+						})
+					);
 			},
 
 			refrescaPantalla() {
@@ -785,9 +809,12 @@
 				pedido.estado = "Cancelado";
 				pedido.hora = "00:00:00";
 				pedido.tipoEntrega = false;
-				this.pedidoParam.tipoEntrega = tipoEntrega;
 				pedido.detalles = null;
 				await this.service.update("pedido", pedido, pedido.id);
+				this.pedidoParam.tipoEntrega = tipoEntrega;
+				if (this.userCocina) {
+					location.reload();
+				}
 			},
 			async aprobar() {
 				var id = this.pedidoParam.id;
@@ -806,6 +833,7 @@
 					this.verFactura = true;
 					var fecha = this.factura.fechaHora.split("T")[0].split("-");
 					this.fechaFactura = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
+					console.log(this.fechaFactura);
 				});
 			},
 		},
@@ -818,28 +846,22 @@
 				if (minutos.length == 1) minutos = "0" + minutos;
 				return hora + ":" + minutos;
 			},
-			totalFactura() {
-				if (this.pedidoParam.tipoEntrega == "Retiro en local") {
-					return (
-						this.factura.total -
-						(this.factura.formaPago ? this.factura.total * 0.1 : 0)
-					);
-				} else if (this.pedidoParam.tipoEntrega == "Retiro en local") {
-					return this.factura.total;
-				}
-				return this.factura.total + 50;
-			},
+
 			totalPedido() {
 				var subTotal = this.pedidoParam.detalles.reduce(
 					(a, b) => a + b.articulo.precioVenta * b.cantidad,
 					0
 				);
-				if (this.pedidoParam.tipoEntrega == "Retiro en local") {
-					return subTotal - (this.pedidoParam.formaPago ? subTotal * 0.1 : 0);
-				} else if (this.pedidoParam.tipoEntrega == "Retiro en local") {
-					return subTotal;
-				}
+				if (this.pedidoParam.tipoEntrega == "Retiro en local")
+					return subTotal - subTotal * 0.1;
+
 				return subTotal + 50;
+			},
+			subtotal() {
+				return this.pedidoParam.detalles.reduce(
+					(a, b) => a + b.articulo.precioVenta * b.cantidad,
+					0
+				);
 			},
 		},
 	};

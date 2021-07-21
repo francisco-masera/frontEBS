@@ -19,8 +19,6 @@
 				<b-collapse id="nav-collapse" is-nav>
 					<b-navbar-nav class="items">
 						<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
-						<b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
-						<b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
 						<b-button
 							v-show="!this.user.id"
 							@click="$router.push({ name: 'Registro' })"
@@ -82,8 +80,6 @@
 					<b-collapse id="nav-collapse" is-nav>
 						<b-navbar-nav class="items">
 							<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
-							<b-nav-item :to="{ name: 'about' }">NOSOTROS</b-nav-item>
-							<b-nav-item :to="{ name: 'contacto' }">CONTACTO</b-nav-item>
 							<b-nav-item :to="'/misdatos/' + this.user.id">
 								<b-img
 									v-if="user.id"

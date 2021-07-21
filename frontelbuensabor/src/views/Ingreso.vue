@@ -136,7 +136,6 @@
 						this.utils.enableScroll();
 					})
 					.catch((e) => {
-						console.log(e);
 						this.toastr(e.response.data.message);
 						this.utils.enableScroll();
 						this.loading = !this.loading;

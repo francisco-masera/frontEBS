@@ -237,7 +237,6 @@
 				await this.service.getAll("rubroManufacturado").then((data) => {
 					this.rubros = data;
 				});
-				console.log(this.rubros[0].denominacion);
 				this.selected = this.rubros[0].denominacion;
 			},
 			calcularPrecioSugerido() {
@@ -273,7 +272,7 @@
 						this.$refs["modalDeniega"].hide();
 					})
 					.then(() =>
-						setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
+						setTimeout(() => (window.location.href = "/sugerenciaChef/"), 1500)
 					)
 					.catch(() => {
 						this.toastInfo("Error al eliminar los registros.", "Error");
@@ -322,9 +321,11 @@
 				this.loading = true;
 				this.informacionVenta.descripcion = this.sugerenciaEncontrada.descripcion;
 				this.informacionVenta.imagen = this.sugerenciaEncontrada.imagen;
-				this.informacionVenta.denominacion = this.sugerenciaEncontrada.denominacion;
+				this.informacionVenta.denominacion =
+					this.sugerenciaEncontrada.denominacion;
 				this.informacionVenta.aptoCeliaco = this.sugerenciaEncontrada.aptoCeliaco;
-				this.informacionVenta.tiempoCocina = this.sugerenciaEncontrada.tiempoCocina;
+				this.informacionVenta.tiempoCocina =
+					this.sugerenciaEncontrada.tiempoCocina;
 				this.informacionVenta.vegano = this.sugerenciaEncontrada.vegano;
 				this.informacionVenta.vegetariano = this.sugerenciaEncontrada.vegetariano;
 				this.informacionVenta.rubro = parseInt(rubroId);
@@ -342,7 +343,7 @@
 						this.$refs["modal"].hide();
 					})
 					.then(() =>
-						setTimeout(() => (window.location.href = "/sugerenciaChef/"), 5000)
+						setTimeout(() => (window.location.href = "/sugerenciaChef/"), 1500)
 					)
 					.catch(() => {
 						this.toastInfo("Error al aceptar la sugerencia.", "Error");
@@ -354,8 +355,7 @@
 				let sugerencia = await this.service
 					.save("manufacturado", this.informacionVenta)
 					.then((data) => (this.informacionVenta = data))
-					.catch((error) => {
-						console.log(error);
+					.catch(() => {
 						return false;
 					});
 

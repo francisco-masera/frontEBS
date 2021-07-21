@@ -101,8 +101,7 @@
 						)
 					) {
 						const element = this.locationSelected.address_components[key];
-						console.log(key);
-						console.log(element);
+
 						if (element.types[0] == "administrative_area_level_1") {
 							if (element.types[0].toUpperCase() != "MENDOZA") {
 								this.toastr(
@@ -154,8 +153,7 @@
 						)
 					) {
 						const element = this.locationSelected.address_components[key];
-						console.log(key);
-						console.log(element);
+
 						if (element.types[0] == "street_number") {
 							tieneNumero = true;
 							numero = element.long_name;
@@ -206,7 +204,7 @@
 								this.toastr("No se pudo insertar el domicilio", "Error: ");
 								return false;
 							}
-							console.log(d);
+
 							this.toastr("Domicilio agregado con éxito.");
 							this.$emit("agregado", true);
 							this.locationSelected = null;

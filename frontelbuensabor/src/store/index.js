@@ -15,10 +15,10 @@ const config = {
   },
 };
 const cliente = JSON.parse(sessionStorage.getItem("user"));
-
+var idPedido = 0;
 export default new Vuex.Store({
   state: {
-    carrito: { items: [], idPedido: 0 },
+    carrito: { items: [], idPedido: idPedido },
     carritoKey: 0,
     idCliente: cliente != undefined ? cliente.id : "",
     subtotal: 0,
@@ -41,7 +41,7 @@ export default new Vuex.Store({
           cantidad: i.cantidad,
           precioVenta: i.precioVenta,
           denominacion: i.denominacion,
-          idItem: 0
+          idItem: i.idItem
         }
         items.push(item);
 
@@ -50,12 +50,18 @@ export default new Vuex.Store({
       var carrito = {
         idCliente: state.idCliente, formaPago: false, tipoEntrega: false,
         estado: 'En Espera', numero: 0, horaEstimada: null, items: items,
-        tiempoEstimado: 0,
+        tiempoEstimado: 0, idPedido: idPedido,
       };
-
       carrito = JSON.parse(JSON.stringify(carrito));
+
       axios.post("http://localhost:9001/buensabor/pedido/saveCarrito/", carrito, config)
-        .then(data => this.state.carrito = data.data);
+        .then(data =>
+        {
+          this.state.carrito = data.data;
+          idPedido = data.data.idPedido;
+          this.state.carrito.idPedido = idPedido;
+          state.carrito = data.data;
+        });
     },
 
     getCarrito(state)
@@ -65,11 +71,9 @@ export default new Vuex.Store({
         state.carrito = data.data;
         state.subtotal = data.data.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0);
         state.total = state.carrito.items.reduce((a, b) => (a + (b.precioVenta * b.cantidad)), 0) - state.descuento + state.envio;
-      }).catch((e) =>
-      {
-        console.log(e);
+        idPedido = data.data.idPedido;
+      })
 
-      });
       return state.carrito;
 
     },
@@ -80,11 +84,11 @@ export default new Vuex.Store({
         {
           var idx = state.carrito.items.findIndex(i => i.idArticuloVenta == idArticuloVenta);
           state.carrito.items.splice(idx, 1);
-        }).catch(e => console.log(e));
+        });
     },
     delCarrito(state)
     {
-      axios.delete("http://localhost:9001/buensabor/pedido/eliminarPedido/" + state.idCliente, config).catch(e => console.log(e));
+      axios.delete("http://localhost:9001/buensabor/pedido/eliminarPedido/" + state.idCliente, config);
     },
     resetCarrito()
     {
@@ -128,7 +132,7 @@ export default new Vuex.Store({
     {
       state.tipoEntrega = isTienda;
       state.carrito.tipoEntrega = isTienda;
-      console.log(isTienda);
+
     }
 
   },

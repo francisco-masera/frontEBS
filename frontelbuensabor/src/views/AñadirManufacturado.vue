@@ -290,12 +290,6 @@
 					<div>
 						<h3>
 							{{ manufacturado.denominacion }}
-							<b-button size="sm" id="btn-editar" class="botonImagen">
-								<img
-									:src="require('../assets/images/editar.png')"
-									id="imagenAgregar"
-								/>
-							</b-button>
 						</h3>
 						<div id="descripcionInsumo">
 							<h2>Descripción</h2>
@@ -672,7 +666,7 @@
 					this.guardarRecetas(estadoSugerencia);
 					this.loading = false;
 					this.$refs["modal"].show();
-					setTimeout(() => this.retornaAlCatalogo(), 3000);
+					setTimeout(() => this.retornaAlCatalogo(), 1500);
 				} else {
 					this.toastError();
 					this.loading = false;

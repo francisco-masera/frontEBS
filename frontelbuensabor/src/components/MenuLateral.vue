@@ -51,7 +51,6 @@
 				userSession: {},
 			};
 		},
-
 		methods: {
 			accion(boton) {
 				if (boton[0] == 0) sessionStorage.clear();
@@ -61,7 +60,7 @@
 				this.userSession = JSON.parse(sessionStorage.getItem("user"));
 				await this.service.getOne("persona", this.userSession.id).then((data) => {
 					this.user = data;
-					this.user.foto = this.userSession.foto;
+					/* this.user.foto = this.userSession.foto; */
 					this.loadPh();
 				});
 			},

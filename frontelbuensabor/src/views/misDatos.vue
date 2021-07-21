@@ -32,7 +32,10 @@
 						<b-button
 							class="buttonText"
 							@click="cambiarContra"
-							v-show="user.type !== 'Empleado' || user.rol === 'admin'"
+							v-show="
+								(user.type !== 'Empleado' || user.rol === 'admin') &&
+								user.contrasenia != ''
+							"
 							>Cambiar contraseña</b-button
 						>
 					</div>
@@ -93,6 +96,15 @@
 				>
 				</b-form-input>
 			</form>
+			<p class="posicion">
+				<b-button
+					pill
+					class="boton botonEliminar"
+					size="sm"
+					@click="verificarContrasenia"
+					>Cambiar contraseña
+				</b-button>
+			</p>
 
 			<!-- Toast que muestra la confirmación de cambio de contraseña con exito-->
 			<b-toast id="toast-cambiar-exito" variant="success" solid no-auto-hide>
@@ -309,9 +321,6 @@
 						if (value == true) {
 							this.eliminarCuenta();
 						}
-					})
-					.catch((err) => {
-						console.log(err);
 					});
 			},
 
@@ -354,7 +363,7 @@
 				let noError = await this.guardarImagen(img);
 				if (noError) {
 					this.$refs.modalCambioImagen.hide();
-					this.traeUsuario().then(setTimeout(() => location.reload(), 800));
+					this.traeUsuario().then(setTimeout(() => location.reload(), 300));
 				}
 			},
 
@@ -388,8 +397,6 @@
 						});
 					this.$bvToast.show("toast-imagen-exito");
 
-					console.log(this.user);
-
 					this.guardar();
 					return true;
 				} else if (this.user.type === "Empleado") {
@@ -411,7 +418,6 @@
 							return false;
 						});
 					this.$bvToast.show("toast-imagen-exito");
-					console.log(this.user);
 
 					this.guardar();
 					return true;

@@ -618,12 +618,10 @@
 
 		methods: {
 			formatNumber(e) {
-				console.log(e);
 				var $input = $(e.target);
 				$input.val($input.val().replace(",", "."));
 			},
 			setEsVenta(e) {
-				console.log(e);
 				this.esInsumoVenta = e;
 			},
 			siguiente1() {
@@ -738,8 +736,6 @@
 				await this.service
 					.getOne("insumoVenta/insumo", parametroId)
 					.then((data) => (this.informacionVenta = data[0]));
-
-				console.log(this.informacionVenta);
 			},
 
 			async guardaStock() {
@@ -864,7 +860,7 @@
 							this.informacionVenta.descripcion = this.form2.lineaDescripcion;
 							this.informacionVenta.precioVenta = this.form2.precioVenta;
 							this.informacionVenta.insumo = data;
-							console.log(data);
+
 							this.informacionVenta.imagen = img.name;
 							await this.guardarImagen(img).catch(() => {
 								this.loading = false;

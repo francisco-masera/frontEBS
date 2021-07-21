@@ -164,7 +164,6 @@
 					.then(() => (this.loading = false));
 			},
 			filtrarCategoria(tipo, categoria) {
-				console.log(categoria, tipo);
 				this.productos = [];
 				axios
 					.post(
@@ -242,7 +241,13 @@
 	#imagenBuscar {
 		width: 25px;
 	}
-
+	.imagenProducto {
+		width: 100%;
+		border-top-left-radius: 15px;
+		border-top-right-radius: 15px;
+		object-fit: scale-down;
+		margin-bottom: 30px;
+	}
 	.menuDiv {
 		margin-top: 20px;
 		margin-left: 15%;

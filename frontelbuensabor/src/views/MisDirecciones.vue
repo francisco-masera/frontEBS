@@ -120,9 +120,6 @@
 						if (value == true) {
 							this.service.delete("domicilio", id).then(location.reload());
 						}
-					})
-					.catch((err) => {
-						console.log(err);
 					});
 			},
 			editarDir(id) {

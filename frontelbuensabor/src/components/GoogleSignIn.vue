@@ -1,11 +1,8 @@
 <template>
 	<div class="text-center p-t-115">
-		<p class="txt2" style="font-size: 13pt">O ingresa con Google</p>
+		<p class="txt22" style="font-size: 13pt">O ingresa con Google</p>
 		<b-button class="social" @click="gLogin()">
-			<img
-				class="img-fluid"
-				:src="require('../assets/images/google.svg')"
-			/>
+			<img class="img-fluid" :src="require('../assets/images/google.svg')" />
 		</b-button>
 		<Toast ref="toast" />
 		<router-view />
@@ -35,7 +32,6 @@
 					.signInWithPopup(googleAuthProvider)
 					.then((res) => {
 						this.gRegister(res.user, res.additionalUserInfo.profile);
-						console.log(res);
 					})
 					.catch((e) => {
 						this.toastr(
@@ -148,5 +144,9 @@
 <style>
 	.social {
 		margin-top: 3vh;
+	}
+	.txt22 {
+		font-size: 13px;
+		line-height: 1.5;
 	}
 </style>

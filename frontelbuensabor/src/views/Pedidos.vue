@@ -20,12 +20,9 @@
 				<b-button class="hrefPedido" @click="filtrar(1)">TODOS</b-button>
 				<b-button class="hrefPedido" @click="filtrar(2)">PENDIENTES</b-button>
 				<b-button class="hrefPedido" @click="filtrar(3)">EN COCINA</b-button>
-				<b-button class="hrefPedido" @click="filtrar(4)"
-					>PARA ENTREGAR</b-button
-				>
-				<b-button class="hrefPedido" @click="filtrar(5)">EN DELIVERY</b-button>
-				<b-button class="hrefPedido" @click="filtrar(6)">FACTURABLES</b-button>
-				<b-button class="hrefPedido" @click="filtrar(7)">FACTURADOS</b-button>
+				<b-button class="hrefPedido" @click="filtrar(4)">EN DELIVERY</b-button>
+				<b-button class="hrefPedido" @click="filtrar(5)">FACTURABLES</b-button>
+				<b-button class="hrefPedido" @click="filtrar(6)">FACTURADOS</b-button>
 			</div>
 			<div v-if="!this.user.rol">
 				<b-button class="hrefPedido" @click="filtrarCliente(1)">TODOS</b-button>
@@ -270,31 +267,28 @@
 				if (this.pedidosPendientes) {
 					this.filtroPendientes = this.pedidosDelivery.filter(
 						(pedido) =>
-							pedido.estado == "Listo" && pedido.tipoEntrega == "Delivery"
+							pedido.estado == "En Delivery" && pedido.tipoEntrega == "Delivery"
 					);
 				}
-				console.log(this.filtroPendientes);
 			},
 
 			cargaEntregados() {
 				if (!this.pedidosPendientes) {
 					this.filtroEntregados = this.pedidosDelivery.filter(
-						(pedido) => pedido.estado == "Entregado"
+						(pedido) =>
+							pedido.estado == "Facturado" && pedido.tipoEntrega == "Delivery"
 					);
 				}
-				console.log(this.filtroEntregados);
 			},
 			cargaConfirmados() {
 				this.filtroConfirmados = this.pedidosDelivery.filter(
 					(pedido) => pedido.estado == "Confirmado"
 				);
-				console.log(this.filtroConfirmados);
 			},
 			cargaPedidosCliente() {
 				this.pedidosFiltrados = this.pedidosDelivery
 					.filter((pedido) => pedido.cliente.id == this.user.id)
 					.sort((a, b) => a.estado < b.estado);
-				console.log(this.pedidosFiltrados);
 			},
 			cambiarAEntregados() {
 				this.pedidosEntregados = true;
@@ -307,11 +301,17 @@
 					this.filtroBuscados = this.pedidosFiltrados.filter((pedido) => {
 						return (
 							pedido.numero == this.busquedaOrden ||
-							pedido.cliente.nombre.includes(this.busquedaOrden) ||
-							pedido.cliente.apellido.includes(this.busquedaOrden) ||
-							(pedido.cliente.nombre + " " + pedido.cliente.apellido).includes(
-								this.busquedaOrden
-							)
+							pedido.cliente.nombre
+								.toUpperCase()
+								.includes(this.busquedaOrden.toUpperCase()) ||
+							pedido.cliente.apellido
+								.toUpperCase()
+								.includes(this.busquedaOrden.toUpperCase()) ||
+							(
+								pedido.cliente.nombre.toUpperCase() +
+								" " +
+								pedido.cliente.apellido.toUpperCase()
+							).includes(this.busquedaOrden.toUpperCase())
 						);
 					});
 
@@ -336,20 +336,15 @@
 						break;
 					case 3:
 						this.pedidosFiltrados = this.pedidosDelivery
-							.filter((d) => d.estado == "En Cocina")
+							.filter((d) => d.estado == "Confirmado")
 							.sort((a, b) => a.estado < b.estado);
 						break;
 					case 4:
 						this.pedidosFiltrados = this.pedidosDelivery
-							.filter((d) => d.estado == "Listo" && d.tipoEntrega == "Delivery")
-							.sort((a, b) => a.estado < b.estado);
-						break;
-					case 5:
-						this.pedidosFiltrados = this.pedidosDelivery
 							.filter((d) => d.estado == "En Delivery")
 							.sort((a, b) => a.estado < b.estado);
 						break;
-					case 6:
+					case 5:
 						this.pedidosFiltrados = this.pedidosDelivery
 							.filter(
 								(d) =>
@@ -358,7 +353,7 @@
 							)
 							.sort((a, b) => a.estado < b.estado);
 						break;
-					case 7:
+					case 6:
 						this.pedidosFiltrados = this.pedidosDelivery
 							.filter((d) => d.estado == "Facturado")
 							.sort((a, b) => a.estado < b.estado);

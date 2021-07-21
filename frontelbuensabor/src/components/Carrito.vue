@@ -42,7 +42,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="click"
+				triggers="hover focus"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"
@@ -137,12 +137,12 @@
 										@click="toggleClassPago(2)"
 										id="tarjeta"
 										class="pago"
+										:disabled="esDelivery"
 										:class="
 											!$store.state.formaPago == false
 												? 'btnActivo'
 												: 'btnNoActivo'
 										"
-										:disabled="$store.state.tipoEntrega == false"
 										>Tarjeta
 										<b-img></b-img>
 									</b-button>
@@ -310,6 +310,7 @@
 				formaPago: "",
 				confirmado: false,
 				service: new Service(),
+				esDelivery: undefined,
 			};
 		},
 		components: {
@@ -331,28 +332,36 @@
 					if (this.formaPago == false) {
 						this.toastr(
 							"No puede pagar con tarjeta si elije la entrega a domicilio",
-							"Atención"
+							"¡Atención!"
 						);
 					}
 					this.$store.state.descuento = 0;
 					this.$store.state.envio = 50;
 					this.$store.dispatch("setFormaPago", true);
 					this.$store.dispatch("setTipoEntrega", false);
+					this.esDelivery = true;
 					this.formaPago = true;
 				} else {
 					this.$store.state.descuento = this.$store.state.subtotal * 0.1;
 					this.$store.state.envio = 0;
 					this.$store.dispatch("setTipoEntrega", true);
+					this.esDelivery = false;
 				}
 				this.tipoEntrega = btn;
 				this.$store.dispatch("setTotal");
 			},
 			toggleClassPago(val) {
 				this.formaPago = val == 1;
-				if (this.tipoEntrega == 1) {
+				if (this.esDelivery) {
+					this.toastr(
+						"No puede pagar con tarjeta si elije la entrega a domicilio",
+						"¡Atención!"
+					);
+				} else if (this.tipoEntrega == 1) {
 					this.$store.dispatch("setFormaPago", true);
 					return false;
 				}
+
 				this.$store.dispatch("setFormaPago", val == 1);
 			},
 			resetCarrito() {

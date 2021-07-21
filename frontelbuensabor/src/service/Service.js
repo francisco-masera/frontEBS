@@ -12,24 +12,26 @@ const config = {
   },
 };
 
-export default class Service {
-  async getAll(subPath) {
+export default class Service
+{
+  async getAll(subPath)
+  {
     await axios
       .get(serverUrl + "/" + subPath + "/", config)
-      .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
+      .then((response) => (responseEntity = response.data));
     return responseEntity;
   }
 
-  async getOne(subPath, id) {
+  async getOne(subPath, id)
+  {
     await axios
       .get(serverUrl + "/" + subPath + "/" + parseInt(id), config)
-      .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
+      .then((response) => (responseEntity = response.data));
     return responseEntity;
   }
 
-  async save(subPath, entity) {
+  async save(subPath, entity)
+  {
     await axios
       .post(serverUrl + "/" + subPath + "/", entity, config)
       .then((response) => (responseEntity = response.data))
@@ -37,7 +39,8 @@ export default class Service {
     return responseEntity;
   }
 
-  async update(subPath, entity, id) {
+  async update(subPath, entity, id)
+  {
 
     await axios
       .put(serverUrl + "/" + subPath + "/" + parseInt(id), entity, config)
@@ -47,21 +50,22 @@ export default class Service {
   }
 
 
-  async delete(subPath, id) {
+  async delete(subPath, id)
+  {
     await axios
       .delete(serverUrl + "/" + subPath + "/" + parseInt(id), config)
-      .then((response) => (responseEntity = response.data))
-      .catch((error) => console.log(error));
+      .then((response) => (responseEntity = response.data));
     return responseEntity;
   }
 
-  async deleteRecetas(subPath, id) {
+  async deleteRecetas(subPath, id)
+  {
     await axios
       .delete(serverUrl + "/" + subPath + "/" + parseInt(id), config)
-      .then((response) => {
+      .then((response) =>
+      {
         return response.data;
-      })
-      .catch((error) => console.log(error));
+      });
     return;
   }
 }

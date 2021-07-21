@@ -48,7 +48,11 @@
 								<tr v-for="(item, idx) in pedido.detalles" :key="idx">
 									<td data-label="N°">{{ idx + 1 }}</td>
 									<td data-label="Item">
-										<label for="">{{ item.articulo.denominacion }}</label>
+										<label for="">{{
+											item.articulo.insumo == undefined
+												? item.articulo.denominacion
+												: item.articulo.insumo.denominacion
+										}}</label>
 									</td>
 									<td data-label="Precio">
 										<div class="cell-with-input">
@@ -70,7 +74,7 @@
 								<tr>
 									<td>Subtotal</td>
 									<td>
-										{{ pedido.factura.total | formatCurrency }}
+										{{ subtotal | formatCurrency }}
 									</td>
 								</tr>
 								<tr>
@@ -80,24 +84,25 @@
 									<td>
 										<label class="text-right">
 											{{
-												pedido.factura.formaPago
-													? pedido.factura.total * 0.1
-													: 0 | formatCurrency
+												pedido.tipoEntrega ? subtotal * 0.1 : 0 | formatCurrency
 											}}
 										</label>
 									</td>
 								</tr>
-
+								<tr>
+									<td>
+										<div class="cell-with-input">Envío</div>
+									</td>
+									<td>
+										<label class="text-right">
+											{{ pedido.tipoEntrega ? 0 : 50 | formatCurrency }}
+										</label>
+									</td>
+								</tr>
 								<tr class="text-bold">
 									<td>Total</td>
 									<td>
-										{{
-											(pedido.factura.total -
-												(pedido.factura.formaPago
-													? pedido.factura.total * 0.1
-													: 0))
-												| formatCurrency
-										}}
+										{{ totalPedido | formatCurrency }}
 									</td>
 								</tr>
 							</table>
@@ -138,6 +143,24 @@
 		mounted() {
 			this.getPedido();
 		},
+		computed: {
+			totalPedido() {
+				var subTotal = this.pedido.detalles.reduce(
+					(a, b) => a + b.articulo.precioVenta * b.cantidad,
+					0
+				);
+				if (this.pedido.tipoEntrega == "Retiro en local")
+					return subTotal - subTotal * 0.1;
+
+				return subTotal + 50;
+			},
+			subtotal() {
+				return this.pedido.detalles.reduce(
+					(a, b) => a + b.articulo.precioVenta * b.cantidad,
+					0
+				);
+			},
+		},
 		methods: {
 			async generarPDF() {
 				const source = JSON.stringify(this.$refs.pdf.outerHTML);
@@ -164,7 +187,6 @@
 						this.pedido = d;
 						var fecha = d.factura.fechaHora.split("T")[0].split("-");
 						this.fechaFactura = fecha[2] + "/" + fecha[1] + "/" + fecha[0];
-						this.generarPDF();
 					});
 			},
 		},
