@@ -6,7 +6,8 @@
 		</div>
 		<div class="costado" v-if="esSesion"></div>
 		<div class="menuDiv">
-			<h3 style="margin-left: 20%">Nuestros Platos</h3>
+			<div class="platos">
+			<h3>Nuestros Platos</h3>
 			<div id="filtros">
 				<div style="float: right">
 					<b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
@@ -81,7 +82,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="platos">
+			
 				<b-card-group deck class="deckPlatos">
 					<div
 						class="contenedorTarjeta"
@@ -221,13 +222,16 @@
 	}
 
 	#filtros {
+		margin-top: 20px;
+		float:left;
 		padding-bottom: 80px;
 		display: inline-block;
-		margin-left: 20%;
 	}
 
 	.platos {
-		margin-left: 15%;
+		width: 100%;
+		padding-left: 10%;
+		padding-right: 10%;
 	}
 
 	.rounded-circle {
@@ -250,7 +254,6 @@
 	}
 	.menuDiv {
 		margin-top: 20px;
-		margin-left: 15%;
 	}
 	.contenedorTarjeta:hover {
 		cursor: pointer;
@@ -260,5 +263,27 @@
 	}
 	#modalDetalle .card-body {
 		padding: 1rem;
+	}
+	.deckPlatos{
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+		.contenedorTarjeta {
+		background-color: white;
+		box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+		cursor: pointer;
+		border-radius: 20px;
+		max-width: 350px;
+		margin: 10px;
+		display: inline-block;
+		min-width: 200px;
+		margin-bottom: 50px;
+	}
+	.card-deck .card{
+		margin-right: 0;
+		margin-left: 0;
 	}
 </style>
