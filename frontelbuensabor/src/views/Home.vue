@@ -391,7 +391,9 @@
 		justify-content: space-around;
 	}
 	.contenedorTarjeta {
+		background-color: white;
 		cursor: pointer;
+		border-radius: 20px;
 		max-width: 350px;
 		margin: 10px;
 		display: inline-block;

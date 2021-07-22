@@ -255,7 +255,6 @@
 	.contenedorTarjeta:hover {
 		cursor: pointer;
 	}
-
 	#modalDetalle .modal-body {
 		padding: 0 !important;
 	}

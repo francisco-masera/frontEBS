@@ -180,4 +180,10 @@
 	.form-control {
 		margin-bottom: 20px;
 	}
+	.mb-2{
+		box-sizing: border-box;
+		display: flex;
+		max-width: 100%;
+		flex-direction: column !important;
+	}
 </style>
