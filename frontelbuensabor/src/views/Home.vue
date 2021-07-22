@@ -359,7 +359,7 @@
 		outline: none;
 		position: relative;
 		float: right;
-		z-index: 98;
+		z-index: 3;
 		min-width: 0px;
 		margin-top: -30px;
 		margin-right: 10px;

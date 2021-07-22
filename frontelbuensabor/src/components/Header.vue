@@ -16,16 +16,22 @@
 				</a>
 			</div>
 			<div class="centrarHome">
+				<b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
+				<div class="hamburguer--home">
 				<b-collapse id="nav-collapse" is-nav>
 					<b-navbar-nav class="items">
 						<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
+						<b-nav-item>
 						<b-button
 							v-show="!this.user.id"
 							@click="$router.push({ name: 'Registro' })"
 							pill
 							class="btn boton"
+							style="margin-bottom:0px;"
 							>Registrarme</b-button
 						>
+						</b-nav-item>
+						<b-nav-item>
 						<b-button
 							v-show="!this.user.id"
 							@click="redirectoToLogin()"
@@ -33,6 +39,7 @@
 							class="boton2"
 							>Ingresar</b-button
 						>
+						</b-nav-item>
 						<b-nav-item :to="'/misdatos/' + this.user.id">
 							<b-img
 								v-show="this.user.foto != '' && this.user.foto"
@@ -55,6 +62,7 @@
 						</b-button>
 					</b-navbar-nav>
 				</b-collapse>
+				</div>
 			</div>
 		</b-container>
 	</b-navbar>
@@ -107,19 +115,16 @@
 								ref="carrito"
 								v-show="user.id != undefined && user.id != null"
 							/>
-							<!-- 	<b-nav-item
-								class="menuLateral"
-								v-for="boton in botones"
-								:key="boton[0]"
-								v-bind:href="boton[3]"
-							>
-								<b-img
-									v-bind:src="require('../assets/images/' + boton[2])"
-									fluid
-									class="iconosMenu"
-								></b-img>
-								{{ boton[1] }}
-							</b-nav-item> -->
+							<b-nav-item @click="logOut()">Cerrar sesión</b-nav-item>
+						</b-navbar-nav>
+					</b-collapse>
+				</div>
+				<div v-else-if="noRegistrado">
+					<b-collapse id="nav-collapse" is-nav>
+						<b-navbar-nav class="items">
+							<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
+							<b-nav-item :to="'/registro'">REGISTRO</b-nav-item>
+							<b-nav-item :to="'/ingresoClientes/null/null'">INGRESO</b-nav-item>
 						</b-navbar-nav>
 					</b-collapse>
 				</div>
@@ -188,6 +193,7 @@
 				botones: [],
 				user: {},
 				esCliente: false,
+				noRegistrado:false,
 				es_Home: false,
 				service: new Service(),
 				screenWidth: window.screen.width < 1024,
@@ -200,16 +206,14 @@
 		methods: {
 			async verificaUsuario() {
 				this.es_Home = this.$props.esHome;
-				var boton;
-				if (this.user) {
+				var boton;				
+				if (this.user) {					
 					if (this.user.rol == undefined) {
-						this.esCliente = true;
-						boton = [0, "Mis direcciones", "misDirecciones.png", ""];
-						this.botones.push(boton);
-						boton = [1, "Mis pedidos", "Pedidos.png", ""];
-						this.botones.push(boton);
-						boton = [2, "Cerrar sesión", "cerrarSesion.png", "/"];
-						this.botones.push(boton);
+						if(this.user.id===undefined) {
+							this.noRegistrado =true;
+						}else{
+							this.esCliente = true;
+						}
 					} else {
 						this.esCliente = false;
 						if (this.user.rol === "admin") {
@@ -253,7 +257,10 @@
 			},
 			async traeUser() {
 				this.user = JSON.parse(sessionStorage.getItem("user"));
-				if (this.user == null) this.user = {};
+				if (this.user == null) {
+					this.user = {};
+					this.verificaUsuario();
+				}
 				if (this.user.id) {
 					await this.service.getOne("persona", this.user.id).then((data) => {
 						this.user = data;
@@ -503,6 +510,21 @@
 			box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
 			text-align: left;
 			display: block;
+		}
+		.hamburguer--home{
+			background-color: #ffffff;
+			position: absolute;
+			margin-top: 50px;
+			border-radius: 15px;
+			-webkit-box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
+			-moz-box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
+			box-shadow: 9px 10px 19px -5px rgba(0, 0, 0, 0.33);
+			right: 40px;
+			margin-left: 20px;
+			display: flex;
+			flex-direction: column;
+			z-index: 10;
+			width: 80%;
 		}
 
 		.nav-item {
