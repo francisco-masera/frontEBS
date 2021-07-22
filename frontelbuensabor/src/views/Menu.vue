@@ -7,82 +7,85 @@
 		<div class="costado" v-if="esSesion"></div>
 		<div class="menuDiv">
 			<div class="platos">
-			<h3>Nuestros Platos</h3>
-			<div id="filtros">
-				<div style="float: right">
-					<b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
-						<b-img width="30px" :src="require('@/assets/images/pizza.svg')" />
-					</b-button>
-					<b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
-						<b-img width="30px" :src="require('@/assets/images/lomo.svg')" />
-					</b-button>
-					<b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
-						<b-img
-							width="30px"
-							:src="require('@/assets/images/hamburger.svg')"
-						/>
-					</b-button>
-					<b-button class="botonImagen" @click="filtrarCategoria(0, 4)">
-						<b-img
-							width="30px"
-							:src="require('@/assets/images/papasFritas.svg')"
-						/>
-					</b-button>
-
-					<b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
-						<b-img
-							width="30px"
-							:src="require('@/assets/images/sandwich.svg')"
-						/>
-					</b-button>
-					<b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
-						<b-img width="30px" :src="require('@/assets/images/botella.svg')"
-					/></b-button>
-					<b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
-						<b-img width="30px" :src="require('@/assets/images/cupcake.svg')" />
-					</b-button>
-				</div>
-				<b-nav-form class="buscador">
-					<b-form-input
-						@keyup="filtrarPorTexto"
-						style="width: 300px"
-						size="sm"
-						id="buscadorInput"
-						class="mr-sm-2"
-						placeholder="¿De qué tenés ganas hoy?"
-					>
-						></b-form-input
-					>
-				</b-nav-form>
-
-				<div id="especiales" style="padding-top: 5px">
-					<div id="celiaco" style="float: left; width: 130px">
-						<b-button class="botonImagen" @click="filtrarCategoria(2, 1)">
-							<img
+				<h3 id="tituloMenu">Nuestros Platos</h3>
+				<div id="filtros">
+					<div style="float: right">
+						<b-button class="botonImagen" @click="filtrarCategoria(0, 1)">
+							<b-img width="30px" :src="require('@/assets/images/pizza.svg')" />
+						</b-button>
+						<b-button class="botonImagen" @click="filtrarCategoria(0, 2)">
+							<b-img width="30px" :src="require('@/assets/images/lomo.svg')" />
+						</b-button>
+						<b-button class="botonImagen" @click="filtrarCategoria(0, 3)">
+							<b-img
 								width="30px"
-								:src="require('@/assets/images/sinTacc.png')"
-								style="float: left; margin-right: 8px"
+								:src="require('@/assets/images/hamburger.svg')"
 							/>
 						</b-button>
-						<span style="font-size: 14px; font-family: 'Baloo Bhaina 2'">
-							SIN T.A.C.C.
-						</span>
+						<b-button class="botonImagen" @click="filtrarCategoria(0, 4)">
+							<b-img
+								width="30px"
+								:src="require('@/assets/images/papasFritas.svg')"
+							/>
+						</b-button>
+
+						<b-button class="botonImagen" @click="filtrarCategoria(0, 5)">
+							<b-img
+								width="30px"
+								:src="require('@/assets/images/sandwich.svg')"
+							/>
+						</b-button>
+						<b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
+							<b-img width="30px" :src="require('@/assets/images/botella.svg')"
+						/></b-button>
+						<b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
+							<b-img
+								width="30px"
+								:src="require('@/assets/images/cupcake.svg')"
+							/>
+						</b-button>
 					</div>
-					<div id="vegano" style="display: inline-block; width: 150px">
-						<b-button class="botonImagen" @click="filtrarCategoria(2, 2)">
-							<img
-								width="30px"
-								:src="require('@/assets/images/vegetariano.png')"
-								style="float: left; margin-right: 8px"
-							/>
-						</b-button>
-						<span style="font-size: 14px; font-family: 'Baloo Bhaina 2'"
-							>VEGETARIANO</span
+					<b-nav-form class="buscador">
+						<b-form-input
+							@keyup="filtrarPorTexto"
+							style="width: 300px"
+							size="sm"
+							id="buscadorInput"
+							class="mr-sm-2"
+							placeholder="¿De qué tenés ganas hoy?"
 						>
+							></b-form-input
+						>
+					</b-nav-form>
+
+					<div id="especiales" style="padding-top: 5px">
+						<div id="celiaco" style="float: left; width: 130px">
+							<b-button class="botonImagen" @click="filtrarCategoria(2, 1)">
+								<img
+									width="30px"
+									:src="require('@/assets/images/sinTacc.png')"
+									style="float: left; margin-right: 8px"
+								/>
+							</b-button>
+							<span style="font-size: 14px; font-family: 'Baloo Bhaina 2'">
+								SIN T.A.C.C.
+							</span>
+						</div>
+						<div id="vegano" style="display: inline-block; width: 150px">
+							<b-button class="botonImagen" @click="filtrarCategoria(2, 2)">
+								<img
+									width="30px"
+									:src="require('@/assets/images/vegetariano.png')"
+									style="float: left; margin-right: 8px"
+								/>
+							</b-button>
+							<span style="font-size: 14px; font-family: 'Baloo Bhaina 2'"
+								>VEGETARIANO</span
+							>
+						</div>
 					</div>
 				</div>
-			</div>
-			
+
 				<b-card-group deck class="deckPlatos">
 					<div
 						class="contenedorTarjeta"
@@ -223,7 +226,7 @@
 
 	#filtros {
 		margin-top: 20px;
-		float:left;
+		float: left;
 		padding-bottom: 80px;
 		display: inline-block;
 	}
@@ -233,7 +236,30 @@
 		padding-left: 10%;
 		padding-right: 10%;
 	}
-
+	@media screen and (min-width: 1025px) {
+		.platos {
+			margin-left: 12vw;
+		}
+		#filtros,
+		#tituloMenu {
+			margin-left: 5vw;
+		}
+		#MenuLateral {
+			margin-left: 50px;
+		}
+	}
+	@media screen and (min-width: 768px) and (max-width: 1024px) {
+		.platos {
+			margin-left: 12vw;
+		}
+		#filtros,
+		#tituloMenu {
+			margin-left: 5vw;
+		}
+		#MenuLateral {
+			margin-left: 20px;
+		}
+	}
 	.rounded-circle {
 		margin-left: 30px;
 	}
@@ -264,14 +290,14 @@
 	#modalDetalle .card-body {
 		padding: 1rem;
 	}
-	.deckPlatos{
+	.deckPlatos {
 		width: 100%;
 		display: flex;
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
-		.contenedorTarjeta {
+	.contenedorTarjeta {
 		background-color: white;
 		box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 		cursor: pointer;
@@ -282,7 +308,7 @@
 		min-width: 200px;
 		margin-bottom: 50px;
 	}
-	.card-deck .card{
+	.card-deck .card {
 		margin-right: 0;
 		margin-left: 0;
 	}

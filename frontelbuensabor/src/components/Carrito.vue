@@ -13,19 +13,16 @@
 		<div v-if="$store.state.carrito.items.length == 0" :key="0">
 			<b-popover
 				target="carrito-img"
-				triggers="hover focus"
-				placement="bottomleft"
+				triggers="hover focus click"
 				container="carrito-nav"
 				ref="popover"
-				id="popoverCarrito"
+				id=""
 			>
-				<div class="container">
-					<div class="row fila-titulo">
-						<div class="col-12">
-							<div class="d-block">
-								<h5 class="col col-10">
-									¡Aún no has agregado ningún plato al carrito!
-								</h5>
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col">
+							<div class="d-block" id="carrito-vacio">
+								<h5>¡Aún no has agregado ningún plato al carrito!</h5>
 							</div>
 						</div>
 					</div>
@@ -42,7 +39,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="hover focus"
+				triggers="hover focus click"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"
@@ -50,7 +47,7 @@
 			>
 				<div class="container-fluid">
 					<div class="row fila-titulo">
-						<div class="col-12">
+						<div class="col col-12">
 							<div class="d-block">
 								<h3>Mi Pedido</h3>
 							</div>
@@ -58,26 +55,34 @@
 					</div>
 					<Producto :items="$store.state.carrito.items" />
 					<hr style="width: 100%; border-top: 2px solid rgba(0, 0, 0, 0.1)" />
-					<div class="col-7" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<strong style="font-size: 1.1em">Subtotal</strong>
+					<div class="row fila-titulo" id="subtotal">
+						<div
+							class="col col-sm-8 col-md-7 col-lg-4"
+							style="margin-bottom: 3vh"
+						>
+							<div class="d-block">
+								<strong>Subtotal</strong>
+							</div>
 						</div>
-					</div>
-					<div class="col-4" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<span>{{ $store.state.subtotal | formatCurrency }}</span>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="container">
+						<div
+							class="col col-sm-3 col-md-4 col-lg-3 offset-lg-2"
+							style="margin-bottom: 3vh"
+						>
+							<div class="d-block monto">
+								<span>{{ $store.state.subtotal | formatCurrency }}</span>
+							</div>
+						</div>
+					</div>
+					<div class="container-fluid">
+						<div class="row fila-titulo">
 							<div class="col-12">
 								<div class="d-block">
 									<h4>Entrega</h4>
 								</div>
 							</div>
 							<div class="row ml-0 mt-3" id="entregas">
-								<div class="col-6">
+								<div class="col col-sm-3 col-lg-6">
 									<b-button
 										pill
 										@click="toggleClassEntrega(1)"
@@ -91,7 +96,7 @@
 										>Delivery
 									</b-button>
 								</div>
-								<div class="col-6">
+								<div class="col col-sm-3 col-lg-6">
 									<b-button
 										pill
 										@click="toggleClassEntrega(2)"
@@ -108,8 +113,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="row">
-						<div class="container">
+					<div class="container">
+						<div class="row fila-titulo">
 							<div class="col-12">
 								<div class="d-block">
 									<h4>Forma de Pago</h4>
@@ -150,58 +155,67 @@
 							</div>
 						</div>
 					</div>
-					<div class="col-7" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<span style="font-size: 1.3em">Envío</span>
+					<div class="container">
+						<div class="row fila-titulo">
+							<div class="col-sm-6 col-md-4 col-lg-6">
+								<div class="d-block">
+									<span>Envío</span>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4 col-lg-6">
+								<div class="d-block monto2">
+									<span>{{ $store.state.envio | formatCurrency }}</span>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-4" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<span>{{ $store.state.envio | formatCurrency }}</span>
+						<div class="row fila-titulo">
+							<div class="col-sm-6 col-md-4 col-lg-5">
+								<div class="d-block">
+									<span>Descuento</span>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4 col-lg-6 offset-lg-1">
+								<div class="d-block monto2">
+									<span>{{ $store.state.descuento | formatCurrency }}</span>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-7" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<span style="font-size: 1.3em">Descuento</span>
+						<div class="row fila-titulo">
+							<div class="col-sm-6 col-md-4 col-lg-5">
+								<div class="d-block">
+									<strong>
+										<h3 class="">Total</h3>
+									</strong>
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4 col-lg-6 offset-lg-1">
+								<div class="d-block monto2">
+									<span>{{ $store.state.total | formatCurrency }}</span>
+								</div>
+							</div>
 						</div>
-					</div>
-					<div class="col-4" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<span>{{ $store.state.descuento | formatCurrency }}</span>
-						</div>
-					</div>
-					<div class="col-7" style="margin-bottom: 2vh">
-						<div class="d-block">
-							<strong>
-								<h4 class="text-uppercase">Total</h4>
-							</strong>
-						</div>
-					</div>
-					<div class="col-4" style="margin-bottom: 3vh">
-						<div class="d-block">
-							<span>{{ $store.state.total | formatCurrency }}</span>
-						</div>
-					</div>
-					<div class="col-12 mb-4" style="text-align: center">
-						<b-button pill class="m-auto btnActivo" @click="confirmar"
-							>Confirmar Pedido</b-button
-						>
-					</div>
 
-					<div class="col-12" style="text-align: center">
-						<b-button
-							style="
-								background: none;
-								border: none;
-								color: black;
-								font-size: 1.1em;
-							"
-							pill
-							class="cancelar"
-							@click="showConfirmation"
-						>
-							Cancelar Pedido
-						</b-button>
+						<div class="col-12 mb-4" style="text-align: center">
+							<b-button pill class="m-auto btnActivo" @click="confirmar"
+								>Confirmar Pedido</b-button
+							>
+						</div>
+
+						<div class="col-12" style="text-align: center">
+							<b-button
+								style="
+									background: none;
+									border: none;
+									color: black;
+									font-size: 1.1em;
+								"
+								pill
+								class="cancelar"
+								@click="showConfirmation"
+							>
+								Cancelar Pedido
+							</b-button>
+						</div>
 					</div>
 				</div>
 				<b-overlay
@@ -219,7 +233,7 @@
 							role="dialog"
 							aria-modal="false"
 							aria-labelledby="form-confirm-label"
-							class="text-center p-3"
+							class="text-center"
 						>
 							<p>
 								<strong id="form-confirm-label" class="text-danger"
@@ -227,14 +241,10 @@
 								>
 							</p>
 							<div>
-								<b-button
-									variant="outline-success"
-									class="mr-3"
-									@click="onCancel"
-								>
+								<b-button variant="outline-success" class="" @click="onCancel">
 									No
 								</b-button>
-								<b-button variant="outline-danger" @click="onOK"
+								<b-button variant="outline-danger" class="ml-2" @click="onOK"
 									>Vaciar</b-button
 								>
 							</div>
@@ -501,6 +511,75 @@
 	#popoverCarrito {
 		max-width: 20vw !important;
 	}
+	.fila-titulo {
+		width: 35vw;
+	}
+	.fila-titulo h3 {
+		font-size: 1.3em;
+	}
+	.fila-titulo h4,
+	.fila-titulo strong {
+		font-size: 1.6em;
+	}
+	.fila-titulo h4 {
+		margin-top: 1vh;
+		margin-left: -14px !important;
+	}
+	@media screen and (max-width: 1024px) {
+		#popoverCarrito {
+			max-width: 40vw !important;
+		}
+		#subtotal {
+			height: 32px;
+		}
+		.fila-titulo {
+			width: 35vw;
+		}
+		.btnActivo,
+		.btnNoActivo {
+			margin-bottom: 1vh !important;
+			margin-top: 0.1vh !important;
+		}
+
+		.fila-titulo h3 {
+			font-size: 1.3em;
+		}
+		.fila-titulo h4,
+		.fila-titulo strong {
+			font-size: 1.6em;
+		}
+		.fila-titulo h4 {
+			margin-top: 1vh;
+			margin-left: -14px !important;
+		}
+		.fila-titulo .col-lg-3 {
+			padding-left: 0;
+		}
+		.monto {
+			margin-top: 0.7vh;
+			margin-left: 28px;
+		}
+	}
+
+	@media screen and (max-width: 774px) {
+		#popoverCarrito {
+			max-width: 80vw !important;
+			margin-left: 29.5vw;
+		}
+
+		.fila-titulo strong {
+			font-size: 1.1em;
+		}
+		.fila-titulo h3 {
+			font-size: 1.3em;
+		}
+		.fila-titulo h4 {
+			font-size: 1.2em;
+		}
+		.monto2 {
+			margin-left: 13px;
+		}
+	}
 
 	.btnActivo {
 		color: #e7511e !important;
@@ -543,7 +622,6 @@
 	h4 {
 		font-family: "Baloo Bhaina 2";
 		font-weight: 600;
-		font-size: 17pt;
 		color: #151515;
 		text-align: left;
 	}
@@ -557,5 +635,10 @@
 		box-shadow: none !important;
 		border-color: transparent !important;
 		outline: none !important;
+	}
+</style>
+<style scoped>
+	.d-block {
+		display: inline-block !important;
 	}
 </style>
