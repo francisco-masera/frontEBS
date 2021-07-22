@@ -7,7 +7,7 @@
 			img-start
 			img-fluid
 			class="mb-2"
-			style="width: 38.5vw"
+			style="width: 38.5vw; margin-bottom: 0 !important"
 			id="cardP"
 		>
 			<div class="row">
@@ -180,7 +180,7 @@
 	.form-control {
 		margin-bottom: 20px;
 	}
-	.mb-2{
+	.mb-2 {
 		box-sizing: border-box;
 		display: flex;
 		max-width: 100%;
