@@ -11,7 +11,6 @@
 							<b-form-input
 								class="border-white shadow form-control d-flex"
 								type="text"
-								id="nombre"
 								required
 								placeholder="Nombres"
 								@input="$v.form1.nombre.$touch()"
