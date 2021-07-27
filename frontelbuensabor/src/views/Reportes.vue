@@ -205,6 +205,7 @@
 						this.dataFields = {
 							Desde: {
 								callback: (val) => {
+									console.log(val);
 									return new Date(val.fechaMin).toLocaleDateString();
 								},
 							},
@@ -219,7 +220,6 @@
 								},
 							},
 						};
-
 						break;
 					case "Pedidos por periodo":
 						url = "http://localhost:9001/buensabor/pedido/pedidosPorCliente";
@@ -309,7 +309,7 @@
 							.get(url)
 							.catch((e) => this.toastr(e.response.data.message, "Error"));
 						if (!res.data.length) {
-							this.toastr("No insumos con bajo stock", "Atención");
+							this.toastr("No hay insumos con bajo stock", "Atención");
 							return false;
 						}
 						break;
