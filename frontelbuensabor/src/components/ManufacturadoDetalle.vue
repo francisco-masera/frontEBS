@@ -184,6 +184,7 @@
 		box-sizing: border-box;
 		display: flex;
 		max-width: 100%;
+		width: 100% !important;
 		flex-direction: column !important;
 	}
 </style>
