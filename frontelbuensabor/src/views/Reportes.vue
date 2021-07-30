@@ -194,8 +194,8 @@
 									dMin: this.fechaMin.split("-")[2],
 								},
 							})
-							.catch((e) => this.toastr(e.response.data.message, "Error"));
-						if (res.data.ingresos == 0) {
+							.catch((e) => console.log(e));
+						if (res.data[0].ingresos == 0) {
 							this.toastr(
 								"No hay datos para el rango de fechas elegido",
 								"Atención"
@@ -221,6 +221,7 @@
 							},
 						};
 						break;
+
 					case "Pedidos por periodo":
 						url = "http://localhost:9001/buensabor/pedido/pedidosPorCliente";
 						res = await axios
