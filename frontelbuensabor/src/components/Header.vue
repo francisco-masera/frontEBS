@@ -18,50 +18,50 @@
 			<div class="centrarHome">
 				<b-navbar-toggle id="navToggle" target="nav-collapse"></b-navbar-toggle>
 				<div class="hamburguer--home">
-				<b-collapse id="nav-collapse" is-nav>
-					<b-navbar-nav class="items">
-						<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
-						<b-nav-item>
-						<b-button
-							v-show="!this.user.id"
-							@click="$router.push({ name: 'Registro' })"
-							pill
-							class="btn boton"
-							style="margin-bottom:0px;"
-							>Registrarme</b-button
-						>
-						</b-nav-item>
-						<b-nav-item>
-						<b-button
-							v-show="!this.user.id"
-							@click="redirectoToLogin()"
-							pill
-							class="boton2"
-							>Ingresar</b-button
-						>
-						</b-nav-item>
-						<b-nav-item :to="'/misdatos/' + this.user.id">
-							<b-img
-								v-show="this.user.foto != '' && this.user.foto"
-								rounded="circle"
-								:src="this.user.foto"
-								class="fotoUsuario botonImagenHeader"
-							></b-img>
-							<label v-show="user.nombre && user.apellido" id="usuario">{{
-								user.nombre + " " + user.apellido
-							}}</label>
-						</b-nav-item>
-						<b-button
-							v-show="!!this.user.id"
-							@click="logOut()"
-							class="bg-transparent border-0"
-						>
-							<b-img
-								:src="require('../assets/images/cerrarSesion.png')"
-							></b-img>
-						</b-button>
-					</b-navbar-nav>
-				</b-collapse>
+					<b-collapse id="nav-collapse" is-nav>
+						<b-navbar-nav class="items">
+							<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
+							<b-nav-item>
+								<b-button
+									v-show="!this.user.id"
+									@click="$router.push({ name: 'Registro' })"
+									pill
+									class="btn boton"
+									style="margin-bottom: 0px"
+									>Registrarme</b-button
+								>
+							</b-nav-item>
+							<b-nav-item>
+								<b-button
+									v-show="!this.user.id"
+									@click="redirectoToLogin()"
+									pill
+									class="boton2"
+									>Ingresar</b-button
+								>
+							</b-nav-item>
+							<b-nav-item :to="'/misdatos/' + this.user.id">
+								<b-img
+									v-show="this.user.foto != '' && this.user.foto"
+									rounded="circle"
+									:src="this.user.foto"
+									class="fotoUsuario botonImagenHeader"
+								></b-img>
+								<label v-show="user.nombre && user.apellido" id="usuario">{{
+									user.nombre + " " + user.apellido
+								}}</label>
+							</b-nav-item>
+							<b-button
+								v-show="!!this.user.id"
+								@click="logOut()"
+								class="bg-transparent border-0"
+							>
+								<b-img
+									:src="require('../assets/images/cerrarSesion.png')"
+								></b-img>
+							</b-button>
+						</b-navbar-nav>
+					</b-collapse>
 				</div>
 			</div>
 		</b-container>
@@ -124,7 +124,9 @@
 						<b-navbar-nav class="items">
 							<b-nav-item :to="{ name: 'Menu' }">CARTA</b-nav-item>
 							<b-nav-item :to="'/registro'">REGISTRO</b-nav-item>
-							<b-nav-item :to="'/ingresoClientes/null/null'">INGRESO</b-nav-item>
+							<b-nav-item :to="'/ingresoClientes/null/null'"
+								>INGRESO</b-nav-item
+							>
 						</b-navbar-nav>
 					</b-collapse>
 				</div>
@@ -193,7 +195,7 @@
 				botones: [],
 				user: {},
 				esCliente: false,
-				noRegistrado:false,
+				noRegistrado: false,
 				es_Home: false,
 				service: new Service(),
 				screenWidth: window.screen.width < 1024,
@@ -206,12 +208,12 @@
 		methods: {
 			async verificaUsuario() {
 				this.es_Home = this.$props.esHome;
-				var boton;				
-				if (this.user) {					
+				var boton;
+				if (this.user) {
 					if (this.user.rol == undefined) {
-						if(this.user.id===undefined) {
-							this.noRegistrado =true;
-						}else{
+						if (this.user.id === undefined) {
+							this.noRegistrado = true;
+						} else {
 							this.esCliente = true;
 						}
 					} else {
@@ -511,7 +513,7 @@
 			text-align: left;
 			display: block;
 		}
-		.hamburguer--home{
+		.hamburguer--home {
 			background-color: #ffffff;
 			position: absolute;
 			margin-top: 50px;

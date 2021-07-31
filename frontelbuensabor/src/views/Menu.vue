@@ -1,5 +1,5 @@
 <template>
-	<div id="principal">
+	<div id="principal" style="overflow: hidden">
 		<cabecera :es-home="undefined" />
 		<div id="nav">
 			<menu-lateral v-if="esSesion" />
@@ -38,12 +38,6 @@
 						<b-button class="botonImagen" @click="filtrarCategoria(1, 1)">
 							<b-img width="30px" :src="require('@/assets/images/botella.svg')"
 						/></b-button>
-						<b-button class="botonImagen" @click="filtrarCategoria(0, 6)">
-							<b-img
-								width="30px"
-								:src="require('@/assets/images/cupcake.svg')"
-							/>
-						</b-button>
 					</div>
 					<b-nav-form class="buscador">
 						<b-form-input
@@ -54,8 +48,7 @@
 							class="mr-sm-2"
 							placeholder="¿De qué tenés ganas hoy?"
 						>
-							></b-form-input
-						>
+						</b-form-input>
 					</b-nav-form>
 
 					<div id="especiales" style="padding-top: 5px">
@@ -175,7 +168,13 @@
 						null,
 						{ params: { tipo: tipo, categoria: categoria } }
 					)
-					.then((r) => (this.productos = r.data));
+					//.then((r) => (this.productos = r.data.filter()));
+					.then(
+						(r) =>
+							(this.productos = r.data.filter(
+								(v, i, a) => a.findIndex((t) => t.id === v.id) === i
+							))
+					);
 			},
 			filtrarPorTexto() {
 				var terminos;
@@ -226,7 +225,6 @@
 
 	#filtros {
 		margin-top: 20px;
-		float: left;
 		padding-bottom: 80px;
 		display: inline-block;
 	}

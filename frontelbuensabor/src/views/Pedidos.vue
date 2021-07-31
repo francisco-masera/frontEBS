@@ -16,7 +16,7 @@
 				>
 			</div>
 			<div v-else-if="this.userCocina"></div>
-			<div v-else-if="this.userCajero">
+			<div v-else-if="this.userCajero || this.user.rol == 'admin'">
 				<b-button class="hrefPedido" @click="filtrar(1)">TODOS</b-button>
 				<b-button class="hrefPedido" @click="filtrar(2)">PENDIENTES</b-button>
 				<b-button class="hrefPedido" @click="filtrar(3)">EN COCINA</b-button>
@@ -111,7 +111,7 @@
 					</b-card-group>
 				</div>
 			</div>
-			<div v-else-if="this.userCajero">
+			<div v-else-if="this.userCajero || this.user.rol == 'admin'">
 				<b-card-group style="margin-top: 120px">
 					<div
 						v-for="pedido in pedidosFiltrados"

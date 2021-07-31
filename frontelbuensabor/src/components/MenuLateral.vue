@@ -6,6 +6,7 @@
 					v-if="this.user.foto != undefined"
 					:src="this.user.foto"
 					id="imagenusuario"
+					class="fotoUserResize"
 				/>
 				<img
 					v-else
@@ -162,6 +163,11 @@
 		width: 17vw;
 		min-width: 240px;
 		z-index: 1;
+	}
+	.fotoUserResize {
+		object-fit: cover;
+		width: 100%;
+		height: 100%;
 	}
 
 	#imagenusuario {

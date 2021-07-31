@@ -1,5 +1,5 @@
 <template>
-	<div id="home">
+	<div id="home" style="overflow: hidden">
 		<div id="home1">
 			<cabecera v-bind:es-home="true"></cabecera>
 			<div id="buscador">

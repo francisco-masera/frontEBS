@@ -13,7 +13,7 @@
 		<div v-if="$store.state.carrito.items.length == 0" :key="0">
 			<b-popover
 				target="carrito-img"
-				triggers="hover focus click"
+				triggers="hover focus"
 				container="carrito-nav"
 				ref="popover"
 				id=""
@@ -39,7 +39,7 @@
 		<div v-else :key="$store.state.carritoKey">
 			<b-popover
 				target="carrito-img"
-				triggers="hover focus click"
+				triggers="hover focus"
 				placement="bottomleft"
 				container="carrito-nav"
 				ref="popover"

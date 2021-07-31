@@ -373,6 +373,102 @@
 			</b-container>
 		</b-card>
 	</div>
+	<div v-else-if="this.user.rol == 'admin'">
+		<b-card no-body border-variant="dark" style="max-width: 600px">
+			<b-container style="padding: 0">
+				<div class="filasPedido">
+					<div id="fila1">
+						<div id="orden">
+							<strong>#Orden {{ pedidoParam.numero }} </strong>
+						</div>
+						<div id="tipoRetiro">
+							<strong>{{ pedidoParam.tipoEntrega }}</strong>
+						</div>
+						<div v-if="pedidoParam.estado != 'Cancelado'" id="hora">
+							<strong>Hora: </strong>{{ horaEntrega }}
+						</div>
+						<div id="total">
+							<strong>Total: </strong>{{ pedidoParam.total | formatCurrency }}
+						</div>
+					</div>
+					<div id="fila2">
+						<div id="cliente">
+							<strong>Cliente: </strong>{{ pedidoParam.cliente.nombre }}
+							{{ pedidoParam.cliente.apellido }}
+						</div>
+						<div id="telefono" v-if="pedidoParam.cliente.telefono != ''">
+							<strong>Teléfono: </strong> {{ pedidoParam.cliente.telefono }}
+						</div>
+					</div>
+					<div v-if="domicilioParam" id="fila3">
+						<p
+							v-if="
+								domicilioParam.departamento == 0 && domicilioParam.piso == 0
+							"
+						>
+							<strong>Dirección:</strong>
+							{{ domicilioParam.calle }}
+							{{ domicilioParam.numero }} -
+							{{ domicilioParam.localidad }}
+						</p>
+						<p
+							v-else-if="
+								domicilioParam.departamento > 0 && domicilioParam.piso == 0
+							"
+						>
+							<strong>Dirección:</strong>
+							{{ domicilioParam.calle }}
+							{{ domicilioParam.numero }} - Departamento:
+							{{ domicilioParam.departamento }} Piso: PB -
+							{{ domicilioParam.localidad }}
+						</p>
+						<p v-else>
+							<strong>Dirección:</strong>
+							{{ domicilioParam.calle }}
+							{{ domicilioParam.numero }} - Departamento:
+							{{ domicilioParam.departamento }} Piso:
+							{{ domicilioParam.piso }} -
+							{{ domicilioParam.localidad }}
+						</p>
+					</div>
+					<div style="" id="fila4">
+						<div class="contenedorDetalleCaja">
+							<strong>Detalle: </strong>
+							<div
+								v-for="detalle in pedidoParam.detalles"
+								v-bind:key="detalle.cantidad"
+								class=""
+							>
+								<label>
+									{{ detalle.cantidad }}
+									{{ detalle.articulo.denominacion }}
+								</label>
+							</div>
+							<br />
+							<b-badge
+								class="BadgeEstado"
+								:variant="
+									pedidoParam.estado == 'Pendiente'
+										? 'danger'
+										: pedidoParam.estado == 'Listo'
+										? 'success'
+										: pedidoParam.estado == 'En Delivery'
+										? 'info'
+										: pedidoParam.estado == 'Confirmado'
+										? 'secondary'
+										: pedidoParam.estado == 'En Cocina'
+										? 'warning'
+										: 'primary'
+								"
+							>
+								{{ pedidoParam.estado }}
+							</b-badge>
+						</div>
+					</div>
+				</div>
+			</b-container>
+		</b-card>
+	</div>
 	<div v-else-if="cliente">
 		<b-card no-body border-variant="dark" style="max-width: 600px">
 			<b-container style="padding: 0">

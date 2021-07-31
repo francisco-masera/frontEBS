@@ -1,34 +1,13 @@
 <template>
-	<!-- 	<b-table-lite :items="items" :fields="tbody" id="tablaCarrito" borderless>
-		<template v-slot:cell(denominacion)="row">
-			{{ row.item.denominacion }}
-		</template>
-		<template v-slot:cell(precioVenta)="row" class="col-sm-2">
-			{{ row.item.precioVenta | formatCurrency }}
-		</template>
-		<template v-slot:cell(eliminar)="row">
-			<b-btn
-				@click="delItem(row.item.idArticuloVenta)"
-				:id="row.item.idPedido"
-				style="background: transparent; border-color: transparent"
-			>
-				<b-img-lazy
-					class=""
-					width="25%"
-					:src="require('../assets/images/eliminar.png')"
-				></b-img-lazy>
-			</b-btn>
-		</template>
-	</b-table-lite> -->
 	<div class="container-fluid">
 		<div class="row filaItems" v-for="(item, key) in items" :key="key">
 			<div class="col col-md-1 col-lg-1 cantidad">
 				{{ item.cantidad }}
 			</div>
-			<div class="col col-md-6 col-lg-5 denominacion">
+			<div class="col col-md-6 col-lg-4 denominacion">
 				{{ item.denominacion }}
 			</div>
-			<div class="col col-md-4 col-lg-2 offset-2 precioVenta">
+			<div class="col col-md-4 col-lg-4 offset-lg-1 precioVenta">
 				{{ item.precioVenta | formatCurrency }}
 			</div>
 			<div class="col col-md-1 col-lg-1 btn-del" style="margin-top: -10px">
